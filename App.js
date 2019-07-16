@@ -4,10 +4,9 @@
  *
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   View,
   Text,
@@ -15,54 +14,38 @@ import {
 } from 'react-native';
 
 
-const App = () => {
-  return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>CargApp</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> Init Proyect
-              </Text>
-            </View>
-            
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Fragment>
-  );
-};
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: '#FFF',
-  },
-  body: {
-    backgroundColor: '#fff',
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#222',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: '#ccc',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  render() {
+    return (
+      <Fragment>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+          >
+            <View>
+              <View>
+                <Text>CargApp</Text>
+                <Text>
+                      Edit
+                  {' '}
+                  <Text>App.js</Text>
+                  {' '}
+                      Init Proyect
+                </Text>
+              </View>
+
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </Fragment>
+    );
+  }
+}
 
 export default App;
