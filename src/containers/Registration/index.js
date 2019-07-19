@@ -18,6 +18,7 @@ import {
   Check,
   WrapperInputs,
   WrapperButtonsBottom,
+  TextTerms,
 } from './style';
 
 class Registration extends Component {
@@ -102,6 +103,7 @@ class Registration extends Component {
           <ButtonWhite content="Iniciar sesión" />
           <ButtonGradient content="Registrarse" />
         </WrapperButtonsBottom>
+        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>
     );
   }

@@ -109,12 +109,22 @@ export const Check = styled.Image`
     height: 35px;
     position: absolute;
     resize-mode: stretch;
-    top: -10;
-    right: -5;
+    top: -10px;
+    right: -5px;
 `;
 
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
   margin-bottom: 5%;
+`;
+
+export const TextTerms = styled.Text`
+  font-family: Roboto;
+  font-size: 12px; 
+  letter-spacing: -0.3px;
+  color: #010935;
+  align-self: center;
+  padding: 10px;
+  top: 10px;
 `;
