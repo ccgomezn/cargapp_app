@@ -4,7 +4,7 @@ import SvgUriN from 'react-native-svg-uri';
 export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
-  padding: 5%;  
+  padding: 5%;
 `;
 
 export const TextBlack = styled.Text`
@@ -39,11 +39,12 @@ export const SvgUri = styled.Image`
   align-self: center;
 `;
 
-export const WrapperButtons = styled.TouchableOpacity`
+export const WrapperButtons = styled.View`
   width: 100%;
   flex-direction: row;
   height: auto;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   margin-vertical: 5%;
 `;
 
@@ -105,18 +106,18 @@ export const Svg = styled(SvgUriN)`
 `;
 
 export const Check = styled.Image`
-    width: 35px;
-    height: 35px;
-    position: absolute;
-    resize-mode: stretch;
-    top: -10px;
-    right: -5px;
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  resize-mode: stretch;
+  top: -10px;
+  right: -5px;
 `;
 
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
-  margin-bottom: 5%;
+  margin-vertical: 5%;
 `;
 
 export const TextTerms = styled.Text`
@@ -125,6 +126,6 @@ export const TextTerms = styled.Text`
   letter-spacing: -0.3px;
   color: #010935;
   align-self: center;
-  padding: 10px;
-  top: 10px;
+  justify-content: flex-end;
+  padding-top: 20px;
 `;

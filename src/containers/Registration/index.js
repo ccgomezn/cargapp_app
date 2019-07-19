@@ -47,6 +47,8 @@ class Registration extends Component {
       }
     };
     const { pressState, pressStateTwo } = this.state;
+    // eslint-disable-next-line react/destructuring-assignment,react/prop-types
+    const { navigate } = this.props.navigation;
     return (
       <MainWrapper>
         <SvgUri source={require('../../Images/Logo3x.png')} />
@@ -100,8 +102,9 @@ class Registration extends Component {
           <Input title="Contraseña" />
         </WrapperInputs>
         <WrapperButtonsBottom>
-          <ButtonWhite content="Iniciar sesión" />
-          <ButtonGradient content="Registrarse" />
+          {/* eslint-disable-next-line react/prop-types */}
+          <ButtonWhite press={() => navigate('')} content="Iniciar sesión" />
+          <ButtonGradient press={() => navigate('Vehicle')} content="Registrarse" />
         </WrapperButtonsBottom>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>

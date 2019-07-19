@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 
 import ScreenHome from '../../containers/screenHome';
 import ScreenViajes from '../../containers/screenViajes';
+// SIGN UP SCREENS
 import ScreenSignUp from '../../containers/Registration';
+import ScreenVehicle from '../../containers/Registration/Vehicle';
 
 // eslint-disable-next-line react/prop-types
 function leftIconMenu({ navigation }) {
@@ -51,6 +53,7 @@ export const homeStackNavigator = createStackNavigator({
 
 export const SignUpStackNavigator = createStackNavigator({
   SignUp: { screen: ScreenSignUp },
+  Vehicle: { screen: ScreenVehicle },
 }, {
   headerMode: 'none',
 });
