@@ -1,11 +1,23 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import React from 'react';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import DrawerScreen from './stacks/drawerScreen';
+import { SignUpStackNavigator } from './stacks/stackScreen';
 
-const Navigator = createStackNavigator({
-  drawerScreen: { screen: DrawerScreen },
+const Navigator = createAppContainer(createSwitchNavigator({
+  drawerScreen: DrawerScreen,
+  SignUpStack: SignUpStackNavigator,
 }, {
   headerMode: 'none',
-  initialRouteName: 'drawerScreen',
-});
+  initialRouteName: 'SignUpStack',
+}));
 
-export default createAppContainer(Navigator);
+export default class Navigation extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  render() {
+    return <Navigator />;
+  }
+}
