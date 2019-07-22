@@ -37,13 +37,14 @@ export const SvgUri = styled.Image`
   height: 45px;
   resize-mode: stretch;
   align-self: center;
+  margin-bottom: 3%;
 `;
 
 export const WrapperButtons = styled.View`
   width: 100%;
   flex-direction: row;
   height: auto;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-vertical: 5%;
 `;
