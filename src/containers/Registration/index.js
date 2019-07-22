@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Input from '../../components/GeneralInput';
 import ButtonWhite from '../../components/ButtonWhite';
 import ButtonGradient from '../../components/ButtonGradient';
+import PopUpDialog from '../../components/PopUpDialog';
 import {
   MainWrapper,
   TextBlack,
@@ -27,9 +28,15 @@ class Registration extends Component {
     this.state = {
       pressState: true,
       pressStateTwo: false,
+      isVisible: false,
     };
   }
+
   /* eslint-disable global-require */
+  modalShow = () => {
+    const { isVisible } = this.state;
+    this.setState({ isVisible: !isVisible });
+  }
 
   render() {
     const handlePressButton = () => {
@@ -46,7 +53,7 @@ class Registration extends Component {
         this.setState({ pressStateTwo: !pressStateTwo });
       }
     };
-    const { pressState, pressStateTwo } = this.state;
+    const { pressState, pressStateTwo, isVisible } = this.state;
     // eslint-disable-next-line react/destructuring-assignment,react/prop-types
     const { navigate } = this.props.navigation;
     return (
@@ -105,7 +112,9 @@ class Registration extends Component {
           {/* eslint-disable-next-line react/prop-types */}
           <ButtonWhite press={() => navigate('')} content="Iniciar sesión" />
           <ButtonGradient press={() => navigate('Vehicle')} content="Registrarse" />
+          <ButtonGradient press={() => this.setState({ isVisible: !isVisible })} content="Modal" />
         </WrapperButtonsBottom>
+        <PopUpDialog onTouchOutside={this.modalShow} visible={isVisible} />
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>
     );

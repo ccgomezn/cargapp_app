@@ -18,7 +18,8 @@
     "react-native-document-picker": "^3.2.2",
     "react-native-gesture-handler": "^1.3.0",
     "react-native-linear-gradient": "^2.5.4",
-    "react-native-svg": "^5.5.1",
+    "react-native-popup-dialog": "^0.18.3",
+    "react-native-svg": "^9.5.3",
     "react-native-svg-uri": "^1.2.3",
     "react-navigation": "^3.11.1",
     "styled-components": "^4.3.2"
