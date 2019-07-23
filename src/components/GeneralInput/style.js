@@ -20,7 +20,7 @@ export const MainWrapper = styled.View`
 
 export const Text = styled.Text` 
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 11px;
   font-weight: 500;
   font-style: normal;
@@ -30,7 +30,7 @@ export const Text = styled.Text`
 
 export const Input = styled.TextInput`
   width: 100%;
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 14px;
   top: -5;
 `;
