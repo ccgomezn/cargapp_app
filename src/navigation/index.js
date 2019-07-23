@@ -1,14 +1,15 @@
 import React from 'react';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import DrawerScreen from './stacks/drawerScreen';
+
 import { SignUpStackNavigator } from './stacks/stackScreen';
 
 const Navigator = createAppContainer(createSwitchNavigator({
-  drawerScreen: DrawerScreen,
+  MenuDrawer: DrawerScreen,
   SignUpStack: SignUpStackNavigator,
 }, {
   headerMode: 'none',
-  initialRouteName: 'SignUpStack',
+  initialRouteName: 'MenuDrawer',
 }));
 
 export default class Navigation extends React.Component {
@@ -18,6 +19,10 @@ export default class Navigation extends React.Component {
   }
 
   render() {
-    return <Navigator />;
+    // eslint-disable-next-line react/prop-types
+    const { navigation } = this.props;
+    return (
+      <Navigator navigation={navigation} />
+    );
   }
 }
