@@ -30,6 +30,7 @@ export const TextGray = styled.Text`
   font-style: normal;
   letter-spacing: -0.3px;
   color: #010935;
+  padding-bottom: 10px;
 `;
 
 export const SvgUri = styled.Image`
@@ -127,6 +128,19 @@ export const TextTerms = styled.Text`
   letter-spacing: -0.3px;
   color: #010935;
   align-self: center;
-  justify-content: flex-end;
+  bottom: 0;
   padding-top: 20px;
+`;
+
+export const WrapperButtonGradient = styled.View`
+  width: 35%;
+  height: 100%;
+  margin-left: 3%;
+`;
+
+export const WrapperSocialButtons = styled.View`
+  height: auto;
+  width: 100%;
+  justify-content: space-around;
+  margin-vertical: 2%;
 `;

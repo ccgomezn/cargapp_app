@@ -12,6 +12,7 @@ import {
   WrapperButtonsBottom,
   TextTerms,
   WrapperButtons,
+  WrapperButtonGradient,
 } from '../style';
 
 class Registration extends Component {
@@ -48,7 +49,10 @@ class Registration extends Component {
           <Input title="Dato 2" />
         </WrapperInputs>
         <WrapperButtonsBottom>
-          <ButtonGradient content="Continuar" press={() => navigation.navigate('personal')} />
+          <WrapperButtonGradient>
+            {/* eslint-disable-next-line react/prop-types */}
+            <ButtonGradient content="Continuar" press={() => navigation.navigate('personal')} />
+          </WrapperButtonGradient>
         </WrapperButtonsBottom>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>
