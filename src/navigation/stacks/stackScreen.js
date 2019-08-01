@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { Text } from 'react-native';
 import PropTypes from 'prop-types';
-
+// MENU SCREENS
 import ScreenHome from '../../containers/screenHome';
 import ScreenViajes from '../../containers/screenViajes';
 // SIGN UP SCREENS
@@ -11,30 +11,43 @@ import ScreenSignUp from '../../containers/Registration';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
+
+import {
+  IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
+} from '../style';
+
 // eslint-disable-next-line react/prop-types
 function leftIconMenu({ navigation }) {
   return (
-    <View>
-      <TouchableHighlight
-        onPress={() => {
-          // eslint-disable-next-line react/prop-types
-          navigation.toggleDrawer();
-        }
-        }
-      >
-        <Text>iconleft</Text>
-      </TouchableHighlight>
-    </View>
+    <TouchLeftMenu
+      onPress={() => {
+        // eslint-disable-next-line react/prop-types
+        navigation.toggleDrawer();
+      }
+      }
+    >
+      <IconImg
+        source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png' }}
+      />
+    </TouchLeftMenu>
   );
 }
 
 function rightIconMenu() {
   return (
-    <View>
-      <TouchableHighlight>
-        <Text>iconleft</Text>
-      </TouchableHighlight>
-    </View>
+    <TouchRightMenu>
+      <Text>iconright</Text>
+    </TouchRightMenu>
+  );
+}
+
+function centerIconMenu() {
+  return (
+    <TouchCenterMenu>
+      <IconLogo
+        source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }}
+      />
+    </TouchCenterMenu>
   );
 }
 
@@ -42,11 +55,8 @@ export const homeStackNavigator = createStackNavigator({
   First: {
     screen: ScreenHome,
     navigationOptions: ({ navigation }) => ({
-      title: 'Home',
-      headerStyle: {
-        backgroundColor: 'rgb(255, 45, 25)',
-      },
-      headerTintColor: 'white',
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu(),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu(),
     }),
@@ -67,11 +77,8 @@ export const viajesStackNavigator = createStackNavigator({
   Second: {
     screen: ScreenViajes,
     navigationOptions: ({ navigation }) => ({
-      title: 'Mis Viajes',
-      headerStyle: {
-        backgroundColor: 'rgb(255, 45, 25)',
-      },
-      headerTintColor: 'white',
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu(),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu(),
     }),

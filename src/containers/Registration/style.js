@@ -8,7 +8,7 @@ export const MainWrapper = styled.ScrollView`
 `;
 
 export const TextBlack = styled.Text`
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 30px;
   font-weight: bold;
   font-style: normal;
@@ -24,7 +24,7 @@ export const TextBlue = styled.Text`
 
 export const TextGray = styled.Text`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 18px;
   font-weight: normal;
   font-style: normal;
@@ -71,7 +71,7 @@ export const WrapperButton = styled.TouchableOpacity`
 
 export const ButtonSubText = styled.Text`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
@@ -83,7 +83,7 @@ export const ButtonSubText = styled.Text`
 `;
 
 export const ButtonText = styled.Text`
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
@@ -124,7 +124,7 @@ export const WrapperInputs = styled.View`
 `;
 
 export const TextTerms = styled.Text`
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 12px; 
   letter-spacing: -0.3px;
   color: #010935;
