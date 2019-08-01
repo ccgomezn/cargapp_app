@@ -10,7 +10,7 @@ export const WrapperButton = styled.TouchableOpacity`
 `;
 
 export const Text = styled.Text`
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 14px;
   font-weight: 500; 
   letter-spacing: -0.35px;

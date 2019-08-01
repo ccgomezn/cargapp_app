@@ -2,6 +2,7 @@ import React from 'react';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { SafeAreaView, StatusBar } from 'react-native';
 import DrawerScreen from './stacks/drawerScreen';
+
 import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 
