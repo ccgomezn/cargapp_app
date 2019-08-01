@@ -32,6 +32,8 @@ target 'Cargapp' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'CargappTests' do
     inherit! :search_paths
     # Pods for testing

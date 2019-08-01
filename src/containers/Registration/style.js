@@ -30,7 +30,7 @@ export const TextGray = styled.Text`
   font-style: normal;
   letter-spacing: -0.3px;
   color: #010935;
-  padding-bottom: 10px;
+  
 `;
 
 export const SvgUri = styled.Image`
@@ -55,6 +55,7 @@ export const WrapperButtonsBottom = styled.TouchableOpacity`
   flex-direction: row;
   height: auto;
   justify-content: flex-end;
+  padding-bottom: 10px;
 `;
 
 export const WrapperButton = styled.TouchableOpacity`

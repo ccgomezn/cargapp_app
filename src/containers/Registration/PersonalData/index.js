@@ -9,9 +9,10 @@ import {
   TextGray,
   SvgUri,
   WrapperInputs,
-  WrapperButtonsBottom,
+  WrapperButtonGradient,
   TextTerms,
   WrapperButtons,
+  WrapperButtonsBottom,
 } from '../style';
 
 class Registration extends Component {
@@ -28,7 +29,7 @@ class Registration extends Component {
       <MainWrapper>
         <WrapperButtons style={{ justifyContent: 'center', marginVertical: 0, marginBottom: '3%' }}>
           {/* eslint-disable-next-line react/prop-types */}
-          <ArrowBack url={() => navigation.navigate('SignUp')} />
+          <ArrowBack url={() => navigation.goBack()} />
           <SvgUri source={require('../../../Images/Logo3x.png')} />
         </WrapperButtons>
         <TextBlack>
@@ -48,7 +49,10 @@ class Registration extends Component {
           <Input title="Dato 2" />
         </WrapperInputs>
         <WrapperButtonsBottom>
-          <ButtonGradient content="Continuar" />
+          <WrapperButtonGradient>
+            {/* eslint-disable-next-line react/prop-types */}
+            <ButtonGradient content="Continuar" press={() => navigation.navigate('documents')} />
+          </WrapperButtonGradient>
         </WrapperButtonsBottom>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>

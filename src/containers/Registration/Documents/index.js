@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Input from '../../../components/GeneralInput';
-import ButtonGradient from '../../../components/ButtonGradient';
+import Card from '../../../components/ComponentCard';
 import ArrowBack from '../../../components/ArrowBack';
 import {
   MainWrapper,
@@ -8,11 +7,8 @@ import {
   TextBlue,
   TextGray,
   SvgUri,
-  WrapperInputs,
-  WrapperButtonsBottom,
   TextTerms,
   WrapperButtons,
-  WrapperButtonGradient,
 } from '../style';
 
 class Registration extends Component {
@@ -26,7 +22,7 @@ class Registration extends Component {
     // eslint-disable-next-line react/prop-types
     const { navigation } = this.props;
     return (
-      <MainWrapper>
+      <MainWrapper contentContainerStyle={{ flex: 1 }}>
         <WrapperButtons style={{ justifyContent: 'center', marginVertical: 0, marginBottom: '3%' }}>
           {/* eslint-disable-next-line react/prop-types */}
           <ArrowBack url={() => navigation.goBack()} />
@@ -40,20 +36,16 @@ class Registration extends Component {
           </TextBlue>
         </TextBlack>
         <TextGray>
-            Bienvenido a Cargapp, necesitamos la siguiente información de su camión
-            para continual el registro
+                    Este es el último paso, para terminar su registro necesitamos...
         </TextGray>
-        <WrapperInputs>
-          <Input title="Placa del vehículo" />
-          <Input title="Dato 1" />
-          <Input title="Dato 2" />
-        </WrapperInputs>
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            {/* eslint-disable-next-line react/prop-types */}
-            <ButtonGradient content="Continuar" press={() => navigation.navigate('personal')} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
+        <Card
+          logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
+          background="white"
+          mainText="Agregar tarjeta de propiedad"
+          icon={false}
+          colorText="black"
+          borderColorProp="lightGray"
+        />
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>
     );
