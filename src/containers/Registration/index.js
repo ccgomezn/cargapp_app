@@ -106,7 +106,7 @@ class Registration extends Component {
         <WrapperButtonsBottom>
           {/* eslint-disable-next-line react/prop-types */}
           <WrapperButtonGradient>
-            <ButtonWhite press={() => navigate('')} content="Iniciar sesión" />
+            <ButtonWhite press={() => navigate('Login')} content="Iniciar sesión" />
           </WrapperButtonGradient>
           <WrapperButtonGradient>
             <ButtonGradient press={() => navigate('Vehicle')} content="Registrarse" />

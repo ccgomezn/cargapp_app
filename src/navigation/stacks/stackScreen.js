@@ -10,7 +10,7 @@ import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
-
+import ScreenDocuments from '../../containers/Registration/Documents';
 // eslint-disable-next-line react/prop-types
 function leftIconMenu({ navigation }) {
   return (
@@ -58,6 +58,7 @@ export const SignUpStackNavigator = createStackNavigator({
   SignUp: { screen: ScreenSignUp },
   Vehicle: { screen: ScreenVehicle },
   personal: { screen: ScreenPersonalData },
+  documents: { screen: ScreenDocuments },
 }, {
   headerMode: 'none',
 });
