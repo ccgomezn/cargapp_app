@@ -19,6 +19,7 @@ import {
   WrapperInputs,
   WrapperButtonsBottom,
   TextTerms,
+  WrapperButtonGradient,
 } from './style';
 
 class Registration extends Component {
@@ -29,6 +30,7 @@ class Registration extends Component {
       pressStateTwo: false,
     };
   }
+
   /* eslint-disable global-require */
 
   render() {
@@ -103,8 +105,12 @@ class Registration extends Component {
         </WrapperInputs>
         <WrapperButtonsBottom>
           {/* eslint-disable-next-line react/prop-types */}
-          <ButtonWhite press={() => navigate('')} content="Iniciar sesión" />
-          <ButtonGradient press={() => navigate('Vehicle')} content="Registrarse" />
+          <WrapperButtonGradient>
+            <ButtonWhite press={() => navigate('Login')} content="Iniciar sesión" />
+          </WrapperButtonGradient>
+          <WrapperButtonGradient>
+            <ButtonGradient press={() => navigate('Vehicle')} content="Registrarse" />
+          </WrapperButtonGradient>
         </WrapperButtonsBottom>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>

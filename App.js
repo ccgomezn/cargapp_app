@@ -4,7 +4,7 @@
  *
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import Navigator from './src/navigation';
 
 class App extends React.Component {
@@ -15,9 +15,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Fragment>
-        <Navigator />
-      </Fragment>
+      <Navigator />
     );
   }
 }
