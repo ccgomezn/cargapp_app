@@ -6,8 +6,11 @@ import PropTypes from 'prop-types';
 import ScreenHome from '../../containers/screenHome';
 import ScreenViajes from '../../containers/screenViajes';
 // SIGN UP SCREENS
+import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
+import ScreenPersonalData from '../../containers/Registration/PersonalData';
+import ScreenDocuments from '../../containers/Registration/Documents';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -61,8 +64,11 @@ export const homeStackNavigator = createStackNavigator({
 });
 
 export const SignUpStackNavigator = createStackNavigator({
+  Login: { screen: ScreenLogin },
   SignUp: { screen: ScreenSignUp },
   Vehicle: { screen: ScreenVehicle },
+  personal: { screen: ScreenPersonalData },
+  documents: { screen: ScreenDocuments },
 }, {
   headerMode: 'none',
 });

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const WrapperButton = styled.TouchableOpacity`
-  width: 35%;
+  width: 100%;
   border-radius: 2px;
   border: solid 1.2px #0068ff;
   background-color: white;

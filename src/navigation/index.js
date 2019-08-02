@@ -1,15 +1,18 @@
 import React from 'react';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { SafeAreaView, StatusBar } from 'react-native';
 import DrawerScreen from './stacks/drawerScreen';
 
 import { SignUpStackNavigator } from './stacks/stackScreen';
+import SplashScreen from '../containers/Splash';
 
 const Navigator = createAppContainer(createSwitchNavigator({
-  MenuDrawer: DrawerScreen,
+  Splash: SplashScreen,
   SignUpStack: SignUpStackNavigator,
+  drawerScreen: DrawerScreen,
 }, {
   headerMode: 'none',
-  initialRouteName: 'MenuDrawer',
+  initialRouteName: 'Splash',
 }));
 
 export default class Navigation extends React.Component {
@@ -19,10 +22,11 @@ export default class Navigation extends React.Component {
   }
 
   render() {
-    // eslint-disable-next-line react/prop-types
-    const { navigation } = this.props;
     return (
-      <Navigator navigation={navigation} />
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <Navigator />
+      </SafeAreaView>
     );
   }
 }
