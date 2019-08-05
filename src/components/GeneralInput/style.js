@@ -16,6 +16,8 @@ export const MainWrapper = styled.View`
   background-color: #ffffff;
   padding: 5px;
   padding-left: 10px;
+  justify-content: space-between;
+  bottom: 0;
 `;
 
 export const Text = styled.Text` 

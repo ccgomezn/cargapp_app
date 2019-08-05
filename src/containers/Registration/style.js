@@ -30,6 +30,7 @@ export const TextGray = styled.Text`
   font-style: normal;
   letter-spacing: -0.3px;
   color: #010935;
+  
 `;
 
 export const SvgUri = styled.Image`
@@ -37,13 +38,14 @@ export const SvgUri = styled.Image`
   height: 45px;
   resize-mode: stretch;
   align-self: center;
+  margin-bottom: 3%;
 `;
 
 export const WrapperButtons = styled.View`
   width: 100%;
   flex-direction: row;
   height: auto;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-vertical: 5%;
 `;
@@ -53,6 +55,7 @@ export const WrapperButtonsBottom = styled.TouchableOpacity`
   flex-direction: row;
   height: auto;
   justify-content: flex-end;
+  padding-bottom: 10px;
 `;
 
 export const WrapperButton = styled.TouchableOpacity`
@@ -126,6 +129,19 @@ export const TextTerms = styled.Text`
   letter-spacing: -0.3px;
   color: #010935;
   align-self: center;
-  justify-content: flex-end;
+  bottom: 0;
   padding-top: 20px;
+`;
+
+export const WrapperButtonGradient = styled.View`
+  width: 35%;
+  height: 100%;
+  margin-left: 3%;
+`;
+
+export const WrapperSocialButtons = styled.View`
+  height: auto;
+  width: 100%;
+  justify-content: space-around;
+  margin-vertical: 2%;
 `;
