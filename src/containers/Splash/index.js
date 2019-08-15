@@ -15,7 +15,7 @@ class Splash extends Component {
     const { navigation } = this.props;
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      navigation.navigate('SignUpStack');
+      navigation.navigate('drawerScreen');// SignUpStack
     }, THREE_SECONDS);
   }
 

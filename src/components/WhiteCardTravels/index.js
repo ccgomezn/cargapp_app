@@ -17,7 +17,10 @@ import {
 import ButtonGradient from '../ButtonGradient';
 
 function WhiteCardTravels({
-  from, to, vehicle, pay, date, press,
+  from, to, vehicle, pay, date,
+  actionbtnPrimary, btnPrimary,
+  actionbtnSecondary, btnSecondary,
+  status, statusColor,
 }) {
   return (
     <MainWrapper>
@@ -26,10 +29,12 @@ function WhiteCardTravels({
           <TextBold>De</TextBold>
           <NormalText>{from}</NormalText>
         </WrapperDataLeft>
-        <WrapperData>
-          <TextBold>Vehículo</TextBold>
-          <NormalText>{vehicle}</NormalText>
-        </WrapperData>
+        { vehicle != null ? (
+          <WrapperData>
+            <TextBold>Vehículo</TextBold>
+            <NormalText>{vehicle}</NormalText>
+          </WrapperData>
+        ) : null }
       </WrapperColumn>
 
       <WrapperColumn>
@@ -46,17 +51,24 @@ function WhiteCardTravels({
         </WrapperData>
       </WrapperColumn>
 
-      <WrapperDate>
-        <TextDate>{date}</TextDate>
-      </WrapperDate>
+      { status != null ? (
+        <WrapperDate bgcolor={statusColor}>
+          <TextDate color={statusColor}>{status}</TextDate>
+        </WrapperDate>
+      ) : <WrapperDate><TextDate>{date}</TextDate></WrapperDate>
+      }
 
       <WrapperButtons>
-        <TouchableDetails>
-          <TextBlue>Ver más</TextBlue>
-        </TouchableDetails>
-        <WrapperButton>
-          <ButtonGradient press={press} content="Aplicar" />
-        </WrapperButton>
+        { btnSecondary != null ? (
+          <TouchableDetails onPress={actionbtnSecondary}>
+            <TextBlue>Ver más</TextBlue>
+          </TouchableDetails>
+        ) : null }
+        { btnPrimary != null ? (
+          <WrapperButton>
+            <ButtonGradient press={actionbtnPrimary} content={btnPrimary} />
+          </WrapperButton>
+        ) : null }
       </WrapperButtons>
     </MainWrapper>
   );
@@ -68,7 +80,14 @@ WhiteCardTravels.propTypes = {
   vehicle: PropTypes.string.isRequired,
   pay: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
-  press: PropTypes.func.isRequired,
+  // add
+  actionbtnPrimary: PropTypes.func.isRequired,
+  btnPrimary: PropTypes.string.isRequired,
+  btnSecondary: PropTypes.string.isRequired,
+  actionbtnSecondary: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
+  statusColor: PropTypes.string.isRequired,
+
 };
 
 export default WhiteCardTravels;
