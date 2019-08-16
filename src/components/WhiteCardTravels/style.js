@@ -6,6 +6,8 @@ export const MainWrapper = styled.View`
     border: 1px solid #f3f3f3;
     border-radius: 5px;
     background-color: white;
+    margin-bottom: 5px;
+    padding: 5px;
     `;
 
 export const TextBold = styled.Text`
@@ -51,21 +53,21 @@ export const WrapperDate = styled.View`
     top: 5px;
     right: 15px;
     border-radius: 3px;
-    border: solid 1px rgba(0, 104, 255, 0.05);
-    background-color: rgba(0, 104, 255, 0.13);
+    border: solid 1px #0068ff0D;
+    background-color: ${props => (props.bgcolor ? props.bgcolor.concat('21') : '#0068ff21')};
     `;
 
 export const TextDate = styled.Text`
     font-family: Roboto;
     font-size: 12px;
     font-weight: normal; 
-    color: #0068ff;
+    color: ${props => (props.color ? props.color : '#0068ff')};
     padding-vertical: 5px;
     padding-horizontal: 15px;
     `;
 
 export const TouchableDetails = styled.TouchableOpacity`
-    padding: 20px;
+    padding: 15px;
     margin-horizontal: 20px;
     align-items: center;
     justify-content: center;
