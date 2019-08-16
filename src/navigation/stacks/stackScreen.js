@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 // MENU SCREENS
-import ScreenHome from '../../containers/screenHome';
-import ScreenViajes from '../../containers/screenViajes';
+import ScreenHome from '../../containers/Home';
+import ScreenTravels from '../../containers/Travels';
+import ScreenMyTravels from '../../containers/MyTravels';
+import ScreenMyVehicle from '../../containers/Vehicle';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
@@ -14,6 +15,7 @@ import ScreenDocuments from '../../containers/Registration/Documents';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
+  BoxPerfil, ImagenPerfil, CircleBorder, ImagenArrow,
 } from '../style';
 
 // eslint-disable-next-line react/prop-types
@@ -33,17 +35,50 @@ function leftIconMenu({ navigation }) {
   );
 }
 
+function ViewProfile() {
+  // eslint-disable-next-line no-alert
+  alert('View Profile');
+}
+
 function rightIconMenu() {
   return (
-    <TouchRightMenu>
-      <Text>iconright</Text>
+    <TouchRightMenu
+      onPress={() => {
+        ViewProfile();
+      }}
+    >
+      <BoxPerfil
+        style={{ width: '57%' }}
+      >
+        <CircleBorder
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          colors={['#ff2557', '#320d8e']}
+        >
+          <ImagenPerfil
+            source={{ uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' }}
+          />
+        </CircleBorder>
+      </BoxPerfil>
+      <BoxPerfil style={{ width: '30%' }}>
+        <ImagenArrow
+          // eslint-disable-next-line global-require
+          source={require('../../Images/arrow-down.png')}
+        />
+      </BoxPerfil>
     </TouchRightMenu>
   );
 }
 
-function centerIconMenu() {
+// eslint-disable-next-line react/prop-types
+function centerIconMenu({ navigation }) {
   return (
-    <TouchCenterMenu>
+    <TouchCenterMenu
+      onPress={() => {
+        // eslint-disable-next-line react/prop-types
+        navigation.navigate('ScreenHome');
+      }}
+    >
       <IconLogo
         source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }}
       />
@@ -56,7 +91,10 @@ export const homeStackNavigator = createStackNavigator({
     screen: ScreenHome,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
-      headerTitle: centerIconMenu(),
+      headerStyle: {
+        // backgroundColor: '#f4511e',
+      },
+      headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu(),
     }),
@@ -75,10 +113,34 @@ export const SignUpStackNavigator = createStackNavigator({
 
 export const viajesStackNavigator = createStackNavigator({
   Second: {
-    screen: ScreenViajes,
+    screen: ScreenTravels,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
-      headerTitle: centerIconMenu(),
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu(),
+    }),
+  },
+});
+
+export const myTravelsStackNavigator = createStackNavigator({
+  Third: {
+    screen: ScreenMyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu(),
+    }),
+  },
+});
+
+export const myVehicleStackNavigator = createStackNavigator({
+  Quarter: {
+    screen: ScreenMyVehicle,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu(),
     }),
@@ -87,5 +149,10 @@ export const viajesStackNavigator = createStackNavigator({
 
 // eslint-disable-next-line react/no-typos
 leftIconMenu.PropTypes = {
+  navigation: PropTypes.any.isRequired,
+};
+
+// eslint-disable-next-line react/no-typos
+centerIconMenu.PropTypes = {
   navigation: PropTypes.any.isRequired,
 };
