@@ -14,7 +14,7 @@ class GeneralInput extends React.Component {
 
   render() {
     const { press } = this.state;
-    const { title } = this.props;
+    const { title, holder } = this.props;
 
     const handleFocus = () => {
       this.setState({ press: true });
@@ -30,6 +30,7 @@ class GeneralInput extends React.Component {
         <Input
           onFocus={handleFocus}
           onBlur={handleBlur}
+          placeholder={holder != null ? holder : ''}
         />
       </MainWrapper>
     );
@@ -38,6 +39,7 @@ class GeneralInput extends React.Component {
 
 GeneralInput.propTypes = {
   title: PropTypes.string.isRequired,
+  holder: PropTypes.string.isRequired,
 };
 
 export default GeneralInput;
