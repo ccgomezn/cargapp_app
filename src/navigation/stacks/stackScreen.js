@@ -6,6 +6,7 @@ import ScreenHome from '../../containers/Home';
 import ScreenTravels from '../../containers/Travels';
 import ScreenMyTravels from '../../containers/MyTravels';
 import ScreenMyVehicle from '../../containers/Vehicle';
+import ScreenProfile from '../../containers/Profile';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
@@ -35,16 +36,14 @@ function leftIconMenu({ navigation }) {
   );
 }
 
-function ViewProfile() {
-  // eslint-disable-next-line no-alert
-  alert('View Profile');
-}
 
-function rightIconMenu() {
+// eslint-disable-next-line react/prop-types
+function rightIconMenu({ navigation }) {
   return (
     <TouchRightMenu
       onPress={() => {
-        ViewProfile();
+        // eslint-disable-next-line react/prop-types
+        navigation.navigate('ScreenProfile');
       }}
     >
       <BoxPerfil
@@ -96,7 +95,7 @@ export const homeStackNavigator = createStackNavigator({
       },
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu(),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });
@@ -118,7 +117,7 @@ export const viajesStackNavigator = createStackNavigator({
       headerTintColor: '#CCC',
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu(),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });
@@ -130,7 +129,7 @@ export const myTravelsStackNavigator = createStackNavigator({
       headerTintColor: '#CCC',
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu(),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });
@@ -142,7 +141,19 @@ export const myVehicleStackNavigator = createStackNavigator({
       headerTintColor: '#CCC',
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu(),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const ProfileStackNavigator = createStackNavigator({
+  Fifth: {
+    screen: ScreenProfile,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });
