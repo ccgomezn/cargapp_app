@@ -10,6 +10,7 @@ import { DrawIconMenu } from '../style';
 // StackMenu
 import {
   homeStackNavigator, viajesStackNavigator, myTravelsStackNavigator, myVehicleStackNavigator,
+  ProfileStackNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');
@@ -52,7 +53,7 @@ const DrawerScreen = createDrawerNavigator(
       },
     },
     ScreenProfile: {
-      screen: viajesStackNavigator,
+      screen: ProfileStackNavigator,
       navigationOptions: {
         drawerLabel: 'Mi perfil',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/pie-chart.svg', tint: tintColor }),

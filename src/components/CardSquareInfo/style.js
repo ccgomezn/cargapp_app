@@ -17,6 +17,7 @@ export const Icon = styled.Image`
     resize-mode: contain;
     height: 30px;
     width: 30px;
+    border-radius: 50px;
     background-color: #f3f3f3;
     `;
 
