@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image } from 'react-native';
 import PropTypes from 'prop-types';
 import {
   ContaintView,
@@ -7,6 +6,7 @@ import {
   CicleIcon,
   ContaintText,
   TextIcon,
+  DrawIcon,
 } from './style';
 
 function IconService(
@@ -21,12 +21,8 @@ function IconService(
       <ContaintIcon onPress={press}>
         <CicleIcon>
           { icon != null ? (
-            // eslint-disable-next-line react/jsx-no-undef
-            <Image
+            <DrawIcon
               source={icon}
-              style={{
-                flex: 1, width: null, height: null, resizeMode: 'contain',
-              }}
             />
           ) : null }
         </CicleIcon>

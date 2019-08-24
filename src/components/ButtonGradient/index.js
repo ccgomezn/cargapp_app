@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Linear, Text, Touch } from './style';
+import LinearGradient from 'react-native-linear-gradient';
+import { Text, Touch } from './style';
 
 function ButtonGradient({ content, press }) {
   return (
     <Touch onPress={press}>
-      <Linear
+      <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 3 }}
         colors={['#007aff', '#00ff77']}
       >
         <Text>{content}</Text>
-      </Linear>
+      </LinearGradient>
     </Touch>
   );
 }
