@@ -1,13 +1,8 @@
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const Touch = styled.TouchableOpacity`
   width: 100%;
   border-radius: 2px;
-`;
-
-export const Linear = styled(LinearGradient)`
-  flex: 1;
 `;
 
 export const Text = styled.Text`

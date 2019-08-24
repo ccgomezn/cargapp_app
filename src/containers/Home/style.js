@@ -9,6 +9,7 @@ export const MainWrapper = styled.ScrollView`
 
 export const ContentView = styled.View`
   width: 100%;
+  flex-direction: row;
   justify-content: center;
   flex-direction: row;
   height: auto;
