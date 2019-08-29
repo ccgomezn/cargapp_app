@@ -131,26 +131,27 @@ export const ContentButton = styled.View`
 // estilos Modal
 export const MainWrapperDialog = styled.View`
   width: 90%;
-  height: 62%;
+  height: 55%;
   padding: 5%;
+  padding-bottom: 0px;
   border-radius: 10px;
   align-self: center
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background-color: white;
 `;
 
 export const ScrollDialog = styled.ScrollView`
   width: 100%;
-  height: 100%;
+  height: auto;
 `;
 
 export const ContentDialog = styled.View`
   width: 100%;
   height: 100%;
+  justify-content: center;
   align-self: center;
   align-items: center;
-  justify-content: space-between;
   font-family: Roboto;
 `;
 
@@ -177,7 +178,7 @@ export const TouchModal = styled.TouchableOpacity`
   align-self: flex-end;
   bottom: 0;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 `;
 
 export const TextWhite = styled.Text`
