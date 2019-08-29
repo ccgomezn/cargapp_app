@@ -9,7 +9,8 @@ import { DrawIconMenu } from '../style';
 
 // StackMenu
 import {
-  homeStackNavigator, viajesStackNavigator, myTravelsStackNavigator, myVehicleStackNavigator,
+  homeStackNavigator, viajesStackNavigator, myTravelsStackNavigator,
+  myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
   ProfileStackNavigator,
 } from './stackScreen';
 
@@ -67,14 +68,14 @@ const DrawerScreen = createDrawerNavigator(
       },
     },
     ScreenPoints: {
-      screen: viajesStackNavigator,
+      screen: PointsStackNavigator,
       navigationOptions: {
-        drawerLabel: 'Mis puntos',
+        drawerLabel: 'Mis retos',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/pie-chart.svg', tint: tintColor }),
       },
     },
     ScreenStats: {
-      screen: viajesStackNavigator,
+      screen: AnalyticsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Analíticas',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/pie-chart.svg', tint: tintColor }),

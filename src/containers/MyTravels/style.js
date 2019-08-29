@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
 
+export const MainView = styled.View`
+`;
+
 export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
@@ -57,4 +60,64 @@ export const TextFilter = styled.Text`
   font-weight: 500;
   letter-spacing: -0.35px;
   color: #0068ff;
+`;
+
+// style Swipe Filter
+export const WrapperSwipe = styled.View`
+  display: flex;
+  height: auto;
+  background-color: #f5f6fa;
+  padding: 5%;
+`;
+
+export const RowContent = styled.View`
+  width: 49%;
+  height: auto;
+`;
+
+export const ContentSlider = styled.View`
+  flex: 1;
+  flex-direction: row;
+  padding-bottom: 10;
+  justify-content: center;
+`;
+
+export const ContentForm = styled.View`
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  height: auto;
+  margin-bottom: 15px;
+`;
+
+export const ContentRange = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  height: auto;
+  padding-bottom: 10px;
+`;
+
+export const RowInput = styled.View`
+  width: 35%;
+  height: auto;
+`;
+
+export const WrapperInputs = styled.View`
+  width: 100%;
+  height: auto;
+`;
+
+export const WrapperButtonsBottom = styled.View`
+  width: 100%;
+  flex-direction: row;
+  height: auto;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+`;
+
+export const WrapperButtonGradient = styled.TouchableOpacity`
+  width: 45%;
+  height: 100%;
+  margin-left: 3%;
 `;

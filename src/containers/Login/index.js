@@ -65,7 +65,7 @@ class Registration extends Component {
             <ButtonWhite press={() => navigate('SignUp')} content="Registrarse" />
           </WrapperButtonGradient>
           <WrapperButtonGradient>
-            <ButtonGradient press={() => this.modalChange()} content="Ingresar" />
+            <ButtonGradient press={() => navigate('ScreenHome')} content="Ingresar" />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
         <PopUpNotification

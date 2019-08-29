@@ -12,10 +12,11 @@
   },
   "rnpm": {
     "assets": [
-    "./assets/fonts/"
-      ]
+      "./assets/fonts/"
+    ]
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "native-base": "^2.12.2",
     "prop-types": "^15.7.2",
     "react": "16.8.6",
@@ -30,6 +31,7 @@
     "react-native-svg": "^9.5.3",
     "react-native-svg-uri": "^1.2.3",
     "react-navigation": "^3.11.1",
+    "rn-swipeable-panel": "^1.0.14",
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
