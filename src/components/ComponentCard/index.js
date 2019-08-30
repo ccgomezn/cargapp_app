@@ -5,10 +5,13 @@ import {
 } from './style';
 
 function Card({
-  mainText, subText, background, colorText, borderColorProp, icon,
+  mainText, subText, background, colorText, borderColorProp, icon, press,
 }) {
   return (
-    <MainWrapper style={{ backgroundColor: background, borderColor: borderColorProp }}>
+    <MainWrapper
+      onPress={press}
+      style={{ backgroundColor: background, borderColor: borderColorProp }}
+    >
       <WrapperLogo>
         <Logo source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg' }} />
       </WrapperLogo>
@@ -42,6 +45,7 @@ Card.propTypes = {
   colorText: PropTypes.string.isRequired,
   borderColorProp: PropTypes.string.isRequired,
   icon: PropTypes.bool.isRequired,
+  press: PropTypes.func.isRequired,
 };
 
 export default Card;
