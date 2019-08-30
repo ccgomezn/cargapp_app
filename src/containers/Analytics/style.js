@@ -39,3 +39,7 @@ export const TextBlack = styled.Text`
   letter-spacing: -0.3px;
   color: #010935;
 `;
+
+export const RowContent = styled.View`
+  width: 49%;
+`;
