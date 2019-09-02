@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, Text, lineActive, InputPk, ItemPk,
+  MainWrapper, Text, lineActive, InputPk,
 } from './style';
 
 class InputPicker extends React.Component {
@@ -31,7 +31,6 @@ class InputPicker extends React.Component {
           selectedValue={itemSel}
           onValueChange={item => this.setState({ itemSel: item })}
           mode="dropdown"
-          itemStyle={ItemPk}
         >
           <InputPk.Item label="- Seleccionar -" value="0" />
           {
