@@ -68,11 +68,6 @@ export default class Profile extends Component {
         </ContentInitial>
 
         <SecondWrapper>
-          <ContentView>
-            <ContentBlock>
-              <TextBlack>Perfil</TextBlack>
-            </ContentBlock>
-          </ContentView>
 
           <ContentView>
             <RowContent style={{ marginRight: '2%' }}>
@@ -112,7 +107,6 @@ export default class Profile extends Component {
               <ButtonGradient content="Cuenta Bancaria" press={() => this.onPressButtonAccount()} />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
-
         </SecondWrapper>
 
         <EmptyDialog
@@ -127,7 +121,7 @@ export default class Profile extends Component {
                   <WrapperInputs>
                     <Input title="Cuenta bancaria" holder="Ingrese tu número de cuenta" />
                     <InputPicker title="Tipo de cuenta" listdata={itemsAccount} />
-                    <InputPicker title="Banco" />
+                    <InputPicker title="Banco" listdata={itemsAccount} />
                   </WrapperInputs>
                 </ContentForm>
                 <TouchModal>
@@ -144,7 +138,7 @@ export default class Profile extends Component {
         <EmptyDialog
           visible={modalPassword}
         >
-          <MainWrapperDialog style={{ height: '62%' }}>
+          <MainWrapperDialog style={{ height: '56%' }}>
             <ScrollDialog>
               <ContentDialog>
                 <TitleBlack>Cambiar tu contraseña</TitleBlack>

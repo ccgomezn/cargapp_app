@@ -7,6 +7,8 @@ import ScreenTravels from '../../containers/Travels';
 import ScreenMyTravels from '../../containers/MyTravels';
 import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
+import ScreenPoints from '../../containers/Points';
+import ScreenAnalytics from '../../containers/Analytics';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
@@ -149,6 +151,30 @@ export const myVehicleStackNavigator = createStackNavigator({
 export const ProfileStackNavigator = createStackNavigator({
   Fifth: {
     screen: ScreenProfile,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const PointsStackNavigator = createStackNavigator({
+  Sixth: {
+    screen: ScreenPoints,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const AnalyticsStackNavigator = createStackNavigator({
+  Seventh: {
+    screen: ScreenAnalytics,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerTitle: centerIconMenu({ navigation }),

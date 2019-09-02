@@ -1,5 +1,5 @@
 import React from 'react';
-import Dialog, { ScaleAnimation } from 'react-native-popup-dialog';
+import Dialog, { SlideAnimation } from 'react-native-popup-dialog';
 import PropTypes from 'prop-types';
 import { MainWrapperDialog } from './style';
 
@@ -7,8 +7,10 @@ const EmptyDialog = ({ visible, children }) => (
   <Dialog
     visible={visible}
     dialogStyle={MainWrapperDialog}
-    dialogAnimation={new ScaleAnimation()}
-    overlayOpacity={0.6}
+    dialogAnimation={new SlideAnimation({
+      slideFrom: 'bottom',
+    })}
+    overlayOpacity={0.8}
   >
     {children}
   </Dialog>
