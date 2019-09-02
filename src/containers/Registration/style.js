@@ -145,3 +145,14 @@ export const WrapperSocialButtons = styled.View`
   justify-content: space-around;
   margin-vertical: 2%;
 `;
+
+export const WrapperDocument = styled.View`
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+`;
+
+export const RowDocument = styled.View`
+  width: 100%;
+  margin-top: 10px;
+`;

@@ -2,11 +2,11 @@ import React from 'react';
 import Dialog, { ScaleAnimation } from 'react-native-popup-dialog';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, TextBlack, Wrapper, TextGray, Svg, SvgUri, TouchModal, TextWhite,
+  MainWrapper, TextBlack, Wrapper, TextGray, Svg, SvgUri, TouchModal, TextWhite, WrapperText,
 } from './Style';
 
 const PopUpDialog = ({
-  visible, onTouchOutside, textGray, textBlack, textButton,
+  visible, onTouchOutside, textGray, textBlack, textButton, pressButton,
 }) => (
   <Dialog
     onTouchOutside={onTouchOutside}
@@ -21,9 +21,11 @@ const PopUpDialog = ({
       <Svg source={require('../../icons/oval3x.png')}>
         <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/shape_like.svg' }} />
       </Svg>
-      <TextBlack>{textBlack}</TextBlack>
-      <TextGray>{textGray}</TextGray>
-      <TouchModal>
+      <WrapperText>
+        <TextBlack>{textBlack}</TextBlack>
+        <TextGray>{textGray}</TextGray>
+      </WrapperText>
+      <TouchModal onPress={pressButton}>
         <TextWhite>{textButton}</TextWhite>
       </TouchModal>
     </Wrapper>
@@ -36,6 +38,7 @@ PopUpDialog.propTypes = {
   textGray: PropTypes.string.isRequired,
   textBlack: PropTypes.string.isRequired,
   textButton: PropTypes.string.isRequired,
+  pressButton: PropTypes.string.isRequired,
 };
 
 export default PopUpDialog;

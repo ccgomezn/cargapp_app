@@ -8,12 +8,18 @@ export const MainWrapper = {
   backgroundColor: 'transparent',
 };
 
+export const WrapperText = styled.View`
+  align-items: center;
+  justify-content: center;
+  padding-top: 22%;
+`;
+
 export const TextBlack = styled.Text`
   font-family: Roboto;
   font-size: 16px;
   font-weight: bold;
   color: #010935;
-  padding-top: 25%;
+  text-align: center;
 `;
 
 export const TextGray = styled.Text`
@@ -35,8 +41,8 @@ export const Svg = styled.ImageBackground`
 `;
 
 export const SvgUri = styled(SvgU)`
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
 `;
 
 export const Wrapper = styled.View`
@@ -51,6 +57,7 @@ export const Wrapper = styled.View`
   padding-horizontal: 5%;
   padding-bottom: 7%;
   align-items: center;
+  align-self: center;
 `;
 
 export const TouchModal = styled.TouchableOpacity`
