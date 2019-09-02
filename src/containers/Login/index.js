@@ -12,9 +12,7 @@ import {
   WrapperButtonsBottom,
   TextTerms,
   WrapperButtonGradient,
-  WrapperSocialButtons,
 } from '../Registration/style';
-import ButtonSocial from '../../components/ButtonSocial';
 import PopUpNotification from '../../components/PopUpNotifications';
 
 class Registration extends Component {
@@ -49,20 +47,19 @@ class Registration extends Component {
           </TextBlue>
         </TextBlack>
         <TextGray>El mejor aliado para su operación</TextGray>
-        <WrapperSocialButtons>
+        {/* <WrapperSocialButtons>
           <ButtonSocial colorBackground="#4285f4" colorLogo="white" text="Ingresar con Google" />
         </WrapperSocialButtons>
         <WrapperSocialButtons>
-          <ButtonSocial colorBackground="#4465b8" colorLogo="#4465b8" text="Ingresar con Facebook" />
-        </WrapperSocialButtons>
+         <ButtonSocial colorBackground="#4465b8" colorLogo="#4465b8" text="Ingresar con Facebook" />
+        </WrapperSocialButtons> */}
         <WrapperInputs>
-          <Input title="Correo electrónico" />
-          <Input title="Contraseña" />
+          <Input title="Número de celular" holder="300000000" />
         </WrapperInputs>
         <WrapperButtonsBottom>
           {/* eslint-disable-next-line react/prop-types */}
           <WrapperButtonGradient>
-            <ButtonWhite press={() => navigate('SignUp')} content="Registrarse" />
+            <ButtonWhite press={() => navigate('Vehicle')} content="Registrarse" />
           </WrapperButtonGradient>
           <WrapperButtonGradient>
             <ButtonGradient press={() => navigate('ScreenHome')} content="Ingresar" />
