@@ -61,12 +61,16 @@ export default class Travels extends Component {
               <CardSquareInfo
                 value="$850"
                 description="Ganaste en el último viaje."
+                // eslint-disable-next-line global-require
+                icon={require('../../icons/check-gradient.png')}
               />
             </RowContent>
             <RowContent>
               <CardSquareInfo
                 value="158.3 Km"
                 description="Distancia de tu último viaje."
+                // eslint-disable-next-line global-require
+                icon={require('../../icons/map-gradient.png')}
               />
             </RowContent>
           </ContentView>

@@ -22,7 +22,7 @@ function IconService(
         <CicleIcon>
           { icon != null ? (
             <DrawIcon
-              source={icon}
+              source={{ uri: icon }}
             />
           ) : null }
         </CicleIcon>
@@ -37,7 +37,7 @@ function IconService(
 IconService.propTypes = {
   text: PropTypes.string.isRequired,
   press: PropTypes.func.isRequired,
-  icon: PropTypes.bool.isRequired,
+  icon: PropTypes.string.isRequired,
 };
 
 export default IconService;

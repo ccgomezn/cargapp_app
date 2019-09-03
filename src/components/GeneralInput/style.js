@@ -2,15 +2,12 @@ import styled from 'styled-components/native';
 
 export const MainWrapper = styled.View`
   width: 100%;
-  height: 55px; 
+  height: 55px;
   border-radius: 2px;
   border-left-width: 1.2;
   border-left-color: #ecf0f1;
   border-right-color: #ecf0f1;
-  border-right-color: #ecf0f1;
   border-top-color: #ecf0f1;
-  border-top-color: #ecf0f1;
-  border-bottom-color: #ecf0f1;
   border-bottom-color: #ecf0f1;
   border-width: 1;
   background-color: #ffffff;
@@ -19,6 +16,11 @@ export const MainWrapper = styled.View`
   justify-content: space-between;
   bottom: 0;
 `;
+
+export const disabledInput = {
+  backgroundColor: '#ecf0f1',
+  borderBottomColor: '#fff',
+};
 
 export const Text = styled.Text` 
   opacity: 0.5;

@@ -14,11 +14,17 @@ export const WrapperHeader = styled.View`
 `;
 
 export const Icon = styled.Image`
+  height: 30px;
+  width: 30px;
+  resize-mode: contain;
+`;
+
+export const IconDefault = styled.Image`
   resize-mode: contain;
   height: 30px;
   width: 30px;
   border-radius: 50px;
-  background-color: #f3f3f3;
+  background-color: #d5e9fa;
 `;
 
 export const TextPrice = styled.Text`

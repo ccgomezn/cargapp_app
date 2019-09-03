@@ -65,28 +65,23 @@ export default class Home extends Component {
               showsHorizontalScrollIndicator={false}
             >
               <IconService
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/icon-premios.svg')}
+                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
                 text="Premios"
               />
               <IconService
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/icon-lubricant.svg')}
+                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
                 text="Lubricantes"
               />
               <IconService
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/icon-premios.svg')}
+                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
                 text="Combustible"
               />
               <IconService
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/icon-soat.svg')}
+                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
                 text="SOAT"
               />
               <IconService
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/icon-premios.svg')}
+                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
                 text="Otros"
               />
             </ScrollView>
