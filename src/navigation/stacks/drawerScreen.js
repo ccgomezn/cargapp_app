@@ -37,7 +37,9 @@ const CustomDrawerContentComponent = props => (
 function DrawerIcon({ urlicon, tint }) {
   return (
     <DrawIconMenu
-      fill={tint}
+      // fill={tint}
+      style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
+      fillAll
       source={{ uri: urlicon }}
     />
   );
@@ -49,7 +51,7 @@ const DrawerScreen = createDrawerNavigator(
       screen: homeStackNavigator,
       navigationOptions: {
         drawerLabel: 'Inicio',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/home.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-home.svg', tint: tintColor }),
         headerTintColor: 'red',
       },
     },
@@ -57,56 +59,56 @@ const DrawerScreen = createDrawerNavigator(
       screen: ProfileStackNavigator,
       navigationOptions: {
         drawerLabel: 'Mi perfil',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/pie-chart.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
       },
     },
     ScreenVehicule: {
       screen: myVehicleStackNavigator,
       navigationOptions: {
         drawerLabel: 'Mi Vehículo',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/shape.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-vehicle.svg', tint: tintColor }),
       },
     },
     ScreenPoints: {
       screen: PointsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Mis retos',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/pie-chart.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-points.svg', tint: tintColor }),
       },
     },
     ScreenStats: {
       screen: AnalyticsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Analíticas',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/pie-chart.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
       },
     },
     ScreenTravels: {
       screen: viajesStackNavigator,
       navigationOptions: {
         drawerLabel: 'Viajes',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/shape.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-travels.svg', tint: tintColor }),
       },
     },
     ScreenMyTravels: {
       screen: myTravelsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Mis viajes',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/map.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-mytravels.svg', tint: tintColor }),
       },
     },
     ScreenChat: {
       screen: viajesStackNavigator,
       navigationOptions: {
         drawerLabel: 'Chat',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/mail.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
       },
     },
     ScreenConfig: {
       screen: viajesStackNavigator,
       navigationOptions: {
         drawerLabel: 'Configuraciones',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/settings.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-settings.svg', tint: tintColor }),
       },
     },
   }, {
