@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, WrapperHeader, Icon, TextPrice, TextDescription,
+  MainWrapper, WrapperHeader, Icon, IconDefault, TextPrice, TextDescription,
 } from './style';
 
-function CardSquareInfo({ value, description }) {
+function CardSquareInfo({ value, description, icon }) {
   return (
     <MainWrapper>
       <WrapperHeader>
-        <Icon />
+        { icon != null ? (
+          <Icon
+            source={icon}
+          />
+        ) : <IconDefault /> }
         <TextPrice>{value}</TextPrice>
       </WrapperHeader>
       <TextDescription>{description}</TextDescription>
@@ -19,6 +23,7 @@ function CardSquareInfo({ value, description }) {
 CardSquareInfo.propTypes = {
   value: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
 };
 
 export default CardSquareInfo;
