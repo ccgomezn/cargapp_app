@@ -37,12 +37,16 @@ export default class Analytics extends Component {
             <CardSquareInfo
               value="1.233"
               description="Viajes Realizados"
+              // eslint-disable-next-line global-require
+              icon={require('../../icons/check-gradient.png')}
             />
           </RowContent>
           <RowContent>
             <CardSquareInfo
               value="2.500"
               description="KM recorridos"
+              // eslint-disable-next-line global-require
+              icon={require('../../icons/map-gradient.png')}
             />
           </RowContent>
         </ContentView>

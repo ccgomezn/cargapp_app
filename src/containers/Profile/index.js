@@ -74,11 +74,15 @@ export default class Profile extends Component {
               <CardSquareInfo
                 value="1.233"
                 description="Viajes Realizados"
+                // eslint-disable-next-line global-require
+                icon={require('../../icons/check-gradient.png')}
               />
             </RowContent>
             <RowContent>
               <CardSquareInfo
                 value="9,5/10"
+                // eslint-disable-next-line global-require
+                icon={require('../../icons/map-gradient.png')}
                 description="Calificación"
               />
             </RowContent>
@@ -93,8 +97,8 @@ export default class Profile extends Component {
           <ContentForm>
             <WrapperInputs>
               <Input title="Correo electrónico" />
-              <Input title="Nombre" holder="Ingrese" />
-              <Input title="Apellido" />
+              <Input title="Nombre" value="Andrés" editable={false} />
+              <Input title="Apellido" value="Rodriguez" editable={false} />
               <Input title="Cedula" holder="Ingrese número de documento" />
             </WrapperInputs>
           </ContentForm>
