@@ -23,7 +23,7 @@ export default class Navigation extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'never', bottom: 'never' }}>
+      <SafeAreaView forceInset={{ top: 'always' }} style={{ flex: 1 }}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <Navigator />
       </SafeAreaView>
