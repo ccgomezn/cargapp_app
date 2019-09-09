@@ -67,12 +67,12 @@ export default class Vehicle extends Component {
 
         <ContentForm>
           <WrapperInputs>
-            <Input title="Placa del vehículo" />
+            <Input title="Placa del vehículo" maxLength={6} />
             <Input title="Marca" holder="Ingrese la marca" />
-            <Input title="Año" />
+            <Input title="Año" type="numeric" maxLength={4} />
             <InputPicker title="Tipo de remolque" listdata={itemsTipo} />
             <Input title="Capacidad" holder="Ingrese la capacidad" />
-            <InputPicker title="Categoría" listdata={itemsCat} defaultSelect="cat2" />
+            <InputPicker title="Categoría" listdata={itemsCat} defaultSelect="cat2" editable={false} />
           </WrapperInputs>
         </ContentForm>
 

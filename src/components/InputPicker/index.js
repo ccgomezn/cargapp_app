@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, Text, lineActive, InputPk,
+  MainWrapper, Text, lineActive, InputPk, disabledInput,
 } from './style';
 
 class InputPicker extends React.Component {
@@ -22,15 +22,16 @@ class InputPicker extends React.Component {
 
   render() {
     const { press, itemSel } = this.state;
-    const { title, listdata } = this.props;
+    const { title, listdata, editable } = this.props;
 
     return (
-      <MainWrapper style={press ? lineActive : null}>
+      <MainWrapper style={[press ? lineActive : null, editable === false ? disabledInput : null]}>
         <Text>{title}</Text>
         <InputPk
           selectedValue={itemSel}
           onValueChange={item => this.setState({ itemSel: item })}
           mode="dropdown"
+          enabled={editable != null ? editable : true}
         >
           <InputPk.Item label="- Seleccionar -" value="0" />
           {
@@ -52,6 +53,7 @@ InputPicker.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   listdata: PropTypes.array.isRequired,
   defaultSelect: PropTypes.string.isRequired,
+  editable: PropTypes.bool.isRequired,
 };
 
 export default InputPicker;

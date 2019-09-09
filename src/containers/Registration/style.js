@@ -156,3 +156,105 @@ export const RowDocument = styled.View`
   width: 100%;
   margin-top: 10px;
 `;
+
+// estilos Modal
+export const MainWrapperDialog = styled.View`
+  width: 90%;
+  height: 55%;
+  padding: 5%;
+  padding-bottom: 0px;
+  border-radius: 10px;
+  align-self: center
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+`;
+
+export const ContentDialog = styled.View`
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  font-family: Roboto;
+`;
+
+export const WrapperText = styled.View`
+  align-items: center;
+  justify-content: center;
+  padding-top: 20%;
+`;
+
+export const TitleBlack = styled.Text`
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: bold;
+  color: #010935;
+  padding-bottom: 3%;
+`;
+
+export const SubtGray = styled.Text`
+  opacity: 0.5;
+  font-family: Roboto;
+  font-size: 14px;
+  color: #010935;
+  padding-bottom: 10px;
+  text-align: center;
+`;
+
+export const TouchModal = styled.TouchableOpacity`
+  min-width: 100%;
+  width: 100%;
+  height: auto;
+  align-self: flex-end;
+  bottom: 0;
+  border-radius: 10px;
+  margin-bottom: 12px;
+`;
+
+export const TextWhite = styled.Text`
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.35px;
+  text-align: center;
+  color: white;
+  align-self: center;
+  padding-vertical: 18px;
+  width:100%;
+  background-color: #007aff;
+`;
+
+export const ScrollDialog = styled.ScrollView`
+  width: 100%;
+  height: auto;
+`;
+
+export const IconModal = styled.View`
+  height: 66px;
+  width: 66px;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  position: absolute;
+  top: 24%;
+  z-index: 10;
+  padding: 5px;
+`;
+
+export const SvgModal = styled.ImageBackground`
+  height: 65px;
+  width: 65px;
+  resize-mode: contain;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  resize-mode: stretch;
+`;
+
+export const SvgUriModal = styled(SvgUriN)`
+  height: 30px;
+  width: 30px;
+  align-items: center;
+  justify-content: center;
+`;

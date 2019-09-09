@@ -146,6 +146,7 @@ export default class MyTravels extends Component {
             textButton="Entendido"
             textGray="no puedes ver la oferta"
             onTouchOutside={() => this.onPressButtonPopup()}
+            pressButton={() => this.onPressButtonPopup()}
           />
         </MainWrapper>
         <Swipeable

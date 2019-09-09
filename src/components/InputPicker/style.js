@@ -38,6 +38,11 @@ export const InputPk = styled(Picker)`
   top: -6;
 `;
 
+export const disabledInput = {
+  backgroundColor: '#ecf0f1',
+  borderBottomColor: '#fff',
+};
+
 export const lineActive = {
   borderLeftWidth: 1.5,
   borderLeftColor: 'purple',

@@ -17,3 +17,7 @@ export const Text = styled.Text`
   color: #0068ff;
   padding: 15px;
 `;
+
+export const StyleBorder = {
+  borderWidth: 0,
+};

@@ -1,6 +1,6 @@
 export const MainWrapper = {
   width: '75%',
-  height: '48%',
+  height: '50%',
   justifyContent: 'flex-end',
   backgroundColor: 'transparent',
 };
