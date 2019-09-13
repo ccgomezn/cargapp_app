@@ -96,16 +96,16 @@ export default class Profile extends Component {
 
           <ContentForm>
             <WrapperInputs>
-              <Input title="Correo electrónico" />
+              <Input title="Correo electrónico" type="email-address" />
               <Input title="Nombre" value="Andrés" editable={false} />
               <Input title="Apellido" value="Rodriguez" editable={false} />
-              <Input title="Cedula" holder="Ingrese número de documento" />
+              <Input title="Cedula" holder="Ingrese número de documento" type="numeric" />
             </WrapperInputs>
           </ContentForm>
 
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
-              <ButtonWhite content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
+              <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
             </WrapperButtonGradient>
             <WrapperButtonGradient>
               <ButtonGradient content="Cuenta Bancaria" press={() => this.onPressButtonAccount()} />
@@ -123,7 +123,7 @@ export default class Profile extends Component {
                 <TextGray>Registra o modifica tu cuenta bancaria.</TextGray>
                 <ContentForm>
                   <WrapperInputs>
-                    <Input title="Cuenta bancaria" holder="Ingrese tu número de cuenta" />
+                    <Input title="Cuenta bancaria" holder="Ingrese tu número de cuenta" type="phone-pad" />
                     <InputPicker title="Tipo de cuenta" listdata={itemsAccount} />
                     <InputPicker title="Banco" listdata={itemsAccount} />
                   </WrapperInputs>
@@ -152,9 +152,9 @@ export default class Profile extends Component {
                 </TextGray>
                 <ContentForm>
                   <WrapperInputs>
-                    <Input title="Clave" holder="Ingrese la contraseña anterior" />
-                    <Input title="Nueva clave" holder="Ingrese la contraseña nueva" />
-                    <Input title="Confirmar clave" />
+                    <Input title="Clave anterior" holder="Ingrese la contraseña anterior" isPassword />
+                    <Input title="Nueva clave" holder="Ingrese la contraseña nueva" isPassword />
+                    <Input title="Confirmar clave" isPassword />
                   </WrapperInputs>
                 </ContentForm>
                 <TouchModal>

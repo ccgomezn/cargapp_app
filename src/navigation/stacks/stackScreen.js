@@ -18,7 +18,7 @@ import ScreenDocuments from '../../containers/Registration/Documents';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
-  BoxPerfil, ImagenPerfil, CircleBorder, ImagenArrow,
+  BoxPerfil, ImagenPerfil, CircleBorder, ImagenArrow, HeaderStyle,
 } from '../style';
 
 // eslint-disable-next-line react/prop-types
@@ -92,9 +92,7 @@ export const homeStackNavigator = createStackNavigator({
     screen: ScreenHome,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
-      headerStyle: {
-        // backgroundColor: '#f4511e',
-      },
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -117,6 +115,7 @@ export const viajesStackNavigator = createStackNavigator({
     screen: ScreenTravels,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -129,6 +128,7 @@ export const myTravelsStackNavigator = createStackNavigator({
     screen: ScreenMyTravels,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -141,6 +141,7 @@ export const myVehicleStackNavigator = createStackNavigator({
     screen: ScreenMyVehicle,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -153,6 +154,7 @@ export const ProfileStackNavigator = createStackNavigator({
     screen: ScreenProfile,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -165,6 +167,7 @@ export const PointsStackNavigator = createStackNavigator({
     screen: ScreenPoints,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -177,6 +180,7 @@ export const AnalyticsStackNavigator = createStackNavigator({
     screen: ScreenAnalytics,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
