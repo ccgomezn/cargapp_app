@@ -30,8 +30,8 @@ export const TextGray = styled.Text`
 `;
 
 export const Svg = styled.ImageBackground`
-  height: 95px;
-  width: 90px;
+  height: 85px;
+  width: 80px;
   align-items: center;
   justify-content: center;
   position: absolute;
@@ -41,8 +41,10 @@ export const Svg = styled.ImageBackground`
 `;
 
 export const SvgUri = styled(SvgU)`
-  height: 30px;
-  width: 30px;
+  height: 38px;
+  width: 38px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Wrapper = styled.View`

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import SvgUriN from 'react-native-svg-uri';
+import { Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 export const DrawIconMenu = styled(SvgUriN)`
@@ -24,16 +25,14 @@ export const IconLogo = styled.Image`
 
 export const TouchLeftMenu = styled.TouchableOpacity`
   width: 50px;
-  height: 50px;
+  height: 42px;
   border-right-width: 2px;
   border-right-color: #f5f6fa;
-  background-color: white;
 `;
 
 export const TouchCenterMenu = styled.TouchableOpacity`
   flex: 1;
   text-align: center;
-  background-color: white;
 `;
 
 export const TouchRightMenu = styled.TouchableOpacity`
@@ -41,7 +40,6 @@ export const TouchRightMenu = styled.TouchableOpacity`
   flex-direction: row;
   width: 62px;
   height: 42px;
-  background-color: white;
 `;
 
 export const BoxPerfil = styled.View`
@@ -69,3 +67,9 @@ export const ImagenArrow = styled.Image`
   height: 10px;
   resize-mode: contain;
 `;
+
+export const HeaderStyle = {
+  backgroundColor: '#FFF', // '#010935',
+  height: Platform.OS === 'ios' ? 45 : 40,
+  marginTop: Platform.OS === 'ios' ? -38 : 0,
+};
