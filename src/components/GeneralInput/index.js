@@ -15,7 +15,7 @@ class GeneralInput extends React.Component {
   render() {
     const { press } = this.state;
     const {
-      title, holder, value, editable, type, isPassword, maxLength,
+      title, holder, value, editable, type, isPassword, maxLength, onChangeText,
     } = this.props;
 
     const handleFocus = () => {
@@ -38,6 +38,7 @@ class GeneralInput extends React.Component {
           editable={editable != null ? editable : true}
           secureTextEntry={isPassword != null ? isPassword : false}
           maxLength={maxLength != null ? maxLength : null}
+          onChangeText={text => onChangeText(text)}
         />
       </MainWrapper>
     );
@@ -52,6 +53,7 @@ GeneralInput.propTypes = {
   type: PropTypes.string.isRequired,
   isPassword: PropTypes.bool.isRequired,
   maxLength: PropTypes.number.isRequired,
+  onChangeText: PropTypes.func.isRequired,
 };
 
 export default GeneralInput;

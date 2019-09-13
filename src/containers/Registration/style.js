@@ -50,7 +50,7 @@ export const WrapperButtons = styled.View`
   margin-vertical: 5%;
 `;
 
-export const WrapperButtonsBottom = styled.TouchableOpacity`
+export const WrapperButtonsBottom = styled.View`
   width: 100%;
   flex-direction: row;
   height: auto;

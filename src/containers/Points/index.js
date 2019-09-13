@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 import {
-  MainWrapper, ContentView, TextBlack, ContentBlock,
+// MainWrapper, ContentView, TextBlack, ContentBlock,
 } from './style';
 
 export default class Points extends Component {
@@ -13,19 +13,10 @@ export default class Points extends Component {
 
   render() {
     return (
-      <MainWrapper>
-        <ContentView>
-          <ContentBlock>
-            <TextBlack>Mis Puntos</TextBlack>
-          </ContentBlock>
-        </ContentView>
-
-        <ContentView>
-          <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-            <TextBlack>.</TextBlack>
-          </View>
-        </ContentView>
-      </MainWrapper>
+      <WebView
+        source={{ uri: 'https://previews.customer.envatousercontent.com/files/257305718/index.html' }}
+        style={{ marginTop: 0, height: '100%', with: '100%' }}
+      />
     );
   }
 }

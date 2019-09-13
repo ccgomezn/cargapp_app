@@ -165,14 +165,17 @@ export const ProfileStackNavigator = createStackNavigator({
 export const PointsStackNavigator = createStackNavigator({
   Sixth: {
     screen: ScreenPoints,
-    navigationOptions: ({ navigation }) => ({
+    navigationOptions: () => ({
       headerTintColor: '#CCC',
-      headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu({ navigation }),
+      // headerStyle: HeaderStyle,
+      // headerTitle: centerIconMenu({ navigation }),
+      // headerLeft: leftIconMenu({ navigation }),
+      // headerRight: rightIconMenu({ navigation }),
     }),
   },
+},
+{
+  headerMode: 'none',
 });
 
 export const AnalyticsStackNavigator = createStackNavigator({
