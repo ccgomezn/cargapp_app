@@ -33,6 +33,8 @@ target 'Cargapp' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'CargappTests' do
     inherit! :search_paths
     # Pods for testing

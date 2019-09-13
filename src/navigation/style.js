@@ -70,6 +70,6 @@ export const ImagenArrow = styled.Image`
 
 export const HeaderStyle = {
   backgroundColor: '#FFF', // '#010935',
-  height: Platform.OS === 'ios' ? 45 : 40,
+  height: Platform.OS === 'ios' ? 45 : 45,
   marginTop: Platform.OS === 'ios' ? -38 : 0,
 };
