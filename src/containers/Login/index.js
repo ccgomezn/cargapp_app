@@ -1,9 +1,14 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import InputCode from 'react-native-input-code';
+import { connect } from 'react-redux';
+
 import Input from '../../components/GeneralInput';
 import ButtonWhite from '../../components/ButtonWhite';
 import ButtonGradient from '../../components/ButtonGradient';
 import Dialog from '../../components/EmptyDialog';
+
+import { login } from '../../redux/actions/user';
 
 import {
   MainWrapper,
@@ -26,27 +31,45 @@ import {
   SvgUriModal,
   IconModal,
 } from '../Registration/style';
-import PopUpNotification from '../../components/PopUpNotifications';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
-      modal: false,
+      datausername: '',
+      datapin: '',
+      dataphone: '',
       modalPin: false,
     };
+  }
+
+  componentDidMount() {
+  }
+
+  onLoginPress() {
+    // eslint-disable-next-line react/destructuring-assignment
+    const { datausername, dataphone, datapin } = this.state;
+    // eslint-disable-next-line no-shadow
+    const { login } = this.props;
+    login({ username: datausername, phone: dataphone, pin: datapin });
   }
 
   onPressPin() {
     this.setState({ modalPin: true });
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  onPressPersist() {
+    this.setState({ datausername: 'brianJav' });
+    this.onLoginPress();
+  }
+
   onFullFill(code) {
-    // eslint-disable-next-line no-alert
-    alert(code);
-    // this.setState({ inputCode: code });
+    this.setState({ datapin: code });
     // function validar pin
+  }
+
+  onChangePhone(phone) {
+    this.setState({ dataphone: phone });
   }
 
   OnHideModal() {
@@ -61,22 +84,16 @@ class Registration extends Component {
     }, 1000);
   }
 
-  modalChange() {
-    const { modal } = this.state;
-    this.setState({ modal: !modal });
-    setTimeout(() => {
-      this.setState({ modal: false });
-    }, 3000);
-  }
-
-  /* eslint-disable global-require */
   render() {
     // eslint-disable-next-line react/destructuring-assignment,react/prop-types
     const { navigate } = this.props.navigation;
-    const { modal, modalPin } = this.state;
+    const {
+      modalPin, dataphone, datapin,
+    } = this.state;
+    const { user } = this.props;
     return (
       <MainWrapper>
-        <SvgUri source={require('../../Images/Logo3x.png')} />
+        <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
         <TextBlack>
                     Bienvenido al
           <TextBlue>
@@ -85,14 +102,8 @@ class Registration extends Component {
           </TextBlue>
         </TextBlack>
         <TextGray>El mejor aliado para su operación</TextGray>
-        {/* <WrapperSocialButtons>
-          <ButtonSocial colorBackground="#4285f4" colorLogo="white" text="Ingresar con Google" />
-        </WrapperSocialButtons>
-        <WrapperSocialButtons>
-         <ButtonSocial colorBackground="#4465b8" colorLogo="#4465b8" text="Ingresar con Facebook" />
-        </WrapperSocialButtons> */}
         <WrapperInputs>
-          <Input title="Número de celular" holder="300000000" type="numeric" />
+          <Input title="Número de celular" holder="300000000" onChangeText={text => this.onChangePhone(text)} type="numeric" />
         </WrapperInputs>
         <WrapperButtonsBottom>
           {/* eslint-disable-next-line react/prop-types */}
@@ -103,25 +114,51 @@ class Registration extends Component {
             <ButtonGradient press={() => this.onPressPin()} content="Ingresar" />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
-        <PopUpNotification
-          subText="Estamos a la espera de la aprovación del cliente."
-          mainText="En aprobación"
-          onTouchOutside={() => this.modalChange()}
-          visible={modal}
-        />
+        <WrapperButtonsBottom>
+          <WrapperButtonGradient>
+            <ButtonGradient press={() => this.onPressPersist()} content="persist" />
+          </WrapperButtonGradient>
+        </WrapperButtonsBottom>
+
+        <WrapperInputs>
+          <TextGray>
+            inputPhone
+            {dataphone}
+          </TextGray>
+          <TextGray>
+            inputPin
+            {datapin}
+          </TextGray>
+          <TextGray>
+            Logged
+            {user.isLogged.toString()}
+          </TextGray>
+          <TextBlue>
+            Username ?:
+            {user.info ? user.info.username : ''}
+          </TextBlue>
+          <TextBlue>
+            phone ?:
+            {user.info ? user.info.phone : ''}
+          </TextBlue>
+          <TextBlue>
+            pin ?:
+            {user.info ? user.info.pin : ''}
+          </TextBlue>
+        </WrapperInputs>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
         <Dialog
           visible={modalPin}
           opacity={0.5}
           animation="top"
         >
-          {/* eslint-disable-next-line global-require */}
           <IconModal>
+            {/* eslint-disable-next-line global-require */}
             <SvgModal source={require('../../icons/oval3x.png')}>
               <SvgUriModal source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
             </SvgModal>
           </IconModal>
-          <MainWrapperDialog style={{ height: '45%', width: '80%' }}>
+          <MainWrapperDialog style={{ height: 380, width: '80%' }}>
             <ScrollDialog>
               <ContentDialog>
                 <WrapperText>
@@ -135,7 +172,8 @@ class Registration extends Component {
                   ref={ref => (this.inputCode = ref)}
                   length={4}
                   onChangeCode={this.onChangeCode}
-                  onFullFill={this.onFullFill}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onFullFill={code => this.onFullFill(code)}
                   codeTextStyle={{
                     color: '#0068ff',
                   }}
@@ -170,4 +208,15 @@ class Registration extends Component {
   }
 }
 
-export default Registration;
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  login: (userInfo = {}) => dispatch(login(userInfo)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);
