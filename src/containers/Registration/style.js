@@ -8,7 +8,7 @@ export const MainWrapper = styled.ScrollView`
 `;
 
 export const TextBlack = styled.Text`
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 30px;
   font-weight: bold;
   font-style: normal;
@@ -24,13 +24,22 @@ export const TextBlue = styled.Text`
 
 export const TextGray = styled.Text`
   opacity: 0.5;
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 18px;
   font-weight: normal;
   font-style: normal;
   letter-spacing: -0.3px;
   color: #010935;
-  
+`;
+
+export const TextError = styled.Text`
+  opacity: 0.8;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: -0.3px;
+  color: #ff647c;
 `;
 
 export const SvgUri = styled.Image`
@@ -71,7 +80,7 @@ export const WrapperButton = styled.TouchableOpacity`
 
 export const ButtonSubText = styled.Text`
   opacity: 0.5;
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
@@ -83,7 +92,7 @@ export const ButtonSubText = styled.Text`
 `;
 
 export const ButtonText = styled.Text`
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
@@ -120,11 +129,12 @@ export const Check = styled.Image`
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
-  margin-vertical: 5%;
+  margin-top: 5%;
+  margin-bottom: 1%;
 `;
 
 export const TextTerms = styled.Text`
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 12px; 
   letter-spacing: -0.3px;
   color: #010935;

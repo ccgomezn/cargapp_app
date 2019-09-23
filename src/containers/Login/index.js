@@ -1,3 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-alert */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import InputCode from 'react-native-input-code';
@@ -8,7 +11,8 @@ import ButtonWhite from '../../components/ButtonWhite';
 import ButtonGradient from '../../components/ButtonGradient';
 import Dialog from '../../components/EmptyDialog';
 
-import { login } from '../../redux/actions/user';
+// action - reducers
+import UserActions from '../../redux/reducers/UserRedux';
 
 import {
   MainWrapper,
@@ -30,37 +34,45 @@ import {
   SvgModal,
   SvgUriModal,
   IconModal,
+  TextError,
 } from '../Registration/style';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
-      datausername: '',
       datapin: '',
       dataphone: '',
       modalPin: false,
+      phoneValueCheck: false,
+      phoneErrorCheck: false,
+      loading: false,
+      pinValueCheck: false,
+      pinErrorCheck: false,
     };
   }
 
   componentDidMount() {
   }
 
-  onLoginPress() {
+
+  async onLoginPress() {
     // eslint-disable-next-line react/destructuring-assignment
-    const { datausername, dataphone, datapin } = this.state;
+    const { dataphone } = this.state;
     // eslint-disable-next-line no-shadow
-    const { login } = this.props;
-    login({ username: datausername, phone: dataphone, pin: datapin });
-  }
+    const { verifyPhone } = this.props;
+    // login data
+    // login({ phone: dataphone, pin: datapin });
+    if (dataphone != null) {
+      const data = {
+        user: {
+          phone_number: parseInt(dataphone, 10),
+        },
+      };
 
-  onPressPin() {
-    this.setState({ modalPin: true });
-  }
-
-  onPressPersist() {
-    this.setState({ datausername: 'brianJav' });
-    this.onLoginPress();
+      await verifyPhone(data);
+    }
+    this.setState({ loading: true });
   }
 
   onFullFill(code) {
@@ -68,8 +80,8 @@ class Registration extends Component {
     // function validar pin
   }
 
-  onChangePhone(phone) {
-    this.setState({ dataphone: phone });
+  onPressPin() {
+    this.setState({ modalPin: true });
   }
 
   OnHideModal() {
@@ -79,18 +91,64 @@ class Registration extends Component {
   // eslint-disable-next-line class-methods-use-this
   init(nav) {
     this.OnHideModal();
-    setTimeout(() => {
-      nav('ScreenHome');
-    }, 1000);
+    this.onLoginPress(nav);
   }
 
   render() {
-    // eslint-disable-next-line react/destructuring-assignment,react/prop-types
+    const { user } = this.props;
     const { navigate } = this.props.navigation;
     const {
-      modalPin, dataphone, datapin,
+      modalPin,
+      dataphone,
+      datapin,
+      phoneValueCheck,
+      phoneErrorCheck,
+      loading,
+      pinValueCheck,
+      pinErrorCheck,
     } = this.state;
-    const { user } = this.props;
+
+    // verify phone
+    if (loading) {
+      // console.log(user);
+      if (user.error && !user.fetching) {
+        alert('error Api');
+        this.setState({ loading: false });
+      }
+      if (user.status && !user.fetching) {
+        if (user.status.phone_number) {
+          navigate('ScreenHome');
+          this.setState({ loading: false });
+        } else if (loading) {
+          navigate('Vehicle');
+          this.setState({ loading: false });
+        }
+      }
+    }
+    // validate input phone
+    if (dataphone) {
+      if (
+        dataphone.length === 10
+        && phoneValueCheck === false
+        && /^\d+$/.test(dataphone)
+      ) {
+        this.setState({ phoneValueCheck: true, phoneErrorCheck: false });
+      } else if (dataphone.length < 10 && phoneValueCheck === true) {
+        this.setState({ phoneValueCheck: false });
+      }
+    }
+
+    // validate input pin
+    if (datapin) {
+      if (datapin.length === 4
+        && pinValueCheck === false
+      ) {
+        this.setState({ pinValueCheck: true, pinErrorCheck: false });
+      } else if (datapin.length < 4 && pinValueCheck === true) {
+        this.setState({ pinValueCheck: false });
+      }
+    }
+
     return (
       <MainWrapper>
         <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
@@ -103,48 +161,32 @@ class Registration extends Component {
         </TextBlack>
         <TextGray>El mejor aliado para su operación</TextGray>
         <WrapperInputs>
-          <Input title="Número de celular" holder="300000000" onChangeText={text => this.onChangePhone(text)} type="numeric" />
+          <Input
+            title="Número de celular"
+            holder="300000000"
+            maxLength={10}
+            onChangeText={value => this.setState({ dataphone: value, phoneErrorCheck: true })}
+            value={dataphone}
+            type="numeric"
+          />
         </WrapperInputs>
-        <WrapperButtonsBottom>
-          {/* eslint-disable-next-line react/prop-types */}
-          <WrapperButtonGradient>
-            <ButtonWhite border press={() => navigate('Vehicle')} content="Registrarse" />
-          </WrapperButtonGradient>
-          <WrapperButtonGradient>
-            <ButtonGradient press={() => this.onPressPin()} content="Ingresar" />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
+        <TextError>
+          { phoneErrorCheck ? (
+            'Campo incompleto o erroneo'
+          ) : '' }
+        </TextError>
         <WrapperButtonsBottom>
           <WrapperButtonGradient>
-            <ButtonGradient press={() => this.onPressPersist()} content="persist" />
+            <ButtonGradient press={() => this.onPressPin()} content="Ingresar" disabled={!phoneValueCheck} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
 
         <WrapperInputs>
-          <TextGray>
-            inputPhone
-            {dataphone}
-          </TextGray>
-          <TextGray>
-            inputPin
-            {datapin}
-          </TextGray>
-          <TextGray>
-            Logged
-            {user.isLogged.toString()}
-          </TextGray>
-          <TextBlue>
-            Username ?:
-            {user.info ? user.info.username : ''}
-          </TextBlue>
-          <TextBlue>
-            phone ?:
-            {user.info ? user.info.phone : ''}
-          </TextBlue>
-          <TextBlue>
-            pin ?:
-            {user.info ? user.info.pin : ''}
-          </TextBlue>
+          { loading ? (
+            <TextError>
+              loading...
+            </TextError>
+          ) : null }
         </WrapperInputs>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
         <Dialog
@@ -158,7 +200,7 @@ class Registration extends Component {
               <SvgUriModal source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
             </SvgModal>
           </IconModal>
-          <MainWrapperDialog style={{ height: 380, width: '80%' }}>
+          <MainWrapperDialog style={{ height: '45%', width: '80%' }}>
             <ScrollDialog>
               <ContentDialog>
                 <WrapperText>
@@ -171,9 +213,8 @@ class Registration extends Component {
                   // eslint-disable-next-line no-return-assign
                   ref={ref => (this.inputCode = ref)}
                   length={4}
-                  onChangeCode={this.onChangeCode}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onFullFill={code => this.onFullFill(code)}
+                  onChangeCode={code => this.onFullFill(code)}
+                  onFullFill={null}
                   codeTextStyle={{
                     color: '#0068ff',
                   }}
@@ -194,6 +235,11 @@ class Registration extends Component {
                   autoFocus
                 />
                 <TouchModal style={{ paddingTop: 15 }}>
+                  <TextError>
+                    { pinErrorCheck ? (
+                      'Campo incompleto o erroneo'
+                    ) : '' }
+                  </TextError>
                   <ButtonGradient press={() => this.init(navigate)} content="Continuar" />
                 </TouchModal>
                 <TouchModal>
@@ -216,7 +262,12 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  login: (userInfo = {}) => dispatch(login(userInfo)),
+  login: params => dispatch(UserActions.onUserLogin(params)),
+  verifyPhone: params => dispatch(UserActions.postVerifyRequest(params)),
+  validatePin: params => dispatch(UserActions.postValidateRequest(params)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Registration);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Registration);

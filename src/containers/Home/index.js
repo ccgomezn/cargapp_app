@@ -1,6 +1,9 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { View } from 'native-base';
 import { ScrollView } from 'react-native';
+import { connect } from 'react-redux';
 
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
@@ -18,6 +21,9 @@ import InputPicker from '../../components/InputPicker';
 import Input from '../../components/GeneralInput';
 import InputSlider from '../../components/InputSlider';
 
+// action - reducers
+import DriverActions from '../../redux/reducers/DriverRedux';
+
 const itemsTipo = [
   {
     textItem: 'Opcion 1',
@@ -29,13 +35,24 @@ const itemsTipo = [
   },
 ];
 
-export default class Home extends Component {
+class Home extends Component {
   constructor() {
     super();
     this.state = {
       modalSearch: false,
       multiSliderValue: [150000, 2300000],
     };
+  }
+
+  componentDidMount() {
+    const { profileDriver } = this.props;
+
+    const data = {
+      driver: {
+        token: '3560660900101009',
+      },
+    };
+    profileDriver(data);
   }
 
   onPressFilter() {
@@ -55,6 +72,7 @@ export default class Home extends Component {
 
   render() {
     const { modalSearch, multiSliderValue } = this.state;
+    const { driver } = this.props;
 
     return (
       <MainView>
@@ -88,9 +106,12 @@ export default class Home extends Component {
           </ContentView>
 
           <ContentView>
-            <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
-              <TextBlack>{'\n'}</TextBlack>
-            </View>
+            { driver.me != null ? (
+              <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
+                <TextBlack>{driver.me.telephone}</TextBlack>
+                <TextBlack>{driver.me.plate}</TextBlack>
+              </View>
+            ) : null }
           </ContentView>
 
           <ContentView subcontent>
@@ -186,3 +207,20 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const { driver } = state;
+  return {
+    driver,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  profileDriver: params => dispatch(DriverActions.postDriverMeRequest(params)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);
+// export default Home;
