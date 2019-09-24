@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import EmptyDialog from '../../components/EmptyDialog';
 import InputPicker from '../../components/InputPicker';
 import {
@@ -25,7 +28,7 @@ const itemsAccount = [
   },
 ];
 
-export default class Profile extends Component {
+class Profile extends Component {
   constructor() {
     super();
     this.state = {
@@ -49,6 +52,7 @@ export default class Profile extends Component {
 
   render() {
     const { modalPassword, modalAccount } = this.state;
+    const { user } = this.props;
 
     return (
       <MainWrapper>
@@ -100,6 +104,11 @@ export default class Profile extends Component {
               <Input title="Nombre" value="Andrés" editable={false} />
               <Input title="Apellido" value="Rodriguez" editable={false} />
               <Input title="Cedula" holder="Ingrese número de documento" type="numeric" />
+              <Input title="Celular" holder="Ingrese número de documento" value={user.info.phone} />
+              <TextGray>
+                firts ?:
+                {user.isFirts ? user.isFirts : '-'}
+              </TextGray>
             </WrapperInputs>
           </ContentForm>
 
@@ -171,3 +180,14 @@ export default class Profile extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+)(Profile);
