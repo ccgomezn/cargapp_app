@@ -14,6 +14,13 @@ export const { Types, Creators } = createActions({
   postValidateSuccess: ['data'],
   postValidateFailure: ['params'],
   postValidateRequest: ['params'],
+  // register User
+  postRegisterSuccess: ['data'],
+  postRegisterFailure: ['params'],
+  postRegisterRequest: ['params'],
+  postRegisterUnprocess: ['params'],
+  // register Role
+  postRegisterRoleRequest: ['params'],
 });
 
 export const UserTypes = Types;
@@ -28,6 +35,7 @@ export const INITIAL_STATE = Immutable({
   isFirts: 0,
   fetching: false,
   status: null, // respuesta verify
+  unprocess: false,
 });
 
 export const onUserLogin = (state, { data }) => {
@@ -98,6 +106,54 @@ export const postValidateRequest = (state) => {
     ...state,
     fetching: true,
     error: false,
+    status: null,
+  };
+};
+
+/* ---------------- Register User -------------- */
+export const postRegisterSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    status: data,
+  };
+};
+
+export const postRegisterFailure = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: true,
+  };
+};
+
+export const postRegisterUnprocess = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    unprocess: true,
+    status: true,
+  };
+};
+
+export const postRegisterRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+    status: null,
+  };
+};
+
+/* --------------- Register Role ----------- */
+export const postRegisterRoleRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+    status: null,
   };
 };
 
@@ -110,8 +166,15 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_VERIFY_SUCCESS]: postVerifySuccess,
   [Types.POST_USER_FAILURE]: postUserFailure,
   [Types.POST_VERIFY_REQUEST]: postVerifyRequest,
-  // validate Pin
+  // Validate Pin
   [Types.POST_VALIDATE_SUCCESS]: postValidateSuccess,
   [Types.POST_VALIDATE_FAILURE]: postValidateFailure,
   [Types.POST_VALIDATE_REQUEST]: postValidateRequest,
+  // Register User
+  [Types.POST_REGISTER_SUCCESS]: postRegisterSuccess,
+  [Types.POST_REGISTER_FAILURE]: postRegisterFailure,
+  [Types.POST_REGISTER_REQUEST]: postRegisterRequest,
+  [Types.POST_REGISTER_UNPROCESS]: postRegisterUnprocess,
+  // Register Role
+  [Types.POST_REGISTER_ROLE_REQUEST]: postRegisterRoleRequest,
 });
