@@ -35,6 +35,7 @@ import {
   SvgUriModal,
   IconModal,
   TextError,
+  TextLoad,
 } from '../Registration/style';
 
 class Registration extends Component {
@@ -49,17 +50,15 @@ class Registration extends Component {
       loading: false,
       pinValueCheck: false,
       pinErrorCheck: false,
+      loadingPin: false,
     };
   }
 
   componentDidMount() {
   }
 
-
   async onLoginPress() {
-    // eslint-disable-next-line react/destructuring-assignment
     const { dataphone } = this.state;
-    // eslint-disable-next-line no-shadow
     const { verifyPhone } = this.props;
     // login data
     // login({ phone: dataphone, pin: datapin });
@@ -75,23 +74,38 @@ class Registration extends Component {
     this.setState({ loading: true });
   }
 
+  async onValidatePin() {
+    const { dataphone, datapin } = this.state;
+    const { validatePin } = this.props;
+
+    if (datapin != null) {
+      const data = {
+        user: {
+          phone_number: parseInt(dataphone, 10),
+          mobile_code: parseInt(datapin, 10),
+        },
+      };
+      // console.log(data);
+      await validatePin(data);
+    }
+    this.setState({ loadingPin: true });
+  }
+
   onFullFill(code) {
-    this.setState({ datapin: code });
-    // function validar pin
+    this.setState({ datapin: code, pinErrorCheck: true });
   }
 
   onPressPin() {
-    this.setState({ modalPin: true });
+    this.onLoginPress();
+    // this.setState({ modalPin: true });
   }
 
   OnHideModal() {
     this.setState({ modalPin: false });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  init(nav) {
-    this.OnHideModal();
-    this.onLoginPress(nav);
+  init() {
+    this.onValidatePin();
   }
 
   render() {
@@ -106,25 +120,27 @@ class Registration extends Component {
       loading,
       pinValueCheck,
       pinErrorCheck,
+      loadingPin,
     } = this.state;
 
     // verify phone
     if (loading) {
-      // console.log(user);
       if (user.error && !user.fetching) {
         alert('error Api');
         this.setState({ loading: false });
       }
       if (user.status && !user.fetching) {
         if (user.status.phone_number) {
-          navigate('ScreenHome');
+          // navigate('ScreenHome');
+          this.setState({ modalPin: true });
           this.setState({ loading: false });
         } else if (loading) {
-          navigate('Vehicle');
+          navigate('personal', { phone: dataphone });
           this.setState({ loading: false });
         }
       }
     }
+
     // validate input phone
     if (dataphone) {
       if (
@@ -135,6 +151,27 @@ class Registration extends Component {
         this.setState({ phoneValueCheck: true, phoneErrorCheck: false });
       } else if (dataphone.length < 10 && phoneValueCheck === true) {
         this.setState({ phoneValueCheck: false });
+      }
+    }
+
+    // validate Pin
+    if (loadingPin) {
+      if (user.error && !user.fetching) {
+        alert('error Api');
+        this.setState({ loadingPin: false });
+      }
+      if (user.status && !user.fetching) {
+        if (user.status.user != null) {
+          // validate OK
+          this.OnHideModal();
+          setTimeout(() => {
+            navigate('ScreenHome');
+          }, 2000);
+          this.setState({ loadingPin: false });
+        } else if (loadingPin) {
+          alert(`pin ${user.status.message}`);
+          this.setState({ loadingPin: false });
+        }
       }
     }
 
@@ -183,9 +220,9 @@ class Registration extends Component {
 
         <WrapperInputs>
           { loading ? (
-            <TextError>
+            <TextLoad>
               loading...
-            </TextError>
+            </TextLoad>
           ) : null }
         </WrapperInputs>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
@@ -240,7 +277,7 @@ class Registration extends Component {
                       'Campo incompleto o erroneo'
                     ) : '' }
                   </TextError>
-                  <ButtonGradient press={() => this.init(navigate)} content="Continuar" />
+                  <ButtonGradient press={() => this.init()} content="Continuar" />
                 </TouchModal>
                 <TouchModal>
                   <ButtonWhite content="Reenviar pin" press={() => this.OnHideModal()} />

@@ -42,6 +42,18 @@ export const TextError = styled.Text`
   color: #ff647c;
 `;
 
+export const TextLoad = styled.Text`
+  opacity: 0.8;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: -0.3px;
+  color: #ff647c;
+  align-self: center;
+  text-align: center;
+`;
+
 export const SvgUri = styled.Image`
   width: 127px;
   height: 45px;
@@ -130,7 +142,7 @@ export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
   margin-top: 5%;
-  margin-bottom: 1%;
+  margin-bottom: 5%;
 `;
 
 export const TextTerms = styled.Text`

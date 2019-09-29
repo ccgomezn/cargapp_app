@@ -6,7 +6,9 @@ import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
-import { verifyPhone } from './UserSagas';
+import {
+  verifyPhone, validatePin, registerUser, registerRole,
+} from './UserSagas';
 
 /* ----------  API ------------ */
 
@@ -19,5 +21,8 @@ export default function* root() {
   yield all([
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),
     takeLatest(UserTypes.POST_VERIFY_REQUEST, verifyPhone, api),
+    takeLatest(UserTypes.POST_VALIDATE_REQUEST, validatePin, api),
+    takeLatest(UserTypes.POST_REGISTER_REQUEST, registerUser, api),
+    takeLatest(UserTypes.POST_REGISTER_ROLE_REQUEST, registerRole, api),
   ]);
 }
