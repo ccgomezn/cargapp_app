@@ -35,9 +35,6 @@ class Registration extends Component {
       datadocument: '',
       dataemail: '',
       loadingRegister: false,
-      idregister: 0,
-      idrole: 11,
-      loadingRole: false,
       error: {},
     };
   }
@@ -74,23 +71,6 @@ class Registration extends Component {
     this.setState({ loadingRegister: true });
   }
 
-  async onRegisterRole() {
-    const { idregister, idrole } = this.state;
-    const { registerRole } = this.props;
-    if (idrole != null) {
-      const data = {
-        user_role: {
-          user_id: idregister,
-          role_id: idrole,
-        },
-      };
-
-      // console.log(data);
-      await registerRole(data);
-    }
-    this.setState({ loadingRole: true });
-  }
-
   validateForm() {
     const { datadocument, dataemail } = this.state;
     const errormsg = {};
@@ -122,13 +102,12 @@ class Registration extends Component {
   render() {
     // eslint-disable-next-line react/prop-types
     const { user } = this.props;
-    const { navigate } = this.props.navigation;
+    const { navigate, goBack } = this.props.navigation;
     const {
       dataphone,
       datadocument,
       dataemail,
       loadingRegister,
-      loadingRole,
       error,
     } = this.state;
 
@@ -141,11 +120,8 @@ class Registration extends Component {
       if (user.status && !user.fetching) {
         // console.log(user);
         if (user.status.id) {
-          // alert(`Registrado id:${user.status.id}`);
-          this.setState({ loadingRegister: false, idregister: user.status.id });
+          this.setState({ loadingRegister: false });
           navigate('documents');
-          // registrar user_role
-          // this.onRegisterRole();
         } else if (loadingRegister && user.unprocess) {
           alert('Datos erroneos');
           this.setState({ loadingRegister: false });
@@ -153,23 +129,11 @@ class Registration extends Component {
       }
     }
 
-    // validate register role_user
-    if (loadingRole) {
-      /* if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loadingRole: false });
-      }
-      if (user.status && !user.fetching) {
-        console.log(user);
-        this.setState({ loadingRole: false });
-      } */
-    }
-
     return (
       <MainWrapper>
         <WrapperButtons style={{ justifyContent: 'center', marginVertical: 0, marginBottom: '3%' }}>
           {/* eslint-disable-next-line react/prop-types */}
-          <ArrowBack url={() => navigate.goBack()} />
+          <ArrowBack url={() => goBack()} />
           <SvgUri source={require('../../../Images/Logo3x.png')} />
         </WrapperButtons>
         <TextBlack>
@@ -239,7 +203,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   registerUser: params => dispatch(UserActions.postRegisterRequest(params)),
-  registerRole: params => dispatch(UserActions.postRegisterRoleRequest(params)),
+  // registerRole: params => dispatch(UserActions.postRegisterRoleRequest(params)),
 });
 
 export default connect(
