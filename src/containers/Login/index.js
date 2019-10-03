@@ -10,9 +10,11 @@ import Input from '../../components/GeneralInput';
 import ButtonWhite from '../../components/ButtonWhite';
 import ButtonGradient from '../../components/ButtonGradient';
 import Dialog from '../../components/EmptyDialog';
+import InputPickercountries from '../../components/InputPickerCountries';
 
 // action - reducers
 import UserActions from '../../redux/reducers/UserRedux';
+import CountrieActions from '../../redux/reducers/CountrieRedux';
 
 import {
   MainWrapper,
@@ -36,6 +38,8 @@ import {
   IconModal,
   TextError,
   TextLoad,
+  WrapperSection,
+  SectionRow,
 } from '../Registration/style';
 
 class Registration extends Component {
@@ -51,21 +55,26 @@ class Registration extends Component {
       pinValueCheck: false,
       pinErrorCheck: false,
       loadingPin: false,
+      loadingResendPin: false,
+      codeCountrie: '57',
     };
   }
 
   componentDidMount() {
+    const { countriesActive } = this.props;
+    countriesActive();
   }
 
   async onLoginPress() {
-    const { dataphone } = this.state;
+    const { dataphone, codeCountrie } = this.state;
     const { verifyPhone } = this.props;
     // login data
     // login({ phone: dataphone, pin: datapin });
     if (dataphone != null) {
+      const fullPhone = codeCountrie.concat(dataphone);
       const data = {
         user: {
-          phone_number: parseInt(dataphone, 10),
+          phone_number: parseInt(fullPhone, 10),
         },
       };
 
@@ -75,20 +84,38 @@ class Registration extends Component {
   }
 
   async onValidatePin() {
-    const { dataphone, datapin } = this.state;
+    const { dataphone, datapin, codeCountrie } = this.state;
     const { validatePin } = this.props;
 
     if (datapin != null) {
+      const fullPhone = codeCountrie.concat(dataphone);
       const data = {
         user: {
-          phone_number: parseInt(dataphone, 10),
+          phone_number: parseInt(fullPhone, 10),
           mobile_code: parseInt(datapin, 10),
         },
       };
-      // console.log(data);
+      // alert(fullPhone);
       await validatePin(data);
     }
     this.setState({ loadingPin: true });
+  }
+
+  async onResendPin() {
+    const { dataphone, codeCountrie } = this.state;
+    const { resendPin } = this.props;
+
+    if (dataphone != null) {
+      const fullPhone = codeCountrie.concat(dataphone);
+      const data = {
+        user: {
+          phone_number: parseInt(fullPhone, 10),
+        },
+      };
+      // console.log(data);
+      await resendPin(data);
+    }
+    this.setState({ loadingResendPin: true });
   }
 
   onFullFill(code) {
@@ -100,6 +127,13 @@ class Registration extends Component {
     // this.setState({ modalPin: true });
   }
 
+  onPressResendPin() {
+    this.inputCode.reset();
+    this.inputCode.focus();
+    this.onResendPin();
+  }
+
+  // eslint-disable-next-line react/sort-comp
   OnHideModal() {
     this.setState({ modalPin: false });
   }
@@ -108,8 +142,12 @@ class Registration extends Component {
     this.onValidatePin();
   }
 
+  onChangePais(value) {
+    this.setState({ codeCountrie: value });
+  }
+
   render() {
-    const { user } = this.props;
+    const { user, countries } = this.props;
     const { navigate } = this.props.navigation;
     const {
       modalPin,
@@ -121,6 +159,8 @@ class Registration extends Component {
       pinValueCheck,
       pinErrorCheck,
       loadingPin,
+      loadingResendPin,
+      codeCountrie,
     } = this.state;
 
     // verify phone
@@ -135,7 +175,8 @@ class Registration extends Component {
           this.setState({ modalPin: true });
           this.setState({ loading: false });
         } else if (loading) {
-          navigate('personal', { phone: dataphone });
+          const fullPhone = codeCountrie.concat(dataphone);
+          navigate('personal', { phone: fullPhone });
           this.setState({ loading: false });
         }
       }
@@ -175,6 +216,23 @@ class Registration extends Component {
       }
     }
 
+    if (loadingResendPin) {
+      if (user.error && !user.fetching) {
+        alert('error Api');
+        this.setState({ loadingResendPin: false });
+      }
+      if (user.status && !user.fetching) {
+        if (user.status.phone_number) {
+          // send code ok
+          alert('code resend');
+          this.setState({ loadingResendPin: false });
+        } else if (loadingResendPin) {
+          alert(`pin ${user.status.message}`);
+          this.setState({ loadingResendPin: false });
+        }
+      }
+    }
+
     // validate input pin
     if (datapin) {
       if (datapin.length === 4
@@ -190,23 +248,37 @@ class Registration extends Component {
       <MainWrapper>
         <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
         <TextBlack>
-                    Bienvenido al
+          Bienvenido al
           <TextBlue>
             {' '}
-                        Futuro
+            Futuro
           </TextBlue>
         </TextBlack>
         <TextGray>El mejor aliado para su operación</TextGray>
-        <WrapperInputs>
-          <Input
-            title="Número de celular"
-            holder="300000000"
-            maxLength={10}
-            onChangeText={value => this.setState({ dataphone: value, phoneErrorCheck: true })}
-            value={dataphone}
-            type="numeric"
-          />
-        </WrapperInputs>
+
+        <WrapperSection>
+          <SectionRow style={{ width: '22%' }}>
+            <InputPickercountries
+              title="Pais"
+              editable
+              defaultSelect="CO"
+              defaultCode="57"
+              listdata={countries.data ? countries : null}
+              onChange={value => this.onChangePais(value)}
+            />
+          </SectionRow>
+          <SectionRow style={{ width: '78%' }}>
+            <Input
+              title="Número de celular"
+              holder="300000000"
+              maxLength={10}
+              onChangeText={value => this.setState({ dataphone: value, phoneErrorCheck: true })}
+              value={dataphone}
+              type="numeric"
+            />
+          </SectionRow>
+        </WrapperSection>
+
         <TextError>
           { phoneErrorCheck ? (
             'Campo incompleto o erroneo'
@@ -230,6 +302,7 @@ class Registration extends Component {
           visible={modalPin}
           opacity={0.5}
           animation="top"
+          onTouchOutside={() => this.OnHideModal()}
         >
           <IconModal>
             {/* eslint-disable-next-line global-require */}
@@ -280,8 +353,13 @@ class Registration extends Component {
                   <ButtonGradient press={() => this.init()} content="Continuar" />
                 </TouchModal>
                 <TouchModal>
-                  <ButtonWhite content="Reenviar pin" press={() => this.OnHideModal()} />
+                  <ButtonWhite content="Reenviar pin" press={() => this.onPressResendPin()} />
                 </TouchModal>
+                <TextError>
+                  { loadingPin || loadingResendPin ? (
+                    'loading...'
+                  ) : '' }
+                </TextError>
               </ContentDialog>
             </ScrollDialog>
           </MainWrapperDialog>
@@ -292,9 +370,10 @@ class Registration extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { user, countries } = state;
   return {
     user,
+    countries,
   };
 };
 
@@ -302,6 +381,8 @@ const mapDispatchToProps = dispatch => ({
   login: params => dispatch(UserActions.onUserLogin(params)),
   verifyPhone: params => dispatch(UserActions.postVerifyRequest(params)),
   validatePin: params => dispatch(UserActions.postValidateRequest(params)),
+  resendPin: params => dispatch(UserActions.postResendRequest(params)),
+  countriesActive: params => dispatch(CountrieActions.postCountriesRequest(params)),
 });
 
 export default connect(
