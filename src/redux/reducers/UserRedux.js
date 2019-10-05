@@ -19,8 +19,8 @@ export const { Types, Creators } = createActions({
   postRegisterFailure: ['params'],
   postRegisterRequest: ['params'],
   postRegisterUnprocess: ['params'],
-  // register Role
-  postRegisterRoleRequest: ['params'],
+  // resend pin
+  postResendRequest: ['params'],
 });
 
 export const UserTypes = Types;
@@ -138,6 +138,7 @@ export const postRegisterUnprocess = (state) => {
   };
 };
 
+
 export const postRegisterRequest = (state) => {
   return {
     ...state,
@@ -147,8 +148,8 @@ export const postRegisterRequest = (state) => {
   };
 };
 
-/* --------------- Register Role ----------- */
-export const postRegisterRoleRequest = (state) => {
+/* --------------- resend Pin ------------------- */
+export const postResendRequest = (state) => {
   return {
     ...state,
     fetching: true,
@@ -175,6 +176,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_REGISTER_FAILURE]: postRegisterFailure,
   [Types.POST_REGISTER_REQUEST]: postRegisterRequest,
   [Types.POST_REGISTER_UNPROCESS]: postRegisterUnprocess,
-  // Register Role
-  [Types.POST_REGISTER_ROLE_REQUEST]: postRegisterRoleRequest,
+  // Resend Pin
+  [Types.POST_RESEND_REQUEST]: postResendRequest,
 });
