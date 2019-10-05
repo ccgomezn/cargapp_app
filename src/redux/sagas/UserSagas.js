@@ -40,6 +40,7 @@ export function* validatePin(api, action) {
 export function* registerUser(api, action) {
   const { params } = action;
   const response = yield call(api.user.registerUser, params);
+  // console.log(response);
   if (response.status === 201) {
     // save OK create
     yield put(UserActions.postRegisterSuccess(response.data));
@@ -52,17 +53,17 @@ export function* registerUser(api, action) {
   }
 }
 
-export function* registerRole(api, action) {
+export function* resendPin(api, action) {
   const { params } = action;
-  const response = yield call(api.user.registerRol, params);
-  if (response.status === 201) {
-    // save response OK
-    yield put(UserActions.postRegisterSuccess(response.data));
-  } else if (response.status === 302 || response.status === 422) {
+  const response = yield call(api.user.resendPin, params);
+  if (response.ok) {
+    // save response ok
+    yield put(UserActions.postValidateSuccess(response.data));
+  } else if (response.status === 302 /* || response.status === 422 */) {
     // save response(302, 422)
-    yield put(UserActions.postRegisterUnprocess(null));
+    yield put(UserActions.postValidateSuccess(response.data));
   } else {
-    // status error
-    yield put(UserActions.postRegisterFailure(response.data));
+    // save error
+    yield put(UserActions.postValidateFailure(response.data));
   }
 }

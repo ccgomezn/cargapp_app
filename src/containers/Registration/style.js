@@ -280,3 +280,15 @@ export const SvgUriModal = styled(SvgUriN)`
   align-items: center;
   justify-content: center;
 `;
+
+export const WrapperSection = styled.View`
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+`;
+
+export const SectionRow = styled.View`
+  background-color: white;
+`;

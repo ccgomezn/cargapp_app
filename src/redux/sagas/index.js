@@ -4,11 +4,13 @@ import API from '../../api';
 /* ---------- Types ----------- */
 import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
+import { CountrieTypes } from '../reducers/CountrieRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
-  verifyPhone, validatePin, registerUser, registerRole,
+  verifyPhone, validatePin, registerUser, resendPin,
 } from './UserSagas';
+import { countriesActive } from './CountrieSagas';
 
 /* ----------  API ------------ */
 
@@ -23,6 +25,7 @@ export default function* root() {
     takeLatest(UserTypes.POST_VERIFY_REQUEST, verifyPhone, api),
     takeLatest(UserTypes.POST_VALIDATE_REQUEST, validatePin, api),
     takeLatest(UserTypes.POST_REGISTER_REQUEST, registerUser, api),
-    takeLatest(UserTypes.POST_REGISTER_ROLE_REQUEST, registerRole, api),
+    takeLatest(UserTypes.POST_RESEND_REQUEST, resendPin, api),
+    takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
   ]);
 }
