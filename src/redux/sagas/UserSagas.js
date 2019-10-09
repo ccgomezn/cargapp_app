@@ -67,3 +67,19 @@ export function* resendPin(api, action) {
     yield put(UserActions.postValidateFailure(response.data));
   }
 }
+
+export function* loginUser(api, action) {
+  const { params } = action;
+  const response = yield call(api.user.loginUser, params);
+  // console.log(response);
+  if (response.ok) {
+    // save response ok
+    yield put(UserActions.postLoginSuccess(response.data));
+  } else if (response.status === 401) {
+    // save data incorrect
+    yield put(UserActions.postLoginUnprocess(response.data));
+  } else {
+    // save error
+    yield put(UserActions.postLoginFailure(response.data));
+  }
+}

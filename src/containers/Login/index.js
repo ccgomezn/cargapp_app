@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-alert */
 /* eslint-disable import/no-named-as-default-member */
@@ -5,6 +6,7 @@
 import React, { Component } from 'react';
 import InputCode from 'react-native-input-code';
 import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 
 import Input from '../../components/GeneralInput';
 import ButtonWhite from '../../components/ButtonWhite';
@@ -40,6 +42,10 @@ import {
   TextLoad,
   WrapperSection,
   SectionRow,
+  TouchCloseModal,
+  WrapperCloseX,
+  TextModal,
+  WrapperError,
 } from '../Registration/style';
 
 class Registration extends Component {
@@ -133,17 +139,16 @@ class Registration extends Component {
     this.onResendPin();
   }
 
-  // eslint-disable-next-line react/sort-comp
+  onChangePais(value) {
+    this.setState({ codeCountrie: value });
+  }
+
   OnHideModal() {
     this.setState({ modalPin: false });
   }
 
   init() {
     this.onValidatePin();
-  }
-
-  onChangePais(value) {
-    this.setState({ codeCountrie: value });
   }
 
   render() {
@@ -203,10 +208,11 @@ class Registration extends Component {
       }
       if (user.status && !user.fetching) {
         if (user.status.user != null) {
+          const fullPhone = codeCountrie + dataphone;
           // validate OK
           this.OnHideModal();
           setTimeout(() => {
-            navigate('ScreenHome');
+            navigate('LoginEmail', { phone: fullPhone });
           }, 2000);
           this.setState({ loadingPin: false });
         } else if (loadingPin) {
@@ -244,128 +250,153 @@ class Registration extends Component {
       }
     }
 
-    return (
-      <MainWrapper>
-        <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
-        <TextBlack>
-          Bienvenido al
-          <TextBlue>
-            {' '}
-            Futuro
-          </TextBlue>
-        </TextBlack>
-        <TextGray>El mejor aliado para su operación</TextGray>
+    // console.log(user.session);
+    if (user.isLogged) {
+      navigate('ScreenHome');
+    }
+    if (countries.data) {
+      return (
+        <MainWrapper>
+          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+          <TextBlack>
+            Bienvenido al
+            <TextBlue>
+              {' '}
+              Futuro
+            </TextBlue>
+          </TextBlack>
+          <TextGray>El mejor aliado para su operación</TextGray>
 
-        <WrapperSection>
-          <SectionRow style={{ width: '22%' }}>
-            <InputPickercountries
-              title="Pais"
-              editable
-              defaultSelect="CO"
-              defaultCode="57"
-              listdata={countries.data ? countries : null}
-              onChange={value => this.onChangePais(value)}
-            />
-          </SectionRow>
-          <SectionRow style={{ width: '78%' }}>
-            <Input
-              title="Número de celular"
-              holder="300000000"
-              maxLength={10}
-              onChangeText={value => this.setState({ dataphone: value, phoneErrorCheck: true })}
-              value={dataphone}
-              type="numeric"
-            />
-          </SectionRow>
-        </WrapperSection>
+          <WrapperSection>
+            <SectionRow style={{ width: '22%' }}>
+              <InputPickercountries
+                title="Pais"
+                editable
+                defaultSelect="CO"
+                defaultCode="57"
+                listdata={countries.data ? countries : null}
+                onChange={value => this.onChangePais(value)}
+              />
+            </SectionRow>
+            <SectionRow style={{ width: '78%' }}>
+              <Input
+                title="Número de celular"
+                holder="300000000"
+                maxLength={10}
+                onChangeText={value => this.setState({ dataphone: value, phoneErrorCheck: true })}
+                value={dataphone}
+                type="numeric"
+              />
+            </SectionRow>
+          </WrapperSection>
 
-        <TextError>
-          { phoneErrorCheck ? (
-            'Campo incompleto o erroneo'
-          ) : '' }
-        </TextError>
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            <ButtonGradient press={() => this.onPressPin()} content="Ingresar" disabled={!phoneValueCheck} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
+          <WrapperError>
+            { phoneErrorCheck ? (
+              <TextError>
+                Campo incompleto o erroneo
+              </TextError>
+            ) : null }
+          </WrapperError>
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonGradient press={() => this.onPressPin()} content="Ingresar" disabled={!phoneValueCheck} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
 
-        <WrapperInputs>
-          { loading ? (
-            <TextLoad>
-              loading...
-            </TextLoad>
-          ) : null }
-        </WrapperInputs>
-        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-        <Dialog
-          visible={modalPin}
-          opacity={0.5}
-          animation="top"
-          onTouchOutside={() => this.OnHideModal()}
-        >
-          <IconModal>
-            {/* eslint-disable-next-line global-require */}
-            <SvgModal source={require('../../icons/oval3x.png')}>
-              <SvgUriModal source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
-            </SvgModal>
-          </IconModal>
-          <MainWrapperDialog style={{ height: '45%', width: '80%' }}>
-            <ScrollDialog>
-              <ContentDialog>
-                <WrapperText>
-                  <TitleBlack>Ingresa el pin</TitleBlack>
-                  <SubtGray>
-                    Debes ingresar el pin que te acaba de llegar a tu celular para validar.
-                  </SubtGray>
-                </WrapperText>
-                <InputCode
-                  // eslint-disable-next-line no-return-assign
-                  ref={ref => (this.inputCode = ref)}
-                  length={4}
-                  onChangeCode={code => this.onFullFill(code)}
-                  onFullFill={null}
-                  codeTextStyle={{
-                    color: '#0068ff',
-                  }}
-                  codeContainerStyle={{
-                    borderWidth: 1,
-                    borderColor: '#ecf0f1',
-                    borderRadius: 5,
-                    marginLeft: 8,
-                  }}
-                  codeContainerCaretStyle={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    borderColor: '#ecf0f1',
-                    borderBottomWidth: 2,
-                    borderBottomColor: '#0068ff',
-                    marginLeft: 8,
-                  }}
-                  autoFocus
-                />
-                <TouchModal style={{ paddingTop: 15 }}>
-                  <TextError>
-                    { pinErrorCheck ? (
-                      'Campo incompleto o erroneo'
+          <WrapperInputs>
+            { loading ? (
+              <TextLoad>
+                loading...
+              </TextLoad>
+            ) : null }
+          </WrapperInputs>
+          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <Dialog
+            visible={modalPin}
+            opacity={0.5}
+            animation="top"
+            onTouchOutside={() => this.OnHideModal()}
+          >
+            <IconModal>
+              {/* eslint-disable-next-line global-require */}
+              <SvgModal source={require('../../icons/oval3x.png')}>
+                <SvgUriModal source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
+              </SvgModal>
+            </IconModal>
+            <TouchCloseModal
+              onPress={() => this.setState({ modalPin: false })}
+            >
+              <WrapperCloseX>
+                <TextModal>x</TextModal>
+              </WrapperCloseX>
+            </TouchCloseModal>
+            <MainWrapperDialog style={{ height: '45%', width: '80%' }}>
+              <ScrollDialog>
+                <ContentDialog>
+                  <WrapperText>
+                    <TitleBlack>Ingresa el pin</TitleBlack>
+                    <SubtGray>
+                      Debes ingresar el pin que te acaba de llegar a tu celular para validar.
+                    </SubtGray>
+                  </WrapperText>
+                  <InputCode
+                    // eslint-disable-next-line no-return-assign
+                    ref={ref => (this.inputCode = ref)}
+                    length={4}
+                    onChangeCode={code => this.onFullFill(code)}
+                    onFullFill={null}
+                    codeTextStyle={{
+                      color: '#0068ff',
+                    }}
+                    codeContainerStyle={{
+                      borderWidth: 1,
+                      borderColor: '#ecf0f1',
+                      borderRadius: 5,
+                      marginLeft: 8,
+                    }}
+                    codeContainerCaretStyle={{
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderColor: '#ecf0f1',
+                      borderBottomWidth: 2,
+                      borderBottomColor: '#0068ff',
+                      marginLeft: 8,
+                    }}
+                    autoFocus
+                  />
+                  <TouchModal style={{ paddingTop: 15 }}>
+                    <WrapperError>
+                      { pinErrorCheck ? (
+                        <TextError>
+                          Campo incompleto o erroneo
+                        </TextError>
+                      ) : null }
+                    </WrapperError>
+                    <ButtonGradient press={() => this.init()} content="Continuar" />
+                  </TouchModal>
+                  <TouchModal>
+                    <ButtonWhite content="Reenviar pin" press={() => this.onPressResendPin()} />
+                  </TouchModal>
+                  <TextLoad>
+                    { loadingPin || loadingResendPin ? (
+                      'loading...'
                     ) : '' }
-                  </TextError>
-                  <ButtonGradient press={() => this.init()} content="Continuar" />
-                </TouchModal>
-                <TouchModal>
-                  <ButtonWhite content="Reenviar pin" press={() => this.onPressResendPin()} />
-                </TouchModal>
-                <TextError>
-                  { loadingPin || loadingResendPin ? (
-                    'loading...'
-                  ) : '' }
-                </TextError>
-              </ContentDialog>
-            </ScrollDialog>
-          </MainWrapperDialog>
-        </Dialog>
-      </MainWrapper>
-    );
+                  </TextLoad>
+                </ContentDialog>
+              </ScrollDialog>
+            </MainWrapperDialog>
+          </Dialog>
+        </MainWrapper>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0000ff"
+        />
+      );
+    }
   }
 }
 
@@ -378,7 +409,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  login: params => dispatch(UserActions.onUserLogin(params)),
   verifyPhone: params => dispatch(UserActions.postVerifyRequest(params)),
   validatePin: params => dispatch(UserActions.postValidateRequest(params)),
   resendPin: params => dispatch(UserActions.postResendRequest(params)),
