@@ -8,7 +8,11 @@ import { CountrieTypes } from '../reducers/CountrieRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
-  verifyPhone, validatePin, registerUser, resendPin,
+  verifyPhone,
+  validatePin,
+  registerUser,
+  resendPin,
+  loginUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
 
@@ -27,5 +31,6 @@ export default function* root() {
     takeLatest(UserTypes.POST_REGISTER_REQUEST, registerUser, api),
     takeLatest(UserTypes.POST_RESEND_REQUEST, resendPin, api),
     takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
+    takeLatest(UserTypes.POST_LOGIN_REQUEST, loginUser, api),
   ]);
 }
