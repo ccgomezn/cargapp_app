@@ -8,7 +8,7 @@ export const MainWrapper = styled.ScrollView`
 `;
 
 export const TextBlack = styled.Text`
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 30px;
   font-weight: bold;
   font-style: normal;
@@ -24,13 +24,42 @@ export const TextBlue = styled.Text`
 
 export const TextGray = styled.Text`
   opacity: 0.5;
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 18px;
   font-weight: normal;
   font-style: normal;
   letter-spacing: -0.3px;
   color: #010935;
-  
+`;
+
+export const WrapperError = styled.View`
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  margin-bottom: 2%;
+`;
+
+export const TextError = styled.Text`
+  opacity: 0.8;
+  font-family: Roboto;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: -0.3px;
+  background-color: #d3e5ff;
+  padding: 10px 5px;
+  color: #007dfc;
+  border-radius: 4px;
+`;
+
+export const TextLoad = styled.Text`
+  opacity: 0.8;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: -0.3px;
+  color: #ff647c;
+  align-self: center;
+  text-align: center;
 `;
 
 export const SvgUri = styled.Image`
@@ -56,6 +85,7 @@ export const WrapperButtonsBottom = styled.View`
   height: auto;
   justify-content: flex-end;
   padding-bottom: 10px;
+  margin-top: 2px;
 `;
 
 export const WrapperButton = styled.TouchableOpacity`
@@ -71,7 +101,7 @@ export const WrapperButton = styled.TouchableOpacity`
 
 export const ButtonSubText = styled.Text`
   opacity: 0.5;
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
@@ -83,7 +113,7 @@ export const ButtonSubText = styled.Text`
 `;
 
 export const ButtonText = styled.Text`
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
@@ -120,11 +150,12 @@ export const Check = styled.Image`
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
-  margin-vertical: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 `;
 
 export const TextTerms = styled.Text`
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 12px; 
   letter-spacing: -0.3px;
   color: #010935;
@@ -257,4 +288,43 @@ export const SvgUriModal = styled(SvgUriN)`
   width: 30px;
   align-items: center;
   justify-content: center;
+`;
+
+export const WrapperSection = styled.View`
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  margin-top: 5%;
+  margin-bottom: 2%;
+`;
+
+export const SectionRow = styled.View`
+  background-color: white;
+`;
+
+export const TouchCloseModal = styled.TouchableOpacity`
+  position: absolute;
+  right: 15;
+  width: 50px;
+  height: 50px;
+  top: 25%;
+  z-index: 101;
+  padding: 5px;
+`;
+
+export const WrapperCloseX = styled.View`
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+`;
+
+export const TextModal = styled.Text`
+  font-size: 30px;
+  color: #0168ff;
+  align-self: center;
+  z-index: -1;
+  margin-bottom: 10px;
 `;

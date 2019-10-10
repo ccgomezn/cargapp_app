@@ -15,6 +15,7 @@ import ScreenSignUp from '../../containers/Registration';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
+import ScreenLoginEmail from '../../containers/LoginEmail';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -106,6 +107,7 @@ export const SignUpStackNavigator = createStackNavigator({
   Vehicle: { screen: ScreenVehicle },
   personal: { screen: ScreenPersonalData },
   documents: { screen: ScreenDocuments },
+  LoginEmail: { screen: ScreenLoginEmail },
 }, {
   headerMode: 'none',
 });

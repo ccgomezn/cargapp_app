@@ -24,7 +24,7 @@ export const disabledInput = {
 
 export const Text = styled.Text` 
   opacity: 0.5;
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 11px;
   font-weight: 500;
   font-style: normal;
@@ -34,9 +34,10 @@ export const Text = styled.Text`
 
 export const Input = styled.TextInput`
   width: 100%;
-  font-family: Arial;
+  font-family: Roboto;
   font-size: 14px;
   top: -5;
+  color: #010935;
 `;
 
 export const lineActive = {
