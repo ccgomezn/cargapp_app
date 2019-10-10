@@ -30,6 +30,7 @@ class GeneralInput extends React.Component {
       <MainWrapper style={[press ? lineActive : null, editable === false ? disabledInput : null]}>
         <Text>{title}</Text>
         <Input
+          style={{ opacity: editable === false ? 0.5 : 1 }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           keyboardType={type != null ? type : 'default'}

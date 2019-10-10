@@ -3,15 +3,22 @@ import PropTypes from 'prop-types';
 import LinearGradient from 'react-native-linear-gradient';
 import { Text, Touch } from './style';
 
-function ButtonGradient({ content, press }) {
+function ButtonGradient({ content, press, disabled }) {
   return (
-    <Touch onPress={press}>
+    <Touch onPress={press} disabled={disabled}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 3 }}
-        colors={['#007aff', '#00ff77']}
+        colors={
+          disabled
+            ? ['#ece9f1', '#ece9f1']
+            : ['#007aff', '#00ff77']}
       >
-        <Text>{content}</Text>
+        <Text
+          style={{ color: disabled ? '#d0c9d6' : 'white' }}
+        >
+          {content}
+        </Text>
       </LinearGradient>
     </Touch>
   );
@@ -20,6 +27,7 @@ function ButtonGradient({ content, press }) {
 ButtonGradient.propTypes = {
   content: PropTypes.string.isRequired,
   press: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default ButtonGradient;

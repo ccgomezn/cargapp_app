@@ -19,6 +19,7 @@
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@react-native-community/async-storage": "^1.6.1",
+    "apisauce": "^1.1.0",
     "native-base": "^2.12.2",
     "prop-types": "^15.7.2",
     "react": "16.8.6",
@@ -41,7 +42,9 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-saga": "^1.0.5",
+    "reduxsauce": "^1.1.0",
     "rn-swipeable-panel": "^1.0.14",
+    "seamless-immutable": "^7.1.4",
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
