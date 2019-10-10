@@ -21,6 +21,11 @@ export const { Types, Creators } = createActions({
   postRegisterUnprocess: ['params'],
   // resend pin
   postResendRequest: ['params'],
+  // login User
+  postLoginSuccess: ['data'],
+  postLoginFailure: ['params'],
+  postLoginRequest: ['params'],
+  postLoginUnprocess: ['data'],
 });
 
 export const UserTypes = Types;
@@ -31,11 +36,10 @@ export const INITIAL_STATE = Immutable({
   isLogged: false,
   info: null, // data session
   error: null,
-  token: null,
-  isFirts: 0,
   fetching: false,
-  status: null, // respuesta verify
+  status: null, // respuesta success
   unprocess: false,
+  session: null, // respuesta login
 });
 
 export const onUserLogin = (state, { data }) => {
@@ -44,7 +48,6 @@ export const onUserLogin = (state, { data }) => {
     isLogged: true,
     error: false,
     info: data,
-    isFirts: state.isFirts + 1,
   };
 };
 
@@ -158,24 +161,69 @@ export const postResendRequest = (state) => {
   };
 };
 
+/* ----------------- login ----------------------- */
+export const postLoginSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    status: true,
+    session: data,
+    isLogged: true,
+    unprocess: false,
+  };
+};
+
+export const postLoginUnprocess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    unprocess: true,
+    status: data,
+  };
+};
+
+export const postLoginFailure = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: true,
+    status: null,
+    session: null,
+  };
+};
+
+export const postLoginRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    status: null,
+  };
+};
+
 /* --------------- Reducers ----------- */
 export const reducer = createReducer(INITIAL_STATE, {
-  // Session User
   [Types.ON_USER_LOGIN]: onUserLogin,
   [Types.ON_USER_LOGOUT]: onUserLogout,
-  // Verify Phone
+  // verify phone
   [Types.POST_VERIFY_SUCCESS]: postVerifySuccess,
   [Types.POST_USER_FAILURE]: postUserFailure,
   [Types.POST_VERIFY_REQUEST]: postVerifyRequest,
-  // Validate Pin
+  // validate phone
   [Types.POST_VALIDATE_SUCCESS]: postValidateSuccess,
   [Types.POST_VALIDATE_FAILURE]: postValidateFailure,
   [Types.POST_VALIDATE_REQUEST]: postValidateRequest,
-  // Register User
+  // register user
   [Types.POST_REGISTER_SUCCESS]: postRegisterSuccess,
   [Types.POST_REGISTER_FAILURE]: postRegisterFailure,
   [Types.POST_REGISTER_REQUEST]: postRegisterRequest,
   [Types.POST_REGISTER_UNPROCESS]: postRegisterUnprocess,
-  // Resend Pin
+  // resend code
   [Types.POST_RESEND_REQUEST]: postResendRequest,
+  // login user
+  [Types.POST_LOGIN_SUCCESS]: postLoginSuccess,
+  [Types.POST_LOGIN_FAILURE]: postLoginFailure,
+  [Types.POST_LOGIN_REQUEST]: postLoginRequest,
+  [Types.POST_LOGIN_UNPROCESS]: postLoginUnprocess,
 });
