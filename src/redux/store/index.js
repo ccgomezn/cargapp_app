@@ -12,7 +12,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   timeout: null,
-  blacklist: ['user'],
+  // blacklist: ['user'],
 };
 
 // Middleware: Redux Saga
