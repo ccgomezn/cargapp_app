@@ -9,11 +9,21 @@ export default class General extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
       <MainWrapper>
-        <CardCoupons subText="10% en todos los productos" text="Starbucks" subImg="10% en todos los productos" />
-        <CardCoupons subText="10% en todos los productos" text="Starbucks" subImg="10% en todos los productos" />
-        <CardCoupons subText="10% en todos los productos" text="Starbucks" subImg="10% en todos los productos" />
+        <CardCoupons
+          subText="10% en todos los productos"
+          text="Starbucks"
+          press={() => navigation.navigate('CommerceCoupons')}
+          button
+        />
+        <CardCoupons
+          subText="50% en las Mc Donal's"
+          text="Mc Donal's"
+          press={() => navigation.navigate('CommerceCoupons')}
+          button
+        />
       </MainWrapper>
     );
   }

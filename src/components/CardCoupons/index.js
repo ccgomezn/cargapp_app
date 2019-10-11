@@ -8,7 +8,7 @@ import {
 } from './style';
 
 function CardCoupons({
-  img, text, subText, subImg,
+  img, text, subText, subImg, press, button,
 }) {
   return (
     <MainWrapper>
@@ -18,9 +18,11 @@ function CardCoupons({
           <WhiteText>{text}</WhiteText>
           <WhiteOpacityText>{subText}</WhiteOpacityText>
         </WrapperText>
-        <Button>
-          <BlueText>Obtener</BlueText>
-        </Button>
+        {button ? (
+          <Button onPress={press}>
+            <BlueText>Obtener</BlueText>
+          </Button>
+        ) : null}
       </SubContainer>
     </MainWrapper>
   );
@@ -31,6 +33,8 @@ CardCoupons.propTypes = {
   text: PropTypes.string.isRequired,
   subText: PropTypes.string.isRequired,
   subImg: PropTypes.string.isRequired,
+  press: PropTypes.func.isRequired,
+  button: PropTypes.bool.isRequired,
 };
 
 export default CardCoupons;
