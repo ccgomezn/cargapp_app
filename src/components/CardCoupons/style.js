@@ -14,9 +14,8 @@ export const MainWrapper = styled.ImageBackground`
 export const SubContainer = styled.View`
     width: auto;
     height: auto;
-    background-color: transparent;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 `;
 
@@ -25,6 +24,7 @@ export const SubImage = styled.Image`
     width: 50px;
     border-radius: 25px;
     background-color: white;
+    align-self: flex-start;
 `;
 
 export const WrapperText = styled.View`
@@ -32,7 +32,8 @@ export const WrapperText = styled.View`
     height: auto;
     justify-content: space-between;
     align-items: flex-start;
-    padding-horizontal: 10px
+    padding-horizontal: 10px;
+    align-self: center;
 `;
 
 export const Button = styled.TouchableOpacity`

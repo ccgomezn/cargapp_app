@@ -5,16 +5,14 @@ import DrawerScreen from './stacks/drawerScreen';
 
 import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
-import CouponsScreen from '../containers/Coupons/General';
 
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
   SignUpStack: SignUpStackNavigator,
   drawerScreen: DrawerScreen,
-  Coupons: CouponsScreen,
 }, {
   headerMode: 'none',
-  initialRouteName: 'Coupons',
+  initialRouteName: 'drawerScreen',
 }));
 
 export default class Navigation extends React.Component {
