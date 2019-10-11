@@ -9,6 +9,7 @@ import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
 import ScreenPoints from '../../containers/Points';
 import ScreenAnalytics from '../../containers/Analytics';
+import ScreenCoupons from '../../containers/Coupons/General';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
@@ -99,6 +100,7 @@ export const homeStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  coupons: { screen: ScreenCoupons },
 });
 
 export const SignUpStackNavigator = createStackNavigator({
