@@ -17,11 +17,13 @@ export default class General extends Component {
           text="Starbucks"
           press={() => navigation.navigate('CommerceCoupons')}
           button
+          fullCard={false}
         />
         <CardCoupons
           subText="50% en las Mc Donal's"
           text="Mc Donal's"
           press={() => navigation.navigate('CommerceCoupons')}
+          fullCard={false}
           button
         />
       </MainWrapper>

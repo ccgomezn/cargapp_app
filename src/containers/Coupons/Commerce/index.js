@@ -18,24 +18,27 @@ export default class Commerce extends Component {
     };
   }
 
-  rederItem({ item, index }) {
+  renderItem({ item, index }) {
     return (
       <CardCoupons
         subText={item.SubText}
         text={item.Name}
         button={false}
+        key={index}
+        fullCard={false}
       />
     );
   }
 
   render() {
     const { sliderActive } = this.state;
+    const { navigation } = this.props;
     return (
       <MainWrapper>
         <WrapperCarousel>
           <Carousel
             data={data}
-            renderItem={this.rederItem}
+            renderItem={this.renderItem}
             ref={(c) => { this._carousel = c; }}
             sliderWidth={Width}
             itemWidth={Width - 50}
@@ -54,7 +57,7 @@ export default class Commerce extends Component {
         />
         <WrapperButton>
           <ButtonGradient
-            press={() => alert('El cupón es todo tuyo')}
+            press={() => navigation.navigate('DetailsCoupons')}
             content="Obtener cupón"
             disabled={false}
           />

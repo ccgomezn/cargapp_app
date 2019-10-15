@@ -11,6 +11,7 @@ import ScreenPoints from '../../containers/Points';
 import ScreenAnalytics from '../../containers/Analytics';
 import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
+import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
 import ScreenSignUp from '../../containers/Registration';
@@ -111,6 +112,7 @@ export const CouponsStackNavigator = createStackNavigator({
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
   CommerceCoupons: {
@@ -119,6 +121,16 @@ export const CouponsStackNavigator = createStackNavigator({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  DetailsCoupons: {
+    screen: ScreenDetailsCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });

@@ -12,7 +12,7 @@ export const MainWrapper = styled.ImageBackground`
 `;
 
 export const SubContainer = styled.View`
-    width: auto;
+    width: 100%;
     height: auto;
     flex-direction: row;
     justify-content: flex-start;
