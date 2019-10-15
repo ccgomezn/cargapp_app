@@ -8,10 +8,10 @@ import {
 } from './style';
 
 function CardCoupons({
-  img, text, subText, subImg, press, button,
+  img, text, subText, subImg, press, button, fullCard,
 }) {
   return (
-    <MainWrapper>
+    <MainWrapper style={fullCard && { borderRadius: 0 }}>
       <SubContainer>
         <SubImage />
         <WrapperText>
@@ -35,6 +35,7 @@ CardCoupons.propTypes = {
   subImg: PropTypes.string.isRequired,
   press: PropTypes.func.isRequired,
   button: PropTypes.bool.isRequired,
+  fullCard: PropTypes.bool.isRequired,
 };
 
 export default CardCoupons;
