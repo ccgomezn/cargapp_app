@@ -2,9 +2,9 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { View } from 'native-base';
-import { ScrollView } from 'react-native';
+import { ScrollView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-
+import MapView from 'react-native-maps';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -23,6 +23,8 @@ import InputSlider from '../../components/InputSlider';
 
 // action - reducers
 import DriverActions from '../../redux/reducers/DriverRedux';
+import OffersActions from '../../redux/reducers/OffersRedux';
+import VehiclesActions from '../../redux/reducers/VehicleRedux';
 
 const itemsTipo = [
   {
@@ -45,7 +47,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { profileDriver } = this.props;
+    const { profileDriver, getsOffers, getVehicles } = this.props;
 
     const data = {
       driver: {
@@ -53,6 +55,8 @@ class Home extends Component {
       },
     };
     profileDriver(data);
+    getsOffers();
+    getVehicles();
   }
 
   onPressFilter() {
@@ -72,151 +76,154 @@ class Home extends Component {
 
   render() {
     const { modalSearch, multiSliderValue } = this.state;
-    const { driver } = this.props;
-
-    return (
-      <MainView>
-        <MainWrapper>
-          <ContentView>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            >
-              <IconService
-                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                text="Premios"
-              />
-              <IconService
-                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
-                text="Lubricantes"
-              />
-              <IconService
-                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                text="Combustible"
-              />
-              <IconService
-                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
-                text="SOAT"
-              />
-              <IconService
-                icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                text="Otros"
-              />
-            </ScrollView>
-          </ContentView>
-
-          <ContentView>
-            { driver.me != null ? (
-              <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
-                <TextBlack>{driver.me.telephone}</TextBlack>
-                <TextBlack>{driver.me.plate}</TextBlack>
-              </View>
-            ) : null }
-          </ContentView>
-
-          <ContentView subcontent>
-            <ContentBlock>
-              <TextBlack>Viajes</TextBlack>
-              <ContentFilter>
-                <ButtonLink
-                  text="Filtrar viajes disponibles"
-                  icon
-                  press={() => this.onPressFilter()}
+    const { driver, offers, vehicles } = this.props;
+    console.log(this.props);
+    if (offers.data && vehicles.data) {
+      return (
+        <MainView>
+          <MainWrapper>
+            <ContentView>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              >
+                <IconService
+                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+                  text="Premios"
                 />
-              </ContentFilter>
-            </ContentBlock>
-          </ContentView>
+                <IconService
+                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
+                  text="Lubricantes"
+                />
+                <IconService
+                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+                  text="Combustible"
+                />
+                <IconService
+                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
+                  text="SOAT"
+                />
+                <IconService
+                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+                  text="Otros"
+                />
+              </ScrollView>
+            </ContentView>
 
-          <ContentOffer subcontent>
-            <WhiteCardTravels
-              from="Bogota"
-              to="Medellin"
-              vehicle="Tractomula"
-              pay="2.300.000"
-              date="hoy"
-              actionbtnPrimary=""
-              btnPrimary="Aplicar"
-              btnSecondary
-            />
+            <ContentView>
+              { driver.me != null ? (
+                <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
+                  <TextBlack>{driver.me.telephone}</TextBlack>
+                  <TextBlack>{driver.me.plate}</TextBlack>
+                </View>
+              ) : null }
+            </ContentView>
 
-            <WhiteCardTravels
-              from="Buenaventura"
-              to="Bogotá D.C"
-              vehicle="Tractomula"
-              pay="2.300.000"
-              date="11/29/2019"
-              actionbtnPrimary=""
-              btnPrimary="Ver detalle"
-            />
+            <ContentView subcontent>
+              <ContentBlock>
+                <TextBlack>Viajes</TextBlack>
+                <ContentFilter>
+                  <ButtonLink
+                    text="Filtrar viajes disponibles"
+                    icon
+                    press={() => this.onPressFilter()}
+                  />
+                </ContentFilter>
+              </ContentBlock>
+            </ContentView>
 
-            <WhiteCardTravels
-              from="Bogota"
-              to="Medellin"
-              vehicle="Tractomula"
-              pay="2.300.000"
-              date="hoy"
-              actionbtnPrimary=""
-              btnPrimary="Aplicar"
-              btnSecondary
-            />
-
-          </ContentOffer>
-        </MainWrapper>
-        <Swipeable
-          visible={modalSearch}
-          onClose={() => this.OnHideModal()}
-          onPressClose={() => this.OnHideModal()}
-          title="Búsqueda"
-        >
-          <WrapperSwipe>
-            <RowContent>
-              <TextBlack>Flete</TextBlack>
-            </RowContent>
-            <ContentSlider>
-              <InputSlider
-                minVal={0}
-                maxVal={5200000}
-                step={100000}
-                multiValue={multiSliderValue}
-                onValuesChange={values => this.multiSliderValuesChange(values)}
+            <ContentOffer subcontent>
+              <MapView
+                  initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
               />
-            </ContentSlider>
-            <ContentForm>
-              <ContentRange>
-                <RowInput>
-                  <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} />
-                </RowInput>
-                <RowInput>
-                  <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} />
-                </RowInput>
-              </ContentRange>
-              <WrapperInputs>
-                <InputPicker title="Origen" listdata={itemsTipo} />
-                <InputPicker title="Destino" listdata={itemsTipo} defaultSelect="opc1" />
-                <InputPicker title="Vehiculo" listdata={itemsTipo} />
-              </WrapperInputs>
-            </ContentForm>
-            <WrapperButtonsBottom>
-              <WrapperButtonGradient>
-                <ButtonGradient content="Buscar" />
-              </WrapperButtonGradient>
-            </WrapperButtonsBottom>
-          </WrapperSwipe>
-        </Swipeable>
-      </MainView>
+              {offers.data.map(services => (
+                vehicles.data.map(vehicle => (
+                  <WhiteCardTravels
+                    from={services.origin}
+                    to={services.destination}
+                    vehicle={vehicle.id === services.vehicle_type_id && vehicle.name}
+                    pay={services.price}
+                    date="hoy"
+                    actionbtnPrimary=""
+                    btnPrimary="Aplicar"
+                    btnSecondary
+                  />
+                ))
+              ))}
+            </ContentOffer>
+          </MainWrapper>
+          <Swipeable
+            visible={modalSearch}
+            onClose={() => this.OnHideModal()}
+            onPressClose={() => this.OnHideModal()}
+            title="Búsqueda"
+          >
+            <WrapperSwipe>
+              <RowContent>
+                <TextBlack>Flete</TextBlack>
+              </RowContent>
+              <ContentSlider>
+                <InputSlider
+                  minVal={0}
+                  maxVal={5200000}
+                  step={100000}
+                  multiValue={multiSliderValue}
+                  onValuesChange={values => this.multiSliderValuesChange(values)}
+                />
+              </ContentSlider>
+              <ContentForm>
+                <ContentRange>
+                  <RowInput>
+                    <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} />
+                  </RowInput>
+                  <RowInput>
+                    <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} />
+                  </RowInput>
+                </ContentRange>
+                <WrapperInputs>
+                  <InputPicker title="Origen" listdata={itemsTipo} />
+                  <InputPicker title="Destino" listdata={itemsTipo} defaultSelect="opc1" />
+                  <InputPicker title="Vehiculo" listdata={itemsTipo} />
+                </WrapperInputs>
+              </ContentForm>
+              <WrapperButtonsBottom>
+                <WrapperButtonGradient>
+                  <ButtonGradient content="Buscar" />
+                </WrapperButtonGradient>
+              </WrapperButtonsBottom>
+            </WrapperSwipe>
+          </Swipeable>
+        </MainView>
+      );
+    }
+    return (
+      <ActivityIndicator
+        style={{ alignSelf: 'center', height: '100%' }}
+        size="large"
+        color="#0000ff"
+      />
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { driver } = state;
+  const { driver, offers, vehicles } = state;
   return {
     driver,
+    offers,
+    vehicles,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   profileDriver: params => dispatch(DriverActions.postDriverMeRequest(params)),
+  getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
+  getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
 });
 
 export default connect(

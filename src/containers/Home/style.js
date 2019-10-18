@@ -20,11 +20,10 @@ export const ContentView = styled.View`
   padding: ${props => (props.subcontent ? '0px 10px' : '0px')};
 `;
 
-export const ContentOffer = styled.View`
+export const ContentOffer = styled.ScrollView`
 width: 100%;
-justify-content: center;
 flex-direction: column;
-height: auto;
+height: 100%;
 margin-bottom: 15px;
 padding: ${props => (props.subcontent ? '8px 10px' : '0px')};
 `;

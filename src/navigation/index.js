@@ -12,7 +12,7 @@ const Navigator = createAppContainer(createSwitchNavigator({
   drawerScreen: DrawerScreen,
 }, {
   headerMode: 'none',
-  initialRouteName: 'drawerScreen',
+  initialRouteName: 'Splash',
 }));
 
 export default class Navigation extends React.Component {
