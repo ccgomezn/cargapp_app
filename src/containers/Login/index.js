@@ -68,14 +68,15 @@ class Registration extends Component {
 
   componentDidMount() {
     const { countriesActive } = this.props;
+    // validate session
+    this.isSession();
+    // get countries
     countriesActive();
   }
 
   async onLoginPress() {
     const { dataphone, codeCountrie } = this.state;
     const { verifyPhone } = this.props;
-    // login data
-    // login({ phone: dataphone, pin: datapin });
     if (dataphone != null) {
       const fullPhone = codeCountrie.concat(dataphone);
       const data = {
@@ -141,6 +142,15 @@ class Registration extends Component {
 
   onChangePais(value) {
     this.setState({ codeCountrie: value });
+  }
+
+  isSession() {
+    const { user } = this.props;
+    const { navigate } = this.props.navigation;
+    // console.log(`is Session:${user.session}`);
+    if (user.isLogged) {
+      navigate('ScreenHome');
+    }
   }
 
   OnHideModal() {
@@ -250,10 +260,6 @@ class Registration extends Component {
       }
     }
 
-    // console.log(user.session);
-    if (user.isLogged) {
-      navigate('ScreenHome');
-    }
     if (countries.data) {
       return (
         <MainWrapper>

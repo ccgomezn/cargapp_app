@@ -5,6 +5,7 @@ import API from '../../api';
 import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 import { CountrieTypes } from '../reducers/CountrieRedux';
+import { DocumentTypes } from '../reducers/DocumentRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -15,6 +16,7 @@ import {
   loginUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
+import { registerDocument } from './DocumentSagas';
 
 /* ----------  API ------------ */
 
@@ -32,5 +34,6 @@ export default function* root() {
     takeLatest(UserTypes.POST_RESEND_REQUEST, resendPin, api),
     takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
     takeLatest(UserTypes.POST_LOGIN_REQUEST, loginUser, api),
+    takeLatest(DocumentTypes.POST_REGISTER_DOC_REQUEST, registerDocument, api),
   ]);
 }

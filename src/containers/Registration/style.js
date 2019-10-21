@@ -34,20 +34,20 @@ export const TextGray = styled.Text`
 
 export const WrapperError = styled.View`
   font-size: 14px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
   margin-bottom: 2%;
 `;
 
 export const TextError = styled.Text`
-  opacity: 0.8;
+  opacity: 0.95;
   font-family: Roboto;
-  font-weight: normal;
+  font-weight: 600;
   font-style: normal;
-  letter-spacing: -0.3px;
-  background-color: #d3e5ff;
-  padding: 10px 5px;
-  color: #007dfc;
-  border-radius: 4px;
+  letter-spacing: -0.5px;
+  background-color: #ff2557; //#d3e5ff;
+  padding: 12px 6px;
+  color: #fff;
+  border-radius: 6px;
 `;
 
 export const TextLoad = styled.Text`

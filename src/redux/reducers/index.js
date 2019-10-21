@@ -5,4 +5,5 @@ export default combineReducers({
   user: require('./UserRedux').reducer,
   driver: require('./DriverRedux').reducer,
   countries: require('./CountrieRedux').reducer,
+  document: require('./DocumentRedux').reducer,
 });
