@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // MENU SCREENS
 import ScreenHome from '../../containers/Home';
 import ScreenTravels from '../../containers/Travels';
+import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
 import ScreenMyTravels from '../../containers/MyTravels';
 import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
@@ -157,6 +158,16 @@ export const viajesStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  ApplyTravels: {
+    screen: ScreenApplyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  }
 });
 
 export const myTravelsStackNavigator = createStackNavigator({
