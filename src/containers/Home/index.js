@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { View } from 'native-base';
 import { ScrollView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import MapView from 'react-native-maps';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -76,7 +75,9 @@ class Home extends Component {
 
   render() {
     const { modalSearch, multiSliderValue } = this.state;
-    const { driver, offers, vehicles } = this.props;
+    const {
+      driver, offers, vehicles, navigation,
+    } = this.props;
     console.log(this.props);
     if (offers.data && vehicles.data) {
       return (
@@ -133,14 +134,6 @@ class Home extends Component {
             </ContentView>
 
             <ContentOffer subcontent>
-              <MapView
-                  initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-              />
               {offers.data.map(services => (
                 vehicles.data.map(vehicle => (
                   <WhiteCardTravels
@@ -149,7 +142,7 @@ class Home extends Component {
                     vehicle={vehicle.id === services.vehicle_type_id && vehicle.name}
                     pay={services.price}
                     date="hoy"
-                    actionbtnPrimary=""
+                    actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
                     btnPrimary="Aplicar"
                     btnSecondary
                   />

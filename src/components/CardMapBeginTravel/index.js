@@ -63,7 +63,7 @@ function CardMapBeginTravel({
           <ButtonWhite press={onPressBW} content="Cancelar" />
         </WrapperButton>
         <WrapperButton>
-          <ButtonGradient press={onPressBG} content="Comenzar viajes" />
+          <ButtonGradient press={onPressBG} content="Comenzar viaje" />
         </WrapperButton>
       </WrapperFooter>
     </MainWrapper>
