@@ -93,6 +93,7 @@ export const postValidateSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    info: data,
   };
 };
 

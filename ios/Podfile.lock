@@ -69,6 +69,8 @@ PODS:
     - React
   - react-native-document-picker (3.2.2):
     - React
+  - react-native-image-picker (1.1.0):
+    - React
   - react-native-webview (7.0.5):
     - React
   - React-RCTActionSheet (0.60.3):
@@ -118,6 +120,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -167,6 +170,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -214,6 +219,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 817b64f3c8a807f09d78620f4f505868d89b26f3
   react-native-camera: 68f8e8c8ef3a4a428faee10944ffb8ef336f9911
   react-native-document-picker: 94a07ce0494c559e2ae9fa86621d6c624d810fec
+  react-native-image-picker: 3637d63fef7e32a230141ab4660d3ceb773c824f
   react-native-webview: d244f4de65c152a003de41630ffbc82c40e6b40a
   React-RCTActionSheet: 9c42321fd5652515d706dd722c5a10b1970d7ec8
   React-RCTAnimation: fabb087dde8964c9a835a7fabd0e7e5701787913

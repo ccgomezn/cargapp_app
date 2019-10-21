@@ -25,6 +25,7 @@ export function* verifyPhone(api, action) {
 export function* validatePin(api, action) {
   const { params } = action;
   const response = yield call(api.user.validatePin, params);
+  // console.log(response);
   if (response.ok) {
     // save OK response
     yield put(UserActions.postValidateSuccess(response.data));

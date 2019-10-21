@@ -53,11 +53,13 @@ class Registration extends Component {
       loadingRegister: false,
       error: {},
       datapin: '',
-      modalPin: false, // test
+      modalPin: false,
       loadingPin: false,
       loadingResendPin: false,
       pinErrorCheck: false,
       pinValueCheck: false,
+      loadingLogin: false,
+      msgApi: '',
     };
   }
 
@@ -104,6 +106,7 @@ class Registration extends Component {
       // console.log(data);
       await loginUser(data);
     }
+    this.setState({ loadingLogin: true });
   }
 
   async onRegisterPress() {
@@ -143,7 +146,7 @@ class Registration extends Component {
       const data = {
         user: {
           phone_number: parseInt(fullPhone, 10),
-          mobile_code: parseInt(datapin, 10),
+          mobile_code: datapin,
         },
       };
       // alert(fullPhone);
@@ -219,6 +222,8 @@ class Registration extends Component {
       loadingResendPin,
       pinErrorCheck,
       pinValueCheck,
+      loadingLogin,
+      msgApi,
     } = this.state;
 
     // validate register User
@@ -233,7 +238,6 @@ class Registration extends Component {
           this.setState({ loadingRegister: false });
           // validare Pin
           this.setState({ modalPin: true });
-          // this.onLogin();
         } else if (loadingRegister && user.unprocess) {
           alert('Datos erroneos');
           this.setState({ loadingRegister: false });
@@ -262,9 +266,7 @@ class Registration extends Component {
         if (user.status.user != null) {
           // validate OK
           this.OnHideModal();
-          setTimeout(() => {
-            navigate('documents');
-          }, 2000);
+          this.onLogin();
           this.setState({ loadingPin: false });
         } else if (loadingPin) {
           alert(`pin ${user.status.message}`);
@@ -273,6 +275,7 @@ class Registration extends Component {
       }
     }
 
+    // validate resendPin
     if (loadingResendPin) {
       if (user.error && !user.fetching) {
         alert('error Api');
@@ -286,6 +289,26 @@ class Registration extends Component {
         } else if (loadingResendPin) {
           alert(`pin ${user.status.message}`);
           this.setState({ loadingResendPin: false });
+        }
+      }
+    }
+
+    // verify LoginUser
+    if (loadingLogin) {
+      if (user.error && !user.fetching) {
+        alert('error Api');
+        this.setState({ loadingLogin: false });
+      }
+      if (user.status && !user.fetching) {
+        // console.log(user);
+        if (user.session) {
+          setTimeout(() => {
+            this.setState({ loadingLogin: false });
+            navigate('documents', { userdata: user.info });
+          }, 1500);
+        } else if (loadingLogin && user.unprocess) {
+          // unProccess
+          this.setState({ msgApi: user.status.message, loadingLogin: false });
         }
       }
     }
@@ -328,14 +351,19 @@ class Registration extends Component {
             title="Correo electrónico"
             placeholder="Correo electrónico"
             type="email-address"
-            value={dataemail}
-            onChangeText={value => this.setState({ dataemail: value })}
+            value={dataemail.toLowerCase()}
+            onChangeText={value => this.setState({ dataemail: value.toLowerCase() })}
           />
         </WrapperInputs>
         <WrapperError>
           { error.email ? (
             <TextError>
               {error.email}
+            </TextError>
+          ) : null }
+          { msgApi ? (
+            <TextError>
+              {msgApi}
             </TextError>
           ) : null }
         </WrapperError>
@@ -430,8 +458,6 @@ class Registration extends Component {
     );
   }
 }
-
-// export default Registration;
 
 const mapStateToProps = (state) => {
   const { user } = state;
