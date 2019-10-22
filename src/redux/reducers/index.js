@@ -7,4 +7,5 @@ export default combineReducers({
   countries: require('./CountrieRedux').reducer,
   offers: require('./OffersRedux').reducer,
   vehicles: require('./VehicleRedux').reducer,
+  companies: require('./CompanyRedux').reducer,
 });

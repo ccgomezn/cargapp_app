@@ -6,7 +6,8 @@ import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 import { CountrieTypes } from '../reducers/CountrieRedux';
 import { OffersTypes } from '../reducers/OffersRedux';
-import { VehicleTypes } from "../reducers/VehicleRedux";
+import { VehicleTypes } from '../reducers/VehicleRedux';
+import { CompanyTypes } from "../reducers/CompanyRedux";
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -17,8 +18,9 @@ import {
   loginUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { getOffers } from "./OffersSagas";
-import { getVehicles } from "./VehicleSagas";
+import { getOffers } from './OffersSagas';
+import { getVehicles } from './VehicleSagas';
+import { getCompanies } from './CompanySagas';
 
 /* ----------  API ------------ */
 
@@ -37,6 +39,7 @@ export default function* root() {
     takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
     takeLatest(UserTypes.POST_LOGIN_REQUEST, loginUser, api),
     takeLatest(OffersTypes.GET_OFFERS_REQUEST, getOffers, api),
-    takeLatest(VehicleTypes.GET_VEHICLE_REQUEST, getVehicles, api)
+    takeLatest(VehicleTypes.GET_VEHICLE_REQUEST, getVehicles, api),
+    takeLatest(CompanyTypes.GET_COMPANIES_REQUEST, getCompanies, api),
   ]);
 }
