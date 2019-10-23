@@ -3,19 +3,20 @@
 /*
 
 */
+
 import { call, put, select } from 'redux-saga/effects';
-import CompanyActions from '../reducers/CompanyRedux';
+import ProfileActions from '../reducers/ProfileRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
-export function* getCompanies(api, action) {
+export function* getProfile(api, action) {
   const { params } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.company.getCompanies, params);
-  console.log(response);
+  const response = yield call(api.profile.getProfile, params);
+  console.log(response)
   if (response.ok) {
-    yield put(CompanyActions.getCompaniesSuccess(response.data));
+    yield put(ProfileActions.getProfileSuccess(response.data));
   } else {
-    yield put(CompanyActions.getCompaniesFailure());
+    yield put(ProfileActions.getProfileFailure());
   }
 }

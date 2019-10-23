@@ -78,7 +78,6 @@ class Home extends Component {
     const {
       driver, offers, vehicles, navigation,
     } = this.props;
-    console.log(this.props);
     if (offers.data && vehicles.data) {
       return (
         <MainView>

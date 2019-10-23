@@ -16,6 +16,7 @@ import Input from '../../components/GeneralInput';
 import CardSquareInfo from '../../components/CardSquareInfo';
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
+import ProfileActions from '../../redux/reducers/ProfileRedux';
 
 const itemsAccount = [
   {
@@ -37,6 +38,11 @@ class Profile extends Component {
     };
   }
 
+  componentDidMount() {
+    const { getProfile } = this.props;
+    getProfile();
+  }
+
   onPressButtonPassword() {
     this.setState({ modalPassword: true });
   }
@@ -53,7 +59,7 @@ class Profile extends Component {
   render() {
     const { modalPassword, modalAccount } = this.state;
     const { user } = this.props;
-
+    console.log(this.props)
     return (
       <MainWrapper>
         <ContentInitial>
@@ -188,6 +194,11 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = dispatch => ({
+  getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
+});
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(Profile);
