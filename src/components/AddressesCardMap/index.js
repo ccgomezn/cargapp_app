@@ -11,7 +11,7 @@ import {
   WrapperIcon,
 } from './style';
 
-function AddressesCardMap({ firstAddress, secondAddress, nameAddress }) {
+function AddressesCardMap({ nameCompany, firstAddress, secondAddress, nameAddress }) {
   return (
     <MainWrapper>
       <WrapperCard>
@@ -19,7 +19,7 @@ function AddressesCardMap({ firstAddress, secondAddress, nameAddress }) {
           <Icon />
         </WrapperIcon>
         <WrapperInfo>
-          <BoldText>Ubicación actual</BoldText>
+          <BoldText>{nameCompany}</BoldText>
           <NormalText>{firstAddress}</NormalText>
         </WrapperInfo>
       </WrapperCard>
@@ -38,6 +38,7 @@ function AddressesCardMap({ firstAddress, secondAddress, nameAddress }) {
 }
 
 AddressesCardMap.propTypes = {
+  nameCompany: PropTypes.string.isRequired,
   firstAddress: PropTypes.string.isRequired,
   secondAddress: PropTypes.string.isRequired,
   nameAddress: PropTypes.string.isRequired,

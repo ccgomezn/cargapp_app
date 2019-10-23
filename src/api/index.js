@@ -5,6 +5,7 @@ import Countrie from './Countrie';
 import Offers from './Offers';
 import Vehicles from './Vehicles';
 import Companies from './Company';
+import Profile from './Profile';
 
 /* URL
   'https://api.cargapp.co/api/v1/';
@@ -28,6 +29,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const offers = new Offers(api);
   const vehicle = new Vehicles(api);
   const company = new Companies(api);
+  const profile = new Profile(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -38,6 +40,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     user,
     countrie,
     offers,
+    profile,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.

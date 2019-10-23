@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
-import { MainWrapper, AddressesWrapper } from './style';
 import { connect } from 'react-redux';
+import { MainWrapper, AddressesWrapper } from './style';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
+import OffersActions, {postApplyOfferSuccess} from '../../../redux/reducers/OffersRedux';
 
 class ApplyOffer extends Component {
   constructor() {
@@ -16,16 +17,26 @@ class ApplyOffer extends Component {
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, getCompanies } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     this.setState({ offer: dataOffer });
+    getCompanies();
+  }
+
+  applyOffer(value) {
+    const { user, applyOffer } = this.props;
+    const data = {
+      service_id: value,
+      user_id: user.info.user.id,
+      active: true,
+    };
+    applyOffer(data);
   }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, companies } = this.props;
     const { offer } = this.state;
-    console.log(this.props);
-    if (offer !== null) {
+    if (offer !== null && companies.data !== null) {
       return (
         <MainWrapper>
           <MapView
@@ -45,23 +56,35 @@ class ApplyOffer extends Component {
               title="Origen del viaje"
             />
           </MapView>
-          <AddressesWrapper>
-            <AddressesCardMap
-              secondAddress="Churros 1"
-              nameAddress="Churros 2"
-              firstAddress="Churros 3"
-            />
-          </AddressesWrapper>
-          <CardMapBeginTravel
-            extra="ExTrA"
-            normalText="1 churro"
-            amount={offer.price}
-            onPressBG={() => navigation.goBack()}
-            onPressBW={() => navigation.goBack()}
-            delivery="5 días"
-            company="Los churros S.A.S"
-          />
-
+          {companies.data.map((company) => {
+            if (offer.company_id === company.id) {
+              return (
+                <AddressesWrapper>
+                  <AddressesCardMap
+                    nameCompany={company.name}
+                    firstAddress={company.address}
+                    nameAddress={offer.destination}
+                    secondAddress={offer.destination_address}
+                  />
+                </AddressesWrapper>
+              );
+            }
+          })}
+          {companies.data.map((company) => {
+            if (offer.company_id === company.id) {
+              return (
+                <CardMapBeginTravel
+                  extra={offer.description}
+                  normalText={company.address}
+                  amount={offer.price}
+                  onPressBG={() => this.applyOffer(offer.id)}
+                  onPressBW={() => navigation.goBack()}
+                  delivery="5 días"
+                  company={company.name}
+                />
+              );
+            }
+          })}
         </MainWrapper>
       );
     }
@@ -76,15 +99,17 @@ class ApplyOffer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { vehicles, companies } = state;
+  const { vehicles, companies, user } = state;
   return {
     vehicles,
     companies,
+    user,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
+  applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
 });
 
 

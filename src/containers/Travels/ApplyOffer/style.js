@@ -10,5 +10,5 @@ export const AddressesWrapper = styled.View`
     height: auto;
     padding: 20px;
     position: absolute;
-    top: 30%;
+    bottom: 50%;
 `;
