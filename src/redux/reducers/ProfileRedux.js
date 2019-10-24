@@ -6,6 +6,8 @@ import { createReducer, createActions } from 'reduxsauce';
 export const { Types, Creators } = createActions({
   getProfileRequest: ['params'],
   getProfileSuccess: ['data'],
+  editProfileRequest: ['id', 'data'],
+  editProfileSuccess: ['data'],
   getProfileFailure: null,
 });
 
@@ -18,6 +20,7 @@ export const INITIAL_STATE = Immutable({
   data: null,
   error: false,
   fetching: false,
+  edit: null,
 });
 
 /* ------------------ REDUCERS ------------------ */
@@ -26,6 +29,18 @@ export const getProfileRequest = state => ({
   ...state,
   fetching: true,
   error: false,
+});
+
+export const editProfileRequest = state => ({
+  ...state,
+  fetching: true,
+  error: false,
+});
+
+export const editProfileSuccess = (state, { data }) => ({
+  ...state,
+  fetching: false,
+  edit: data,
 });
 
 export const getProfileSuccess = (state, { data }) => ({
@@ -46,4 +61,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_PROFILE_REQUEST]: getProfileRequest,
   [Types.GET_PROFILE_SUCCESS]: getProfileSuccess,
   [Types.GET_PROFILE_FAILURE]: getProfileFailure,
+  [Types.EDIT_PROFILE_REQUEST]: editProfileRequest,
+  [Types.EDIT_PROFILE_SUCCESS]: editProfileSuccess,
 });

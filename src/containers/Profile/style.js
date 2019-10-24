@@ -193,3 +193,8 @@ export const TextWhite = styled.Text`
   width:100%;
   background-color: #007aff;
 `;
+
+export const WrapperMap = styled.View`
+  width: 100%;
+  height: auto;
+`;

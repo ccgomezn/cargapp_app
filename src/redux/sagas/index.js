@@ -22,7 +22,7 @@ import { countriesActive } from './CountrieSagas';
 import { getOffers, applyOffer } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
 import { getCompanies } from './CompanySagas';
-import { getProfile } from './ProfileSagas';
+import { getProfile, editProfile } from './ProfileSagas';
 
 /* ----------  API ------------ */
 
@@ -45,5 +45,6 @@ export default function* root() {
     takeLatest(CompanyTypes.GET_COMPANIES_REQUEST, getCompanies, api),
     takeLatest(OffersTypes.POST_APPLY_OFFER_REQUEST, applyOffer, api),
     takeLatest(ProfileTypes.GET_PROFILE_REQUEST, getProfile, api),
+    takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api)
   ]);
 }
