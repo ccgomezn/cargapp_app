@@ -4,24 +4,34 @@ import LinearGradient from 'react-native-linear-gradient';
 export const MainWrapper = {
   width: '85%',
   height: '100%',
-  alginSelf: 'flex-end',
   backgroundColor: 'transparent',
 };
 
+export const Dialog = styled.TouchableOpacity`
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-horizontal: 4%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-bottom: 4%;
+`;
+
 export const Wrapper = styled(LinearGradient)`
     width: 100%;
-    height: 15%;
+    height: 18%;
     border-radius: 10px;
-    margin-top: 170%;
     flex-direction: row;
     padding: 10px;
+    align-self: flex-end;
 `;
 
 export const WrapperIcon = styled.View`
   justify-content: center;
   align-items: center;
   flex: 3;
-  height: 95px;
+  height: 100%;
   margin-right: 15px;
   opacity: 0.7;
   background-color: white;
@@ -38,7 +48,8 @@ export const Icon = styled.Image`
 export const WrapperInformation = styled.View`
   flex: 8;
   height: 100%;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
 `;
 
 export const BoldText = styled.Text`
@@ -46,7 +57,6 @@ export const BoldText = styled.Text`
   font-size: 16px;
   font-weight: bold;
   color: white;
-  margin-top: 5%;
 `;
 
 export const NormalText = styled.Text`
