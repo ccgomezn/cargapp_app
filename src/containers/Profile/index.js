@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Animated, Easing } from 'react-native';
 import EmptyDialog from '../../components/EmptyDialog';
 import InputPicker from '../../components/InputPicker';
 import {
@@ -15,10 +15,10 @@ import {
 } from './style';
 
 import Input from '../../components/GeneralInput';
-import CardSquareInfo from '../../components/CardSquareInfo';
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
+import PopUpNotification from '../../components/PopUpNotifications';
 
 const itemsAccount = [
   {
@@ -40,6 +40,7 @@ class Profile extends Component {
       name: '',
       lastName: '',
       fetch: true,
+      notification: false,
     };
   }
 
@@ -70,11 +71,13 @@ class Profile extends Component {
       },
     };
     editProfile(id, data);
+    this.componentDidMount();
+    this.setState({ notification: true });
   }
 
   render() {
     const {
-      modalPassword, modalAccount, name, lastName, fetch,
+      modalPassword, modalAccount, name, lastName, fetch, notification,
     } = this.state;
     const { profile } = this.props;
     console.log(this.props);
@@ -118,20 +121,10 @@ class Profile extends Component {
 
                 <ContentView>
                   <RowContent style={{ marginRight: '2%' }}>
-                    <CardSquareInfo
-                      value="1.233"
-                      description="Viajes Realizados"
-                            // eslint-disable-next-line global-require
-                      icon={require('../../icons/check-gradient.png')}
-                    />
+                    <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
                   </RowContent>
                   <RowContent>
-                    <CardSquareInfo
-                      value="9,5/10"
-                            // eslint-disable-next-line global-require
-                      icon={require('../../icons/map-gradient.png')}
-                      description="Calificación"
-                    />
+                    <ButtonWhite border content="Cuenta Bancaria" press={() => this.onPressButtonAccount()} />
                   </RowContent>
                 </ContentView>
 
@@ -150,21 +143,22 @@ class Profile extends Component {
                     <Input title="Celular" holder="Ingrese número de documento" value={data.profile.phone ? data.profile.phone.slice(2, 12) : data.profile.phone} editable={false} />
                   </WrapperInputs>
                 </ContentForm>
-                <WrapperButtonGradient>
-                  <ButtonWhite border content="Confirmar" press={() => this.confirmProfile(data.profile.id, name, lastName)} />
-                </WrapperButtonGradient>
                 <WrapperButtonsBottom>
                   <WrapperButtonGradient>
-                    <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
-                  </WrapperButtonGradient>
-                  <WrapperButtonGradient>
-                    <ButtonGradient content="Cuenta Bancaria" press={() => this.onPressButtonAccount()} />
+                    <ButtonGradient content="Confirmar" press={() => this.confirmProfile(data.profile.id, name, lastName)} />
                   </WrapperButtonGradient>
                 </WrapperButtonsBottom>
               </SecondWrapper>
             </WrapperMap>
           ))}
-
+          {notification && (
+            <PopUpNotification
+              subText="Tus cambios se han realizado correctamente"
+              mainText="¡Muy bien!"
+              onTouchOutside={() => this.setState({ notification: false })}
+              visible={notification}
+            />
+          )}
           <EmptyDialog
             visible={modalAccount}
           >
