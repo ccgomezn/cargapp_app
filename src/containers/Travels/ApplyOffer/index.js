@@ -6,13 +6,18 @@ import { MainWrapper, AddressesWrapper } from './style';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
-import OffersActions, {postApplyOfferSuccess} from '../../../redux/reducers/OffersRedux';
+import OffersActions, { postApplyOfferSuccess } from '../../../redux/reducers/OffersRedux';
+import PopUpNotification from '../../../components/PopUpNotifications';
 
 class ApplyOffer extends Component {
   constructor() {
     super();
     this.state = {
       offer: null,
+      successNotification: false,
+      errorFalse: false,
+      fetchError: false,
+      fetchSuccess: false,
     };
   }
 
@@ -31,11 +36,20 @@ class ApplyOffer extends Component {
       active: true,
     };
     applyOffer(data);
+    this.setState({ fetch: true });
   }
 
   render() {
-    const { navigation, companies } = this.props;
-    const { offer } = this.state;
+    const { offers, navigation, companies } = this.props;
+    const {
+      offer, successNotification, errorFalse, fetch,
+    } = this.state;
+    if (offers.service !== null && fetch) {
+      this.setState({ successNotification: true, fetch: false });
+    }
+    if (offers.service === null && fetch) {
+      this.setState({ errorFalse: true, fetch: false });
+    }
     if (offer !== null && companies.data !== null) {
       return (
         <MainWrapper>
@@ -56,6 +70,22 @@ class ApplyOffer extends Component {
               title="Origen del viaje"
             />
           </MapView>
+          {successNotification && (
+          <PopUpNotification
+            subText="Pronto te darémos respuesta..."
+            mainText="Has aplicado correctamente a la oferta"
+            onTouchOutside={() => this.setState({ successNotification: false })}
+            visible={successNotification}
+          />
+          )}
+          {errorFalse && (
+          <PopUpNotification
+            subText="Intentalo de nuevo más tarde"
+            mainText="Ups! Algo ha fallado"
+            onTouchOutside={() => this.setState({ errorFalse: false })}
+            visible={errorFalse}
+          />
+          )}
           {companies.data.map((company) => {
             if (offer.company_id === company.id) {
               return (
@@ -99,11 +129,14 @@ class ApplyOffer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { vehicles, companies, user } = state;
+  const {
+    vehicles, companies, user, offers,
+  } = state;
   return {
     vehicles,
     companies,
     user,
+    offers,
   };
 };
 

@@ -35,15 +35,15 @@ class PopUpNotification extends Component {
 
   render() {
     const {
-      visible, onTouchOutside, mainText, subText,
+      onTouchOutside, mainText, subText,
     } = this.props;
     const opacity = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 100],
+      inputRange: [1, 10],
+      outputRange: [1, 100],
     });
     return (
       <Animated.View style={{
-        opacity, height: '100%', width: '100%', position: 'absolute',
+        opacity, height: '100%', width: '100%', position: 'absolute', zIndex: 1000,
       }}
       >
         <Dialog
