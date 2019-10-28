@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
+import ButtonWhite from '../../components/ButtonWhite';
 
 // action - reducers
 import UserActions from '../../redux/reducers/UserRedux';
@@ -160,26 +161,26 @@ class Registration extends Component {
           </TextBlue>
         </TextBlack>
         <TextGray>El mejor aliado para su operación</TextGray>
-
-        <WrapperSection>
+        <WrapperSection style={{ marginTop: 10 }}>
           <SectionRow style={{ width: '100%' }}>
             <WrapperInputs>
               <Input
                 title="Celular"
-                holder="Ingrese número de documento"
-                editable={false}
+                holder="Ingrese número de contacto"
+                onChangeText={(value) => this.setState({ dataphone: value })}
                 value={dataphone}
+                type="numeric"
               />
               <Input
                 title="Correo electrónico"
-                holder=""
+                holder="Ingrese Email"
                 onChangeText={(value) => this.setState({ dataemail: value.toLowerCase() })}
                 value={dataemail.toLowerCase()}
                 type="email-address"
               />
               <Input
                 title="Contraseña"
-                holder=""
+                holder="Ingrese contraseña"
                 isPassword
                 onChangeText={(value) => this.setState({ datapass: value })}
                 value={datapass}
@@ -204,10 +205,16 @@ class Registration extends Component {
 
         <WrapperButtonsBottom>
           <WrapperButtonGradient>
+            <ButtonWhite
+              border={{ borderWidth: 1, borderStyle: 'inset' }}
+              content="Registrarse"
+              press={() => navigate('Register')}
+            />
+          </WrapperButtonGradient>
+          <WrapperButtonGradient>
             <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
-
         <TextLoad>
           { loading ? (
             'loading...'

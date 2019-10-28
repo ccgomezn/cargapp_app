@@ -68,16 +68,16 @@ class Registration extends Component {
             style={pressState ? containerPress : null}
           >
             {pressState && <Check source={require('../../Images/Check.png')} />}
-            <Svg source={require('../../Images/group-2.svg')} />
+            <Svg source={pressState ? require('../../Images/icon_truck_sel.svg') : require('../../Images/icon_truck.svg')} />
             <ButtonText
               style={pressState ? TextPress : null}
             >
-              Conductor
+              Dueño de camión
             </ButtonText>
             <ButtonSubText
               style={pressState ? TextPress : null}
             >
-              Más trabajo más ingresos
+              Trabaje y cuide su vehículo
             </ButtonSubText>
           </WrapperButton>
           <WrapperButton
@@ -85,7 +85,7 @@ class Registration extends Component {
             style={pressStateTwo ? containerPress : null}
           >
             {pressStateTwo && <Check source={require('../../Images/Check.png')} />}
-            <Svg source={require('../../Images/group-3.svg')} />
+            <Svg source={pressStateTwo ? require('../../Images/icon_driver_sel.svg') : require('../../Images/icon_driver.svg')} />
             <ButtonText
               style={pressStateTwo ? TextPress : null}
             >
@@ -99,7 +99,6 @@ class Registration extends Component {
           </WrapperButton>
         </WrapperButtons>
         <WrapperInputs>
-          <Input title="Nombre" />
           <Input title="Correo electrónico" />
           <Input title="Contraseña" />
         </WrapperInputs>

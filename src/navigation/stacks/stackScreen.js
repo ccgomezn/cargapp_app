@@ -11,7 +11,8 @@ import ScreenPoints from '../../containers/Points';
 import ScreenAnalytics from '../../containers/Analytics';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
-import ScreenSignUp from '../../containers/Registration';
+// import ScreenSignUp from '../../containers/Registration';
+import ScreenRegister from '../../containers/Registration/Register';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
@@ -103,11 +104,12 @@ export const homeStackNavigator = createStackNavigator({
 
 export const SignUpStackNavigator = createStackNavigator({
   Login: { screen: ScreenLogin },
-  SignUp: { screen: ScreenSignUp },
-  Vehicle: { screen: ScreenVehicle },
-  personal: { screen: ScreenPersonalData },
-  documents: { screen: ScreenDocuments },
+  // SignUp: { screen: ScreenSignUp },
   LoginEmail: { screen: ScreenLoginEmail },
+  Register: { screen: ScreenRegister },
+  Vehicle: { screen: ScreenVehicle },
+  Personal: { screen: ScreenPersonalData },
+  Documents: { screen: ScreenDocuments },
 }, {
   headerMode: 'none',
 });

@@ -191,7 +191,7 @@ class Registration extends Component {
           this.setState({ loading: false });
         } else if (loading) {
           const fullPhone = codeCountrie.concat(dataphone);
-          navigate('personal', { phone: fullPhone });
+          navigate('Personal', { phone: fullPhone });
           this.setState({ loading: false });
         }
       }

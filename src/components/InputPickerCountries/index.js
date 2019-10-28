@@ -81,24 +81,6 @@ class InputPickercountries extends React.Component {
         >
           <ScrollCountries>
             <MainCountries>
-              <ButtonCountrie onPress={() => this.onPressTouch('51', 'PE')}>
-                <IconFlag
-                  source={{ uri: countries['PE'].flag }}
-                />
-                <TextFlag> Perú (+51)</TextFlag>
-              </ButtonCountrie>
-              <ButtonCountrie onPress={() => this.onPressTouch('56', 'CL')}>
-                <IconFlag
-                  source={{ uri: countries['CL'].flag }}
-                />
-                <TextFlag> Chile (+56)</TextFlag>
-              </ButtonCountrie>
-              <ButtonCountrie onPress={() => this.onPressTouch('33', 'FR')}>
-                <IconFlag
-                  source={{ uri: countries['FR'].flag }}
-                />
-                <TextFlag> Francia (+33)</TextFlag>
-              </ButtonCountrie>
               {listdata.data.map((dtcountrie) => {
                 const fullcontent = `${dtcountrie.name} (+${dtcountrie.code})`;
                 const cioc = dtcountrie.cioc.slice(0, 2);
