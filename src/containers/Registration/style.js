@@ -5,6 +5,7 @@ export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
   padding: 5%;
+  background-color: white;
 `;
 
 export const TextBlack = styled.Text`
@@ -48,6 +49,7 @@ export const TextError = styled.Text`
   padding: 12px 6px;
   color: #fff;
   border-radius: 6px;
+  margin-bottom: 2px;
 `;
 
 export const TextLoad = styled.Text`
@@ -67,16 +69,18 @@ export const SvgUri = styled.Image`
   height: 45px;
   resize-mode: stretch;
   align-self: center;
-  margin-bottom: 3%;
+  margin-top: 1%;
 `;
 
 export const WrapperButtons = styled.View`
   width: 100%;
   flex-direction: row;
+  display: flex;
   height: auto;
   justify-content: space-between;
   align-items: center;
-  margin-vertical: 5%;
+  margin-top: 10%;
+  margin-bottom: 0%;
 `;
 
 export const WrapperButtonsBottom = styled.View`
@@ -150,7 +154,7 @@ export const Check = styled.Image`
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
-  margin-top: 5%;
+  margin-top: 3%;
   margin-bottom: 5%;
 `;
 

@@ -14,12 +14,23 @@ export const MainWrapper = styled.View`
   padding: 5px;
   padding-left: 10px;
   justify-content: space-between;
-  bottom: 0;
+  bottom: 4px;
 `;
 
 export const disabledInput = {
   backgroundColor: '#ecf0f1',
   borderBottomColor: '#fff',
+};
+
+export const errorInput = {
+  borderLeftWidth: 1,
+  borderLeftColor: '#ff647c',
+  borderTopWidth: 1,
+  borderTopColor: '#ff647c',
+  borderBottomWidth: 1,
+  borderBottomColor: '#ff647c',
+  borderRightWidth: 1,
+  borderRightColor: '#ff647c',
 };
 
 export const Text = styled.Text` 
@@ -41,6 +52,6 @@ export const Input = styled.TextInput`
 `;
 
 export const lineActive = {
-  borderLeftWidth: 1.5,
+  borderLeftWidth: 1.2,
   borderLeftColor: 'purple',
 };

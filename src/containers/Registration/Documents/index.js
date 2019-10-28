@@ -42,7 +42,7 @@ class Registration extends Component {
         { id: '4', status: 'correct' },
         { id: '5', status: 'correct' },
         { id: '7', status: 'correct' },
-        { id: '8', status: 'fail' },
+        { id: '8', status: 'correct' },
       ],
       document_load: '',
     };
@@ -130,17 +130,19 @@ class Registration extends Component {
     const { listStatus } = this.state;
     const { navigate } = this.props.navigation;
     let countok = 0;
+    let countfail = listStatus.length;
     this.setState({ error: null });
     // validate status correct
     listStatus.forEach((element) => {
       if (element.status === 'correct') {
         countok += 1;
+        countfail -= 1;
       }
     });
     if (countok === 4) {
-      navigate('ScreenHome');
+      navigate('Personal');
     } else {
-      this.setState({ error: `Faltan (${countok}) documentos por subir` });
+      this.setState({ error: `Faltan (${countfail}) documentos por subir` });
     }
   }
 
@@ -174,7 +176,8 @@ class Registration extends Component {
         });
       }
       if (document.status && !document.fetching) {
-        if (document.status) {
+        // console.log(document);
+        if (document.status && !document.unprocess) {
           // register ok
           oldList[document_load].status = 'correct';
           this.setState({ listStatus: oldList, loadingRegister: false });
@@ -187,8 +190,8 @@ class Registration extends Component {
     }
 
     return (
-      <MainWrapper contentContainerStyle={{ flex: 1 }}>
-        <WrapperButtons style={{ justifyContent: 'center', marginVertical: 0, marginBottom: '3%' }}>
+      <MainWrapper>
+        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '3%' }}>
           <ArrowBack url={() => goBack()} />
           <SvgUri source={require('../../../Images/Logo3x.png')} />
         </WrapperButtons>
@@ -233,7 +236,7 @@ class Registration extends Component {
             <Card
               logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
               background="white"
-              mainText="Cedúla de ciudadania"
+              mainText="Cédula de ciudadania"
               subText="(Cara frontal)"
               icon
               status={listStatus[2].status}
@@ -246,7 +249,7 @@ class Registration extends Component {
             <Card
               logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
               background="white"
-              mainText="Cedúla de ciudadania"
+              mainText="Cédula de ciudadania"
               subText="(Cara trasera)"
               icon
               status={listStatus[3].status}
