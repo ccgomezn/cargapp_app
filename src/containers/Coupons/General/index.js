@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { MainWrapper } from './style';
 import CardCoupons from '../../../components/CardCoupons';
+import CouponsActions from '../../../redux/reducers/CouponsRedux';
 
-export default class General extends Component {
+class General extends Component {
   constructor() {
     super();
     this.state = {};
   }
 
+  componentDidMount() {
+    const { getCoupons } = this.props;
+    getCoupons();
+  }
+
   render() {
     const { navigation } = this.props;
+    console.log(this.props);
     return (
       <MainWrapper>
         <CardCoupons
@@ -30,3 +38,17 @@ export default class General extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const { coupons } = state;
+  return coupons;
+};
+
+const mapDispatchToProps = dispatch => ({
+  getCoupons: params => dispatch(CouponsActions.getCouponsRequest(params)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(General);

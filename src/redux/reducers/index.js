@@ -9,4 +9,5 @@ export default combineReducers({
   vehicles: require('./VehicleRedux').reducer,
   companies: require('./CompanyRedux').reducer,
   profile: require('./ProfileRedux').reducer,
+  coupons: require('./CouponsRedux').reducer,
 });
