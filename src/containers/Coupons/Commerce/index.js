@@ -16,7 +16,7 @@ class Commerce extends Component {
   constructor() {
     super();
     this.state = {
-      sliderActive: 1,
+      sliderActive: 0,
     };
   }
 
@@ -39,14 +39,14 @@ class Commerce extends Component {
 
   render() {
     const { sliderActive } = this.state;
-    const { navigation, coupons } = this.props;
+    const { navigation, data } = this.props;
     console.log(this.props);
-    if (coupons !== null) {
+    if (data !== null) {
       return (
         <MainWrapper>
           <WrapperCarousel>
             <Carousel
-              data={coupons.data}
+              data={data}
               renderItem={this.renderItem}
               ref={(c) => { this._carousel = c; }}
               sliderWidth={Width}
@@ -66,7 +66,7 @@ class Commerce extends Component {
           />
           <WrapperButton>
             <ButtonGradient
-              press={() => navigation.navigate('DetailsCoupons')}
+              press={() => navigation.navigate('DetailsCoupons', { idItem: data[sliderActive] })}
               content="Obtener cupón"
               disabled={false}
             />
