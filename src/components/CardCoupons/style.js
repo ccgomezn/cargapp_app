@@ -41,6 +41,8 @@ export const Button = styled.TouchableOpacity`
     background-color: white;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    right: 0;
 `;
 
 export const BlueText = styled.Text`

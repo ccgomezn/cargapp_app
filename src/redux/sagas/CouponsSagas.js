@@ -13,9 +13,21 @@ export function* getCoupons(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.coupons.getCoupons, params);
-  console.log(response);
   if (response.ok) {
     yield put(CouponsActions.getCouponsSuccess(response.data));
+  } else {
+    yield put(CouponsActions.couponsFailure());
+  }
+}
+
+export function* postCoupon(api, action) {
+  const { data } = action
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.coupons.postCoupon, data);
+  console.log(response);
+  if (response.ok) {
+    yield put(CouponsActions.postCouponsSuccess(response.data));
   } else {
     yield put(CouponsActions.couponsFailure());
   }

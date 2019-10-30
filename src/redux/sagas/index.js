@@ -24,7 +24,7 @@ import { getOffers, applyOffer } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
 import { getCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
-import { getCoupons } from './CouponsSagas';
+import { getCoupons, postCoupon } from './CouponsSagas';
 
 /* ----------  API ------------ */
 
@@ -49,5 +49,6 @@ export default function* root() {
     takeLatest(ProfileTypes.GET_PROFILE_REQUEST, getProfile, api),
     takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api),
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
+    takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),
   ]);
 }

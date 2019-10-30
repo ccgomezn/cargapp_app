@@ -17,7 +17,6 @@ class General extends Component {
 
   render() {
     const { navigation } = this.props;
-    console.log(this.props);
     return (
       <MainWrapper>
         <CardCoupons
