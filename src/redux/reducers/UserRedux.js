@@ -42,6 +42,14 @@ export const INITIAL_STATE = Immutable({
   session: null, // respuesta login
 });
 
+/* ----------------- Selectors ---------------- */
+
+export const AuthSelectors = {
+  getToken: state => state.user.session.access_token,
+};
+
+/* ----------------- Reducers ---------------- */
+
 export const onUserLogin = (state, { data }) => {
   return {
     ...state,

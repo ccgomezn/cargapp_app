@@ -39,10 +39,10 @@ class Registration extends Component {
       visible_error: false,
       loadingRegister: false,
       listStatus: [
-        { id: '4', status: 'correct' },
-        { id: '5', status: 'correct' },
-        { id: '7', status: 'correct' },
-        { id: '8', status: 'correct' },
+        { id: '4', status: '' },
+        { id: '5', status: '' },
+        { id: '7', status: '' },
+        { id: '8', status: '' },
       ],
       document_load: '',
     };
@@ -176,7 +176,6 @@ class Registration extends Component {
         });
       }
       if (document.status && !document.fetching) {
-        // console.log(document);
         if (document.status && !document.unprocess) {
           // register ok
           oldList[document_load].status = 'correct';
@@ -191,9 +190,9 @@ class Registration extends Component {
 
     return (
       <MainWrapper>
-        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '3%' }}>
+        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
           <ArrowBack url={() => goBack()} />
-          <SvgUri source={require('../../../Images/Logo3x.png')} />
+          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
         </WrapperButtons>
         <TextBlack>
           Documentos para

@@ -4,11 +4,15 @@ import PropTypes from 'prop-types';
 // MENU SCREENS
 import ScreenHome from '../../containers/Home';
 import ScreenTravels from '../../containers/Travels';
+import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
 import ScreenMyTravels from '../../containers/MyTravels';
 import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
 import ScreenPoints from '../../containers/Points';
 import ScreenAnalytics from '../../containers/Analytics';
+import ScreenCoupons from '../../containers/Coupons/General';
+import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
+import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 // SIGN UP SCREENS
 import ScreenLogin from '../../containers/Login';
 // import ScreenSignUp from '../../containers/Registration';
@@ -102,6 +106,37 @@ export const homeStackNavigator = createStackNavigator({
   },
 });
 
+export const CouponsStackNavigator = createStackNavigator({
+  MainCoupons: {
+    screen: ScreenCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  CommerceCoupons: {
+    screen: ScreenCommerceCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  DetailsCoupons: {
+    screen: ScreenDetailsCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
 export const SignUpStackNavigator = createStackNavigator({
   Login: { screen: ScreenLogin },
   // SignUp: { screen: ScreenSignUp },
@@ -117,6 +152,16 @@ export const SignUpStackNavigator = createStackNavigator({
 export const viajesStackNavigator = createStackNavigator({
   Second: {
     screen: ScreenTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  ApplyTravels: {
+    screen: ScreenApplyTravels,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,

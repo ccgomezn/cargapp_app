@@ -1,7 +1,7 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-else-return */
 /* eslint-disable global-require */
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-alert */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
@@ -66,7 +66,6 @@ class Registration extends Component {
       dataphone: '',
       dataemail: '',
       datapassword: '',
-      datarol: 15,
       loadingRegister: false,
       error: {},
       datapin: '',
@@ -77,8 +76,9 @@ class Registration extends Component {
       pinValueCheck: false,
       loadingLogin: false,
       msgApi: '',
-      pressState: true,
-      pressStateTwo: false,
+      datarol: 11,
+      pressState: false,
+      pressStateTwo: true,
       invalidphone: false,
       invalidemail: false,
       invalidpass: false,
@@ -86,6 +86,7 @@ class Registration extends Component {
       errorApi: false,
       visibleError: false,
       codeCountrie: '57',
+      msgError: '',
     };
   }
 
@@ -104,11 +105,6 @@ class Registration extends Component {
     this.setState({ datapin: code, pinErrorCheck: true });
   }
 
-  onPressPin() {
-    this.onLoginPress();
-    // this.setState({ modalPin: true });
-  }
-
   onPressResendPin() {
     this.inputCode.reset();
     this.inputCode.focus();
@@ -120,16 +116,13 @@ class Registration extends Component {
     const { loginUser } = this.props;
     const clave = datapassword;
     // validate info
-    if (dataphone != null && dataphone !== ''
-      && dataemail != null && dataemail !== ''
-    ) {
+    if (dataphone != null && dataphone !== '' && dataemail != null && dataemail !== '') {
       const data = {
         user: {
           email: dataemail,
           password: clave,
         },
       };
-
       // console.log(data);
       await loginUser(data);
     }
@@ -178,7 +171,6 @@ class Registration extends Component {
           mobile_code: datapin,
         },
       };
-      // alert(fullPhone);
       await validatePin(data);
     }
     this.setState({ loadingPin: true });
@@ -302,13 +294,15 @@ class Registration extends Component {
       inputValueCheck,
       errorApi,
       visibleError,
+      msgError,
     } = this.state;
 
     // hide Toast
-    if (visibleError || errorApi) {
+    if (visibleError || errorApi || msgError) {
       setTimeout(() => this.setState({
         visibleError: false,
         errorApi: false,
+        msgError: '',
       }), 5000); // hide toast after 5s
     }
 
@@ -366,8 +360,7 @@ class Registration extends Component {
           this.onLogin();
           this.setState({ loadingPin: false });
         } else if (loadingPin) {
-          alert(`pin ${user.status.message}`);
-          this.setState({ loadingPin: false });
+          this.setState({ loadingPin: false, msgError: `pin ${user.status.message}` });
         }
       }
     }
@@ -383,8 +376,7 @@ class Registration extends Component {
           alert('code resend');
           this.setState({ loadingResendPin: false });
         } else if (loadingResendPin) {
-          alert(`pin ${user.status.message}`);
-          this.setState({ loadingResendPin: false });
+          this.setState({ loadingResendPin: false, msgError: `pin ${user.status.message}` });
         }
       }
     }
@@ -411,9 +403,9 @@ class Registration extends Component {
     if (countries.data) {
       return (
         <MainWrapper>
-          <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '3%' }}>
+          <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
             <ArrowBack url={() => goBack()} />
-            <SvgUri source={require('../../../Images/Logo3x.png')} />
+            <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
           <TextBlack>
             Registrate
@@ -431,7 +423,7 @@ class Registration extends Component {
               style={pressState ? containerPress : null}
             >
               {pressState && <Check source={require('../../../Images/Check.png')} />}
-              <Svg source={pressState ? require('../../../Images/icon_truck_sel.svg') : require('../../../Images/icon_truck.svg')} />
+              <Svg source={pressState ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck.svg' }} />
               <ButtonText
                 style={pressState ? TextPress : null}
               >
@@ -448,7 +440,7 @@ class Registration extends Component {
               style={pressStateTwo ? containerPress : null}
             >
               {pressStateTwo && <Check source={require('../../../Images/Check.png')} />}
-              <Svg source={pressStateTwo ? require('../../../Images/icon_driver_sel.svg') : require('../../../Images/icon_driver.svg')} />
+              <Svg source={pressStateTwo ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver.svg' }} />
               <ButtonText
                 style={pressStateTwo ? TextPress : null}
               >
@@ -639,6 +631,16 @@ class Registration extends Component {
             animation
           >
             Los datos son incorrectos, intenta de nuevo
+          </Toast>
+          <Toast
+            visible={msgError !== ''}
+            position={-80}
+            duration={Toast.durations.LONG}
+            opacity={0.8}
+            shadow
+            animation
+          >
+            {msgError}
           </Toast>
         </MainWrapper>
       );

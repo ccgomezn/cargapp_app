@@ -5,10 +5,12 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 
 import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
+import ButtonLink from '../../components/ButtonLink';
 
 // action - reducers
 import UserActions from '../../redux/reducers/UserRedux';
@@ -28,13 +30,13 @@ import {
   WrapperSection,
   SectionRow,
   WrapperError,
+  WrapperButtonWhite,
 } from '../Registration/style';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
-      dataphone: '',
       dataemail: '',
       datapass: '',
       loading: false,
@@ -50,7 +52,7 @@ class Registration extends Component {
     const { navigation } = this.props;
     const dtphone = navigation.getParam('phone', '');
     if (dtphone !== '') {
-      this.setState({ dataphone: dtphone });
+      // this.setState({ dataphone: dtphone });
     }
   }
 
@@ -102,7 +104,6 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     const {
-      dataphone,
       loading,
       dataemail,
       datapass,
@@ -164,13 +165,13 @@ class Registration extends Component {
         <WrapperSection style={{ marginTop: 10 }}>
           <SectionRow style={{ width: '100%' }}>
             <WrapperInputs>
-              <Input
+              {/* <Input
                 title="Celular"
                 holder="Ingrese número de contacto"
                 onChangeText={(value) => this.setState({ dataphone: value })}
                 value={dataphone}
                 type="numeric"
-              />
+              /> */}
               <Input
                 title="Correo electrónico"
                 holder="Ingrese Email"
@@ -186,6 +187,12 @@ class Registration extends Component {
                 value={datapass}
                 type="default"
               />
+              <WrapperButtonWhite>
+                <ButtonLink
+                  text="Recuperar contraseña"
+                  press={() => navigate('ResetPassword')}
+                />
+              </WrapperButtonWhite>
             </WrapperInputs>
           </SectionRow>
         </WrapperSection>
@@ -215,9 +222,14 @@ class Registration extends Component {
             <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
+
         <TextLoad>
           { loading ? (
-            'loading...'
+            <ActivityIndicator
+              style={{ alignSelf: 'center', height: '100%' }}
+              size="large"
+              color="#0068ff"
+            />
           ) : '' }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>

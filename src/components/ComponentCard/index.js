@@ -32,17 +32,17 @@ function Card({
           <WrapperLogo style={{ flex: 1 }}>
             { status === 'correct' ? (
               <LogoCheck
-                source={require('../../icons/icon-check.png')}
+                source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-check.png' }}
               />
             ) : null }
             { status === 'fail' ? (
               <LogoCheck
-                source={require('../../icons/icon-fail.png')}
+                source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-fail.png' }}
               />
             ) : null }
             { status === 'error' ? (
               <LogoError
-                source={require('../../icons/icon-error.png')}
+                source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-error.png' }}
               />
             ) : null }
             { status === 'loading' ? (

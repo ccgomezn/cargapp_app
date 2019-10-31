@@ -53,7 +53,7 @@ class Registration extends Component {
     const { navigate } = this.props.navigation;
     return (
       <MainWrapper>
-        <SvgUri source={require('../../Images/Logo3x.png')} />
+        <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
         <TextBlack>
             Bienvenido al
           <TextBlue>
@@ -68,7 +68,7 @@ class Registration extends Component {
             style={pressState ? containerPress : null}
           >
             {pressState && <Check source={require('../../Images/Check.png')} />}
-            <Svg source={pressState ? require('../../Images/icon_truck_sel.svg') : require('../../Images/icon_truck.svg')} />
+            <Svg source={pressState ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck.svg' }} />
             <ButtonText
               style={pressState ? TextPress : null}
             >
@@ -85,7 +85,7 @@ class Registration extends Component {
             style={pressStateTwo ? containerPress : null}
           >
             {pressStateTwo && <Check source={require('../../Images/Check.png')} />}
-            <Svg source={pressStateTwo ? require('../../Images/icon_driver_sel.svg') : require('../../Images/icon_driver.svg')} />
+            <Svg source={pressStateTwo ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver.svg' }} />
             <ButtonText
               style={pressStateTwo ? TextPress : null}
             >
