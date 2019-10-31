@@ -7,6 +7,8 @@ import Immutable from 'seamless-immutable';
 export const { Types, Creators } = createActions({
   getOffersRequest: ['params'],
   postApplyOfferRequest: ['service'],
+  getMyOffersRequest: ['params'],
+  getMyOffersSuccess: ['myOffers'],
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
   getOffersFailure: null,
@@ -21,6 +23,7 @@ export const INITIAL_STATE = Immutable({
   fetching: false,
   error: false,
   service: null,
+  myOffers: null,
 });
 
 /* ----------- Reducers ------------- */
@@ -41,13 +44,29 @@ export const postApplyOfferRequest = (state) => {
   };
 };
 
+export const getMyOffersRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const getMyOffersSuccess = (state, { myOffers }) => {
+  return {
+    ...state,
+    myOffers,
+    fetching: false,
+  };
+};
+
 export const postApplyOfferSuccess = (state, { service }) => {
   return {
     ...state,
     fetching: false,
     service,
   };
-}
+};
 
 export const getOffersSuccess = (state, { data }) => {
   return {
@@ -73,4 +92,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_OFFERS_FAILURE]: getOffersFailure,
   [Types.POST_APPLY_OFFER_REQUEST]: postApplyOfferRequest,
   [Types.POST_APPLY_OFFER_SUCCESS]: postApplyOfferSuccess,
+  [Types.GET_MY_OFFERS_REQUEST]: getMyOffersRequest,
+  [Types.GET_MY_OFFERS_SUCCESS]: getMyOffersSuccess,
 });

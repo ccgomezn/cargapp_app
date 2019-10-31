@@ -45,7 +45,7 @@ export const INITIAL_STATE = Immutable({
 /* ----------------- Selectors ---------------- */
 
 export const AuthSelectors = {
-  getToken: state => state.user.session.access_token
+  getToken: state => state.user.session.access_token,
 };
 
 /* ----------------- Reducers ---------------- */

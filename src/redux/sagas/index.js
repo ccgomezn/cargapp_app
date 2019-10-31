@@ -20,7 +20,7 @@ import {
   loginUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { getOffers, applyOffer } from './OffersSagas';
+import { getOffers, applyOffer, getMyOffers } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
 import { getCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
@@ -50,5 +50,6 @@ export default function* root() {
     takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api),
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
     takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),
+    takeLatest(OffersTypes.GET_MY_OFFERS_REQUEST, getMyOffers, api),
   ]);
 }

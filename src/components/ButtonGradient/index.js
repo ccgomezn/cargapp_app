@@ -13,6 +13,7 @@ function ButtonGradient({ content, press, disabled }) {
           disabled
             ? ['#ece9f1', '#ece9f1']
             : ['#007aff', '#00ff77']}
+        style={{ borderRadius: 5 }}
       >
         <Text
           style={{ color: disabled ? '#d0c9d6' : 'white' }}
