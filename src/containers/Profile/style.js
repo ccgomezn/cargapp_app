@@ -131,7 +131,6 @@ export const ContentButton = styled.View`
 // estilos Modal
 export const MainWrapperDialog = styled.View`
   width: 90%;
-  height: 55%;
   padding: 5%;
   padding-bottom: 0px;
   border-radius: 10px;

@@ -188,29 +188,25 @@ class Profile extends Component {
           <EmptyDialog
             visible={modalPassword}
           >
-            <MainWrapperDialog style={{ height: '56%' }}>
-              <ScrollDialog>
-                <ContentDialog>
-                  <TitleBlack>Cambiar tu contraseña</TitleBlack>
-                  <TextGray>
+            <MainWrapperDialog>
+              <TitleBlack>Cambiar tu contraseña</TitleBlack>
+              <TextGray>
                   Ingresa la contraseña anterior.
                   La nueva contraseña deberá tener entre 4 a 6 caracteres.
-                  </TextGray>
-                  <ContentForm>
-                    <WrapperInputs>
-                      <Input title="Clave anterior" holder="Ingrese la contraseña anterior" isPassword />
-                      <Input title="Nueva clave" holder="Ingrese la contraseña nueva" isPassword />
-                      <Input title="Confirmar clave" isPassword />
-                    </WrapperInputs>
-                  </ContentForm>
-                  <TouchModal>
-                    <ButtonGradient content="Confirmar" />
-                  </TouchModal>
-                  <TouchModal>
-                    <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
-                  </TouchModal>
-                </ContentDialog>
-              </ScrollDialog>
+              </TextGray>
+              <ContentForm>
+                <WrapperInputs>
+                  <Input title="Clave anterior" holder="Ingrese la contraseña anterior" isPassword />
+                  <Input title="Nueva clave" holder="Ingrese la contraseña nueva" isPassword />
+                  <Input title="Confirmar clave" isPassword />
+                </WrapperInputs>
+              </ContentForm>
+              <TouchModal>
+                <ButtonGradient content="Confirmar" />
+              </TouchModal>
+              <TouchModal>
+                <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
+              </TouchModal>
             </MainWrapperDialog>
           </EmptyDialog>
         </MainWrapper>

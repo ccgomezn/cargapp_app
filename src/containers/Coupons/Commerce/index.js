@@ -10,7 +10,6 @@ import ButtonGradient from '../../../components/ButtonGradient';
 import CouponsActions from '../../../redux/reducers/CouponsRedux';
 
 const Width = Dimensions.get('window').width;
-const data = [{ Name: 'Starbucks', SubText: '10% en todos los productos' }, { Name: 'McDonal`s', SubText: '50% en los mc combos' }];
 
 class Commerce extends Component {
   constructor() {
@@ -40,7 +39,6 @@ class Commerce extends Component {
   render() {
     const { sliderActive } = this.state;
     const { navigation, data } = this.props;
-    console.log(this.props);
     if (data !== null) {
       return (
         <MainWrapper>
