@@ -26,7 +26,6 @@
 		461B49E108FE40B8B4A71A76 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54EB3A3B684A480B86795447 /* Roboto-BlackItalic.ttf */; };
 		499CE1E7B9EB4BB9AEA23295 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42305B5645FC48D2AE20C31C /* Roboto-Bold.ttf */; };
 		5EB2DDA381DF9D7A1D610C77 /* libPods-CargappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A078C8A91F7BB96EA7162E06 /* libPods-CargappTests.a */; };
-		5EB38BE1DF44399659E543F1 /* libPods-Cargapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A2CAE0F54BCCF51865BD68 /* libPods-Cargapp.a */; };
 		68E4922F3595451696E6139F /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8FE210520A6438A9E2ECDE8 /* rubicon-icon-font.ttf */; };
 		6DDF537F55ED48B0BCFF4447 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEF35BF76F1B4E0FA417FB9A /* Roboto.ttf */; };
 		6F94ABFE992E423A93C727DB /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83B6E1229848489EB5B00F0F /* Roboto-Light.ttf */; };
@@ -47,6 +46,7 @@
 		D89AA60F58644AC99E049757 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 827933E8EBF94292903C6B90 /* Foundation.ttf */; };
 		E2987F9A4A2745D9A32C6070 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4CFD23CBB5948A68AB20E40 /* Roboto-Thin.ttf */; };
 		E59ACE96F31848B6944CD8F3 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F80EF969548C0AC662D46 /* Octicons.ttf */; };
+		E67C7C3D85A829C32555A948 /* libPods-Cargapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A2CAE0F54BCCF51865BD68 /* libPods-Cargapp.a */; };
 		EB950392D5FE46FCA4312A37 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFB22EF8F9944B80B778A10D /* FontAwesome.ttf */; };
 		EBA02830A2CC4015BCEED367 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD090F7BC46C44359514C3EB /* Roboto-Black.ttf */; };
 		FEF6421B03B74A568CAB7E00 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C0BE0970AD7437C809CDAF6 /* Ionicons.ttf */; };
@@ -152,7 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EB38BE1DF44399659E543F1 /* libPods-Cargapp.a in Frameworks */,
+				E67C7C3D85A829C32555A948 /* libPods-Cargapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

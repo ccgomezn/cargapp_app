@@ -1,10 +1,13 @@
-/* eslint-disable global-require */
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-alert */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-else-return */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Toast from 'react-native-root-toast';
+import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
@@ -12,7 +15,7 @@ import ButtonWhite from '../../../components/ButtonWhite';
 import ArrowBack from '../../../components/ArrowBack';
 
 // action - reducers
-import UserActions from '../../../redux/reducers/UserRedux';
+import ProfileActions from '../../../redux/reducers/ProfileRedux';
 
 import {
   MainWrapper,
@@ -34,45 +37,47 @@ class Registration extends Component {
   constructor() {
     super();
     this.state = {
+      iduser: '',
       dataname: '',
       datadocument: '',
       datalastname: '',
       loadingUpdate: false,
+      fetchdata: false,
       error: {},
       msgApi: '',
+      errorApi: false,
     };
   }
 
   componentDidMount() {
-    // const { navigation } = this.props;
-    /* const dtid = navigation.getParam('id', '');
-    if (dtphone !== '') {
-      this.setState({ dataphone: dtphone });
-    } */
+    const { getProfile } = this.props;
+    getProfile();
   }
 
   async onUpdatePress() {
     const {
-      dataname, datalastname, datadocument,
+      dataname, datalastname, datadocument, iduser,
     } = this.state;
-    // const { registerUser } = this.props;
+    const { editProfile } = this.props;
     // validate data
     if (datadocument !== '' || dataname !== '' || datalastname !== '') {
       const data = {};
       const profile = {};
+      const user = {};
       if (datadocument !== '') {
-        profile.identification = parseInt(datadocument, 10);
+        user.identification = parseInt(datadocument, 10);
       }
       if (dataname !== '') {
-        profile.name = dataname;
+        profile.firt_name = dataname;
       }
       if (datalastname !== '') {
-        profile.lastename = datalastname;
+        profile.last_name = datalastname;
       }
       // data
       data.profile = profile;
+      data.user = user;
       // console.log(data);
-      // await registerUser(data);
+      await editProfile(iduser, data);
       this.setState({ loadingUpdate: true });
     } else {
       alert('No hay campos para actualizar');
@@ -88,8 +93,8 @@ class Registration extends Component {
     if (datadocument.length < 10 && datadocument.length >= 1) {
       errormsg.doc = 'Incorrecto: minímo 10 caracteres';
     }
-    if ((dataname.length < 5 && dataname.length >= 1)
-    || (datalastname.length < 5 && datalastname.length >= 1)) {
+    if ((dataname.length < 4 && dataname.length >= 1)
+    || (datalastname.length < 4 && datalastname.length >= 1)) {
       errormsg.name = 'Incorrecto: formato inválido';
     }
 
@@ -101,7 +106,7 @@ class Registration extends Component {
 
   render() {
     // eslint-disable-next-line react/prop-types
-    const { user } = this.props;
+    const { profile } = this.props;
     const { navigate, goBack } = this.props.navigation;
     const {
       datadocument,
@@ -110,118 +115,156 @@ class Registration extends Component {
       error,
       loadingUpdate,
       msgApi,
+      errorApi,
+      fetchdata,
     } = this.state;
 
-    // verify Profile
+    // hide Toast
+    if (errorApi) {
+      setTimeout(() => this.setState({
+        errorApi: false,
+      }), 5000); // hide toast after 5s
+    }
+
+    // Update Profile
     if (loadingUpdate) {
-      if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loadingUpdate: false });
+      // console.log(profile);
+      if (profile.error && !profile.fetching) {
+        this.setState({ loadingUpdate: false, errorApi: true });
       }
-      if (user.status && !user.fetching) {
-        // console.log(user);
-        if (user.session) {
+      if (profile.edit && !profile.fetching) {
+        if (profile.edit.id) {
           setTimeout(() => {
             this.setState({ loadingUpdate: false });
-            navigate('documents', { userdata: user.info });
-          }, 1500);
-        } else if (loadingUpdate && user.unprocess) {
+            navigate('ScreenHome');
+          }, 1200);
+        } else if (loadingUpdate) {
           // unProccess
-          this.setState({ msgApi: user.status.message, loadingUpdate: false });
+          this.setState({ msgApi: 'Datos erroneos', loadingUpdate: false });
         }
       }
     }
 
-    return (
-      <MainWrapper>
-        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '3%' }}>
-          <ArrowBack url={() => goBack()} />
-          <SvgUri source={require('../../../Images/Logo3x.png')} />
-        </WrapperButtons>
-        <TextBlack>
-          Datos
-          <TextBlue>
-            {' '}
-          personales
-          </TextBlue>
-        </TextBlack>
-        <TextGray>
-          Excelente! su camión es perfecto, ahora queremos conocer un poco más de usted
-        </TextGray>
-        <WrapperInputs style={{ marginTop: '6%' }}>
-          <Input
-            title="Número de cédula"
-            holder="Ingrese número de documento"
-            type="numeric"
-            maxLength={12}
-            value={datadocument}
-            onChangeText={value => this.setState({ datadocument: value })}
-          />
-          <Input
-            title="Nombre"
-            holder="Ingrese nombre"
-            type="default"
-            value={dataname}
-            onChangeText={value => this.setState({ dataname: value })}
-          />
-          <Input
-            title="Apellidos"
-            holder="Ingrese apellido"
-            type="default"
-            value={datalastname}
-            onChangeText={value => this.setState({ datalastname: value })}
-          />
-        </WrapperInputs>
-        <WrapperError>
-          { error.name ? (
-            <TextError>
-              {error.name}
-            </TextError>
-          ) : null }
-          { error.doc ? (
-            <TextError>
-              {error.doc}
-            </TextError>
-          ) : null }
-          { msgApi ? (
-            <TextError>
-              {msgApi}
-            </TextError>
-          ) : null }
-        </WrapperError>
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            <ButtonWhite
-              border={{ borderWidth: 1, borderStyle: 'inset' }}
-              content="Omitir"
-              press={() => navigate('ScreenHome')}
+    if (profile.data !== null) {
+      if (!fetchdata) {
+        profile.data.map((data) => {
+          this.setState({ fetchdata: true, iduser: data.profile.id });
+        });
+      }
+      return (
+        <MainWrapper>
+          <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
+            <ArrowBack url={() => goBack()} />
+            <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+          </WrapperButtons>
+          <TextBlack>
+            Datos
+            <TextBlue>
+              {' '}
+            personales
+            </TextBlue>
+          </TextBlack>
+          <TextGray>
+            Excelente!, ahora queremos conocer un poco más de usted.
+          </TextGray>
+          <WrapperInputs style={{ marginTop: '6%' }}>
+            <Input
+              title="Número de cédula"
+              holder="Ingrese número de documento"
+              type="numeric"
+              maxLength={12}
+              value={datadocument}
+              onChangeText={value => this.setState({ datadocument: value })}
             />
-          </WrapperButtonGradient>
-          <WrapperButtonGradient>
-            <ButtonGradient content="Confirmar" press={() => this.validateForm()} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
-        <TextLoad>
-          { loadingUpdate ? (
-            'loading...'
-          ) : null }
-        </TextLoad>
-        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-      </MainWrapper>
-    );
+            <Input
+              title="Nombre"
+              holder="Ingrese nombre"
+              type="default"
+              value={dataname}
+              onChangeText={value => this.setState({ dataname: value })}
+            />
+            <Input
+              title="Apellidos"
+              holder="Ingrese apellido"
+              type="default"
+              value={datalastname}
+              onChangeText={value => this.setState({ datalastname: value })}
+            />
+          </WrapperInputs>
+          <WrapperError>
+            { error.name ? (
+              <TextError>
+                {error.name}
+              </TextError>
+            ) : null }
+            { error.doc ? (
+              <TextError>
+                {error.doc}
+              </TextError>
+            ) : null }
+            { msgApi ? (
+              <TextError>
+                {msgApi}
+              </TextError>
+            ) : null }
+          </WrapperError>
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonWhite
+                border={{ borderWidth: 1, borderStyle: 'inset' }}
+                content="Omitir"
+                press={() => navigate('ScreenHome')}
+              />
+            </WrapperButtonGradient>
+            <WrapperButtonGradient>
+              <ButtonGradient content="Confirmar" press={() => this.validateForm()} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
+          <TextLoad>
+            { loadingUpdate ? (
+              <ActivityIndicator
+                style={{ alignSelf: 'center', height: '100%' }}
+                size="large"
+                color="#0068ff"
+              />
+            ) : null }
+          </TextLoad>
+          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <Toast
+            visible={errorApi}
+            position={-50}
+            duration={Toast.durations.LONG}
+            opacity={0.8}
+            shadow
+            animation
+          >
+            Error, no se pudo procesar la solicitud
+          </Toast>
+        </MainWrapper>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0000ff"
+        />
+      );
+    }
   }
 }
 
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { user, profile } = state;
   return {
     user,
+    profile,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  registerUser: params => dispatch(UserActions.postRegisterRequest(params)),
-  // registerRole: params => dispatch(UserActions.postRegisterRoleRequest(params)),
+  getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
+  editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
 });
 
 export default connect(

@@ -147,9 +147,8 @@ class Registration extends Component {
   isSession() {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
-    // console.log(`is Session:${user.session}`);
     if (user.isLogged) {
-      navigate('ScreenHome');
+      navigate('Personal');// ScreenHome
     }
   }
 
