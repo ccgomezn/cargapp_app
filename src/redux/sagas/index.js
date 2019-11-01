@@ -10,6 +10,7 @@ import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
 import { ProfileTypes } from '../reducers/ProfileRedux';
 import { CouponsTypes } from '../reducers/CouponsRedux';
+import { StatusTypes } from '../reducers/StatusRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -25,6 +26,7 @@ import { getVehicles } from './VehicleSagas';
 import { getCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getCoupons, postCoupon } from './CouponsSagas';
+import { getStatus } from './StatusSagas';
 
 /* ----------  API ------------ */
 
@@ -51,5 +53,6 @@ export default function* root() {
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
     takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),
     takeLatest(OffersTypes.GET_MY_OFFERS_REQUEST, getMyOffers, api),
+    takeLatest(StatusTypes.GET_STATUS_REQUEST, getStatus, api),
   ]);
 }

@@ -16,6 +16,7 @@ import Input from '../../components/GeneralInput';
 import InputSlider from '../../components/InputSlider';
 import InputPicker from '../../components/InputPicker';
 import OffersActions from '../../redux/reducers/OffersRedux';
+import StatusActions from '../../redux/reducers/StatusRedux';
 
 const itemsTipo = [
   {
@@ -54,8 +55,9 @@ class MyTravels extends Component {
   }
 
   componentDidMount() {
-    const { getMyOffers } = this.props;
+    const { getMyOffers, getStatus } = this.props;
     getMyOffers();
+    getStatus();
   }
 
   onPressButton() {
@@ -83,8 +85,9 @@ class MyTravels extends Component {
 
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
-    const { offers } = this.props;
-    if (offers.myOffers !== null) {
+    const { offers, vehicles, status } = this.props;
+    console.log(this.props);
+    if (offers.myOffers !== null && status.data !== null) {
       return (
         <MainView>
           <MainWrapper>
@@ -103,66 +106,28 @@ class MyTravels extends Component {
             </ContentView>
 
             <ContentOffer subcontent>
-              {offers.myOffers.map(allOffers => {
-                return (
-                    <WhiteCardTravels
-                        from={}
-                        to={}
-                        vehicle={}
-                        pay={}
-                        date="Hoy"
-                        status="Cancelado"
-                        statusColor="#e74c3c"
-                        actionbtnPrimary={() => this.onPressButton()}
-                        btnPrimary="Ver detalle"
-                    />
-                )
+              {offers.myOffers.map((allOffers) => {
+                return vehicles.data.map((vehicle) => {
+                  if (vehicle.id === allOffers.vehicle_type_id) {
+                    return status.data.map((statusOffer) => {
+                      if (allOffers.statu_id === statusOffer.id) {
+                        return (
+                          <WhiteCardTravels
+                            from={allOffers.destination}
+                            to={allOffers.origin}
+                            vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
+                            pay={allOffers.price}
+                            date="Hoy"
+                            status={allOffers.statu_id === statusOffer.id && statusOffer.name}
+                            actionbtnPrimary={() => this.onPressButton()}
+                            btnPrimary="Ver detalle"
+                          />
+                        );
+                      }
+                    });
+                  }
+                });
               })}
-              <WhiteCardTravels
-                from="Bogota"
-                to="Medellin"
-                vehicle="Tractomula"
-                pay="2.300.000"
-                date="hoy"
-                actionbtnPrimary=""
-                btnPrimary="Aplicar"
-                btnSecondary
-              />
-
-              <WhiteCardTravels
-                from="Buenaventura"
-                to="Bogotá D.C"
-                vehicle="Tractomula"
-                pay="2.300.000"
-                date="22/22/20"
-                status="En espera"
-                actionbtnPrimary={() => this.onPressButton()}
-                btnPrimary="Ver detalle"
-              />
-
-              <WhiteCardTravels
-                from="Buenaventura"
-                to="Bogotá D.C"
-                vehicle="Tractomula"
-                pay="2.300.000"
-                date="Hoy"
-                status="Cancelado"
-                statusColor="#e74c3c"
-                actionbtnPrimary=""
-                btnPrimary="Ver detalle"
-              />
-
-              <WhiteCardTravels
-                from="Buenaventura"
-                to="Bogotá D.C"
-                vehicle="Tractomula"
-                pay="2.300.000"
-                date="Ayer"
-                status="Realizado"
-                statusColor="#2ecc71"
-                actionbtnPrimary=""
-                btnPrimary="Ver detalle"
-              />
             </ContentOffer>
 
             <PopUpDialog
@@ -229,15 +194,20 @@ class MyTravels extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { offers, user } = state;
+  const {
+    offers, user, vehicles, status,
+  } = state;
   return {
     offers,
     user,
+    vehicles,
+    status,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
+  getStatus: () => dispatch(StatusActions.getStatusRequest()),
 });
 
 export default connect(
