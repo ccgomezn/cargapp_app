@@ -42,6 +42,14 @@ export const INITIAL_STATE = Immutable({
   session: null, // respuesta login
 });
 
+/* ----------------- Selectors ---------------- */
+
+export const AuthSelectors = {
+  getToken: state => state.user.session.access_token,
+};
+
+/* ----------------- Reducers ---------------- */
+
 export const onUserLogin = (state, { data }) => {
   return {
     ...state,
@@ -93,6 +101,7 @@ export const postValidateSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    info: data,
   };
 };
 

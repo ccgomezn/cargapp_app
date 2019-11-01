@@ -5,6 +5,7 @@ export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
   padding: 5%;
+  background-color: white;
 `;
 
 export const TextBlack = styled.Text`
@@ -34,29 +35,25 @@ export const TextGray = styled.Text`
 
 export const WrapperError = styled.View`
   font-size: 14px;
-  letter-spacing: -0.3px;
-  margin-bottom: 2%;
+  letter-spacing: -0.4px;
+  margin-bottom: 1%;
 `;
 
 export const TextError = styled.Text`
-  opacity: 0.8;
+  opacity: 0.95;
   font-family: Roboto;
-  font-weight: normal;
+  font-weight: 600;
   font-style: normal;
-  letter-spacing: -0.3px;
-  background-color: #d3e5ff;
-  padding: 10px 5px;
-  color: #007dfc;
-  border-radius: 4px;
+  letter-spacing: -0.5px;
+  background-color: #ff2557; //#d3e5ff;
+  padding: 10px 6px;
+  color: #fff;
+  border-radius: 6px;
+  margin-bottom: 2px;
 `;
 
 export const TextLoad = styled.Text`
   opacity: 0.8;
-  font-family: Roboto;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  letter-spacing: -0.3px;
   color: #ff647c;
   align-self: center;
   text-align: center;
@@ -67,16 +64,18 @@ export const SvgUri = styled.Image`
   height: 45px;
   resize-mode: stretch;
   align-self: center;
-  margin-bottom: 3%;
+  margin-top: 0;
 `;
 
 export const WrapperButtons = styled.View`
   width: 100%;
   flex-direction: row;
+  display: flex;
   height: auto;
   justify-content: space-between;
   align-items: center;
-  margin-vertical: 5%;
+  margin-top: 10%;
+  margin-bottom: 0%;
 `;
 
 export const WrapperButtonsBottom = styled.View`
@@ -86,6 +85,7 @@ export const WrapperButtonsBottom = styled.View`
   justify-content: flex-end;
   padding-bottom: 10px;
   margin-top: 2px;
+  margin-bottom: 4px;
 `;
 
 export const WrapperButton = styled.TouchableOpacity`
@@ -144,14 +144,14 @@ export const Check = styled.Image`
   position: absolute;
   resize-mode: stretch;
   top: -10px;
-  right: -5px;
+  right: -10px;
 `;
 
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin-top: 3%;
+  margin-bottom: 2%;
 `;
 
 export const TextTerms = styled.Text`
@@ -168,6 +168,12 @@ export const WrapperButtonGradient = styled.View`
   width: 35%;
   height: 100%;
   margin-left: 3%;
+`;
+
+export const WrapperButtonWhite = styled.View`
+  width: 100%;
+  height: auto;
+  margin-vertical: 2px;
 `;
 
 export const WrapperSocialButtons = styled.View`
@@ -295,7 +301,6 @@ export const WrapperSection = styled.View`
   flex-direction: row;
   height: auto;
   margin-top: 5%;
-  margin-bottom: 2%;
 `;
 
 export const SectionRow = styled.View`

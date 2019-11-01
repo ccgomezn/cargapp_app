@@ -5,9 +5,12 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 
 import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
+import ButtonWhite from '../../components/ButtonWhite';
+import ButtonLink from '../../components/ButtonLink';
 
 // action - reducers
 import UserActions from '../../redux/reducers/UserRedux';
@@ -27,13 +30,13 @@ import {
   WrapperSection,
   SectionRow,
   WrapperError,
+  WrapperButtonWhite,
 } from '../Registration/style';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
-      dataphone: '',
       dataemail: '',
       datapass: '',
       loading: false,
@@ -49,7 +52,7 @@ class Registration extends Component {
     const { navigation } = this.props;
     const dtphone = navigation.getParam('phone', '');
     if (dtphone !== '') {
-      this.setState({ dataphone: dtphone });
+      // this.setState({ dataphone: dtphone });
     }
   }
 
@@ -101,7 +104,6 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     const {
-      dataphone,
       loading,
       dataemail,
       datapass,
@@ -160,31 +162,37 @@ class Registration extends Component {
           </TextBlue>
         </TextBlack>
         <TextGray>El mejor aliado para su operación</TextGray>
-
-        <WrapperSection>
+        <WrapperSection style={{ marginTop: 10 }}>
           <SectionRow style={{ width: '100%' }}>
             <WrapperInputs>
-              <Input
+              {/* <Input
                 title="Celular"
-                holder="Ingrese número de documento"
-                editable={false}
+                holder="Ingrese número de contacto"
+                onChangeText={(value) => this.setState({ dataphone: value })}
                 value={dataphone}
-              />
+                type="numeric"
+              /> */}
               <Input
                 title="Correo electrónico"
-                holder=""
+                holder="Ingrese Email"
                 onChangeText={(value) => this.setState({ dataemail: value.toLowerCase() })}
                 value={dataemail.toLowerCase()}
                 type="email-address"
               />
               <Input
                 title="Contraseña"
-                holder=""
+                holder="Ingrese contraseña"
                 isPassword
                 onChangeText={(value) => this.setState({ datapass: value })}
                 value={datapass}
                 type="default"
               />
+              <WrapperButtonWhite>
+                <ButtonLink
+                  text="Recuperar contraseña"
+                  press={() => navigate('ResetPassword')}
+                />
+              </WrapperButtonWhite>
             </WrapperInputs>
           </SectionRow>
         </WrapperSection>
@@ -204,13 +212,24 @@ class Registration extends Component {
 
         <WrapperButtonsBottom>
           <WrapperButtonGradient>
+            <ButtonWhite
+              border={{ borderWidth: 1, borderStyle: 'inset' }}
+              content="Registrarse"
+              press={() => navigate('Register')}
+            />
+          </WrapperButtonGradient>
+          <WrapperButtonGradient>
             <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
 
         <TextLoad>
           { loading ? (
-            'loading...'
+            <ActivityIndicator
+              style={{ alignSelf: 'center', height: '100%' }}
+              size="large"
+              color="#0068ff"
+            />
           ) : '' }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>

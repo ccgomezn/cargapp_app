@@ -61,16 +61,14 @@ export default class Travels extends Component {
               <CardSquareInfo
                 value="$850"
                 description="Ganaste en el último viaje."
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/check-gradient.png')}
+                icon={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/check-gradient.svg' }}
               />
             </RowContent>
             <RowContent>
               <CardSquareInfo
                 value="158.3 Km"
                 description="Distancia de tu último viaje."
-                // eslint-disable-next-line global-require
-                icon={require('../../icons/map-gradient.png')}
+                icon={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/map-gradient.svg' }}
               />
             </RowContent>
           </ContentView>
