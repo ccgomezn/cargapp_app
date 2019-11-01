@@ -10,4 +10,5 @@ export default combineReducers({
   companies: require('./CompanyRedux').reducer,
   profile: require('./ProfileRedux').reducer,
   coupons: require('./CouponsRedux').reducer,
+  status: require('./StatusRedux').reducer,
 });
