@@ -4,7 +4,6 @@ import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm, RowContent,
 } from './style';
 import CardSquareInfo from '../../components/CardSquareInfo';
-
 import CardInformationProfile from '../../components/CardInformationProfile';
 
 export default class Analytics extends Component {
@@ -37,16 +36,14 @@ export default class Analytics extends Component {
             <CardSquareInfo
               value="1.233"
               description="Viajes Realizados"
-              // eslint-disable-next-line global-require
-              icon={require('../../icons/check-gradient.png')}
+              icon={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/check-gradient.svg' }}
             />
           </RowContent>
           <RowContent>
             <CardSquareInfo
               value="2.500"
               description="KM recorridos"
-              // eslint-disable-next-line global-require
-              icon={require('../../icons/map-gradient.png')}
+              icon={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/map-gradient.svg' }}
             />
           </RowContent>
         </ContentView>

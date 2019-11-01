@@ -16,14 +16,14 @@ export const WrapperHeader = styled.View`
     height: auto;
     flex-direction: row;
     padding: 10px;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     `;
 
 export const WrapperBody = styled.View`
     width: 100%;
     height: auto;
-    padding: 10px;
+    padding-top: 10px;
     `;
 
 export const WrapperFooter = styled.View`
@@ -35,7 +35,7 @@ export const WrapperFooter = styled.View`
     `;
 
 export const WrapperIcon = styled.View`
-    flex: 2;
+    width: auto;
     justify-content: center;
     align-items: center;
     padding: 10px;
@@ -48,10 +48,11 @@ export const Icon = styled.Image`
     `;
 
 export const WrapperInfo = styled.View`
-    flex: 5;
+    width: auto;
     align-items: flex-start;
     height: auto;
     justify-content: space-between;
+    padding-right: 8%;
     `;
 
 export const BoldText = styled.Text`
@@ -69,7 +70,7 @@ export const NormalText = styled.Text`
     `;
 
 export const TouchableQualification = styled.TouchableOpacity`
-    flex: 3;
+    width: auto;
     justify-content: center;
     align-items: center;
     height: auto;
@@ -85,7 +86,7 @@ export const BlueText = styled.Text`
 export const WrapperColumn = styled.View`
     width: 100%;
     flex-direction: row;
-    padding: 10px;
+    padding-top: 10px;
     `;
 
 export const WrapperInfoBody = styled.View`
@@ -96,7 +97,7 @@ export const WrapperInfoBody = styled.View`
     `;
 
 export const WrapperButton = styled.View`
-    width: 35%;
+    width: auto;
     height: 100%;
     margin-left: 3%;
 `;

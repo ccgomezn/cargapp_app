@@ -1,26 +1,27 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-alert */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-else-return */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import InputCode from 'react-native-input-code';
+import Toast from 'react-native-root-toast';
+import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
 import ButtonWhite from '../../../components/ButtonWhite';
 import ArrowBack from '../../../components/ArrowBack';
-import Dialog from '../../../components/EmptyDialog';
 
 // action - reducers
-import UserActions from '../../../redux/reducers/UserRedux';
+import ProfileActions from '../../../redux/reducers/ProfileRedux';
 
 import {
   MainWrapper,
   TextBlack,
   TextBlue,
   TextGray,
-  SvgUri,
   WrapperInputs,
   WrapperButtonGradient,
   TextTerms,
@@ -28,424 +29,242 @@ import {
   WrapperButtonsBottom,
   TextError,
   TextLoad,
-  IconModal,
-  SvgModal,
-  SvgUriModal,
-  TouchCloseModal,
-  WrapperCloseX,
-  TextModal,
-  MainWrapperDialog,
-  ScrollDialog,
-  ContentDialog,
-  WrapperText,
-  TitleBlack,
-  SubtGray,
-  TouchModal,
   WrapperError,
+  SvgUri,
 } from '../style';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
-      dataphone: '', // '573142412004',
-      dataemail: '', // 'hello@cargapp.co',
-      loadingRegister: false,
+      iduser: '',
+      dataname: '',
+      datadocument: '',
+      datalastname: '',
+      loadingUpdate: false,
+      fetchdata: false,
       error: {},
-      datapin: '',
-      modalPin: false, // test
-      loadingPin: false,
-      loadingResendPin: false,
-      pinErrorCheck: false,
-      pinValueCheck: false,
+      msgApi: '',
+      errorApi: false,
     };
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
-    const dtphone = navigation.getParam('phone', '');
-    if (dtphone !== '') {
-      this.setState({ dataphone: dtphone });
-    }
+    const { getProfile } = this.props;
+    getProfile();
   }
 
-  onFullFill(code) {
-    this.setState({ datapin: code, pinErrorCheck: true });
-  }
-
-  onPressPin() {
-    this.onLoginPress();
-    // this.setState({ modalPin: true });
-  }
-
-  onPressResendPin() {
-    this.inputCode.reset();
-    this.inputCode.focus();
-    this.onResendPin();
-  }
-
-  async onLogin() {
-    const { dataphone, dataemail } = this.state;
-    const { loginUser } = this.props;
-    const lengthphone = dataphone.length;
-    const initlength = lengthphone - 6;
-    const clave = dataphone.slice(initlength, lengthphone);
-    // validate info
-    if (dataphone != null && dataphone !== ''
-      && dataemail != null && dataemail !== ''
-    ) {
-      const data = {
-        user: {
-          email: dataemail,
-          password: clave,
-        },
-      };
-
+  async onUpdatePress() {
+    const {
+      dataname, datalastname, datadocument, iduser,
+    } = this.state;
+    const { editProfile } = this.props;
+    // validate data
+    if (datadocument !== '' || dataname !== '' || datalastname !== '') {
+      const data = {};
+      const profile = {};
+      const user = {};
+      if (datadocument !== '') {
+        user.identification = parseInt(datadocument, 10);
+      }
+      if (dataname !== '') {
+        profile.firt_name = dataname;
+      }
+      if (datalastname !== '') {
+        profile.last_name = datalastname;
+      }
+      // data
+      data.profile = profile;
+      data.user = user;
       // console.log(data);
-      await loginUser(data);
+      await editProfile(iduser, data);
+      this.setState({ loadingUpdate: true });
+    } else {
+      alert('No hay campos para actualizar');
     }
-  }
-
-  async onRegisterPress() {
-    const { dataphone, dataemail } = this.state;
-    const { registerUser } = this.props;
-    const lengthphone = dataphone.length;
-    const initlength = lengthphone - 6;
-    const clave = dataphone.slice(initlength, lengthphone);
-    // validate info
-    if (dataphone != null && dataphone !== ''
-      && dataemail != null && dataemail !== ''
-    // && datadocument != null && datadocument !== ''
-    ) {
-      const data = {
-        user: {
-          email: dataemail,
-          password: clave,
-          password_confirmation: clave,
-          // identification: parseInt(datadocument, 10),
-          phone_number: parseInt(dataphone, 10),
-          role_id: 11,
-        },
-      };
-
-      // console.log(data);
-      await registerUser(data);
-    }
-    this.setState({ loadingRegister: true });
-  }
-
-  async onValidatePin() {
-    const { dataphone, datapin } = this.state;
-    const { validatePin } = this.props;
-
-    if (datapin != null) {
-      const fullPhone = dataphone;
-      const data = {
-        user: {
-          phone_number: parseInt(fullPhone, 10),
-          mobile_code: parseInt(datapin, 10),
-        },
-      };
-      // alert(fullPhone);
-      await validatePin(data);
-    }
-    this.setState({ loadingPin: true });
-  }
-
-  async onResendPin() {
-    const { dataphone } = this.state;
-    const { resendPin } = this.props;
-
-    if (dataphone != null) {
-      const fullPhone = dataphone;
-      const data = {
-        user: {
-          phone_number: parseInt(fullPhone, 10),
-        },
-      };
-      // console.log(data);
-      await resendPin(data);
-    }
-    this.setState({ loadingResendPin: true });
   }
 
   validateForm() {
-    const { dataemail } = this.state;
+    const { dataname, datalastname, datadocument } = this.state;
     const errormsg = {};
-    errormsg.email = '';
+    errormsg.name = '';
     errormsg.doc = '';
     // validate info
-    if (dataemail.length < 8 || dataemail === '') {
-      errormsg.email = 'Incorrecto: valor inválido';
-    }
-    if (dataemail !== '' && !/\S+@\S+\.\S+/.test(dataemail)) {
-      errormsg.email = 'Incorrecto: formato inválido ';
-    }
-    /* if (datadocument.length < 10 || datadocument === '') {
+    if (datadocument.length < 10 && datadocument.length >= 1) {
       errormsg.doc = 'Incorrecto: minímo 10 caracteres';
     }
-    if (datadocument.length === 10 && !/^\d+$/.test(datadocument)) {
-      errormsg.doc = 'Incorrecto: formato inválido';
-    } */
-
-    // console.log(errormsg);
-    this.setState({ error: errormsg });
-
-    if (errormsg.email === '' && errormsg.doc === '') {
-      this.onRegisterPress();
+    if ((dataname.length < 4 && dataname.length >= 1)
+    || (datalastname.length < 4 && datalastname.length >= 1)) {
+      errormsg.name = 'Incorrecto: formato inválido';
     }
-  }
 
-  init() {
-    this.onValidatePin();
-  }
-
-  OnHideModal() {
-    this.setState({ modalPin: false });
+    this.setState({ error: errormsg });
+    if (errormsg.name === '' && errormsg.doc === '') {
+      this.onUpdatePress();
+    }
   }
 
   render() {
     // eslint-disable-next-line react/prop-types
-    const { user } = this.props;
+    const { profile } = this.props;
     const { navigate, goBack } = this.props.navigation;
     const {
-      dataphone,
-      dataemail,
-      datapin,
-      loadingRegister,
+      datadocument,
+      dataname,
+      datalastname,
       error,
-      modalPin,
-      loadingPin,
-      loadingResendPin,
-      pinErrorCheck,
-      pinValueCheck,
+      loadingUpdate,
+      msgApi,
+      errorApi,
+      fetchdata,
     } = this.state;
 
-    // validate register User
-    if (loadingRegister) {
-      if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loadingRegister: false });
-      }
-      if (user.status && !user.fetching) {
-        // console.log(user);
-        if (user.status.id) {
-          this.setState({ loadingRegister: false });
-          // validare Pin
-          this.setState({ modalPin: true });
-          // this.onLogin();
-        } else if (loadingRegister && user.unprocess) {
-          alert('Datos erroneos');
-          this.setState({ loadingRegister: false });
-        }
-      }
+    // hide Toast
+    if (errorApi) {
+      setTimeout(() => this.setState({
+        errorApi: false,
+      }), 5000); // hide toast after 5s
     }
 
-    // validate input pin
-    if (datapin) {
-      if (datapin.length === 4
-        && pinValueCheck === false
-      ) {
-        this.setState({ pinValueCheck: true, pinErrorCheck: false });
-      } else if (datapin.length < 4 && pinValueCheck === true) {
-        this.setState({ pinValueCheck: false });
+    // Update Profile
+    if (loadingUpdate) {
+      // console.log(profile);
+      if (profile.error && !profile.fetching) {
+        this.setState({ loadingUpdate: false, errorApi: true });
       }
-    }
-
-    // validate Pin
-    if (loadingPin) {
-      if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loadingPin: false });
-      }
-      if (user.status && !user.fetching) {
-        if (user.status.user != null) {
-          // validate OK
-          this.OnHideModal();
+      if (profile.edit && !profile.fetching) {
+        if (profile.edit.id) {
           setTimeout(() => {
-            navigate('documents');
-          }, 2000);
-          this.setState({ loadingPin: false });
-        } else if (loadingPin) {
-          alert(`pin ${user.status.message}`);
-          this.setState({ loadingPin: false });
+            this.setState({ loadingUpdate: false });
+            navigate('ScreenHome');
+          }, 1200);
+        } else if (loadingUpdate) {
+          // unProccess
+          this.setState({ msgApi: 'Datos erroneos', loadingUpdate: false });
         }
       }
     }
 
-    if (loadingResendPin) {
-      if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loadingResendPin: false });
+    if (profile.data !== null) {
+      if (!fetchdata) {
+        profile.data.map((data) => {
+          this.setState({ fetchdata: true, iduser: data.profile.id });
+        });
       }
-      if (user.status && !user.fetching) {
-        if (user.status.phone_number) {
-          // send code ok
-          alert('code resend');
-          this.setState({ loadingResendPin: false });
-        } else if (loadingResendPin) {
-          alert(`pin ${user.status.message}`);
-          this.setState({ loadingResendPin: false });
-        }
-      }
-    }
-
-    return (
-      <MainWrapper>
-        <WrapperButtons style={{ justifyContent: 'center', marginVertical: 0, marginBottom: '3%' }}>
-          <ArrowBack url={() => goBack()} />
-          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
-        </WrapperButtons>
-        <TextBlack>
-          Datos
-          <TextBlue>
-            {' '}
-          personales
-          </TextBlue>
-        </TextBlack>
-        <TextGray>
-          Excelente! su camión es perfecto, ahora queremos conocer un poco más de usted
-        </TextGray>
-        <WrapperInputs>
-          <Input
-            title="Celular"
-            holder="Ingrese número de documento"
-            editable={false}
-            value={dataphone}
-          />
-          {/* <Input
-            title="Cedula"
-            holder="Ingrese número de documento"
-            type="numeric"
-            maxLength={10}
-            value={datadocument}
-            onChangeText={value => this.setState({ datadocument: value })}
-          />
-          <TextError>
-            {error.doc}
-          </TextError> */}
-          <Input
-            title="Correo electrónico"
-            placeholder="Correo electrónico"
-            type="email-address"
-            value={dataemail}
-            onChangeText={value => this.setState({ dataemail: value })}
-          />
-        </WrapperInputs>
-        <WrapperError>
-          { error.email ? (
-            <TextError>
-              {error.email}
-            </TextError>
-          ) : null }
-        </WrapperError>
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            {/* eslint-disable-next-line react/prop-types */}
-            <ButtonGradient content="Registrarse" press={() => this.validateForm()} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
-        <TextLoad>
-          { loadingRegister ? (
-            'loading...'
-          ) : null }
-        </TextLoad>
-        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-        <Dialog
-          visible={modalPin}
-          opacity={0.5}
-          animation="top"
-          onTouchOutside={() => this.OnHideModal()}
-        >
-          <IconModal>
-            {/* eslint-disable-next-line global-require */}
-            <SvgModal source={require('../../../icons/oval3x.png')}>
-              <SvgUriModal source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
-            </SvgModal>
-          </IconModal>
-          <TouchCloseModal
-            onPress={() => this.setState({ modalPin: false })}
+      return (
+        <MainWrapper>
+          <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
+            <ArrowBack url={() => goBack()} />
+            <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+          </WrapperButtons>
+          <TextBlack>
+            Datos
+            <TextBlue>
+              {' '}
+            personales
+            </TextBlue>
+          </TextBlack>
+          <TextGray>
+            Excelente!, ahora queremos conocer un poco más de usted.
+          </TextGray>
+          <WrapperInputs style={{ marginTop: '6%' }}>
+            <Input
+              title="Número de cédula"
+              holder="Ingrese número de documento"
+              type="numeric"
+              maxLength={12}
+              value={datadocument}
+              onChangeText={value => this.setState({ datadocument: value })}
+            />
+            <Input
+              title="Nombre"
+              holder="Ingrese nombre"
+              type="default"
+              value={dataname}
+              onChangeText={value => this.setState({ dataname: value })}
+            />
+            <Input
+              title="Apellidos"
+              holder="Ingrese apellido"
+              type="default"
+              value={datalastname}
+              onChangeText={value => this.setState({ datalastname: value })}
+            />
+          </WrapperInputs>
+          <WrapperError>
+            { error.name ? (
+              <TextError>
+                {error.name}
+              </TextError>
+            ) : null }
+            { error.doc ? (
+              <TextError>
+                {error.doc}
+              </TextError>
+            ) : null }
+            { msgApi ? (
+              <TextError>
+                {msgApi}
+              </TextError>
+            ) : null }
+          </WrapperError>
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonWhite
+                border={{ borderWidth: 1, borderStyle: 'inset' }}
+                content="Omitir"
+                press={() => navigate('ScreenHome')}
+              />
+            </WrapperButtonGradient>
+            <WrapperButtonGradient>
+              <ButtonGradient content="Confirmar" press={() => this.validateForm()} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
+          <TextLoad>
+            { loadingUpdate ? (
+              <ActivityIndicator
+                style={{ alignSelf: 'center', height: '100%' }}
+                size="large"
+                color="#0068ff"
+              />
+            ) : null }
+          </TextLoad>
+          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <Toast
+            visible={errorApi}
+            position={-50}
+            duration={Toast.durations.LONG}
+            opacity={0.8}
+            shadow
+            animation
           >
-            <WrapperCloseX>
-              <TextModal>x</TextModal>
-            </WrapperCloseX>
-          </TouchCloseModal>
-          <MainWrapperDialog style={{ height: '45%', width: '80%' }}>
-            <ScrollDialog>
-              <ContentDialog>
-                <WrapperText>
-                  <TitleBlack>Ingresa el pin</TitleBlack>
-                  <SubtGray>
-                    Debes ingresar el pin que te acaba de llegar a tu celular para validar.
-                  </SubtGray>
-                </WrapperText>
-                <InputCode
-                  // eslint-disable-next-line no-return-assign
-                  ref={ref => (this.inputCode = ref)}
-                  length={4}
-                  onChangeCode={code => this.onFullFill(code)}
-                  onFullFill={null}
-                  codeTextStyle={{
-                    color: '#0068ff',
-                  }}
-                  codeContainerStyle={{
-                    borderWidth: 1,
-                    borderColor: '#ecf0f1',
-                    borderRadius: 5,
-                    marginLeft: 8,
-                  }}
-                  codeContainerCaretStyle={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    borderColor: '#ecf0f1',
-                    borderBottomWidth: 2,
-                    borderBottomColor: '#0068ff',
-                    marginLeft: 8,
-                  }}
-                  autoFocus
-                />
-                <TouchModal style={{ paddingTop: 15 }}>
-                  <WrapperError>
-                    { pinErrorCheck ? (
-                      <TextError>
-                        Campo incompleto o erroneo
-                      </TextError>
-                    ) : null }
-                  </WrapperError>
-                  <ButtonGradient press={() => this.init()} content="Continuar" />
-                </TouchModal>
-                <TouchModal>
-                  <ButtonWhite content="Reenviar pin" press={() => this.onPressResendPin()} />
-                </TouchModal>
-                <TextLoad>
-                  { loadingPin || loadingResendPin ? (
-                    'loading...'
-                  ) : '' }
-                </TextLoad>
-              </ContentDialog>
-            </ScrollDialog>
-          </MainWrapperDialog>
-        </Dialog>
-      </MainWrapper>
-    );
+            Error, no se pudo procesar la solicitud
+          </Toast>
+        </MainWrapper>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0000ff"
+        />
+      );
+    }
   }
 }
 
-// export default Registration;
-
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { user, profile } = state;
   return {
     user,
+    profile,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  registerUser: params => dispatch(UserActions.postRegisterRequest(params)),
-  // registerRole: params => dispatch(UserActions.postRegisterRoleRequest(params)),
-  loginUser: params => dispatch(UserActions.postLoginRequest(params)),
-  validatePin: params => dispatch(UserActions.postValidateRequest(params)),
-  resendPin: params => dispatch(UserActions.postResendRequest(params)),
+  getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
+  editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
 });
 
 export default connect(
