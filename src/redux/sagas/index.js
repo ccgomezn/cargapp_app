@@ -18,6 +18,8 @@ import {
   registerUser,
   resendPin,
   loginUser,
+  forgotPass,
+  resetPass,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
@@ -49,5 +51,7 @@ export default function* root() {
     takeLatest(OffersTypes.POST_APPLY_OFFER_REQUEST, applyOffer, api),
     takeLatest(ProfileTypes.GET_PROFILE_REQUEST, getProfile, api),
     takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api),
+    takeLatest(UserTypes.POST_PASSWORD_REQUEST, forgotPass, api),
+    takeLatest(UserTypes.POST_RESET_PASS_REQUEST, resetPass, api),
   ]);
 }

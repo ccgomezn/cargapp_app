@@ -128,7 +128,6 @@ class Registration extends Component {
 
     // Update Profile
     if (loadingUpdate) {
-      // console.log(profile);
       if (profile.error && !profile.fetching) {
         this.setState({ loadingUpdate: false, errorApi: true });
       }
