@@ -22,10 +22,11 @@ class ApplyOffer extends Component {
   }
 
   componentDidMount() {
-    const { navigation, getCompanies } = this.props;
+    const { navigation, getCompanies, getServices } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     this.setState({ offer: dataOffer });
     getCompanies();
+    getServices();
   }
 
   applyOffer(value) {
@@ -143,6 +144,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
+  getServices: (params = {}) => dispatch(OffersActions.getServicesRequest(params)),
 });
 
 

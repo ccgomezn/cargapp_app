@@ -114,5 +114,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_MY_OFFERS_REQUEST]: getMyOffersRequest,
   [Types.GET_MY_OFFERS_SUCCESS]: getMyOffersSuccess,
   [Types.GET_SERVICES_REQUEST]: getServicesRequest,
-  [Types.GET_SERVICES_SUCCES]: getServicesSuccess,
+  [Types.GET_SERVICES_SUCCESS]: getServicesSuccess,
 });
