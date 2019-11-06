@@ -6,6 +6,7 @@ import ScreenHome from '../../containers/Home';
 import ScreenTravels from '../../containers/Travels';
 import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
 import ScreenMyTravels from '../../containers/MyTravels';
+import ScreenStartTravel from '../../containers/Travels/StartTravel';
 import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
 import ScreenPoints from '../../containers/Points';
@@ -173,6 +174,16 @@ export const viajesStackNavigator = createStackNavigator({
 export const myTravelsStackNavigator = createStackNavigator({
   Third: {
     screen: ScreenMyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  StartTravel: {
+    screen: ScreenStartTravel,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,

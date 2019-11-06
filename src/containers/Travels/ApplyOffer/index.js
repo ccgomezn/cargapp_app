@@ -30,18 +30,20 @@ class ApplyOffer extends Component {
   }
 
   applyOffer(value) {
-    const { user, applyOffer } = this.props;
+    const { user, applyOffer, navigation } = this.props;
     const data = {
-      service_id: value,
+      service_id: value.id,
       user_id: user.info.user.id,
       active: true,
     };
     applyOffer(data);
+    navigation.navigate('StartTravel', { Offer: value });
     this.setState({ fetch: true });
   }
 
   render() {
     const { offers, navigation, companies } = this.props;
+    console.log(this.props);
     const {
       offer, successNotification, errorFalse, fetch,
     } = this.state;
@@ -108,7 +110,7 @@ class ApplyOffer extends Component {
                   extra={offer.description}
                   normalText={company.address}
                   amount={offer.price}
-                  onPressBG={() => this.applyOffer(offer.id)}
+                  onPressBG={() => this.applyOffer(offer)}
                   onPressBW={() => navigation.goBack()}
                   delivery="5 días"
                   company={company.name}
