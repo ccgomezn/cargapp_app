@@ -1,5 +1,5 @@
 export default function (api) {
   return {
-    putPassword: data => api('users/update_password', data),
+    putPassword: data => api.put('users/update_password', data),
   };
 }

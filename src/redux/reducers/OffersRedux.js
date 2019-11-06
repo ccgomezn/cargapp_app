@@ -8,6 +8,8 @@ export const { Types, Creators } = createActions({
   getOffersRequest: ['params'],
   postApplyOfferRequest: ['service'],
   getMyOffersRequest: ['params'],
+  getServicesRequest: ['params'],
+  getServicesSuccess: ['data'],
   getMyOffersSuccess: ['myOffers'],
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
@@ -24,6 +26,7 @@ export const INITIAL_STATE = Immutable({
   error: false,
   service: null,
   myOffers: null,
+  services: null,
 });
 
 /* ----------- Reducers ------------- */
@@ -49,6 +52,22 @@ export const getMyOffersRequest = (state) => {
     ...state,
     fetching: true,
     error: false,
+  };
+};
+
+export const getServicesRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const getServicesSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    services: data,
   };
 };
 
@@ -94,4 +113,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_APPLY_OFFER_SUCCESS]: postApplyOfferSuccess,
   [Types.GET_MY_OFFERS_REQUEST]: getMyOffersRequest,
   [Types.GET_MY_OFFERS_SUCCESS]: getMyOffersSuccess,
+  [Types.GET_SERVICES_REQUEST]: getServicesRequest,
+  [Types.GET_SERVICES_SUCCES]: getServicesSuccess,
 });

@@ -11,6 +11,7 @@ import { CompanyTypes } from '../reducers/CompanyRedux';
 import { ProfileTypes } from '../reducers/ProfileRedux';
 import { CouponsTypes } from '../reducers/CouponsRedux';
 import { StatusTypes } from '../reducers/StatusRedux';
+import { PasswordTypes } from '../reducers/PasswordRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -27,7 +28,7 @@ import { getCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getCoupons, postCoupon } from './CouponsSagas';
 import { getStatus } from './StatusSagas';
-
+import { putPassword } from './PasswordSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -53,6 +54,7 @@ export default function* root() {
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
     takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),
     takeLatest(OffersTypes.GET_MY_OFFERS_REQUEST, getMyOffers, api),
+    takeLatest(PasswordTypes.PUT_PASSWORD_REQUEST, putPassword, api),
     takeLatest(StatusTypes.GET_STATUS_REQUEST, getStatus, api),
   ]);
 }
