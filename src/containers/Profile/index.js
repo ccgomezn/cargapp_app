@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ActivityIndicator, Animated, Easing } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import EmptyDialog from '../../components/EmptyDialog';
 import InputPicker from '../../components/InputPicker';
 import {
@@ -18,6 +18,7 @@ import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
+import PasswordActions from '../../redux/reducers/PasswordRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
 
 const itemsAccount = [
@@ -41,6 +42,9 @@ class Profile extends Component {
       lastName: '',
       fetch: true,
       notification: false,
+      previousPassword: null,
+      newPassword: null,
+      repeatPassword: null,
     };
   }
 
@@ -75,9 +79,34 @@ class Profile extends Component {
     this.setState({ notification: true });
   }
 
+  refreshPassword() {
+    const { previousPassword, newPassword, repeatPassword } = this.state;
+    const { putPassword } = this.props;
+    if (repeatPassword === newPassword) {
+      const data = {
+        user: {
+          password: newPassword,
+          password_confirmation: repeatPassword,
+          current_password: previousPassword,
+        },
+      };
+      putPassword(data);
+    } else {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+    }
+  }
+
   render() {
     const {
-      modalPassword, modalAccount, name, lastName, fetch, notification,
+      modalPassword,
+      modalAccount,
+      name,
+      lastName,
+      fetch,
+      notification,
+      previousPassword,
+      newPassword,
+      repeatPassword,
     } = this.state;
     const { profile } = this.props;
     console.log(this.props);
@@ -196,13 +225,30 @@ class Profile extends Component {
               </TextGray>
               <ContentForm>
                 <WrapperInputs>
-                  <Input title="Clave anterior" holder="Ingrese la contraseña anterior" isPassword />
-                  <Input title="Nueva clave" holder="Ingrese la contraseña nueva" isPassword />
-                  <Input title="Confirmar clave" isPassword />
+                  <Input
+                    title="Clave anterior"
+                    holder="Ingrese la contraseña anterior"
+                    value={previousPassword}
+                    onChangeText={value => this.setState({ previousPassword: value })}
+                    isPassword
+                  />
+                  <Input
+                    title="Nueva clave"
+                    holder="Ingrese la contraseña nueva"
+                    value={newPassword}
+                    onChangeText={value => this.setState({ newPassword: value })}
+                    isPassword
+                  />
+                  <Input
+                    title="Confirmar clave"
+                    value={repeatPassword}
+                    onChangeText={value => this.setState({ repeatPassword: value })}
+                    isPassword
+                  />
                 </WrapperInputs>
               </ContentForm>
               <TouchModal>
-                <ButtonGradient content="Confirmar" />
+                <ButtonGradient content="Confirmar" press={() => this.refreshPassword()} />
               </TouchModal>
               <TouchModal>
                 <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
@@ -223,16 +269,18 @@ class Profile extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, profile } = state;
+  const { user, profile, password } = state;
   return {
     user,
     profile,
+    password,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
+  putPassword: data => dispatch(PasswordActions.putPasswordRequest(data)),
 });
 
 export default connect(

@@ -8,7 +8,7 @@ import Companies from './Company';
 import Profile from './Profile';
 import Coupons from './Coupons';
 import Status from './Status';
-import Password from "./Password";
+import Password from './Password';
 
 /* URL
   'https://api.cargapp.co/api/v1/';
@@ -35,7 +35,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const profile = new Profile(api);
   const coupons = new Coupons(api);
   const status = new Status(api);
-  const password = new Password();
+  const password = new Password(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
