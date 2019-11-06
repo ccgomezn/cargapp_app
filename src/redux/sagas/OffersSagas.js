@@ -43,3 +43,16 @@ export function* getMyOffers(api, action) {
     yield put(OffersActions.getOffersFailure());
   }
 }
+
+export function* getServices(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.offers.getServices, params);
+  console.log(response);
+  if (response.ok) {
+    yield put(OffersActions.getServicesSuccess(response.data));
+  } else {
+    yield put(OffersActions.getOffersFailure());
+  }
+}
