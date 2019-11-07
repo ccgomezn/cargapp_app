@@ -39,7 +39,6 @@ class Registration extends Component {
     this.state = {
       iduser: '',
       dataname: '',
-      datadocument: '',
       datalastname: '',
       loadingUpdate: false,
       fetchdata: false,
@@ -56,17 +55,14 @@ class Registration extends Component {
 
   async onUpdatePress() {
     const {
-      dataname, datalastname, datadocument, iduser,
+      dataname, datalastname, iduser,
     } = this.state;
     const { editProfile } = this.props;
     // validate data
-    if (datadocument !== '' || dataname !== '' || datalastname !== '') {
+    if (dataname !== '' || datalastname !== '') {
       const data = {};
       const profile = {};
-      const user = {};
-      if (datadocument !== '') {
-        user.identification = parseInt(datadocument, 10);
-      }
+      // const user = {};
       if (dataname !== '') {
         profile.firt_name = dataname;
       }
@@ -75,7 +71,6 @@ class Registration extends Component {
       }
       // data
       data.profile = profile;
-      data.user = user;
       // console.log(data);
       await editProfile(iduser, data);
       this.setState({ loadingUpdate: true });
@@ -85,14 +80,11 @@ class Registration extends Component {
   }
 
   validateForm() {
-    const { dataname, datalastname, datadocument } = this.state;
+    const { dataname, datalastname } = this.state;
     const errormsg = {};
     errormsg.name = '';
     errormsg.doc = '';
     // validate info
-    if (datadocument.length < 10 && datadocument.length >= 1) {
-      errormsg.doc = 'Incorrecto: minímo 10 caracteres';
-    }
     if ((dataname.length < 4 && dataname.length >= 1)
     || (datalastname.length < 4 && datalastname.length >= 1)) {
       errormsg.name = 'Incorrecto: formato inválido';
@@ -109,7 +101,6 @@ class Registration extends Component {
     const { profile } = this.props;
     const { navigate, goBack } = this.props.navigation;
     const {
-      datadocument,
       dataname,
       datalastname,
       error,
@@ -167,14 +158,14 @@ class Registration extends Component {
             Excelente!, ahora queremos conocer un poco más de usted.
           </TextGray>
           <WrapperInputs style={{ marginTop: '6%' }}>
-            <Input
+            {/* <Input
               title="Número de cédula"
               holder="Ingrese número de documento"
               type="numeric"
               maxLength={12}
               value={datadocument}
               onChangeText={value => this.setState({ datadocument: value })}
-            />
+            /> */}
             <Input
               title="Nombre"
               holder="Ingrese nombre"
@@ -196,11 +187,11 @@ class Registration extends Component {
                 {error.name}
               </TextError>
             ) : null }
-            { error.doc ? (
+            {/* error.doc ? (
               <TextError>
                 {error.doc}
               </TextError>
-            ) : null }
+            ) : null */}
             { msgApi ? (
               <TextError>
                 {msgApi}
