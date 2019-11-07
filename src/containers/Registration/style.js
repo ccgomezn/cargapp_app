@@ -150,7 +150,7 @@ export const Check = styled.Image`
 export const WrapperInputs = styled.View`
   width: 100%;
   height: auto;
-  margin-top: 3%;
+  margin-top: 0%;
   margin-bottom: 2%;
 `;
 
@@ -300,7 +300,7 @@ export const WrapperSection = styled.View`
   display: flex;
   flex-direction: row;
   height: auto;
-  margin-top: 5%;
+  margin-top: 1%;
 `;
 
 export const SectionRow = styled.View`

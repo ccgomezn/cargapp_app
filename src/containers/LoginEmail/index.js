@@ -50,7 +50,9 @@ class Registration extends Component {
 
   componentDidMount() {
     const { navigation } = this.props;
+    this.isSession();
     const dtphone = navigation.getParam('phone', '');
+    // validate session
     if (dtphone !== '') {
       // this.setState({ dataphone: dtphone });
     }
@@ -73,6 +75,14 @@ class Registration extends Component {
       await loginUser(data);
     }
     this.setState({ loading: true });
+  }
+
+  isSession() {
+    const { user } = this.props;
+    const { navigate } = this.props.navigation;
+    if (user.isLogged) {
+      navigate('ScreenHome');// ScreenHome--Personal
+    }
   }
 
   validateForm() {
