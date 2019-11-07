@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { NavigationApps, actions, googleMapsTravelModes } from 'react-native-navigation-apps';
-import { ActivityIndicator } from 'react-native';
-import { MainWrapper, AbsoluteWrapper } from './styles';
+import { ActivityIndicator, Linking } from 'react-native';
+import {
+  MainWrapper, AbsoluteWrapper, WrapperImage, TouchableNavigationButtons, WrapperAdresses,
+} from './styles';
+import AddressesCardMap from '../../../components/AddressesCardMap';
 
 export default class StartTravel extends Component {
   constructor() {
@@ -36,27 +38,21 @@ export default class StartTravel extends Component {
             style={{ height: '100%', width: '100%' }}
           />
           <AbsoluteWrapper>
-            <NavigationApps
-              iconSize={50}
-              row
-              address="Plaza de las americas"
-              waze={{
-                address: 'Plaza de las americas',
-                lat: parseFloat(offerSpecific.destination_latitude),
-                lon: parseFloat(offerSpecific.destination_longitude),
-                action: actions.searchLocationByLatAndLon,
-              }}
-              googleMaps={{
-                lat: parseFloat(offerSpecific.destination_latitude),
-                lon: parseFloat(offerSpecific.destination_longitude),
-                action: actions.searchLocationByLatAndLon,
-                travelMode: googleMapsTravelModes.driving,
-              }}
-              modalBtnOpenTitle="hola"
-              actionSheetBtnOpenTitle="sda"
-              actionSheetCloseTitle="asdsda"
-            />
+            <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}>
+              <WrapperImage source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }} />
+            </TouchableNavigationButtons>
+            <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.google.com/maps/place/${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}`)}>
+              <WrapperImage source={{ uri: 'https://lh3.googleusercontent.com/xmZuOCh0e0NeVpgsKn99K5Amo4PA2r5y078RIrvXY24zLAEwSLSwYvVcwT7zWSv512n4=w300' }} />
+            </TouchableNavigationButtons>
           </AbsoluteWrapper>
+          <WrapperAdresses>
+            <AddressesCardMap
+              nameCompany="Ubicación"
+              firstAddress=""
+              nameAddress={offerSpecific.destination}
+              secondAddress={offerSpecific.destination_address}
+            />
+          </WrapperAdresses>
         </MainWrapper>
       );
     }
