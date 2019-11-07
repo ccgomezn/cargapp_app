@@ -225,6 +225,7 @@ export const postPasswordSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    unprocess: false,
   };
 };
 

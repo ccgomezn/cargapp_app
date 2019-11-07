@@ -84,7 +84,7 @@ class Registration extends Component {
       // console.log(data);
       await resetPass(data);
     }
-    this.setState({ loading: true });
+    this.setState({ loading: true, msgApi: null });
   }
 
   validateForm() {
