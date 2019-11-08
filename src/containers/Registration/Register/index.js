@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable no-alert */
 /* eslint-disable no-else-return */
 /* eslint-disable global-require */
@@ -66,6 +67,7 @@ class Registration extends Component {
       dataphone: '',
       dataemail: '',
       datapassword: '',
+      datadocument: '',
       loadingRegister: false,
       error: {},
       datapin: '',
@@ -82,6 +84,7 @@ class Registration extends Component {
       invalidphone: false,
       invalidemail: false,
       invalidpass: false,
+      invaliddoc: false,
       inputValueCheck: false,
       errorApi: false,
       visibleError: false,
@@ -131,13 +134,14 @@ class Registration extends Component {
 
   async onRegisterPress() {
     const {
-      dataphone, dataemail, datapassword, datarol, codeCountrie,
+      dataphone, dataemail, datapassword, datarol, codeCountrie, datadocument,
     } = this.state;
     const { registerUser } = this.props;
     // validate info
     if (dataphone != null && dataphone !== ''
       && dataemail != null && dataemail !== ''
       && datapassword != null && datapassword !== ''
+      && datadocument != null && datadocument !== ''
     ) {
       const fullPhone = codeCountrie.concat(dataphone);
       const data = {
@@ -146,6 +150,7 @@ class Registration extends Component {
           password: datapassword,
           password_confirmation: datapassword,
           phone_number: parseInt(fullPhone, 10),
+          identification: parseInt(datadocument),
           role_id: datarol,
         },
       };
@@ -198,7 +203,9 @@ class Registration extends Component {
   }
 
   validateForm() {
-    const { dataemail, datapassword, dataphone } = this.state;
+    const {
+      dataemail, datapassword, dataphone, datadocument,
+    } = this.state;
     const errormsg = {};
     this.setState({ error: null });
     errormsg.email = '';
@@ -222,6 +229,10 @@ class Registration extends Component {
       errormsg.phone = 'Teléfono incorrecto: minímo 10 caracteres';
       this.setState({ invalidphone: true });
     }
+    if (datadocument.length < 10 || datadocument === '') {
+      errormsg.doc = 'Cñedula incorrecta: minímo 10 caracteres';
+      this.setState({ invaliddoc: true });
+    }
 
     this.setState({ error: errormsg });
 
@@ -234,8 +245,11 @@ class Registration extends Component {
     if (errormsg.phone === '') {
       this.setState({ invalidphone: false });
     }
+    if (errormsg.doc === '') {
+      this.setState({ invaliddoc: false });
+    }
 
-    if (errormsg.email === '' && errormsg.pass === '' && errormsg.phone === '') {
+    if (errormsg.email === '' && errormsg.pass === '' && errormsg.phone === '' && errormsg.doc === '') {
       this.onRegisterPress();
     }
   }
@@ -277,6 +291,7 @@ class Registration extends Component {
       dataemail,
       datapassword,
       datapin,
+      datadocument,
       loadingRegister,
       error,
       modalPin,
@@ -291,6 +306,7 @@ class Registration extends Component {
       invalidphone,
       invalidemail,
       invalidpass,
+      invaliddoc,
       inputValueCheck,
       errorApi,
       visibleError,
@@ -307,16 +323,12 @@ class Registration extends Component {
     }
 
     // validate form
-    if (dataemail && datapassword) {
-      if (dataemail.length >= 8
-        && datapassword.length >= 6
-        && dataphone.length >= 10) {
-        if (inputValueCheck === false) {
-          this.setState({ inputValueCheck: true });
-        }
-      } else if (inputValueCheck) {
-        this.setState({ inputValueCheck: false });
+    if (dataphone.length >= 10) {
+      if (inputValueCheck === false) {
+        this.setState({ inputValueCheck: true });
       }
+    } else if (inputValueCheck) {
+      this.setState({ inputValueCheck: false });
     }
 
     // validate register User
@@ -478,6 +490,15 @@ class Registration extends Component {
               </SectionRow>
             </WrapperSection>
             <Input
+              title="Número de cédula"
+              holder="Ingrese número de documento"
+              type="numeric"
+              maxLength={12}
+              value={datadocument}
+              errorText={invaliddoc}
+              onChangeText={value => this.setState({ datadocument: value })}
+            />
+            <Input
               title="Correo electrónico"
               holder="Ingresa correo electrónico"
               type="email-address"
@@ -506,7 +527,12 @@ class Registration extends Component {
                 {error.email}
               </TextError>
             ) : null }
-            {error.pass ? (
+            { error.doc ? (
+              <TextError>
+                {error.doc}
+              </TextError>
+            ) : null }
+            { error.pass ? (
               <TextError>
                 {error.pass}
               </TextError>

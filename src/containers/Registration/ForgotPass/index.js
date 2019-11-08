@@ -5,15 +5,15 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Toast from 'react-native-root-toast';
 import { ActivityIndicator } from 'react-native';
 
-import Input from '../../components/GeneralInput';
-import ButtonGradient from '../../components/ButtonGradient';
-import ButtonWhite from '../../components/ButtonWhite';
-import ButtonLink from '../../components/ButtonLink';
+import Input from '../../../components/GeneralInput';
+import ButtonGradient from '../../../components/ButtonGradient';
+import ArrowBack from '../../../components/ArrowBack';
 
 // action - reducers
-import UserActions from '../../redux/reducers/UserRedux';
+import UserActions from '../../../redux/reducers/UserRedux';
 
 import {
   MainWrapper,
@@ -30,66 +30,51 @@ import {
   WrapperSection,
   SectionRow,
   WrapperError,
-  WrapperButtonWhite,
-} from '../Registration/style';
+  WrapperButtons,
+} from '../style';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
       dataemail: '',
-      datapass: '',
       loading: false,
       emailErrorCheck: false,
-      passErrorCheck: false,
       inputValueCheck: false,
       onPressLogin: false,
       msgApi: '',
+      errorApi: false,
     };
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
-    this.isSession();
-    const dtphone = navigation.getParam('phone', '');
-    // validate session
-    if (dtphone !== '') {
-      // this.setState({ dataphone: dtphone });
-    }
+
   }
 
-  async onLogin() {
+  async onforgotPass() {
     const {
       dataemail,
-      datapass,
     } = this.state;
-    const { loginUser } = this.props;
+    const { forgotPass } = this.props;
 
-    if (dataemail && datapass) {
+    if (dataemail) {
       const data = {
         user: {
           email: dataemail,
-          password: datapass,
+          notify: 'phone',
         },
       };
-      await loginUser(data);
+      // console.log(data);
+      await forgotPass(data);
     }
-    this.setState({ loading: true });
-  }
-
-  isSession() {
-    const { user } = this.props;
-    const { navigate } = this.props.navigation;
-    if (user.isLogged) {
-      navigate('ScreenHome');// ScreenHome--Personal
-    }
+    this.setState({ loading: true, msgApi: null });
   }
 
   validateForm() {
     const {
       dataemail,
-      datapass,
     } = this.state;
+    this.setState({ emailErrorCheck: false });
 
     // validate input email
     if (dataemail) {
@@ -99,33 +84,32 @@ class Registration extends Component {
         this.setState({ emailErrorCheck: true });
       }
     }
-    if (datapass) {
-      if (datapass !== '' && datapass.length >= 5) {
-        this.setState({ passErrorCheck: false });
-      } else {
-        this.setState({ passErrorCheck: true });
-      }
-    }
 
     this.setState({ onPressLogin: true });
   }
 
   render() {
     const { user } = this.props;
-    const { navigate } = this.props.navigation;
+    const { navigate, goBack } = this.props.navigation;
     const {
       loading,
       dataemail,
-      datapass,
       emailErrorCheck,
-      passErrorCheck,
       inputValueCheck,
       onPressLogin,
       msgApi,
+      errorApi,
     } = this.state;
 
-    if (dataemail && datapass) {
-      if (dataemail.length >= 5 && datapass.length >= 5) {
+    // hide Toast
+    if (errorApi) {
+      setTimeout(() => this.setState({
+        errorApi: false,
+      }), 5000); // hide toast after 5s
+    }
+
+    if (dataemail) {
+      if (dataemail.length >= 5) {
         if (inputValueCheck === false) {
           this.setState({ inputValueCheck: true });
         }
@@ -135,53 +119,49 @@ class Registration extends Component {
     }
 
     if (onPressLogin) {
-      if (!emailErrorCheck && !passErrorCheck) {
-        this.onLogin();
+      if (!emailErrorCheck) {
+        this.onforgotPass();
       }
       this.setState({ onPressLogin: false });
     }
 
-    // verify LoginUser
+    // reset password
     if (loading) {
       if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loading: false });
+        this.setState({ loading: false, errorApi: true });
       }
       if (user.status && !user.fetching) {
-        // console.log(user);
-        if (user.session) {
+        if (user.status.message && !user.unprocess) {
           setTimeout(() => {
             this.setState({ loading: false });
-            navigate('ScreenHome');
+            navigate('ResetPass', { email: dataemail });
           }, 1500);
         } else if (loading && user.unprocess) {
           // unProccess
-          this.setState({ msgApi: user.status.message, loading: false });
+          // const message = user.status.message;
+          const message = 'Información No válida';
+          this.setState({ msgApi: message, loading: false });
         }
       }
     }
 
     return (
       <MainWrapper>
-        <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
+          <ArrowBack url={() => goBack()} />
+          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+        </WrapperButtons>
         <TextBlack>
-        Bienvenido al
+        Recuperar
           <TextBlue>
             {' '}
-            Futuro
+            Contraseña
           </TextBlue>
         </TextBlack>
-        <TextGray>El mejor aliado para su operación</TextGray>
+        <TextGray>Ingresa tu email, para cambiar tu contraseña</TextGray>
         <WrapperSection style={{ marginTop: 10 }}>
           <SectionRow style={{ width: '100%' }}>
             <WrapperInputs>
-              {/* <Input
-                title="Celular"
-                holder="Ingrese número de contacto"
-                onChangeText={(value) => this.setState({ dataphone: value })}
-                value={dataphone}
-                type="numeric"
-              /> */}
               <Input
                 title="Correo electrónico"
                 holder="Ingrese Email"
@@ -189,20 +169,6 @@ class Registration extends Component {
                 value={dataemail.toLowerCase()}
                 type="email-address"
               />
-              <Input
-                title="Contraseña"
-                holder="Ingrese contraseña"
-                isPassword
-                onChangeText={(value) => this.setState({ datapass: value })}
-                value={datapass}
-                type="default"
-              />
-              <WrapperButtonWhite>
-                <ButtonLink
-                  text="Recuperar contraseña"
-                  press={() => navigate('ForgotPass')}
-                />
-              </WrapperButtonWhite>
             </WrapperInputs>
           </SectionRow>
         </WrapperSection>
@@ -222,14 +188,7 @@ class Registration extends Component {
 
         <WrapperButtonsBottom>
           <WrapperButtonGradient>
-            <ButtonWhite
-              border={{ borderWidth: 1, borderStyle: 'inset' }}
-              content="Registrarse"
-              press={() => navigate('Register')}
-            />
-          </WrapperButtonGradient>
-          <WrapperButtonGradient>
-            <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
+            <ButtonGradient press={() => this.validateForm()} content="Recuperar" disabled={!inputValueCheck} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
 
@@ -243,6 +202,16 @@ class Registration extends Component {
           ) : '' }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+        <Toast
+          visible={errorApi}
+          position={-50}
+          duration={Toast.durations.LONG}
+          opacity={0.8}
+          shadow
+          animation
+        >
+          Error, no se pudo procesar la solicitud
+        </Toast>
       </MainWrapper>
     );
   }
@@ -256,7 +225,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loginUser: params => dispatch(UserActions.postLoginRequest(params)),
+  forgotPass: params => dispatch(UserActions.postPasswordRequest(params)),
 });
 
 export default connect(
