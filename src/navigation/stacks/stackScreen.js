@@ -14,13 +14,15 @@ import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 // SIGN UP SCREENS
-import ScreenLogin from '../../containers/Login';
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
 import ScreenLoginEmail from '../../containers/LoginEmail';
+// RESET PASSWORD
+import ScreenForgot from '../../containers/Registration/ForgotPass';
+import ScreenReset from '../../containers/Registration/ResetPass';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -138,13 +140,15 @@ export const CouponsStackNavigator = createStackNavigator({
 });
 
 export const SignUpStackNavigator = createStackNavigator({
-  Login: { screen: ScreenLogin },
+  // Login: { screen: ScreenLogin },
   // SignUp: { screen: ScreenSignUp },
   LoginEmail: { screen: ScreenLoginEmail },
   Register: { screen: ScreenRegister },
   Vehicle: { screen: ScreenVehicle },
   Personal: { screen: ScreenPersonalData },
   Documents: { screen: ScreenDocuments },
+  ForgotPass: { screen: ScreenForgot },
+  ResetPass: { screen: ScreenReset },
 }, {
   headerMode: 'none',
 });
