@@ -165,7 +165,7 @@ export const TextTerms = styled.Text`
 `;
 
 export const WrapperButtonGradient = styled.View`
-  width: 35%;
+  width: 42%;
   height: 100%;
   margin-left: 3%;
 `;

@@ -23,6 +23,9 @@ import ScreenLoginEmail from '../../containers/LoginEmail';
 // RESET PASSWORD
 import ScreenForgot from '../../containers/Registration/ForgotPass';
 import ScreenReset from '../../containers/Registration/ResetPass';
+// REGISTER GENERATOR
+import ScreenRegCompany from '../../containers/Registration/CompanyData';
+import ScreenRegPay from '../../containers/Registration/PayData';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -149,6 +152,8 @@ export const SignUpStackNavigator = createStackNavigator({
   Documents: { screen: ScreenDocuments },
   ForgotPass: { screen: ScreenForgot },
   ResetPass: { screen: ScreenReset },
+  RegCompany: { screen: ScreenRegCompany },
+  RegPay: { screen: ScreenRegPay },
 }, {
   headerMode: 'none',
 });

@@ -311,6 +311,7 @@ class Registration extends Component {
       errorApi,
       visibleError,
       msgError,
+      datarol,
     } = this.state;
 
     // hide Toast
@@ -403,7 +404,12 @@ class Registration extends Component {
         if (user.session) {
           setTimeout(() => {
             this.setState({ loadingLogin: false });
-            navigate('Documents', { userdata: user.info });
+            if (datarol === 11) {
+              navigate('Documents', { userdata: user.info });
+            } else {
+              // navigate('Personal', { idrol: datarol });
+              navigate('RegCompany');
+            }
           }, 1500);
         } else if (loadingLogin && user.unprocess) {
           // unProccess
@@ -431,28 +437,11 @@ class Registration extends Component {
           </TextGray>
           <WrapperButtons>
             <WrapperButton
-              onPress={handlePressButton}
-              style={pressState ? containerPress : null}
-            >
-              {pressState && <Check source={require('../../../Images/Check.png')} />}
-              <Svg source={pressState ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck.svg' }} />
-              <ButtonText
-                style={pressState ? TextPress : null}
-              >
-                Dueño de camión
-              </ButtonText>
-              <ButtonSubText
-                style={pressState ? TextPress : null}
-              >
-                Trabaje y cuide su vehículo
-              </ButtonSubText>
-            </WrapperButton>
-            <WrapperButton
               onPress={handlePressButtonTwo}
               style={pressStateTwo ? containerPress : null}
             >
               {pressStateTwo && <Check source={require('../../../Images/Check.png')} />}
-              <Svg source={pressStateTwo ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver.svg' }} />
+              <Svg source={pressStateTwo ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck.svg' }} />
               <ButtonText
                 style={pressStateTwo ? TextPress : null}
               >
@@ -462,6 +451,23 @@ class Registration extends Component {
                 style={pressStateTwo ? TextPress : null}
               >
                 Más trabajo más ingresos
+              </ButtonSubText>
+            </WrapperButton>
+            <WrapperButton
+              onPress={handlePressButton}
+              style={pressState ? containerPress : null}
+            >
+              {pressState && <Check source={require('../../../Images/Check.png')} />}
+              <Svg source={pressState ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver.svg' }} />
+              <ButtonText
+                style={pressState ? TextPress : null}
+              >
+                Generador de carga
+              </ButtonText>
+              <ButtonSubText
+                style={pressState ? TextPress : null}
+              >
+                Maneje y administre su carga.
               </ButtonSubText>
             </WrapperButton>
           </WrapperButtons>
