@@ -19,3 +19,17 @@ export function* getCompanies(api, action) {
     yield put(CompanyActions.getCompaniesFailure());
   }
 }
+
+export function* registerCompany(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.company.registerCompany, params);
+  if (response.ok) {
+    // register ok
+  } else if (response.status === 302 || response.status === 422) {
+    // unprocess
+  } else {
+    // error api
+  }
+}

@@ -45,12 +45,17 @@ class Registration extends Component {
       error: {},
       msgApi: '',
       errorApi: false,
+      datarol: '',
     };
   }
 
   componentDidMount() {
-    const { getProfile } = this.props;
+    const { getProfile, navigation } = this.props;
     getProfile();
+    const dtrol = navigation.getParam('idrol', '');
+    if (dtrol !== '') {
+      this.setState({ datarol: dtrol });
+    }
   }
 
   async onUpdatePress() {
@@ -108,6 +113,7 @@ class Registration extends Component {
       msgApi,
       errorApi,
       fetchdata,
+      datarol,
     } = this.state;
 
     // hide Toast
@@ -126,7 +132,11 @@ class Registration extends Component {
         if (profile.edit.id) {
           setTimeout(() => {
             this.setState({ loadingUpdate: false });
-            navigate('ScreenHome');
+            if (datarol === 11 || datarol === '') {
+              navigate('ScreenHome');
+            } else {
+              // animated div
+            }
           }, 1200);
         } else if (loadingUpdate) {
           // unProccess
@@ -135,6 +145,7 @@ class Registration extends Component {
       }
     }
 
+    console.log(profile);
     if (profile.data !== null) {
       if (!fetchdata) {
         profile.data.map((data) => {
@@ -158,14 +169,6 @@ class Registration extends Component {
             Excelente!, ahora queremos conocer un poco más de usted.
           </TextGray>
           <WrapperInputs style={{ marginTop: '6%' }}>
-            {/* <Input
-              title="Número de cédula"
-              holder="Ingrese número de documento"
-              type="numeric"
-              maxLength={12}
-              value={datadocument}
-              onChangeText={value => this.setState({ datadocument: value })}
-            /> */}
             <Input
               title="Nombre"
               holder="Ingrese nombre"
@@ -187,11 +190,6 @@ class Registration extends Component {
                 {error.name}
               </TextError>
             ) : null }
-            {/* error.doc ? (
-              <TextError>
-                {error.doc}
-              </TextError>
-            ) : null */}
             { msgApi ? (
               <TextError>
                 {msgApi}

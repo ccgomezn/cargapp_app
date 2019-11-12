@@ -10,6 +10,7 @@ import { OffersTypes } from '../reducers/OffersRedux';
 import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
 import { ProfileTypes } from '../reducers/ProfileRedux';
+import { LoadTypes } from '../reducers/LoadRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -27,7 +28,7 @@ import { getOffers, applyOffer } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
 import { getCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
-
+import { getLoadsType } from './LoadSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -53,5 +54,6 @@ export default function* root() {
     takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api),
     takeLatest(UserTypes.POST_PASSWORD_REQUEST, forgotPass, api),
     takeLatest(UserTypes.POST_RESET_PASS_REQUEST, resetPass, api),
+    takeLatest(LoadTypes.GET_LOADSTYPE_REQUEST, getLoadsType, api),
   ]);
 }
