@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-else-return */
 /* eslint-disable arrow-parens */
 /* eslint-disable react/destructuring-assignment */
@@ -12,9 +13,11 @@ import { ActivityIndicator } from 'react-native';
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
 import ArrowBack from '../../../components/ArrowBack';
+import InputPicker from '../../../components/InputPicker';
 
 // actions - reducers
 import LoadActions from '../../../redux/reducers/LoadRedux';
+import CompanyActions from '../../../redux/reducers/CompanyRedux';
 
 import {
   MainWrapper,
@@ -38,46 +41,62 @@ class Registration extends Component {
   constructor() {
     super();
     this.state = {
+      userid: '',
       dataname: '',
       dataphone: '',
-      datatype: '',
+      datatype: '0',
       loading: false,
       inputValueCheck: false,
       msgApi: '',
       errorApi: false,
       error: {},
       invalidphone: false,
+      invalidname: false,
     };
   }
 
   componentDidMount() {
     const { getLoadsType } = this.props;
+    const { navigation } = this.props;
     // get loadsType
     getLoadsType();
+    // get userid
+    const dtuser = navigation.getParam('userdata', '');
+    if (dtuser !== '') {
+      this.setState({ userid: dtuser.user.id });
+    }
   }
 
-  async onforgotPass() {
+  async onRegisterPress() {
     const {
-      dataemail,
+      dataname,
+      dataphone,
+      datatype,
+      userid,
     } = this.state;
-    const { forgotPass } = this.props;
+    const { registerCompany } = this.props;
 
-    if (dataemail) {
+    if (dataname) {
       const data = {
-        user: {
-          email: dataemail,
-          notify: 'phone',
+        company: {
+          name: dataname,
+          phone: dataphone,
+          load_type_id: datatype,
+          user_id: userid,
+          active: true,
         },
       };
-      // console.log(data);
-      await forgotPass(data);
+      console.log(data);
+      await registerCompany(data);
     }
     this.setState({ loading: true, msgApi: null });
   }
 
   validateForm() {
     const {
+      dataname,
       dataphone,
+      datatype,
     } = this.state;
     const errormsg = {};
     this.setState({ error: null });
@@ -86,14 +105,24 @@ class Registration extends Component {
     errormsg.type = '';
 
     // validate input's
-    if (dataphone.length < 10 || dataphone === '') {
-      errormsg.phone = 'Teléfono incorrecto: minímo 10 caracteres';
+    if (dataname.length < 3 || dataname === '') {
+      errormsg.name = 'Nombre incorrecto: minímo 5 caracteres';
+      this.setState({ invalidname: true });
+    }
+
+    if (dataphone.length < 7 || dataphone === '') {
+      errormsg.phone = 'Teléfono incorrecto: minímo 7 caracteres';
       this.setState({ invalidphone: true });
     }
+
     this.setState({ error: errormsg });
 
     if (errormsg.phone === '') {
       this.setState({ invalidphone: false });
+    }
+
+    if (errormsg.name === '') {
+      this.setState({ invalidname: false });
     }
 
     if (errormsg.name === '' && errormsg.phone === '' && errormsg.type === '') {
@@ -102,7 +131,7 @@ class Registration extends Component {
   }
 
   render() {
-    const { user, loadsType } = this.props;
+    const { companies, loadsType } = this.props;
     const { navigate, goBack } = this.props.navigation;
     const {
       loading,
@@ -114,7 +143,11 @@ class Registration extends Component {
       errorApi,
       error,
       invalidphone,
+      invalidname,
+      userid,
     } = this.state;
+
+    const itemsType = [];
 
     // hide Toast
     if (errorApi) {
@@ -133,18 +166,19 @@ class Registration extends Component {
       }
     }
 
-    // registrar info conpany
+    // registrar info company
     if (loading) {
-      if (user.error && !user.fetching) {
+      console.log(companies);
+      if (companies.error && !companies.fetching) {
         this.setState({ loading: false, errorApi: true });
       }
-      if (user.status && !user.fetching) {
-        if (user.status.message && !user.unprocess) {
+      if (companies.status && !companies.fetching) {
+        if (companies.status.active && !companies.unprocess) {
           setTimeout(() => {
             this.setState({ loading: false });
-            // navigate('ResetPass', { email: dataemail });
+            navigate('RegPay', { iduser: userid });
           }, 1500);
-        } else if (loading && user.unprocess) {
+        } else if (loading && companies.unprocess) {
           // unProccess
           // const message = user.status.message;
           const message = 'Información No válida';
@@ -153,9 +187,10 @@ class Registration extends Component {
       }
     }
 
-    console.log(loadsType);
-
-    if (loadsType.data) {
+    if (loadsType.data && !loadsType.fetching) {
+      loadsType.data.map((ele) => {
+        itemsType.push({ textItem: ele.name, valueItem: ele.id });
+      });
       return (
         <MainWrapper>
           <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
@@ -178,6 +213,7 @@ class Registration extends Component {
                   holder="Ingrese nombre de empresa"
                   onChangeText={(value) => this.setState({ dataname: value })}
                   value={dataname}
+                  errorText={invalidname}
                   type="default"
                 />
                 <Input
@@ -189,18 +225,23 @@ class Registration extends Component {
                   errorText={invalidphone}
                   onChangeText={(value) => this.setState({ dataphone: value })}
                 />
-                <Input
+                <InputPicker
                   title="Tipo de carga"
-                  holder="Ingrese nombre de empresa"
-                  onChangeText={(value) => this.setState({ datatype: value })}
-                  value={datatype}
-                  type="default"
+                  listdata={itemsType}
+                  defaultSelect={datatype}
+                  onChangeValue={(value) => this.setState({ datatype: value })}
+                  editable
                 />
               </WrapperInputs>
             </SectionRow>
           </WrapperSection>
 
           <WrapperError>
+            { error.name ? (
+              <TextError>
+                {error.name}
+              </TextError>
+            ) : null }
             { error.phone ? (
               <TextError>
                 {error.phone}
@@ -222,11 +263,11 @@ class Registration extends Component {
           <TextLoad>
             { loading ? (
               <ActivityIndicator
-                style={{ alignSelf: 'center', height: '100%' }}
+                style={{ alignSelf: 'center', height: 'auto' }}
                 size="large"
                 color="#0068ff"
               />
-            ) : '' }
+            ) : null }
           </TextLoad>
           <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
           <Toast
@@ -254,15 +295,16 @@ class Registration extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, loadsType } = state;
+  const { companies, loadsType } = state;
   return {
-    user,
+    companies,
     loadsType,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getLoadsType: params => dispatch(LoadActions.getLoadstypeRequest(params)),
+  registerCompany: params => dispatch(CompanyActions.postRegCompaniesRequest(params)),
 });
 
 export default connect(

@@ -211,7 +211,7 @@ class Registration extends Component {
           <TextLoad>
             { loadingUpdate ? (
               <ActivityIndicator
-                style={{ alignSelf: 'center', height: '100%' }}
+                style={{ alignSelf: 'center', height: 'auto' }}
                 size="large"
                 color="#0068ff"
               />

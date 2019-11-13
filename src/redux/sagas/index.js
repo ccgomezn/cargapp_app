@@ -26,7 +26,7 @@ import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
 import { getOffers, applyOffer } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
-import { getCompanies } from './CompanySagas';
+import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getLoadsType } from './LoadSagas';
 /* ----------  API ------------ */
@@ -55,5 +55,6 @@ export default function* root() {
     takeLatest(UserTypes.POST_PASSWORD_REQUEST, forgotPass, api),
     takeLatest(UserTypes.POST_RESET_PASS_REQUEST, resetPass, api),
     takeLatest(LoadTypes.GET_LOADSTYPE_REQUEST, getLoadsType, api),
+    takeLatest(CompanyTypes.POST_REG_COMPANIES_REQUEST, registerCompanies, api),
   ]);
 }
