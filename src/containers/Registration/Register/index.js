@@ -407,8 +407,7 @@ class Registration extends Component {
             if (datarol === 11) {
               navigate('Documents', { userdata: user.info });
             } else {
-              // navigate('Personal', { idrol: datarol });
-              navigate('RegCompany');
+              navigate('RegCompany', { userdata: user.info });
             }
           }, 1500);
         } else if (loadingLogin && user.unprocess) {
@@ -558,7 +557,7 @@ class Registration extends Component {
           <TextLoad>
             { loadingRegister ? (
               <ActivityIndicator
-                style={{ alignSelf: 'center', height: '100%' }}
+                style={{ alignSelf: 'center', height: 'auto' }}
                 size="large"
                 color="#0068ff"
               />
@@ -634,11 +633,11 @@ class Registration extends Component {
                   <TextLoad>
                     { loadingPin || loadingResendPin ? (
                       <ActivityIndicator
-                        style={{ alignSelf: 'center', height: '100%' }}
+                        style={{ alignSelf: 'center', height: 'auto' }}
                         size="small"
                         color="#0068ff"
                       />
-                    ) : '' }
+                    ) : null }
                   </TextLoad>
                 </ContentDialog>
               </ScrollDialog>

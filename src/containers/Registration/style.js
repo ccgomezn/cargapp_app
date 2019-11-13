@@ -52,9 +52,10 @@ export const TextError = styled.Text`
   margin-bottom: 2px;
 `;
 
-export const TextLoad = styled.Text`
-  opacity: 0.8;
-  color: #ff647c;
+export const TextLoad = styled.View`
+  display: flex;
+  height: auto;
+  align-items: center;
   align-self: center;
   text-align: center;
 `;

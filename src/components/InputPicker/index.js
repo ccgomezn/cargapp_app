@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,27 +10,24 @@ class InputPicker extends React.Component {
     super();
     this.state = {
       press: false,
-      itemSel: 0,
     };
   }
 
   componentDidMount() {
-    const { defaultSelect } = this.props;
-    if (defaultSelect != null) {
-      this.setState({ itemSel: defaultSelect });
-    }
   }
 
   render() {
-    const { press, itemSel } = this.state;
-    const { title, listdata, editable } = this.props;
+    const { press } = this.state;
+    const {
+      title, listdata, editable, onChangeValue, defaultSelect,
+    } = this.props;
 
     return (
       <MainWrapper style={[press ? lineActive : null, editable === false ? disabledInput : null]}>
         <Text>{title}</Text>
         <InputPk
-          selectedValue={itemSel}
-          onValueChange={item => this.setState({ itemSel: item })}
+          selectedValue={defaultSelect}
+          onValueChange={item => onChangeValue(item)}
           mode="dropdown"
           enabled={editable != null ? editable : true}
         >
@@ -37,7 +35,6 @@ class InputPicker extends React.Component {
           {
             listdata != null ? (
               listdata.map((data, i) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <InputPk.Item key={i} label={data.textItem} value={data.valueItem} />
               ))
             ) : null
@@ -54,6 +51,7 @@ InputPicker.propTypes = {
   listdata: PropTypes.array.isRequired,
   defaultSelect: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
+  onChangeValue: PropTypes.func.isRequired,
 };
 
 export default InputPicker;

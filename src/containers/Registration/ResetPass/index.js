@@ -281,11 +281,11 @@ class Registration extends Component {
         <TextLoad>
           { loading ? (
             <ActivityIndicator
-              style={{ alignSelf: 'center', height: '100%' }}
+              style={{ alignSelf: 'center', height: 'auto' }}
               size="large"
               color="#0068ff"
             />
-          ) : '' }
+          ) : null }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
         <Toast

@@ -34,6 +34,7 @@ class Registration extends Component {
   constructor() {
     super();
     this.state = {
+      userid: '',
       datamethod: '',
       datatarget: '',
       datadateexp: '',
@@ -50,20 +51,26 @@ class Registration extends Component {
   }
 
   componentDidMount() {
-
+    const { navigation } = this.props;
+    // get userid
+    const dtuser = navigation.getParam('iduser', '');
+    if (dtuser !== '') {
+      this.setState({ userid: dtuser });
+    }
   }
 
-  async onforgotPass() {
+  async onRegPay() {
     const {
       dataemail,
+      userid,
     } = this.state;
     const { forgotPass } = this.props;
 
     if (dataemail) {
       const data = {
-        user: {
+        user_payment_method: {
           email: dataemail,
-          notify: 'phone',
+          user_id: userid,
         },
       };
       // console.log(data);
@@ -101,7 +108,7 @@ class Registration extends Component {
 
   render() {
     const { user } = this.props;
-    const { navigate, goBack } = this.props.navigation;
+    const { goBack } = this.props.navigation;
     const {
       loading,
       datamethod,
@@ -161,7 +168,6 @@ class Registration extends Component {
       }
     }
 
-    console.log(user);
 
     return (
       <MainWrapper>
@@ -192,6 +198,7 @@ class Registration extends Component {
                 holder="Ingrese número de tarjeta"
                 type="numeric"
                 maxLength={12}
+                errorText={invalidphone}
                 value={datatarget}
                 onChangeText={(value) => this.setState({ datatarget: value })}
               />
@@ -235,11 +242,11 @@ class Registration extends Component {
         <TextLoad>
           { loading ? (
             <ActivityIndicator
-              style={{ alignSelf: 'center', height: '100%' }}
+              style={{ alignSelf: 'center', height: 'auto' }}
               size="large"
               color="#0068ff"
             />
-          ) : '' }
+          ) : null }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
         <Toast
