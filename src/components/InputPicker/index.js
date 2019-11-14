@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, Text, lineActive, InputPk, disabledInput,
+  MainWrapper, Text, lineActive, InputPk, disabledInput, errorInput,
 } from './style';
 
 class InputPicker extends React.Component {
@@ -19,17 +19,24 @@ class InputPicker extends React.Component {
   render() {
     const { press } = this.state;
     const {
-      title, listdata, editable, onChangeValue, defaultSelect,
+      title, listdata, editable, onChangeValue, defaultSelect, errorText,
     } = this.props;
 
     return (
-      <MainWrapper style={[press ? lineActive : null, editable === false ? disabledInput : null]}>
+      <MainWrapper style={[
+        press ? lineActive : null,
+        editable === false ? disabledInput : null,
+        errorText ? errorInput : null,
+      ]}
+      >
         <Text>{title}</Text>
         <InputPk
           selectedValue={defaultSelect}
           onValueChange={item => onChangeValue(item)}
           mode="dropdown"
           enabled={editable != null ? editable : true}
+          itemStyle={{ fontSize: 14, color: '#d00' }}
+          iosHeader={title}
         >
           <InputPk.Item label="- Seleccionar -" value="0" />
           {
@@ -52,6 +59,7 @@ InputPicker.propTypes = {
   defaultSelect: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
   onChangeValue: PropTypes.func.isRequired,
+  errorText: PropTypes.bool.isRequired,
 };
 
 export default InputPicker;

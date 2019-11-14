@@ -52,6 +52,7 @@ class Registration extends Component {
       error: {},
       invalidphone: false,
       invalidname: false,
+      invalidtype: false,
     };
   }
 
@@ -115,6 +116,11 @@ class Registration extends Component {
       this.setState({ invalidphone: true });
     }
 
+    if (datatype === '0') {
+      errormsg.type = 'Tipo de carga es obligatorio';
+      this.setState({ invalidtype: true });
+    }
+
     this.setState({ error: errormsg });
 
     if (errormsg.phone === '') {
@@ -125,7 +131,11 @@ class Registration extends Component {
       this.setState({ invalidname: false });
     }
 
-    if (errormsg.name === '' && errormsg.phone === '' && errormsg.type === '') {
+    if (errormsg.type === '') {
+      this.setState({ invalidtype: false });
+    }
+
+    if (errormsg.name === '' && errormsg.phone === '' && errormsg.type === '' && errormsg.type === '') {
       this.onRegisterPress();
     }
   }
@@ -144,6 +154,7 @@ class Registration extends Component {
       error,
       invalidphone,
       invalidname,
+      invalidtype,
       userid,
     } = this.state;
 
@@ -231,6 +242,7 @@ class Registration extends Component {
                   defaultSelect={datatype}
                   onChangeValue={(value) => this.setState({ datatype: value })}
                   editable
+                  errorText={invalidtype}
                 />
               </WrapperInputs>
             </SectionRow>
@@ -245,6 +257,11 @@ class Registration extends Component {
             { error.phone ? (
               <TextError>
                 {error.phone}
+              </TextError>
+            ) : null }
+            { error.type ? (
+              <TextError>
+                {error.type}
               </TextError>
             ) : null }
             { msgApi ? (
