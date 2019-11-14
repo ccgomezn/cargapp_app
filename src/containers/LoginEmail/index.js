@@ -81,7 +81,7 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     if (user.isLogged) {
-      navigate('ScreenHome');// ScreenHome--Personal--RegCompany
+      navigate('RegCompany');// ScreenHome--Personal--RegCompany
     }
   }
 

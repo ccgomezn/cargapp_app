@@ -12,6 +12,9 @@ import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
 import ArrowBack from '../../../components/ArrowBack';
 
+// actions - reducers
+import PaymentActions from '../../../redux/reducers/PaymentRedux';
+
 import {
   MainWrapper,
   TextBlack,
@@ -35,14 +38,12 @@ class Registration extends Component {
     super();
     this.state = {
       userid: '',
-      datamethod: '',
-      datatarget: '',
-      datadateexp: '',
+      datapaymethod: '',
+      datacardnumber: '',
+      dataexp: '',
       datacvv: '',
       loading: false,
-      emailErrorCheck: false,
       inputValueCheck: false,
-      onPressLogin: false,
       msgApi: '',
       errorApi: false,
       error: {},
@@ -61,20 +62,26 @@ class Registration extends Component {
 
   async onRegPay() {
     const {
-      dataemail,
       userid,
+      datapaymethod,
+      datacardnumber,
+      dataexp,
+      datacvv,
     } = this.state;
-    const { forgotPass } = this.props;
+    // const { forgotPass } = this.props;
 
-    if (dataemail) {
+    if (datapaymethod) {
       const data = {
         user_payment_method: {
-          email: dataemail,
           user_id: userid,
+          card_number: datacardnumber,
+          expiration: dataexp,
+          cvv: datacvv,
+          active: true,
         },
       };
-      // console.log(data);
-      await forgotPass(data);
+      console.log(data);
+      // await forgotPass(data);
     }
     this.setState({ loading: true, msgApi: null });
   }
@@ -100,9 +107,8 @@ class Registration extends Component {
       this.setState({ invalidphone: false });
     }
 
-    if (errormsg.email === '' && errormsg.pass === '' && errormsg.phone === '' && errormsg.doc === '') {
-      this.onRegisterPress();
-      this.setState({ onPressLogin: true });
+    if (errormsg.phone === '' && errormsg.doc === '') {
+      this.onRegPay();
     }
   }
 
@@ -115,9 +121,7 @@ class Registration extends Component {
       datatarget,
       datadateexp,
       datacvv,
-      emailErrorCheck,
       inputValueCheck,
-      onPressLogin,
       msgApi,
       errorApi,
       error,
@@ -131,21 +135,14 @@ class Registration extends Component {
       }), 5000); // hide toast after 5s
     }
 
-    /* if (dataname) {
-      if (dataname.length >= 5) {
+    if (datamethod) {
+      if (datamethod.length >= 1) {
         if (inputValueCheck === false) {
           this.setState({ inputValueCheck: true });
         }
       } else if (inputValueCheck) {
         this.setState({ inputValueCheck: false });
       }
-    } */
-
-    if (onPressLogin) {
-      if (!emailErrorCheck) {
-        this.onforgotPass();
-      }
-      this.setState({ onPressLogin: false });
     }
 
     // reset password
@@ -273,6 +270,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   // funtions
+  registerPayment: params => dispatch(PaymentActions.postRegPaymentRequest(params)),
 });
 
 export default connect(

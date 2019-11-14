@@ -33,7 +33,6 @@ export const Text = styled.Text`
 
 export const InputPk = styled(Picker)`
   width: 100%;
-  font-family: Roboto;
   font-size: 12px;
   top: -6;
 `;
@@ -53,4 +52,15 @@ export const ItemPk = {
   fontSize: 4,
   color: 'blue',
   fontFamily: 'Roboto',
+};
+
+export const errorInput = {
+  borderLeftWidth: 1,
+  borderLeftColor: '#ff647c',
+  borderTopWidth: 1,
+  borderTopColor: '#ff647c',
+  borderBottomWidth: 1,
+  borderBottomColor: '#ff647c',
+  borderRightWidth: 1,
+  borderRightColor: '#ff647c',
 };

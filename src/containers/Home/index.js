@@ -78,7 +78,7 @@ class Home extends Component {
     const {
       driver, offers, vehicles, navigation, user,
     } = this.props;
-    console.log(user);
+    // console.log(user);
     if (offers.data && vehicles.data) {
       return (
         <MainView>
@@ -205,7 +205,9 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { driver, offers, vehicles, user } = state;
+  const { 
+    driver, offers, vehicles, user,
+  } = state;
   return {
     driver,
     offers,
