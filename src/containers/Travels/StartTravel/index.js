@@ -3,10 +3,13 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { ActivityIndicator, Linking } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import Polyline from '@mapbox/polyline';
 import {
   MainWrapper, AbsoluteWrapper, WrapperImage, TouchableNavigationButtons, WrapperAdresses,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
+
+const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
 export default class StartTravel extends Component {
   constructor() {
@@ -23,9 +26,24 @@ export default class StartTravel extends Component {
     const { navigation } = this.props;
     const offer = navigation.getParam('Offer');
     this.setState({ offerSpecific: offer });
+    this.callLocation();
+  }
+
+  async getDirections(startLoc, destinationLoc) {
+    const { offerSpecific } = this.state;
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const respJson = await resp.json();
+    const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
+    const coords = points.map((point, index) => ({
+      latitude: point[0],
+      longitude: point[1],
+    }));
+    this.setState({ coords });
+    return coords;
+  }
+
+  callLocation() {
     Geolocation.getCurrentPosition((position) => {
-      console.log('gola');
-      console.log(position);
       const region = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -33,6 +51,13 @@ export default class StartTravel extends Component {
         longitudeDelta: 0.00421 * 1.5,
       };
       this.onRegionChange(region, region.latitude, region.longitude);
+      this.getDirections(region.latitude, region.longitude)
+        .then((suc) => {
+          this.setState({ waypoints: suc });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
   }
 
@@ -48,21 +73,16 @@ export default class StartTravel extends Component {
   ads(e) {
     const { lastLat, lastLong } = this.state;
     setTimeout(() => {
-      console.log(e);
-      const lat = lastLat.toString().slice(0, 3);
-      const long = lastLong.toString().slice(0, 3);
-      const preLat = e.latitude.toString().slice(0, 3);
-      const preLong = e.longitude.toString().slice(0, 3);
-      if (lat !== preLat && long !== preLong) {
-        this.setState({ lastLat: e.latitude, lastLong: e.longitude });
-      }
+      this.setState({ lastLat: e.latitude, lastLong: e.longitude });
+      this.callLocation();
     }, 5000);
   }
 
   render() {
-    const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
-    const { offerSpecific, lastLat, lastLong } = this.state;
-    if (offerSpecific !== null) {
+    const {
+      offerSpecific, lastLat, lastLong, waypoints,
+    } = this.state;
+    if (offerSpecific !== null && waypoints !== undefined) {
       return (
         <MainWrapper>
           <MapView
@@ -78,19 +98,7 @@ export default class StartTravel extends Component {
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
-            <MapViewDirections
-              origin={{
-                latitude: lastLat,
-                longitude: lastLong,
-              }}
-              destination={{
-                latitude: Number(offerSpecific.destination_latitude),
-                longitude: Number(offerSpecific.destination_longitude),
-              }}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={4}
-              strokeColor={['#007aff']}
-            />
+            <MapView.Polyline coordinates={waypoints} />
           </MapView>
           <AbsoluteWrapper>
             <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}>
