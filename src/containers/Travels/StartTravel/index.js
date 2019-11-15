@@ -31,7 +31,7 @@ export default class StartTravel extends Component {
 
   async getDirections(startLoc, destinationLoc) {
     const { offerSpecific } = this.state;
-    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
     const respJson = await resp.json();
     const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
     const coords = points.map((point, index) => ({
@@ -98,7 +98,16 @@ export default class StartTravel extends Component {
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
-            <MapView.Polyline coordinates={waypoints} />
+            <MapView.Polyline coordinates={waypoints} strokeWidth={4} strokeColor="#007aff" />
+            <MapView.Marker
+              coordinate={{
+                latitude: Number(offerSpecific.origin_latitude),
+                longitude: Number(offerSpecific.origin_longitude),
+              }}
+              tracksViewChanges={false}
+              pinColor="#007aff"
+              title="Origen carga"
+            />
           </MapView>
           <AbsoluteWrapper>
             <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}>
@@ -110,8 +119,8 @@ export default class StartTravel extends Component {
           </AbsoluteWrapper>
           <WrapperAdresses>
             <AddressesCardMap
-              nameCompany="Ubicación"
-              firstAddress=""
+              nameCompany="Tu"
+              firstAddress="Ubicación"
               nameAddress={offerSpecific.destination}
               secondAddress={offerSpecific.destination_address}
             />
