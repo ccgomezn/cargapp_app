@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-else-return */
 /* eslint-disable arrow-parens */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-alert */
@@ -32,13 +34,14 @@ import {
   WrapperError,
   WrapperButtons,
 } from '../style';
+import InputPicker from '../../../components/InputPicker';
 
 class Registration extends Component {
   constructor() {
     super();
     this.state = {
       userid: '',
-      datapaymethod: '',
+      datapaymethod: '0',
       datacardnumber: '',
       dataexp: '',
       datacvv: '',
@@ -47,12 +50,17 @@ class Registration extends Component {
       msgApi: '',
       errorApi: false,
       error: {},
-      invalidphone: false,
+      invalidcardnumber: false,
+      invalidpaymethod: false,
+      invalidexp: false,
+      invalidcvv: false,
     };
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, getPaymentMethod } = this.props;
+    // get getPayment_methods
+    getPaymentMethod();
     // get userid
     const dtuser = navigation.getParam('iduser', '');
     if (dtuser !== '') {
@@ -68,7 +76,7 @@ class Registration extends Component {
       dataexp,
       datacvv,
     } = this.state;
-    // const { forgotPass } = this.props;
+    const { registerPayment } = this.props;
 
     if (datapaymethod) {
       const data = {
@@ -78,55 +86,86 @@ class Registration extends Component {
           expiration: dataexp,
           cvv: datacvv,
           active: true,
+          payment_method_id: datapaymethod,
         },
       };
       console.log(data);
-      // await forgotPass(data);
+      await registerPayment(data);
     }
     this.setState({ loading: true, msgApi: null });
   }
 
   validateForm() {
     const {
-      dataphone,
+      datacardnumber,
+      dataexp,
+      datacvv,
+      datapaymethod,
     } = this.state;
     const errormsg = {};
     this.setState({ error: null });
-    errormsg.name = '';
-    errormsg.phone = '';
-    errormsg.type = '';
+    errormsg.card_number = '';
+    errormsg.exp = '';
+    errormsg.cvv = '';
+    errormsg.paymethod = '';
 
     // validate input's
-    if (dataphone.length < 10 || dataphone === '') {
-      errormsg.phone = 'Teléfono incorrecto: minímo 10 caracteres';
-      this.setState({ invalidphone: true });
+    if (datacardnumber.length < 8 || datacardnumber === '') {
+      errormsg.card_number = 'Nº. tarjeta incorrecta: minímo 8 caracteres';
+      this.setState({ invalidcardnumber: true });
+    }
+    if (datapaymethod === '0') {
+      errormsg.paymethod = 'Método de pago obligatorio';
+      this.setState({ invalidpaymethod: true });
+    }
+    if (dataexp.length < 3 || dataexp === '') {
+      errormsg.exp = 'Fecha de experiencia obligatoria';
+      this.setState({ invalidexp: true });
+    }
+    if (datacvv.length < 3 || datacvv === '') {
+      errormsg.cvv = 'CVV incorrecto: minímo 3 caracteres';
+      this.setState({ invalidcvv: true });
     }
     this.setState({ error: errormsg });
 
-    if (errormsg.phone === '') {
-      this.setState({ invalidphone: false });
+    if (errormsg.card_number === '') {
+      this.setState({ invalidcardnumber: false });
+    }
+    if (errormsg.paymethod === '') {
+      this.setState({ invalidpaymethod: false });
+    }
+    if (errormsg.exp === '') {
+      this.setState({ invalidexp: false });
+    }
+    if (errormsg.cvv === '') {
+      this.setState({ invalidcvv: false });
     }
 
-    if (errormsg.phone === '' && errormsg.doc === '') {
+    if (errormsg.card_number === '' && errormsg.paymethod === '' && errormsg.exp === '' && errormsg.cvv === '') {
       this.onRegPay();
     }
   }
 
   render() {
-    const { user } = this.props;
-    const { goBack } = this.props.navigation;
+    const { payment } = this.props;
+    const { navigate, goBack } = this.props.navigation;
     const {
       loading,
-      datamethod,
-      datatarget,
-      datadateexp,
+      datacardnumber,
+      dataexp,
       datacvv,
+      datapaymethod,
       inputValueCheck,
       msgApi,
       errorApi,
       error,
-      invalidphone,
+      invalidcardnumber,
+      invalidpaymethod,
+      invalidexp,
+      invalidcvv,
     } = this.state;
+
+    const itemsMethod = [];
 
     // hide Toast
     if (errorApi) {
@@ -135,8 +174,8 @@ class Registration extends Component {
       }), 5000); // hide toast after 5s
     }
 
-    if (datamethod) {
-      if (datamethod.length >= 1) {
+    if (datapaymethod) {
+      if (datapaymethod !== '0') {
         if (inputValueCheck === false) {
           this.setState({ inputValueCheck: true });
         }
@@ -147,130 +186,152 @@ class Registration extends Component {
 
     // reset password
     if (loading) {
-      if (user.error && !user.fetching) {
+      if (payment.error && !payment.fetching) {
         this.setState({ loading: false, errorApi: true });
       }
-      if (user.status && !user.fetching) {
-        if (user.status.message && !user.unprocess) {
+      if (payment.status && !payment.fetching) {
+        if (payment.status.id && !payment.unprocess) {
           setTimeout(() => {
             this.setState({ loading: false });
-            // navigate('ResetPass', { email: dataemail });
+            navigate('ScreenHome');
           }, 1500);
-        } else if (loading && user.unprocess) {
+        } else if (loading && payment.unprocess) {
           // unProccess
-          // const message = user.status.message;
           const message = 'Información No válida';
           this.setState({ msgApi: message, loading: false });
         }
       }
     }
 
+    if (payment.data && !payment.fetching) {
+      payment.data.map((ele) => {
+        itemsMethod.push({ textItem: ele.name, valueItem: ele.id });
+      });
+      return (
+        <MainWrapper>
+          <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
+            <ArrowBack url={() => goBack()} />
+            <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+          </WrapperButtons>
+          <TextBlack>
+            Datos
+            <TextBlue>
+              {' '}
+              Bancarios
+            </TextBlue>
+          </TextBlack>
+          <TextGray>Bienvenido, necesitamos la siguiente información de método de pago.</TextGray>
+          <WrapperSection style={{ marginTop: 10 }}>
+            <SectionRow style={{ width: '100%' }}>
+              <WrapperInputs>
+                {/* <Input
+                  title="Método"
+                  holder="Ingrese método de pago"
+                  onChangeText={(value) => this.setState({ datapaymethod: value })}
+                  value={datapaymethod}
+                  errorText={invalidpaymethod}
+                  type="default"
+                /> */}
+                <InputPicker
+                  title="Método de pago"
+                  listdata={itemsMethod}
+                  defaultSelect={datapaymethod}
+                  editable
+                  onChangeValue={(value) => this.setState({ datapaymethod: value })}
+                  errorText={invalidpaymethod}
+                />
+                <Input
+                  title="Número de tarjeta"
+                  holder="Ingrese número de tarjeta"
+                  type="numeric"
+                  maxLength={12}
+                  errorText={invalidcardnumber}
+                  value={datacardnumber}
+                  onChangeText={(value) => this.setState({ datacardnumber: value })}
+                />
+                <Input
+                  title="Fecha de vencimiento"
+                  holder="Ingrese fecha de venc."
+                  onChangeText={(value) => this.setState({ dataexp: value })}
+                  value={dataexp}
+                  errorText={invalidexp}
+                  type="default"
+                />
+                <Input
+                  title="CVV"
+                  holder="Ingrese cvv"
+                  onChangeText={(value) => this.setState({ datacvv: value })}
+                  value={datacvv}
+                  errorText={invalidcvv}
+                  type="numeric"
+                />
+              </WrapperInputs>
+            </SectionRow>
+          </WrapperSection>
 
-    return (
-      <MainWrapper>
-        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
-          <ArrowBack url={() => goBack()} />
-          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
-        </WrapperButtons>
-        <TextBlack>
-          Datos
-          <TextBlue>
-            {' '}
-            Bancarios
-          </TextBlue>
-        </TextBlack>
-        <TextGray>Bienvenido, necesitamos la siguiente información de método de pago.</TextGray>
-        <WrapperSection style={{ marginTop: 10 }}>
-          <SectionRow style={{ width: '100%' }}>
-            <WrapperInputs>
-              <Input
-                title="Método"
-                holder="Ingrese método de pago"
-                onChangeText={(value) => this.setState({ datamethod: value })}
-                value={datamethod}
-                type="default"
-              />
-              <Input
-                title="Número de tarjeta"
-                holder="Ingrese número de tarjeta"
-                type="numeric"
-                maxLength={12}
-                errorText={invalidphone}
-                value={datatarget}
-                onChangeText={(value) => this.setState({ datatarget: value })}
-              />
-              <Input
-                title="Fecha de vencimiento"
-                holder="Ingrese fecha de venc."
-                onChangeText={(value) => this.setState({ datadateexp: value })}
-                value={datadateexp}
-                type="default"
-              />
-              <Input
-                title="CVV"
-                holder="Ingrese cvv"
-                onChangeText={(value) => this.setState({ datacvv: value })}
-                value={datacvv}
-                type="numeric"
-              />
-            </WrapperInputs>
-          </SectionRow>
-        </WrapperSection>
+          <WrapperError>
+            { error.card_number ? (
+              <TextError>
+                {error.card_number}
+              </TextError>
+            ) : null }
+            { msgApi ? (
+              <TextError>
+                {msgApi}
+              </TextError>
+            ) : null }
+          </WrapperError>
 
-        <WrapperError>
-          { error.phone ? (
-            <TextError>
-              {error.phone}
-            </TextError>
-          ) : null }
-          { msgApi ? (
-            <TextError>
-              {msgApi}
-            </TextError>
-          ) : null }
-        </WrapperError>
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonGradient press={() => this.validateForm()} content="Continuar" disabled={!inputValueCheck} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
 
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            <ButtonGradient press={() => this.validateForm()} content="Continuar" disabled={!inputValueCheck} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
-
-        <TextLoad>
-          { loading ? (
-            <ActivityIndicator
-              style={{ alignSelf: 'center', height: 'auto' }}
-              size="large"
-              color="#0068ff"
-            />
-          ) : null }
-        </TextLoad>
-        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-        <Toast
-          visible={errorApi}
-          position={-50}
-          duration={Toast.durations.LONG}
-          opacity={0.8}
-          shadow
-          animation
-        >
-          Error, no se pudo procesar la solicitud
-        </Toast>
-      </MainWrapper>
-    );
+          <TextLoad>
+            { loading ? (
+              <ActivityIndicator
+                style={{ alignSelf: 'center', height: 'auto' }}
+                size="large"
+                color="#0068ff"
+              />
+            ) : null }
+          </TextLoad>
+          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <Toast
+            visible={errorApi}
+            position={-50}
+            duration={Toast.durations.LONG}
+            opacity={0.8}
+            shadow
+            animation
+          >
+            Error, no se pudo procesar la solicitud
+          </Toast>
+        </MainWrapper>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0000ff"
+        />
+      );
+    }
   }
 }
 
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { payment } = state;
   return {
-    user,
+    payment,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  // funtions
   registerPayment: params => dispatch(PaymentActions.postRegPaymentRequest(params)),
+  getPaymentMethod: params => dispatch(PaymentActions.getPaymentMethodRequest(params)),
 });
 
 export default connect(

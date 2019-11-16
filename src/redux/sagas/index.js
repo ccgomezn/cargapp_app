@@ -30,7 +30,7 @@ import { getVehicles } from './VehicleSagas';
 import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getLoadsType } from './LoadSagas';
-import { registerPayment } from './PaymentSagas';
+import { registerPayment, getPaymentMethod } from './PaymentSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -59,5 +59,6 @@ export default function* root() {
     takeLatest(LoadTypes.GET_LOADSTYPE_REQUEST, getLoadsType, api),
     takeLatest(CompanyTypes.POST_REG_COMPANIES_REQUEST, registerCompanies, api),
     takeLatest(PaymentTypes.POST_REG_PAYMENT_REQUEST, registerPayment, api),
+    takeLatest(PaymentTypes.GET_PAYMENT_METHOD_REQUEST, getPaymentMethod, api),
   ]);
 }
