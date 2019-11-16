@@ -6,6 +6,9 @@ export const { Types, Creators } = createActions({
   postRegPaymentRequest: ['params'],
   postRegPaymentFailure: ['params'],
   postRegPaymentUnprocess: ['params'],
+  getPaymentMethodSuccess: ['data'],
+  getPaymentMethodFailure: ['params'],
+  getPaymentMethodRequest: ['params'],
 });
 
 export const PaymentTypes = Types;
@@ -52,10 +55,32 @@ export const postRegPaymentUnprocess = state => ({
   status: true,
 });
 
+/* ------------------- get Payment_method ------------------ */
+export const getPaymentMethodRequest = state => ({
+  ...state,
+  fetching: true,
+  error: false,
+});
+
+export const getPaymentMethodSuccess = (state, { data }) => ({
+  ...state,
+  fetching: false,
+  data,
+});
+
+export const getPaymentMethodFailure = state => ({
+  ...state,
+  error: true,
+  fetching: false,
+});
+
 /* ------------------- Reducers to Actions ----------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_REG_PAYMENT_REQUEST]: postRegPaymentRequest,
   [Types.POST_REG_PAYMENT_SUCCESS]: postRegPaymentSuccess,
   [Types.POST_REG_PAYMENT_FAILURE]: postRegPaymentFailure,
   [Types.POST_REG_PAYMENT_UNPROCESS]: postRegPaymentUnprocess,
+  [Types.GET_PAYMENT_METHOD_REQUEST]: getPaymentMethodRequest,
+  [Types.GET_PAYMENT_METHOD_SUCCESS]: getPaymentMethodSuccess,
+  [Types.GET_PAYMENT_METHOD_FAILURE]: getPaymentMethodFailure,
 });

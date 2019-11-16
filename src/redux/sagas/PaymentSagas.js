@@ -4,6 +4,7 @@ import { call, put, select } from 'redux-saga/effects';
 import PaymentActions from '../reducers/PaymentRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
+/* ------------------------- register user_payment_method --------------------------- */
 export function* registerPayment(api, action) {
   const { params } = action;
   const token = yield select(AuthSelectors.getToken);
@@ -19,5 +20,19 @@ export function* registerPayment(api, action) {
   } else {
     // error api
     yield put(PaymentActions.postRegPaymentFailure(null));
+  }
+}
+
+/* -------------------------- get payment_method ---------------------------- */
+export function* getPaymentMethod(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.payment.getPaymentMethod, params);
+  console.log(response);
+  if (response.ok) {
+    yield put(PaymentActions.getPaymentMethodSuccess(response.data));
+  } else {
+    yield put(PaymentActions.getPaymentMethodFailure());
   }
 }
