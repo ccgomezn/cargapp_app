@@ -13,7 +13,7 @@ export function* getProfile(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.profile.getProfile, params);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     yield put(ProfileActions.getProfileSuccess(response.data));
   } else {

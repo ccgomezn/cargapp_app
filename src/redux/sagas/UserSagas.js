@@ -41,7 +41,7 @@ export function* validatePin(api, action) {
 export function* registerUser(api, action) {
   const { params } = action;
   const response = yield call(api.user.registerUser, params);
-  // console.log(response);
+  console.log(response);
   if (response.status === 201) {
     // save OK create
     yield put(UserActions.postRegisterSuccess(response.data));
@@ -72,7 +72,7 @@ export function* resendPin(api, action) {
 export function* loginUser(api, action) {
   const { params } = action;
   const response = yield call(api.user.loginUser, params);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     // save response ok
     yield put(UserActions.postLoginSuccess(response.data));

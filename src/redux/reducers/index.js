@@ -10,4 +10,6 @@ export default combineReducers({
   vehicles: require('./VehicleRedux').reducer,
   companies: require('./CompanyRedux').reducer,
   profile: require('./ProfileRedux').reducer,
+  loadsType: require('./LoadRedux').reducer,
+  payment: require('./PaymentRedux').reducer,
 });
