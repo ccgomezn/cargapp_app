@@ -11,6 +11,8 @@ export const { Types, Creators } = createActions({
   getServicesRequest: ['params'],
   getServicesSuccess: ['data'],
   getMyOffersSuccess: ['myOffers'],
+  putStateInTravelOriginSuccess: ['data'],
+  putStateInTravelOriginRequest: ['data'],
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
   getOffersFailure: null,
@@ -27,6 +29,7 @@ export const INITIAL_STATE = Immutable({
   service: null,
   myOffers: null,
   services: null,
+  statusTravelOrigin: null,
 });
 
 /* ----------- Reducers ------------- */
@@ -35,6 +38,23 @@ export const getOffersRequest = (state) => {
   return {
     ...state,
     fetching: true,
+    error: false,
+  };
+};
+
+export const putStateInTravelOriginRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const putStateInTravelOriginSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    statusTravelOrigin: data,
     error: false,
   };
 };
