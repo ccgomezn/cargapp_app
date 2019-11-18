@@ -1,11 +1,13 @@
+/* eslint-disable global-require */
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, WrapperLogo, Logo, WrapperText, MainText, SubText,
+  MainWrapper, WrapperLogo, Logo, WrapperText, MainText, SubText, LogoCheck, LogoError,
 } from './style';
 
 function Card({
-  mainText, subText, background, colorText, borderColorProp, icon, press,
+  mainText, subText, background, colorText, borderColorProp, icon, press, status,
 }) {
   return (
     <MainWrapper
@@ -20,7 +22,6 @@ function Card({
           ? <MainText style={{ color: colorText }}>{mainText}</MainText>
           : null
           }
-
         {subText
           ? <SubText style={{ color: colorText }}>{subText}</SubText>
           : null
@@ -28,8 +29,29 @@ function Card({
       </WrapperText>
       {icon
         ? (
-          <WrapperLogo>
-            <Logo />
+          <WrapperLogo style={{ flex: 1 }}>
+            { status === 'correct' ? (
+              <LogoCheck
+                source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-check.png' }}
+              />
+            ) : null }
+            { status === 'fail' ? (
+              <LogoCheck
+                source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-fail.png' }}
+              />
+            ) : null }
+            { status === 'error' ? (
+              <LogoError
+                source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-error.png' }}
+              />
+            ) : null }
+            { status === 'loading' ? (
+              <ActivityIndicator
+                size={28}
+                color="#0068ff"
+                style={{ }}
+              />
+            ) : null }
           </WrapperLogo>
         )
         : null
@@ -46,6 +68,7 @@ Card.propTypes = {
   borderColorProp: PropTypes.string.isRequired,
   icon: PropTypes.bool.isRequired,
   press: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 export default Card;

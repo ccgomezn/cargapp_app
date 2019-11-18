@@ -11,7 +11,11 @@ import {
   WrapperIcon,
 } from './style';
 
-function AddressesCardMap({ nameCompany, firstAddress, secondAddress, nameAddress }) {
+function AddressesCardMap(
+  {
+    nameCompany, firstAddress, secondAddress, nameAddress,
+  },
+) {
   return (
     <MainWrapper>
       <WrapperCard>

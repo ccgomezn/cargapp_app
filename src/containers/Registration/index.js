@@ -53,7 +53,7 @@ class Registration extends Component {
     const { navigate } = this.props.navigation;
     return (
       <MainWrapper>
-        <SvgUri source={require('../../Images/Logo3x.png')} />
+        <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
         <TextBlack>
             Bienvenido al
           <TextBlue>
@@ -68,16 +68,16 @@ class Registration extends Component {
             style={pressState ? containerPress : null}
           >
             {pressState && <Check source={require('../../Images/Check.png')} />}
-            <Svg source={require('../../Images/group-2.svg')} />
+            <Svg source={pressState ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_truck.svg' }} />
             <ButtonText
               style={pressState ? TextPress : null}
             >
-              Conductor
+              Dueño de camión
             </ButtonText>
             <ButtonSubText
               style={pressState ? TextPress : null}
             >
-              Más trabajo más ingresos
+              Trabaje y cuide su vehículo
             </ButtonSubText>
           </WrapperButton>
           <WrapperButton
@@ -85,7 +85,7 @@ class Registration extends Component {
             style={pressStateTwo ? containerPress : null}
           >
             {pressStateTwo && <Check source={require('../../Images/Check.png')} />}
-            <Svg source={require('../../Images/group-3.svg')} />
+            <Svg source={pressStateTwo ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver_sel.svg' } : { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon_driver.svg' }} />
             <ButtonText
               style={pressStateTwo ? TextPress : null}
             >
@@ -99,7 +99,6 @@ class Registration extends Component {
           </WrapperButton>
         </WrapperButtons>
         <WrapperInputs>
-          <Input title="Nombre" />
           <Input title="Correo electrónico" />
           <Input title="Contraseña" />
         </WrapperInputs>

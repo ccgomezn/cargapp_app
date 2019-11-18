@@ -26,6 +26,13 @@ export const { Types, Creators } = createActions({
   postLoginFailure: ['params'],
   postLoginRequest: ['params'],
   postLoginUnprocess: ['data'],
+  // forgot/reset password
+  postPasswordSuccess: ['data'],
+  postPasswordFailure: ['params'],
+  postPasswordRequest: ['params'],
+  postPasswordUnprocess: ['data'],
+  // new password
+  postResetPassRequest: ['params'],
 });
 
 export const UserTypes = Types;
@@ -211,7 +218,55 @@ export const postLoginRequest = (state) => {
   };
 };
 
-/* --------------- Reducers ----------- */
+/* --------------- Password ----------- */
+export const postPasswordSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    status: data,
+    unprocess: false,
+  };
+};
+
+export const postPasswordFailure = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: true,
+  };
+};
+
+export const postPasswordUnprocess = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    unprocess: true,
+    status: true,
+  };
+};
+
+export const postPasswordRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+    status: null,
+  };
+};
+
+/* --------------- new_password ------------- */
+export const postResetPassRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+    status: null,
+  };
+};
+
+/* ----------------- Reducers ------------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_USER_LOGIN]: onUserLogin,
   [Types.ON_USER_LOGOUT]: onUserLogout,
@@ -235,4 +290,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_LOGIN_FAILURE]: postLoginFailure,
   [Types.POST_LOGIN_REQUEST]: postLoginRequest,
   [Types.POST_LOGIN_UNPROCESS]: postLoginUnprocess,
+  // forgot/reset password
+  [Types.POST_PASSWORD_SUCCESS]: postPasswordSuccess,
+  [Types.POST_PASSWORD_FAILURE]: postPasswordFailure,
+  [Types.POST_PASSWORD_REQUEST]: postPasswordRequest,
+  [Types.POST_PASSWORD_UNPROCESS]: postPasswordUnprocess,
+  // new password
+  [Types.POST_RESET_PASS_REQUEST]: postResetPassRequest,
 });

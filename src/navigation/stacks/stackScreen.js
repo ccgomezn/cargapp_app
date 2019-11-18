@@ -15,12 +15,18 @@ import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 // SIGN UP SCREENS
-import ScreenLogin from '../../containers/Login';
-import ScreenSignUp from '../../containers/Registration';
+// import ScreenSignUp from '../../containers/Registration';
+import ScreenRegister from '../../containers/Registration/Register';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
 import ScreenLoginEmail from '../../containers/LoginEmail';
+// RESET PASSWORD
+import ScreenForgot from '../../containers/Registration/ForgotPass';
+import ScreenReset from '../../containers/Registration/ResetPass';
+// REGISTER GENERATOR
+import ScreenRegCompany from '../../containers/Registration/CompanyData';
+import ScreenRegPay from '../../containers/Registration/PayData';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -138,12 +144,17 @@ export const CouponsStackNavigator = createStackNavigator({
 });
 
 export const SignUpStackNavigator = createStackNavigator({
-  Login: { screen: ScreenLogin },
-  SignUp: { screen: ScreenSignUp },
-  Vehicle: { screen: ScreenVehicle },
-  personal: { screen: ScreenPersonalData },
-  documents: { screen: ScreenDocuments },
+  // Login: { screen: ScreenLogin },
+  // SignUp: { screen: ScreenSignUp },
   LoginEmail: { screen: ScreenLoginEmail },
+  Register: { screen: ScreenRegister },
+  Vehicle: { screen: ScreenVehicle },
+  Personal: { screen: ScreenPersonalData },
+  Documents: { screen: ScreenDocuments },
+  ForgotPass: { screen: ScreenForgot },
+  ResetPass: { screen: ScreenReset },
+  RegCompany: { screen: ScreenRegCompany },
+  RegPay: { screen: ScreenRegPay },
 }, {
   headerMode: 'none',
 });
@@ -168,7 +179,7 @@ export const viajesStackNavigator = createStackNavigator({
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
-  }
+  },
 });
 
 export const myTravelsStackNavigator = createStackNavigator({

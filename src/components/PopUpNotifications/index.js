@@ -69,7 +69,6 @@ class PopUpNotification extends Component {
 }
 
 PopUpNotification.propTypes = {
-  visible: PropTypes.bool.isRequired,
   onTouchOutside: PropTypes.func.isRequired,
   mainText: PropTypes.string.isRequired,
   subText: PropTypes.string.isRequired,

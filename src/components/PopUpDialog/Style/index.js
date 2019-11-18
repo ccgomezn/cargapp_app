@@ -3,7 +3,7 @@ import SvgU from 'react-native-svg-uri';
 
 export const MainWrapper = {
   width: '75%',
-  height: '48%',
+  height: '45%',
   justifyContent: 'flex-end',
   backgroundColor: 'transparent',
 };
@@ -12,6 +12,7 @@ export const WrapperText = styled.View`
   align-items: center;
   justify-content: center;
   padding-top: 22%;
+  padding-horizontal: 5%;
 `;
 
 export const TextBlack = styled.Text`
@@ -20,22 +21,24 @@ export const TextBlack = styled.Text`
   font-weight: bold;
   color: #010935;
   text-align: center;
+  padding-bottom: 4%;
 `;
 
 export const TextGray = styled.Text`
   opacity: 0.5;
   font-family: Roboto;
-  font-size: 14px; 
+  font-size: 14.5px; 
   color: #010935;
+  text-align: center;
 `;
 
 export const Svg = styled.ImageBackground`
-  height: 85px;
-  width: 80px;
+  height: 75px;
+  width: 70px;
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -20%;
+  top: -15%;
   z-index: 10;
   resize-mode: stretch;
 `;
@@ -63,12 +66,10 @@ export const Wrapper = styled.View`
 `;
 
 export const TouchModal = styled.TouchableOpacity`
-  min-width: 100%;
-  width: 100%;
+  width: 95%;
   height: auto;
-  align-self: flex-end;
-  bottom: 0;
   border-radius: 10px;
+  background-color: #007aff;
 `;
 
 export const TextWhite = styled.Text`
@@ -80,6 +81,4 @@ export const TextWhite = styled.Text`
   color: white;
   align-self: center;
   padding-vertical: 18px;
-  padding-horizontal: 30%;
-  background-color: #007aff;
 `;

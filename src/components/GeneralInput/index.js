@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, Text, Input, lineActive, disabledInput,
+  MainWrapper, Text, Input, lineActive, disabledInput, errorInput,
 } from './style';
 
 class GeneralInput extends React.Component {
@@ -15,7 +15,7 @@ class GeneralInput extends React.Component {
   render() {
     const { press } = this.state;
     const {
-      title, holder, value, editable, type, isPassword, maxLength, onChangeText,
+      title, holder, value, editable, type, isPassword, maxLength, onChangeText, errorText,
     } = this.props;
 
     const handleFocus = () => {
@@ -27,7 +27,12 @@ class GeneralInput extends React.Component {
     };
 
     return (
-      <MainWrapper style={[press ? lineActive : null, editable === false ? disabledInput : null]}>
+      <MainWrapper style={[
+        press ? lineActive : null,
+        editable === false ? disabledInput : null,
+        errorText ? errorInput : null,
+      ]}
+      >
         <Text>{title}</Text>
         <Input
           style={{ opacity: editable === false ? 0.5 : 1 }}
@@ -55,6 +60,7 @@ GeneralInput.propTypes = {
   isPassword: PropTypes.bool.isRequired,
   maxLength: PropTypes.number.isRequired,
   onChangeText: PropTypes.func.isRequired,
+  errorText: PropTypes.bool.isRequired,
 };
 
 export default GeneralInput;

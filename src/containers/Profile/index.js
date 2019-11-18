@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -109,7 +111,6 @@ class Profile extends Component {
       repeatPassword,
     } = this.state;
     const { profile } = this.props;
-    console.log(this.props);
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
