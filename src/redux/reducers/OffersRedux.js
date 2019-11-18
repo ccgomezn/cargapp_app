@@ -136,5 +136,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_SERVICES_REQUEST]: getServicesRequest,
   [Types.GET_SERVICES_SUCCESS]: getServicesSuccess,
   [Types.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST]: putStateInTravelOriginRequest,
-  [Types.putStateInTravelOriginSuccess]: putStateInTravelOriginSuccess,
+  [Types.PUT_STATE_IN_TRAVEL_ORIGIN_SUCCESS]: putStateInTravelOriginSuccess,
 });

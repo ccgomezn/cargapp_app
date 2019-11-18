@@ -78,12 +78,20 @@ class StartTravel extends Component {
       setTimeout(() => {
         this.setState({ lastLat: e.latitude, lastLong: e.longitude });
         this.callLocation();
-        this.destinationService(
+        const result = this.destinationService(
           e.latitude,
           e.longitude,
           offerSpecific.origin_latitude,
           offerSpecific.origin_longitude,
         );
+        if (result) {
+          const data = {
+            service: {
+              status_id: 7,
+            },
+          };
+          putStateOriginTravel();
+        }
       }, 5000);
     }
   }

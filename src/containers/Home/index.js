@@ -23,6 +23,7 @@ import InputSlider from '../../components/InputSlider';
 // action - reducers
 import DriverActions from '../../redux/reducers/DriverRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
+import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 
 const itemsTipo = [
@@ -46,8 +47,9 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { profileDriver, getsOffers, getVehicles } = this.props;
-
+    const {
+      profileDriver, getsOffers, getVehicles, getProfile,
+    } = this.props;
     const data = {
       driver: {
         token: '3560660900101009',
@@ -56,6 +58,7 @@ class Home extends Component {
     profileDriver(data);
     getsOffers();
     getVehicles();
+    getProfile();
   }
 
   onPressFilter() {
@@ -76,9 +79,8 @@ class Home extends Component {
   render() {
     const { modalSearch, multiSliderValue } = this.state;
     const {
-      driver, offers, vehicles, navigation, user,
+      driver, offers, vehicles, navigation
     } = this.props;
-    console.log(user);
     if (offers.data && vehicles.data) {
       return (
         <MainView>
@@ -206,18 +208,20 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user,
+    driver, offers, vehicles, user, profile,
   } = state;
   return {
     driver,
     offers,
     vehicles,
     user,
+    profile,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   profileDriver: params => dispatch(DriverActions.postDriverMeRequest(params)),
+  getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
 });
