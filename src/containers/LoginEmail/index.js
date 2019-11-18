@@ -81,7 +81,7 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     if (user.isLogged) {
-      navigate('ScreenHome');// ScreenHome--Personal
+      navigate('ScreenHome');// ScreenHome--Personal--RegCompany
     }
   }
 
@@ -232,15 +232,14 @@ class Registration extends Component {
             <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
-
         <TextLoad>
           { loading ? (
             <ActivityIndicator
-              style={{ alignSelf: 'center', height: '100%' }}
+              style={{ alignSelf: 'center', height: 'auto' }}
               size="large"
               color="#0068ff"
             />
-          ) : '' }
+          ) : null }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
       </MainWrapper>

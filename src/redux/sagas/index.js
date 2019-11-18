@@ -10,6 +10,8 @@ import { OffersTypes } from '../reducers/OffersRedux';
 import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
 import { ProfileTypes } from '../reducers/ProfileRedux';
+import { LoadTypes } from '../reducers/LoadRedux';
+import { PaymentTypes } from '../reducers/PaymentRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -25,9 +27,10 @@ import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
 import { getOffers, applyOffer } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
-import { getCompanies } from './CompanySagas';
+import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
-
+import { getLoadsType } from './LoadSagas';
+import { registerPayment, getPaymentMethod } from './PaymentSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -53,5 +56,9 @@ export default function* root() {
     takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api),
     takeLatest(UserTypes.POST_PASSWORD_REQUEST, forgotPass, api),
     takeLatest(UserTypes.POST_RESET_PASS_REQUEST, resetPass, api),
+    takeLatest(LoadTypes.GET_LOADSTYPE_REQUEST, getLoadsType, api),
+    takeLatest(CompanyTypes.POST_REG_COMPANIES_REQUEST, registerCompanies, api),
+    takeLatest(PaymentTypes.POST_REG_PAYMENT_REQUEST, registerPayment, api),
+    takeLatest(PaymentTypes.GET_PAYMENT_METHOD_REQUEST, getPaymentMethod, api),
   ]);
 }
