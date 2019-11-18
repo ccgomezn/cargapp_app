@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
@@ -20,17 +22,14 @@ class Registration extends Component {
     super();
     this.state = {};
   }
-  /* eslint-disable global-require */
 
   render() {
-    // eslint-disable-next-line react/prop-types
-    const { navigation } = this.props;
+    const { navigate, goBack } = this.props.navigation;
     return (
       <MainWrapper>
-        <WrapperButtons style={{ justifyContent: 'center', marginVertical: 0, marginBottom: '3%' }}>
-          {/* eslint-disable-next-line react/prop-types */}
-          <ArrowBack url={() => navigation.goBack()} />
-          <SvgUri source={require('../../../Images/Logo3x.png')} />
+        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
+          <ArrowBack url={() => goBack()} />
+          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
         </WrapperButtons>
         <TextBlack>
                     Registro de
@@ -51,7 +50,7 @@ class Registration extends Component {
         <WrapperButtonsBottom>
           <WrapperButtonGradient>
             {/* eslint-disable-next-line react/prop-types */}
-            <ButtonGradient content="Continuar" press={() => navigation.navigate('personal')} />
+            <ButtonGradient content="Continuar" press={() => navigate('Personal')} />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>

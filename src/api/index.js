@@ -2,10 +2,13 @@ import apisauce from 'apisauce';
 import Driver from './Driver';
 import User from './User';
 import Countrie from './Countrie';
+import Document from './Document';
 import Offers from './Offers';
 import Vehicles from './Vehicles';
 import Companies from './Company';
 import Profile from './Profile';
+import Load from './Load';
+import Payment from './Payment';
 import Coupons from './Coupons';
 import Status from './Status';
 import Password from './Password';
@@ -23,16 +26,19 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     headers: {
       'Cache-Control': 'no-cache',
     },
-    // 10  SECOND TIMEOUT...
-    timeout: 10000,
+    // 2000 SECOND TIMEOUT...
+    timeout: 20000,
   });
   const driver = new Driver(api);
   const user = new User(api);
   const countrie = new Countrie(api);
+  const document = new Document(api);
   const offers = new Offers(api);
   const vehicle = new Vehicles(api);
   const company = new Companies(api);
   const profile = new Profile(api);
+  const load = new Load(api);
+  const payment = new Payment(api);
   const coupons = new Coupons(api);
   const status = new Status(api);
   const password = new Password(api);
@@ -40,13 +46,17 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
     removeAuthToken: () => api.deleteHeader('Authorization'),
-    company,
-    vehicle,
+    setContent: type => api.setHeader('Content-Type', type),
     driver,
     user,
     countrie,
+    document,
+    company,
+    vehicle,
     offers,
     profile,
+    load,
+    payment,
     coupons,
     status,
     password,

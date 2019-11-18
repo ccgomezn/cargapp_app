@@ -50,8 +50,7 @@ class Splash extends Component {
     return (
       <MainWrapper>
         <StatusBar backgroundColor="#010935" barStyle="light-content" />
-        {/* eslint-disable-next-line global-require */}
-        <ImageUrl source={require('../../Images/LogoWhite3x.png')} />
+        <ImageUrl source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logoWhite3x.png' }} />
         <Text>© Todos los derechos reservados. Cargapp 2019</Text>
       </MainWrapper>
     );

@@ -5,10 +5,13 @@ import API from '../../api';
 import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 import { CountrieTypes } from '../reducers/CountrieRedux';
+import { DocumentTypes } from '../reducers/DocumentRedux';
 import { OffersTypes } from '../reducers/OffersRedux';
 import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
 import { ProfileTypes } from '../reducers/ProfileRedux';
+import { LoadTypes } from '../reducers/LoadRedux';
+import { PaymentTypes } from '../reducers/PaymentRedux';
 import { CouponsTypes } from '../reducers/CouponsRedux';
 import { StatusTypes } from '../reducers/StatusRedux';
 import { PasswordTypes } from '../reducers/PasswordRedux';
@@ -20,14 +23,20 @@ import {
   registerUser,
   resendPin,
   loginUser,
+  forgotPass,
+  resetPass,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
+import { registerDocument } from './DocumentSagas';
+import { getOffers, applyOffer } from './OffersSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
-import { getCompanies } from './CompanySagas';
+import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
+import { getLoadsType } from './LoadSagas';
+import { registerPayment, getPaymentMethod } from './PaymentSagas';
 import { getCoupons, postCoupon } from './CouponsSagas';
 import { getStatus } from './StatusSagas';
 import { putPassword } from './PasswordSagas';
@@ -47,11 +56,18 @@ export default function* root() {
     takeLatest(UserTypes.POST_RESEND_REQUEST, resendPin, api),
     takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
     takeLatest(UserTypes.POST_LOGIN_REQUEST, loginUser, api),
+    takeLatest(DocumentTypes.POST_REGISTER_DOC_REQUEST, registerDocument, api),
     takeLatest(OffersTypes.GET_OFFERS_REQUEST, getOffers, api),
     takeLatest(VehicleTypes.GET_VEHICLE_REQUEST, getVehicles, api),
     takeLatest(CompanyTypes.GET_COMPANIES_REQUEST, getCompanies, api),
     takeLatest(OffersTypes.POST_APPLY_OFFER_REQUEST, applyOffer, api),
     takeLatest(ProfileTypes.GET_PROFILE_REQUEST, getProfile, api),
+    takeLatest(UserTypes.POST_PASSWORD_REQUEST, forgotPass, api),
+    takeLatest(UserTypes.POST_RESET_PASS_REQUEST, resetPass, api),
+    takeLatest(LoadTypes.GET_LOADSTYPE_REQUEST, getLoadsType, api),
+    takeLatest(CompanyTypes.POST_REG_COMPANIES_REQUEST, registerCompanies, api),
+    takeLatest(PaymentTypes.POST_REG_PAYMENT_REQUEST, registerPayment, api),
+    takeLatest(PaymentTypes.GET_PAYMENT_METHOD_REQUEST, getPaymentMethod, api),
     takeLatest(ProfileTypes.EDIT_PROFILE_REQUEST, editProfile, api),
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
     takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),

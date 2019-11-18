@@ -1,3 +1,6 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { ActivityIndicator, Dimensions } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';

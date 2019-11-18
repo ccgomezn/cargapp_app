@@ -11,7 +11,7 @@ import { DrawIconMenu } from '../style';
 import {
   homeStackNavigator, viajesStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
-  ProfileStackNavigator, CouponsStackNavigator
+  ProfileStackNavigator, CouponsStackNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');

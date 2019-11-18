@@ -25,6 +25,7 @@ export function* verifyPhone(api, action) {
 export function* validatePin(api, action) {
   const { params } = action;
   const response = yield call(api.user.validatePin, params);
+  // console.log(response);
   if (response.ok) {
     // save OK response
     yield put(UserActions.postValidateSuccess(response.data));
@@ -40,7 +41,7 @@ export function* validatePin(api, action) {
 export function* registerUser(api, action) {
   const { params } = action;
   const response = yield call(api.user.registerUser, params);
-  // console.log(response);
+  console.log(response);
   if (response.status === 201) {
     // save OK create
     yield put(UserActions.postRegisterSuccess(response.data));
@@ -71,7 +72,7 @@ export function* resendPin(api, action) {
 export function* loginUser(api, action) {
   const { params } = action;
   const response = yield call(api.user.loginUser, params);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     // save response ok
     yield put(UserActions.postLoginSuccess(response.data));
@@ -81,5 +82,37 @@ export function* loginUser(api, action) {
   } else {
     // save error
     yield put(UserActions.postLoginFailure(response.data));
+  }
+}
+
+export function* forgotPass(api, action) {
+  const { params } = action;
+  const response = yield call(api.user.forgotPass, params);
+  // console.log(response);
+  if (response.ok) {
+    // save response ok
+    yield put(UserActions.postPasswordSuccess(response.data));
+  } else if (response.status === 422 || response.status === 302) {
+    // save data incorrect
+    yield put(UserActions.postPasswordUnprocess(response.data));
+  } else {
+    // error
+    yield put(UserActions.postPasswordFailure());
+  }
+}
+
+export function* resetPass(api, action) {
+  const { params } = action;
+  const response = yield call(api.user.resetPass, params);
+  // console.log(response);
+  if (response.ok) {
+    // save response ok
+    yield put(UserActions.postPasswordSuccess(response.data));
+  } else if (response.status === 500 || response.status === 422 || response.status === 302) {
+    // save data incorrect
+    yield put(UserActions.postPasswordUnprocess(response.data));
+  } else {
+    // error
+    yield put(UserActions.postPasswordFailure());
   }
 }

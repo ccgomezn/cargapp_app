@@ -1,3 +1,9 @@
+/* eslint-disable react/no-unused-state */
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable radix */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
@@ -6,7 +12,7 @@ import { MainWrapper, AddressesWrapper } from './style';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
-import OffersActions, { postApplyOfferSuccess } from '../../../redux/reducers/OffersRedux';
+import OffersActions from '../../../redux/reducers/OffersRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 
 class ApplyOffer extends Component {
@@ -148,7 +154,6 @@ const mapDispatchToProps = dispatch => ({
   applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
   getServices: (params = {}) => dispatch(OffersActions.getServicesRequest(params)),
 });
-
 
 export default connect(
   mapStateToProps,
