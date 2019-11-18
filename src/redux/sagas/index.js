@@ -22,7 +22,9 @@ import {
   loginUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { getOffers, applyOffer, getMyOffers, getServices } from './OffersSagas';
+import {
+  getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
+} from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
 import { getCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
@@ -57,5 +59,6 @@ export default function* root() {
     takeLatest(PasswordTypes.PUT_PASSWORD_REQUEST, putPassword, api),
     takeLatest(StatusTypes.GET_STATUS_REQUEST, getStatus, api),
     takeLatest(OffersTypes.GET_SERVICES_REQUEST, getServices, api),
+    takeLatest(OffersTypes.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST, putStateOriginTravel, api),
   ]);
 }
