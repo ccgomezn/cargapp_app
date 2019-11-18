@@ -28,7 +28,6 @@ import {
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
-import { getOffers, applyOffer } from './OffersSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';

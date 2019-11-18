@@ -36,10 +36,10 @@ class ApplyOffer extends Component {
   }
 
   applyOffer(value) {
-    const { user, applyOffer, navigation } = this.props;
+    const { applyOffer, navigation, profile } = this.props;
     const data = {
       service_id: value.id,
-      user_id: user.info.user.id,
+      user_id: profile.data[0].user.id,
       active: true,
     };
     applyOffer(data);
@@ -139,13 +139,14 @@ class ApplyOffer extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    vehicles, companies, user, offers,
+    vehicles, companies, user, offers, profile
   } = state;
   return {
     vehicles,
     companies,
     user,
     offers,
+    profile,
   };
 };
 
