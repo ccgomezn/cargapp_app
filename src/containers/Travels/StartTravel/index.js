@@ -3,7 +3,9 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { ActivityIndicator, Linking } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
+import OffersTypes from '../../../redux/reducers/OffersRedux';
 import {
   MainWrapper, AbsoluteWrapper, WrapperImage, TouchableNavigationButtons, WrapperAdresses,
 } from './styles';
@@ -11,7 +13,7 @@ import AddressesCardMap from '../../../components/AddressesCardMap';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
-export default class StartTravel extends Component {
+class StartTravel extends Component {
   constructor() {
     super();
     this.state = {
@@ -165,3 +167,19 @@ export default class StartTravel extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const { offers } = state;
+  return {
+    offers,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  putStateOriginTravel: id => dispatch(OffersTypes.putStateInTravelOriginRequest(id)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(StartTravel);

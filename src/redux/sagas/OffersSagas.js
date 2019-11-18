@@ -56,3 +56,15 @@ export function* getServices(api, action) {
     yield put(OffersActions.getOffersFailure());
   }
 }
+
+export function* putStateOriginTravel(api, action) {
+  const { id } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.offers.putStateOriginTravel, id);
+  if (response.ok) {
+    yield put(OffersActions.putStateInTravelOriginSuccess(response.data));
+  } else {
+    yield put(OffersActions.getOffersFailure());
+  }
+}

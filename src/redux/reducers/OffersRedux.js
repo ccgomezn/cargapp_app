@@ -12,7 +12,7 @@ export const { Types, Creators } = createActions({
   getServicesSuccess: ['data'],
   getMyOffersSuccess: ['myOffers'],
   putStateInTravelOriginSuccess: ['data'],
-  putStateInTravelOriginRequest: ['data'],
+  putStateInTravelOriginRequest: ['id'],
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
   getOffersFailure: null,
@@ -135,4 +135,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_MY_OFFERS_SUCCESS]: getMyOffersSuccess,
   [Types.GET_SERVICES_REQUEST]: getServicesRequest,
   [Types.GET_SERVICES_SUCCESS]: getServicesSuccess,
+  [Types.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST]: putStateInTravelOriginRequest,
+  [Types.putStateInTravelOriginSuccess]: putStateInTravelOriginSuccess,
 });
