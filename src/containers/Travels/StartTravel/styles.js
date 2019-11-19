@@ -34,3 +34,9 @@ export const WrapperAdresses = styled.View`
   width: 90%;
   height: auto;  
 `;
+
+export const WrapperTopCard = styled.View`
+  position: absolute;
+  width: auto;
+  height: auto;
+`;
