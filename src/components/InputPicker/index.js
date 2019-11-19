@@ -35,7 +35,7 @@ class InputPicker extends React.Component {
           onValueChange={item => onChangeValue(item)}
           mode="dropdown"
           enabled={editable != null ? editable : true}
-          itemStyle={{ fontSize: 14, color: '#d00' }}
+          itemStyle={{ color: '#d00' }}
           iosHeader={title}
         >
           <InputPk.Item label="- Seleccionar -" value="0" />
