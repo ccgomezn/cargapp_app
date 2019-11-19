@@ -4,8 +4,8 @@
 
 */
 
-import { call, put } from 'redux-saga/effects';
-import UserActions from '../reducers/UserRedux';
+import { call, put, select } from 'redux-saga/effects';
+import UserActions, { AuthSelectors } from '../reducers/UserRedux';
 
 export function* verifyPhone(api, action) {
   const { params } = action;
@@ -114,5 +114,20 @@ export function* resetPass(api, action) {
   } else {
     // error
     yield put(UserActions.postPasswordFailure());
+  }
+}
+
+export function* getInfoUser(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.user.getUserRole, params);
+  console.log(response);
+  if (response.ok) {
+    // save response ok
+    yield put(UserActions.getUserinfoSuccess(response.data));
+  } else {
+    // error
+    yield put(UserActions.getUserinfoFailure());
   }
 }

@@ -1,11 +1,11 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-alert */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import Toast from 'react-native-root-toast';
 
 import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
@@ -45,6 +45,9 @@ class Registration extends Component {
       inputValueCheck: false,
       onPressLogin: false,
       msgApi: '',
+      errorApi: false,
+      loadingRoles: false,
+      dataroles: [],
     };
   }
 
@@ -77,11 +80,18 @@ class Registration extends Component {
     this.setState({ loading: true });
   }
 
+  async onRol() {
+    const { getInfoUser } = this.props;
+    await getInfoUser();
+    this.setState({ loadingRoles: true });
+  }
+
   isSession() {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     if (user.isLogged) {
-      navigate('ScreenHome');// ScreenHome--Personal--RegCompany
+      // falta validar rol de user
+      navigate('DriverMenu');// ScreenHome--DriverMenu--GeneratorMenu
     }
   }
 
@@ -90,6 +100,7 @@ class Registration extends Component {
       dataemail,
       datapass,
     } = this.state;
+    this.setState({ msgApi: null });
 
     // validate input email
     if (dataemail) {
@@ -122,6 +133,9 @@ class Registration extends Component {
       inputValueCheck,
       onPressLogin,
       msgApi,
+      errorApi,
+      loadingRoles,
+      dataroles,
     } = this.state;
 
     if (dataemail && datapass) {
@@ -141,23 +155,54 @@ class Registration extends Component {
       this.setState({ onPressLogin: false });
     }
 
+    // hide Toast
+    if (errorApi) {
+      setTimeout(() => this.setState({
+        errorApi: false,
+      }), 5000); // hide toast after 5s
+    }
+
     // verify LoginUser
     if (loading) {
       if (user.error && !user.fetching) {
-        alert('error Api');
-        this.setState({ loading: false });
+        this.setState({ loading: false, errorApi: true });
       }
       if (user.status && !user.fetching) {
-        // console.log(user);
         if (user.session) {
           setTimeout(() => {
             this.setState({ loading: false });
-            navigate('ScreenHome');
+            this.onRol();
           }, 1500);
         } else if (loading && user.unprocess) {
           // unProccess
           this.setState({ msgApi: user.status.message, loading: false });
         }
+      }
+    }
+
+    // get userRoles
+    if (loadingRoles) {
+      if (user.error && !user.fetching) {
+        this.setState({ loadingRoles: false, errorApi: true });
+      }
+      if (user.status && !user.fetching) {
+        // validate rol
+        const { roles } = user;
+        // eslint-disable-next-line array-callback-return
+        roles.map((data) => {
+          dataroles.push(data.name);
+        });
+        console.log(dataroles);
+        // validate type rol
+        console.log(dataroles.includes('driver'));
+        if (dataroles.includes('driver')) {
+          navigate('GeneratorMenu');
+        } else if (dataroles.includes('load generator')) {
+          navigate('DriverMenu');
+        }
+      } else if (loadingRoles && user.error) {
+        // fail
+        this.setState({ msgApi: 'No fue posible obtener los datos', loadingRoles: false });
       }
     }
 
@@ -187,6 +232,7 @@ class Registration extends Component {
                 holder="Ingrese Email"
                 onChangeText={(value) => this.setState({ dataemail: value.toLowerCase() })}
                 value={dataemail.toLowerCase()}
+                maxLength={30}
                 type="email-address"
               />
               <Input
@@ -195,6 +241,8 @@ class Registration extends Component {
                 isPassword
                 onChangeText={(value) => this.setState({ datapass: value })}
                 value={datapass}
+                maxLength={12}
+                max
                 type="default"
               />
               <WrapperButtonWhite>
@@ -233,7 +281,7 @@ class Registration extends Component {
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
         <TextLoad>
-          { loading ? (
+          { loading || loadingRoles ? (
             <ActivityIndicator
               style={{ alignSelf: 'center', height: 'auto' }}
               size="large"
@@ -242,6 +290,16 @@ class Registration extends Component {
           ) : null }
         </TextLoad>
         <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+        <Toast
+          visible={errorApi}
+          position={-50}
+          duration={Toast.durations.LONG}
+          opacity={0.8}
+          shadow
+          animation
+        >
+          Error, no se pudo procesar la solicitud
+        </Toast>
       </MainWrapper>
     );
   }
@@ -256,6 +314,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   loginUser: params => dispatch(UserActions.postLoginRequest(params)),
+  getInfoUser: params => dispatch(UserActions.getUserinfoRequest(params)),
 });
 
 export default connect(

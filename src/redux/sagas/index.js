@@ -22,6 +22,7 @@ import {
   loginUser,
   forgotPass,
   resetPass,
+  getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
@@ -60,5 +61,6 @@ export default function* root() {
     takeLatest(CompanyTypes.POST_REG_COMPANIES_REQUEST, registerCompanies, api),
     takeLatest(PaymentTypes.POST_REG_PAYMENT_REQUEST, registerPayment, api),
     takeLatest(PaymentTypes.GET_PAYMENT_METHOD_REQUEST, getPaymentMethod, api),
+    takeLatest(UserTypes.GET_USERINFO_REQUEST, getInfoUser, api),
   ]);
 }

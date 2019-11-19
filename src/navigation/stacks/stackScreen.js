@@ -223,12 +223,12 @@ export const ProfileStackNavigator = createStackNavigator({
 export const PointsStackNavigator = createStackNavigator({
   Sixth: {
     screen: ScreenPoints,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
-      // headerStyle: HeaderStyle,
-      // headerTitle: centerIconMenu({ navigation }),
-      // headerLeft: leftIconMenu({ navigation }),
-      // headerRight: rightIconMenu({ navigation }),
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 },
