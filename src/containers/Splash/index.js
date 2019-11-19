@@ -23,14 +23,13 @@ class Splash extends Component {
           buttonPositive: 'OK',
         },
       ).then(() => {
-        alert('as');
         this.setState({ permission: true });
       })
         .catch(() => {
-          alert('nel, no es arina');
+          this.setState({ permission: false });
         });
     } catch (e) {
-      console.warn(e);
+      this.setState({ permission: false });
     }
   }
 
@@ -46,6 +45,8 @@ class Splash extends Component {
         // eslint-disable-next-line react/prop-types
         navigation.navigate('SignUpStack');// SignUpStack--drawerScreen
       }, THREE_SECONDS);
+    } else {
+      this.componentDidMount();
     }
     return (
       <MainWrapper>

@@ -55,8 +55,8 @@ class MyTravels extends Component {
   }
 
   componentDidMount() {
-    const { getMyOffers, getStatus } = this.props;
-    getMyOffers();
+    const { getMyOffers, getStatus, profile } = this.props;
+    getMyOffers(profile.data[0].user.id);
     getStatus();
   }
 
@@ -195,13 +195,14 @@ class MyTravels extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    offers, user, vehicles, status,
+    offers, user, vehicles, status, profile,
   } = state;
   return {
     offers,
     user,
     vehicles,
     status,
+    profile,
   };
 };
 

@@ -33,10 +33,11 @@ export function* applyOffer(api, action) {
 }
 
 export function* getMyOffers(api, action) {
-  const { params } = action;
+  const { id } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.offers.getMyOffers, params);
+  const response = yield call(api.offers.getMyOffers, id);
+  console.log(response);
   if (response.ok) {
     yield put(OffersActions.getMyOffersSuccess(response.data));
   } else {
@@ -58,10 +59,10 @@ export function* getServices(api, action) {
 }
 
 export function* putStateOriginTravel(api, action) {
-  const { id } = action;
+  const { id, data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.offers.putStateOriginTravel, id);
+  const response = yield call(api.offers.putStateOriginTravel, id, data);
   if (response.ok) {
     yield put(OffersActions.putStateInTravelOriginSuccess(response.data));
   } else {
