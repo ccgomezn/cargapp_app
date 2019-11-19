@@ -7,7 +7,12 @@ import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import {
-  MainWrapper, AbsoluteWrapper, WrapperImage, TouchableNavigationButtons, WrapperAdresses,
+  MainWrapper,
+  AbsoluteWrapper,
+  WrapperImage,
+  TouchableNavigationButtons,
+  WrapperAdresses,
+  WrapperTopCard,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 
@@ -21,6 +26,7 @@ class StartTravel extends Component {
       mapRegion: null,
       lastLat: null,
       lastLong: null,
+      status: null,
     };
   }
 
@@ -73,7 +79,7 @@ class StartTravel extends Component {
   }
 
   ads(e) {
-    const { offerSpecific } = this.state;
+    const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
     if (offerSpecific.statu_id !== 7 && offerSpecific.statu_id !== 8) {
       setTimeout(() => {
@@ -85,14 +91,15 @@ class StartTravel extends Component {
           offerSpecific.origin_latitude,
           offerSpecific.origin_longitude,
         );
-        if (result > 0.5) {
+        if (result > 0.5 && status !== 7) {
           console.log('hola');
           const data = {
             service: {
-              status_id: 7,
+              statu_id: 7,
             },
           };
           putStateOriginTravel(offerSpecific.id, data);
+          this.setState({ status: 7 });
         }
       }, 5000);
     }
@@ -122,6 +129,7 @@ class StartTravel extends Component {
     const {
       offerSpecific, lastLat, lastLong, waypoints,
     } = this.state;
+    console.log(this.props);
     if (offerSpecific !== null && waypoints !== undefined) {
       return (
         <MainWrapper>
@@ -138,6 +146,8 @@ class StartTravel extends Component {
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
+            <WrapperTopCard>
+            </WrapperTopCard>
             <MapView.Polyline coordinates={waypoints} strokeWidth={4} strokeColor="#007aff" />
             <MapView.Marker
               coordinate={{
@@ -179,9 +189,10 @@ class StartTravel extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { offers } = state;
+  const { offers, companies } = state;
   return {
     offers,
+    companies,
   };
 };
 

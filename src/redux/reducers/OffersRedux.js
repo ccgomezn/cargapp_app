@@ -12,7 +12,7 @@ export const { Types, Creators } = createActions({
   getServicesSuccess: ['data'],
   getMyOffersSuccess: ['myOffers'],
   putStateInTravelOriginSuccess: ['data'],
-  putStateInTravelOriginRequest: ['id, data'],
+  putStateInTravelOriginRequest: ['id', 'data'],
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
   getOffersFailure: null,

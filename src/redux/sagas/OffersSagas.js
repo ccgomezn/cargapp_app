@@ -63,6 +63,7 @@ export function* putStateOriginTravel(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.offers.putStateOriginTravel, id, data);
+  console.log(response);
   if (response.ok) {
     yield put(OffersActions.putStateInTravelOriginSuccess(response.data));
   } else {
