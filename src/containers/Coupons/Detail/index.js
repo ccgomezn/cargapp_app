@@ -15,13 +15,13 @@ class DetailCoupon extends Component {
   }
 
   componentDidMount() {
-    const { navigation, postCoupon, user } = this.props;
+    const { navigation, postCoupon, profile } = this.props;
     const idCoupon = navigation.getParam('idItem');
     this.setState({ coupon: idCoupon });
     const data = {
       user_coupon: {
         coupon_id: idCoupon.id,
-        user_id: user.info.user.id,
+        user_id: profile.data[0].user.id,
         cargapp_model_id: 26,
       },
     };

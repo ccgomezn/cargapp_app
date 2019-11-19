@@ -74,6 +74,7 @@ class StartTravel extends Component {
 
   ads(e) {
     const { offerSpecific } = this.state;
+    const { putStateOriginTravel } = this.props;
     if (offerSpecific.statu_id !== 7 && offerSpecific.statu_id !== 8) {
       setTimeout(() => {
         this.setState({ lastLat: e.latitude, lastLong: e.longitude });
@@ -84,13 +85,14 @@ class StartTravel extends Component {
           offerSpecific.origin_latitude,
           offerSpecific.origin_longitude,
         );
-        if (result) {
+        if (result > 0.5) {
+          console.log('hola');
           const data = {
             service: {
               status_id: 7,
             },
           };
-          putStateOriginTravel();
+          putStateOriginTravel(offerSpecific.id, data);
         }
       }, 5000);
     }
@@ -184,7 +186,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  putStateOriginTravel: id => dispatch(OffersTypes.putStateInTravelOriginRequest(id)),
+  putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
 });
 
 export default connect(
