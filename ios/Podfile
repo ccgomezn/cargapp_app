@@ -35,6 +35,8 @@ target 'Cargapp' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
   target 'CargappTests' do
     inherit! :search_paths
     # Pods for testing

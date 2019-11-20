@@ -15,6 +15,7 @@ import {
   WrapperTopCard,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
+import TopCardTravel from '../../../components/TopCardTravel';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -127,8 +128,9 @@ class StartTravel extends Component {
 
   render() {
     const {
-      offerSpecific, lastLat, lastLong, waypoints,
+      offerSpecific, lastLat, lastLong, waypoints, status,
     } = this.state;
+    const { companies } = this.props;
     console.log(this.props);
     if (offerSpecific !== null && waypoints !== undefined) {
       return (
@@ -146,8 +148,6 @@ class StartTravel extends Component {
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
-            <WrapperTopCard>
-            </WrapperTopCard>
             <MapView.Polyline coordinates={waypoints} strokeWidth={4} strokeColor="#007aff" />
             <MapView.Marker
               coordinate={{
@@ -159,6 +159,22 @@ class StartTravel extends Component {
               title="Origen carga"
             />
           </MapView>
+          {companies.data.map((CompanyInfo) => {
+            if (offerSpecific.company_id === CompanyInfo.id) {
+              return (
+                <WrapperTopCard>
+                  <TopCardTravel
+                    travelsCount="20"
+                    arrive={status === 7}
+                    unLoad={false}
+                    amount="20k"
+                    isConfirmLoad={false}
+                    company={CompanyInfo.name}
+                  />
+                </WrapperTopCard>
+              );
+            }
+          })}
           <AbsoluteWrapper>
             <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}>
               <WrapperImage source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }} />
