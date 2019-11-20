@@ -12,8 +12,8 @@ export const AbsoluteWrapper = styled.View`
   position: absolute;
   width: auto;
   height: auto;
-  top: 10px;
-  right: 10px; 
+  top: 12%;
+  right: 5%; 
   flex-direction: row;
 `;
 
@@ -37,6 +37,8 @@ export const WrapperAdresses = styled.View`
 
 export const WrapperTopCard = styled.View`
   position: absolute;
-  width: auto;
+  width: 100%;
   height: auto;
+  padding-horizontal: 5%;
+  top: 10px;
 `;

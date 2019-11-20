@@ -9,6 +9,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Cargapp requires access to your phone’s camera.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Cargapp requires access to your location</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

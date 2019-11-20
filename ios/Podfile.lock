@@ -59,15 +59,17 @@ PODS:
     - React-cxxreact (= 0.60.3)
     - React-jsi (= 0.60.3)
   - React-jsinspector (0.60.3)
-  - react-native-camera (3.7.1):
+  - react-native-camera (3.11.1):
     - React
-    - react-native-camera/RCT (= 3.7.1)
-    - react-native-camera/RN (= 3.7.1)
-  - react-native-camera/RCT (3.7.1):
+    - react-native-camera/RCT (= 3.11.1)
+    - react-native-camera/RN (= 3.11.1)
+  - react-native-camera/RCT (3.11.1):
     - React
-  - react-native-camera/RN (3.7.1):
+  - react-native-camera/RN (3.11.1):
     - React
   - react-native-document-picker (3.2.2):
+    - React
+  - react-native-geolocation (2.0.2):
     - React
   - react-native-image-picker (1.1.0):
     - React
@@ -122,6 +124,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -173,6 +176,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-geolocation:
+    :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
@@ -222,8 +227,9 @@ SPEC CHECKSUMS:
   React-jsi: c2b6e57836bcae2677a036384111dc2c58e94369
   React-jsiexecutor: d9023c5c199114d2b6f38ec861a4d923c73d0735
   React-jsinspector: 817b64f3c8a807f09d78620f4f505868d89b26f3
-  react-native-camera: 574d8c9b8bfe08af65c12da2a1ade397a6374152
+  react-native-camera: b7ad0c9648c3ea83f58a3ef4f815ab4acd88dc7e
   react-native-document-picker: 94a07ce0494c559e2ae9fa86621d6c624d810fec
+  react-native-geolocation: cbd9d6bd06bac411eed2671810f454d4908484a8
   react-native-image-picker: 3637d63fef7e32a230141ab4660d3ceb773c824f
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   react-native-webview: d244f4de65c152a003de41630ffbc82c40e6b40a
@@ -242,6 +248,6 @@ SPEC CHECKSUMS:
   RNSVG: 90c76b7cf235654d45e54655b6c189ea4041057c
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
-PODFILE CHECKSUM: 1fa9f2d6730bce36dddf0c24dd946dc433388452
+PODFILE CHECKSUM: 2141c6d7adf35515381749295fd67518d48a21ea
 
 COCOAPODS: 1.8.4
