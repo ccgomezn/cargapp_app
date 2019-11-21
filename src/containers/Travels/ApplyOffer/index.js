@@ -120,6 +120,7 @@ class ApplyOffer extends Component {
                   onPressBW={() => navigation.goBack()}
                   delivery="5 días"
                   company={company.name}
+                  mainButton={offer.statu_id === 10 ? 'En Aprobación' : 'Empezar viaje'}
                 />
               );
             }

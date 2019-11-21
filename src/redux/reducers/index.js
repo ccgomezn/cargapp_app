@@ -15,4 +15,5 @@ export default combineReducers({
   coupons: require('./CouponsRedux').reducer,
   status: require('./StatusRedux').reducer,
   password: require('./PasswordRedux').reducer,
+  markers: require('./MarkersRedux').reducer,
 });
