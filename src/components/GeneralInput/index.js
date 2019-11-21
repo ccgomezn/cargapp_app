@@ -35,16 +35,20 @@ class GeneralInput extends React.Component {
       >
         <Text>{title}</Text>
         <Input
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType="none"
+          keyboardType={type != null ? type : 'default'}
+          autoCompleteType="off"
           style={{ opacity: editable === false ? 0.5 : 1 }}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          keyboardType={type != null ? type : 'default'}
           value={value != null ? value : null}
           placeholder={holder != null ? holder : ''}
           editable={editable != null ? editable : true}
+          onChangeText={text => onChangeText(text)}
           secureTextEntry={isPassword != null ? isPassword : false}
           maxLength={maxLength != null ? maxLength : null}
-          onChangeText={text => onChangeText(text)}
         />
       </MainWrapper>
     );

@@ -55,6 +55,7 @@ export const ItemPk = {
 };
 
 export const errorInput = {
+  borderColor: '#ff647c',
   borderLeftWidth: 1,
   borderLeftColor: '#ff647c',
   borderTopWidth: 1,
