@@ -80,7 +80,7 @@ class Registration extends Component {
       await editProfile(iduser, data);
       this.setState({ loadingUpdate: true });
     } else {
-      alert('No hay campos para actualizar');
+      this.setState({ msgApi: 'No hay campos para actualizar' });
     }
   }
 
@@ -101,10 +101,21 @@ class Registration extends Component {
     }
   }
 
+  validateRol() {
+    const { datarol } = this.state;
+    const { user } = this.props;
+    const { navigate } = this.props.navigation;
+    if (datarol === 11 || datarol === '') {
+      navigate('DriverMenu');
+    } else {
+      navigate('RegCompany', { userdata: user.info });
+    }
+  }
+
   render() {
     // eslint-disable-next-line react/prop-types
     const { profile } = this.props;
-    const { navigate, goBack } = this.props.navigation;
+    const { goBack } = this.props.navigation;
     const {
       dataname,
       datalastname,
@@ -113,7 +124,6 @@ class Registration extends Component {
       msgApi,
       errorApi,
       fetchdata,
-      datarol,
     } = this.state;
 
     // hide Toast
@@ -132,11 +142,7 @@ class Registration extends Component {
         if (profile.edit.id) {
           setTimeout(() => {
             this.setState({ loadingUpdate: false });
-            if (datarol === 11 || datarol === '') {
-              navigate('ScreenHome');
-            } else {
-              // animated div
-            }
+            this.validateRol();
           }, 1200);
         } else if (loadingUpdate) {
           // unProccess
@@ -145,7 +151,6 @@ class Registration extends Component {
       }
     }
 
-    console.log(profile);
     if (profile.data !== null) {
       if (!fetchdata) {
         profile.data.map((data) => {
@@ -201,7 +206,7 @@ class Registration extends Component {
               <ButtonWhite
                 border={{ borderWidth: 1, borderStyle: 'inset' }}
                 content="Omitir"
-                press={() => navigate('ScreenHome')}
+                press={() => this.validateRol()}
               />
             </WrapperButtonGradient>
             <WrapperButtonGradient>

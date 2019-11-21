@@ -193,7 +193,7 @@ class Registration extends Component {
         if (payment.status.id && !payment.unprocess) {
           setTimeout(() => {
             this.setState({ loading: false });
-            navigate('ScreenHome');
+            navigate('GeneratorMenu');
           }, 1500);
         } else if (loading && payment.unprocess) {
           // unProccess
@@ -224,14 +224,6 @@ class Registration extends Component {
           <WrapperSection style={{ marginTop: 10 }}>
             <SectionRow style={{ width: '100%' }}>
               <WrapperInputs>
-                {/* <Input
-                  title="Método"
-                  holder="Ingrese método de pago"
-                  onChangeText={(value) => this.setState({ datapaymethod: value })}
-                  value={datapaymethod}
-                  errorText={invalidpaymethod}
-                  type="default"
-                /> */}
                 <InputPicker
                   title="Método de pago"
                   listdata={itemsMethod}
@@ -251,9 +243,10 @@ class Registration extends Component {
                 />
                 <Input
                   title="Fecha de vencimiento"
-                  holder="Ingrese fecha de venc."
+                  holder="Ingrese DD/AA"
                   onChangeText={(value) => this.setState({ dataexp: value })}
                   value={dataexp}
+                  maxLength={8}
                   errorText={invalidexp}
                   type="default"
                 />
@@ -264,6 +257,7 @@ class Registration extends Component {
                   value={datacvv}
                   errorText={invalidcvv}
                   type="numeric"
+                  maxLength={3}
                 />
               </WrapperInputs>
             </SectionRow>
@@ -273,6 +267,21 @@ class Registration extends Component {
             { error.card_number ? (
               <TextError>
                 {error.card_number}
+              </TextError>
+            ) : null }
+            { error.paymethod ? (
+              <TextError>
+                {error.paymethod}
+              </TextError>
+            ) : null }
+            { error.exp ? (
+              <TextError>
+                {error.exp}
+              </TextError>
+            ) : null }
+            { error.cvv ? (
+              <TextError>
+                {error.cvv}
               </TextError>
             ) : null }
             { msgApi ? (

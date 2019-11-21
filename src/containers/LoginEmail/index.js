@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable arrow-parens */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable import/no-named-as-default-member */
@@ -48,6 +49,7 @@ class Registration extends Component {
       errorApi: false,
       loadingRoles: false,
       dataroles: [],
+      loadinitial: false,
     };
   }
 
@@ -88,10 +90,32 @@ class Registration extends Component {
 
   isSession() {
     const { user } = this.props;
-    const { navigate } = this.props.navigation;
     if (user.isLogged) {
-      // falta validar rol de user
-      navigate('DriverMenu');// ScreenHome--DriverMenu--GeneratorMenu
+      this.setState({ loadinitial: true });
+      this.onRol();
+    }
+  }
+
+  validateRol() {
+    const { user } = this.props;
+    const { dataroles } = this.state;
+    const { navigate } = this.props.navigation;
+    const { roles } = user;
+    // eslint-disable-next-line array-callback-return
+    roles.map((data) => {
+      dataroles.push(data.name);
+    });
+    // validate type rol
+    if (dataroles.includes('driver')) {
+      navigate('DriverMenu');
+    } else if (dataroles.includes('vehicle_munt') || dataroles.includes('conveyor')) {
+      // accedo denegado
+      this.setState({ msgApi: 'Acceso denegado', loadingRoles: false });
+    } else if (dataroles.includes('load generator')) {
+      navigate('GeneratorMenu');
+    } else {
+      // admin, user, etc
+      navigate('GeneratorMenu');
     }
   }
 
@@ -135,7 +159,7 @@ class Registration extends Component {
       msgApi,
       errorApi,
       loadingRoles,
-      dataroles,
+      loadinitial,
     } = this.state;
 
     if (dataemail && datapass) {
@@ -187,121 +211,119 @@ class Registration extends Component {
       }
       if (user.status && !user.fetching) {
         // validate rol
-        const { roles } = user;
-        // eslint-disable-next-line array-callback-return
-        roles.map((data) => {
-          dataroles.push(data.name);
-        });
-        console.log(dataroles);
-        // validate type rol
-        console.log(dataroles.includes('driver'));
-        if (dataroles.includes('driver')) {
-          navigate('GeneratorMenu');
-        } else if (dataroles.includes('load generator')) {
-          navigate('DriverMenu');
-        }
+        this.validateRol();
       } else if (loadingRoles && user.error) {
         // fail
         this.setState({ msgApi: 'No fue posible obtener los datos', loadingRoles: false });
       }
     }
 
-    return (
-      <MainWrapper>
-        <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
-        <TextBlack>
-        Bienvenido al
-          <TextBlue>
-            {' '}
-            Futuro
-          </TextBlue>
-        </TextBlack>
-        <TextGray>El mejor aliado para su operación</TextGray>
-        <WrapperSection style={{ marginTop: 10 }}>
-          <SectionRow style={{ width: '100%' }}>
-            <WrapperInputs>
-              {/* <Input
-                title="Celular"
-                holder="Ingrese número de contacto"
-                onChangeText={(value) => this.setState({ dataphone: value })}
-                value={dataphone}
-                type="numeric"
-              /> */}
-              <Input
-                title="Correo electrónico"
-                holder="Ingrese Email"
-                onChangeText={(value) => this.setState({ dataemail: value.toLowerCase() })}
-                value={dataemail.toLowerCase()}
-                maxLength={30}
-                type="email-address"
-              />
-              <Input
-                title="Contraseña"
-                holder="Ingrese contraseña"
-                isPassword
-                onChangeText={(value) => this.setState({ datapass: value })}
-                value={datapass}
-                maxLength={12}
-                max
-                type="default"
-              />
-              <WrapperButtonWhite>
-                <ButtonLink
-                  text="Recuperar contraseña"
-                  press={() => navigate('ForgotPass')}
+    if (!loadinitial) {
+      return (
+        <MainWrapper>
+          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+          <TextBlack>
+          Bienvenido al
+            <TextBlue>
+              {' '}
+              Futuro
+            </TextBlue>
+          </TextBlack>
+          <TextGray>El mejor aliado para su operación</TextGray>
+          <WrapperSection style={{ marginTop: 10 }}>
+            <SectionRow style={{ width: '100%' }}>
+              <WrapperInputs>
+                {/* <Input
+                  title="Celular"
+                  holder="Ingrese número de contacto"
+                  onChangeText={(value) => this.setState({ dataphone: value })}
+                  value={dataphone}
+                  type="numeric"
+                /> */}
+                <Input
+                  title="Correo electrónico"
+                  holder="Ingrese Email"
+                  onChangeText={(value) => this.setState({ dataemail: value.toLowerCase() })}
+                  value={dataemail.toLowerCase()}
+                  maxLength={30}
+                  type="email-address"
                 />
-              </WrapperButtonWhite>
-            </WrapperInputs>
-          </SectionRow>
-        </WrapperSection>
+                <Input
+                  title="Contraseña"
+                  holder="Ingrese contraseña"
+                  isPassword
+                  onChangeText={(value) => this.setState({ datapass: value })}
+                  value={datapass}
+                  maxLength={22}
+                  max
+                  type="default"
+                />
+                <WrapperButtonWhite>
+                  <ButtonLink
+                    text="Recuperar contraseña"
+                    press={() => navigate('ForgotPass')}
+                  />
+                </WrapperButtonWhite>
+              </WrapperInputs>
+            </SectionRow>
+          </WrapperSection>
 
-        <WrapperError>
-          { emailErrorCheck ? (
-            <TextError>
-              Campo incompletos o erroneos
-            </TextError>
-          ) : null }
-          { msgApi ? (
-            <TextError>
-              {msgApi}
-            </TextError>
-          ) : null }
-        </WrapperError>
+          <WrapperError>
+            { emailErrorCheck ? (
+              <TextError>
+                Campo incompletos o erroneos
+              </TextError>
+            ) : null }
+            { msgApi ? (
+              <TextError>
+                {msgApi}
+              </TextError>
+            ) : null }
+          </WrapperError>
 
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            <ButtonWhite
-              border={{ borderWidth: 1, borderStyle: 'inset' }}
-              content="Registrarse"
-              press={() => navigate('Register')}
-            />
-          </WrapperButtonGradient>
-          <WrapperButtonGradient>
-            <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
-        <TextLoad>
-          { loading || loadingRoles ? (
-            <ActivityIndicator
-              style={{ alignSelf: 'center', height: 'auto' }}
-              size="large"
-              color="#0068ff"
-            />
-          ) : null }
-        </TextLoad>
-        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-        <Toast
-          visible={errorApi}
-          position={-50}
-          duration={Toast.durations.LONG}
-          opacity={0.8}
-          shadow
-          animation
-        >
-          Error, no se pudo procesar la solicitud
-        </Toast>
-      </MainWrapper>
-    );
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonWhite
+                border={{ borderWidth: 1, borderStyle: 'inset' }}
+                content="Registrarse"
+                press={() => navigate('Register')}
+              />
+            </WrapperButtonGradient>
+            <WrapperButtonGradient>
+              <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
+          <TextLoad>
+            { loading || loadingRoles ? (
+              <ActivityIndicator
+                style={{ alignSelf: 'center', height: 'auto' }}
+                size="large"
+                color="#0068ff"
+              />
+            ) : null }
+          </TextLoad>
+          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <Toast
+            visible={errorApi}
+            position={-50}
+            duration={Toast.durations.LONG}
+            opacity={0.8}
+            shadow
+            animation
+          >
+            Error, no se pudo procesar la solicitud
+          </Toast>
+        </MainWrapper>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0068ff"
+        />
+      );
+    }
   }
 }
 
