@@ -12,7 +12,7 @@ export const AbsoluteWrapper = styled.View`
   position: absolute;
   width: auto;
   height: auto;
-  top: 12%;
+  bottom: 25%;
   right: 5%; 
   flex-direction: row;
 `;

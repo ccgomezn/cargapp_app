@@ -28,13 +28,18 @@ class StartTravel extends Component {
       lastLat: null,
       lastLong: null,
       status: null,
+      unload: false,
     };
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, offers } = this.props;
     const offer = navigation.getParam('Offer');
-    this.setState({ offerSpecific: offer });
+    offers.data.map((newOffer) => {
+      if (newOffer.id === offer.id) {
+        this.setState({ offerSpecific: offer });
+      }
+    });
     this.callLocation();
   }
 
@@ -86,23 +91,63 @@ class StartTravel extends Component {
       setTimeout(() => {
         this.setState({ lastLat: e.latitude, lastLong: e.longitude });
         this.callLocation();
-        const result = this.destinationService(
-          e.latitude,
-          e.longitude,
-          offerSpecific.origin_latitude,
-          offerSpecific.origin_longitude,
-        );
-        if (result > 0.5 && status !== 7) {
-          console.log('hola');
-          const data = {
-            service: {
-              statu_id: 7,
-            },
-          };
-          putStateOriginTravel(offerSpecific.id, data);
-          this.setState({ status: 7 });
+        if (status !== 8 || offerSpecific.statu_id !== 8) {
+          const result = this.destinationService(
+            e.latitude,
+            e.longitude,
+            offerSpecific.origin_latitude,
+            offerSpecific.origin_longitude,
+          );
+          console.log(offerSpecific);
+          console.log(result);
+          if (result > 0.5 && offerSpecific.statu_id === 6 && status !== 7) {
+            alert('seis');
+            const data = {
+              service: {
+                statu_id: 7,
+              },
+            };
+            putStateOriginTravel(offerSpecific.id, data);
+            this.componentDidMount();
+            this.setState({ status: 7 });
+          }
+        } else if (offerSpecific.statu_id === 8 || status === 8) {
+          const result = this.destinationService(
+            e.latitude,
+            e.longitude,
+            offerSpecific.destination_latitude,
+            offerSpecific.destination_longitude,
+          );
+          if (result > 0.5) {
+            this.componentDidMount();
+            this.setState({ unload: true });
+          }
         }
       }, 5000);
+    }
+  }
+
+  confirmTravel() {
+    const { putStateOriginTravel } = this.props;
+    const { offerSpecific, status } = this.state;
+    if (status === 7 || offerSpecific.statu_id === 7) {
+      const data = {
+        service: {
+          statu_id: 8,
+        },
+      };
+      putStateOriginTravel(offerSpecific.id, data);
+      this.componentDidMount();
+      this.setState({ status: 8 });
+    } else if (status === 8 || offerSpecific.statu_id === 8) {
+      const data = {
+        service: {
+          statu_id: 9,
+        },
+      };
+      putStateOriginTravel(offerSpecific.id, data);
+      this.componentDidMount();
+      this.setState({ status: 9 });
     }
   }
 
@@ -128,7 +173,7 @@ class StartTravel extends Component {
 
   render() {
     const {
-      offerSpecific, lastLat, lastLong, waypoints, status,
+      offerSpecific, lastLat, lastLong, waypoints, status, unload,
     } = this.state;
     const { companies } = this.props;
     console.log(this.props);
@@ -165,11 +210,14 @@ class StartTravel extends Component {
                 <WrapperTopCard>
                   <TopCardTravel
                     travelsCount="20"
-                    arrive={status === 7}
-                    unLoad={false}
+                    arrive={
+                      (status === 7 || status === 8)
+                      || (offerSpecific.statu_id === 7 || offerSpecific.statu_id === 8)}
+                    unLoad={status !== 7 || offerSpecific.statu_id !== 7}
                     amount="20k"
-                    isConfirmLoad={false}
+                    isConfirmLoad={unload || offerSpecific.statu_id !== 8 || status === 8}
                     company={CompanyInfo.name}
+                    actionBtnOk={() => this.confirmTravel()}
                   />
                 </WrapperTopCard>
               );
