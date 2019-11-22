@@ -16,14 +16,6 @@ export const ContentView = styled.View`
   padding: ${props => (props.subcontent ? '0px 10px' : '0px')};
 `;
 
-export const ContentForm = styled.View`
-  width: 100%;
-  justify-content: center;
-  flex-direction: column;
-  height: auto;
-  margin-bottom: 15px;
-`;
-
 export const ContentBlock = styled.View`
   width: 100%;
   height: 20px;
@@ -40,11 +32,6 @@ export const TextBlack = styled.Text`
   color: #010935;
 `;
 
-export const WrapperInputs = styled.View`
-  width: 100%;
-  height: auto;
-`;
-
 export const WrapperButtonsBottom = styled.View`
   width: 100%;
   flex-direction: row;
@@ -55,7 +42,7 @@ export const WrapperButtonsBottom = styled.View`
 `;
 
 export const WrapperButtonGradient = styled.TouchableOpacity`
-  width: 45%;
+  width: 50%;
   height: 100%;
   margin-left: 3%;
 `;
