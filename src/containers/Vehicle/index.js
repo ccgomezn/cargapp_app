@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
@@ -9,7 +8,6 @@ import {
 import Input from '../../components/GeneralInput';
 import InputPicker from '../../components/InputPicker';
 import ButtonGradient from '../../components/ButtonGradient';
-import IconProfile from '../../components/IconProfile';
 
 const itemsTipo = [
   {
@@ -22,22 +20,14 @@ const itemsTipo = [
   },
 ];
 
-const itemsCat = [
+const itemsYears = [
   {
-    textItem: 'Categoría 1',
-    valueItem: 'cat1',
+    textItem: '1990',
+    valueItem: '1990',
   },
   {
-    textItem: 'Categoría 2',
-    valueItem: 'cat2',
-  },
-  {
-    textItem: 'Categoría 3',
-    valueItem: 'cat3',
-  },
-  {
-    textItem: 'Categoría 4',
-    valueItem: 'cat4',
+    textItem: '1991',
+    valueItem: '1992',
   },
 ];
 
@@ -52,33 +42,46 @@ export default class Vehicle extends Component {
       <MainWrapper>
         <ContentView>
           <ContentBlock>
-            <TextBlack>Mi vehículo</TextBlack>
+            <TextBlack>Datos de vehículo</TextBlack>
           </ContentBlock>
         </ContentView>
 
-        <ContentView>
+        {/* <ContentView>
           <View style={{ alignContent: 'center', justifyContent: 'center' }}>
             <IconProfile
-              edit
               icon="https://img.autocosmos.com/noticias/fotosprinc/NAZ_e755baa5fe444f13b71d5e0d3209f169.jpg"
             />
           </View>
+        </ContentView> */}
+
+        <ContentForm>
+          <WrapperInputs>
+            <InputPicker title="Tipo de vehículo" listdata={itemsTipo} defaultSelect="0" editable />
+            <Input title="Placa del vehículo" maxLength={6} />
+            <Input title="Marca" holder="Ingrese la marca" />
+            <Input title="Módelo" holder="Ingrese el módelo" />
+            <InputPicker title="Año" listdata={itemsYears} defaultSelect="0" editable />
+            <Input title="Color" holder="Ingrese el color" />
+            <Input title="Chasis" holder="Ingrese el chasis" />
+          </WrapperInputs>
+        </ContentForm>
+
+        <ContentView>
+          <ContentBlock>
+            <TextBlack>Datos del propietario</TextBlack>
+          </ContentBlock>
         </ContentView>
 
         <ContentForm>
           <WrapperInputs>
-            <Input title="Placa del vehículo" maxLength={6} />
-            <Input title="Marca" holder="Ingrese la marca" />
-            <Input title="Año" type="numeric" maxLength={4} />
-            <InputPicker title="Tipo de remolque" listdata={itemsTipo} />
-            <Input title="Capacidad" holder="Ingrese la capacidad" />
-            <InputPicker title="Categoría" listdata={itemsCat} defaultSelect="cat2" editable={false} />
+            <Input title="Propietario" holder="Ingrese nombre " />
+            <Input title="Cédula" holder="Ingrese No. de cédula" />
           </WrapperInputs>
         </ContentForm>
 
         <WrapperButtonsBottom>
           <WrapperButtonGradient>
-            <ButtonGradient content="Añadir nuevo" />
+            <ButtonGradient content="Actualizar" />
           </WrapperButtonGradient>
         </WrapperButtonsBottom>
 
