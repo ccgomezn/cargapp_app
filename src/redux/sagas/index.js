@@ -15,6 +15,9 @@ import { PaymentTypes } from '../reducers/PaymentRedux';
 import { CouponsTypes } from '../reducers/CouponsRedux';
 import { StatusTypes } from '../reducers/StatusRedux';
 import { PasswordTypes } from '../reducers/PasswordRedux';
+import { MarkersTypes } from '../reducers/MarkersRedux';
+import { BankAccountTypes } from '../reducers/BankAccountRedux';
+import { RateTypes } from '../reducers/RateServiceRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -39,6 +42,9 @@ import { registerPayment, getPaymentMethod } from './PaymentSagas';
 import { getCoupons, postCoupon } from './CouponsSagas';
 import { getStatus } from './StatusSagas';
 import { putPassword } from './PasswordSagas';
+import { getMarkers } from './MarkersSagas';
+import { postBankAccount, parameters } from './BankAccountSagas';
+import { postRateServices } from './RateService';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -75,5 +81,9 @@ export default function* root() {
     takeLatest(StatusTypes.GET_STATUS_REQUEST, getStatus, api),
     takeLatest(OffersTypes.GET_SERVICES_REQUEST, getServices, api),
     takeLatest(OffersTypes.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST, putStateOriginTravel, api),
+    takeLatest(MarkersTypes.GET_MARKERS_REQUEST, getMarkers, api),
+    takeLatest(BankAccountTypes.POST_BANK_ACCOUNT_REQUEST, postBankAccount, api),
+    takeLatest(RateTypes.POST_RATE_SERVICE_REQUEST, postRateServices, api),
+    takeLatest(BankAccountTypes.PARAMETERS_REQUEST, parameters, api),
   ]);
 }

@@ -21,6 +21,7 @@ import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import PasswordActions from '../../redux/reducers/PasswordRedux';
+import ParametersActions from '../../redux/reducers/BankAccountRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
 
 const itemsAccount = [
@@ -47,11 +48,14 @@ class Profile extends Component {
       previousPassword: null,
       newPassword: null,
       repeatPassword: null,
+      numberAccount: null,
     };
   }
 
   componentDidMount() {
-    const { getProfile } = this.props;
+    const { getProfile, parameters } = this.props;
+    parameters('BANK');
+    parameters('ACCOUNT_TYPE');
     getProfile();
   }
 
@@ -64,7 +68,23 @@ class Profile extends Component {
     this.setState({ modalPassword: false, modalAccount: false });
   }
 
-  onPressButtonAccount() {
+  onPressButtonAccount(value) {
+    const { postBankAccount, profile } = this.props;
+    const { numberAccount, accountType, bankType } = this.state;
+    if (value) {
+      alert(value)
+      const data = {
+        bank_account: {
+          account_number: numberAccount,
+          account_type: accountType,
+          bank: bankType,
+          user_id: profile.data[0].user.id,
+          statu_id: 15,
+          active: true,
+        },
+      };
+      postBankAccount(data);
+    }
     this.setState({ modalAccount: true });
   }
 
@@ -109,8 +129,13 @@ class Profile extends Component {
       previousPassword,
       newPassword,
       repeatPassword,
+      numberAccount,
+      bankType,
+      accountType,
     } = this.state;
-    const { profile } = this.props;
+    const { profile, bank } = this.props;
+    const arrayBanks = [];
+    const arrayAccounts = [];
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
@@ -122,11 +147,19 @@ class Profile extends Component {
         }
       });
     }
-    if (profile.data !== null && !fetch) {
+    console.log(this.props);
+    if (profile.data !== null
+        && !fetch && bank.data.parameters !== null && bank.banks.parameters !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
           this.setState({ name: data.profile.firt_name, lastName: data.profile.last_name });
         }
+      });
+      bank.banks.parameters.map((banks) => {
+        arrayAccounts.push({ textItem: banks.name, valueItem: banks.code });
+      });
+      bank.parameters.parameters.map((banks) => {
+        arrayBanks.push({ textItem: banks.name, valueItem: banks.code });
       });
       return (
         <MainWrapper>
@@ -193,25 +226,40 @@ class Profile extends Component {
             visible={modalAccount}
           >
             <MainWrapperDialog>
-              <ScrollDialog>
-                <ContentDialog>
-                  <TitleBlack>Datos bancarios</TitleBlack>
-                  <TextGray>Registra o modifica tu cuenta bancaria.</TextGray>
-                  <ContentForm>
-                    <WrapperInputs>
-                      <Input title="Cuenta bancaria" holder="Ingrese tu número de cuenta" type="phone-pad" />
-                      <InputPicker title="Tipo de cuenta" listdata={itemsAccount} />
-                      <InputPicker title="Banco" listdata={itemsAccount} />
-                    </WrapperInputs>
-                  </ContentForm>
-                  <TouchModal>
-                    <ButtonGradient content="Confirmar" press={() => this.onPressButtonAccount()} />
-                  </TouchModal>
-                  <TouchModal>
-                    <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
-                  </TouchModal>
-                </ContentDialog>
-              </ScrollDialog>
+              <ContentDialog>
+                <TitleBlack>Datos bancarios</TitleBlack>
+                <TextGray>Registra o modifica tu cuenta bancaria.</TextGray>
+                <ContentForm>
+                  <WrapperInputs>
+                    <Input
+                      title="Cuenta bancaria"
+                      holder="Ingrese tu número de cuenta"
+                      type="phone-pad"
+                      value={numberAccount}
+                      onChangeText={text => this.setState({ numberAccount: text })}
+                      maxLength={20}
+                    />
+                    <InputPicker
+                      title="Tipo de cuenta"
+                      listdata={arrayAccounts}
+                      onChangeValue={text => this.setState({ accountType: text })}
+                      defaultSelect={accountType}
+                    />
+                    <InputPicker
+                      title="Banco"
+                      listdata={arrayBanks}
+                      onChangeValue={text => this.setState({ bankType: text })}
+                      defaultSelect={bankType}
+                    />
+                  </WrapperInputs>
+                </ContentForm>
+                <TouchModal>
+                  <ButtonGradient content="Confirmar" press={() => this.onPressButtonAccount('post')} />
+                </TouchModal>
+                <TouchModal>
+                  <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
+                </TouchModal>
+              </ContentDialog>
             </MainWrapperDialog>
           </EmptyDialog>
 
@@ -270,11 +318,14 @@ class Profile extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, profile, password } = state;
+  const {
+    user, profile, password, bank,
+  } = state;
   return {
     user,
     profile,
     password,
+    bank,
   };
 };
 
@@ -282,6 +333,8 @@ const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
   putPassword: data => dispatch(PasswordActions.putPasswordRequest(data)),
+  postBankAccount: data => dispatch(ParametersActions.postBankAccountSuccess(data)),
+  parameters: data => dispatch(ParametersActions.parametersRequest(data)),
 });
 
 export default connect(

@@ -16,4 +16,6 @@ export default combineReducers({
   status: require('./StatusRedux').reducer,
   password: require('./PasswordRedux').reducer,
   markers: require('./MarkersRedux').reducer,
+  bank: require('./BankAccountRedux').reducer,
+  rateService: require('./RateServiceRedux').reducer,
 });

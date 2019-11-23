@@ -140,7 +140,7 @@ class ApplyOffer extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    vehicles, companies, user, offers, profile
+    vehicles, companies, user, offers, profile,
   } = state;
   return {
     vehicles,
