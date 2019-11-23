@@ -147,7 +147,7 @@ export const ScrollDialog = styled.ScrollView`
 
 export const ContentDialog = styled.View`
   width: 100%;
-  height: 100%;
+  height: auto;
   justify-content: center;
   align-self: center;
   align-items: center;

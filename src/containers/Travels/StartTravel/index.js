@@ -6,6 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
+import MarkersTypes from '../../../redux/reducers/MarkersRedux';
 import {
   MainWrapper,
   AbsoluteWrapper,
@@ -33,7 +34,7 @@ class StartTravel extends Component {
   }
 
   componentDidMount() {
-    const { navigation, offers } = this.props;
+    const { navigation, offers, getMarkers } = this.props;
     const offer = navigation.getParam('Offer');
     offers.data.map((newOffer) => {
       if (newOffer.id === offer.id) {
@@ -41,6 +42,7 @@ class StartTravel extends Component {
       }
     });
     this.callLocation();
+    getMarkers();
   }
 
   async getDirections(startLoc, destinationLoc) {
@@ -98,8 +100,6 @@ class StartTravel extends Component {
             offerSpecific.origin_latitude,
             offerSpecific.origin_longitude,
           );
-          console.log(offerSpecific);
-          console.log(result);
           if (result > 0.5 && offerSpecific.statu_id === 6 && status !== 7) {
             alert('seis');
             const data = {
@@ -175,9 +175,15 @@ class StartTravel extends Component {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, unload,
     } = this.state;
-    const { companies } = this.props;
+    const { companies, markers } = this.props;
     console.log(this.props);
-    if (offerSpecific !== null && waypoints !== undefined) {
+    if (offerSpecific !== null && waypoints !== undefined && markers.data !== null) {
+      { markers.data.map(commerce => (
+        commerce.longitude = commerce.geolocation.split(',')[0],
+        commerce.latitude = commerce.geolocation.split(',')[1]
+      )); }
+
+
       return (
         <MainWrapper>
           <MapView
@@ -193,6 +199,16 @@ class StartTravel extends Component {
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
+
+            {markers.data.map(commerce => (
+              <MapView.Marker
+                coordinate={{
+                  latitude: Number(commerce.latitude),
+                  longitude: Number(commerce.longitude),
+                }}
+              />
+            ))}
+
             <MapView.Polyline coordinates={waypoints} strokeWidth={4} strokeColor="#007aff" />
             <MapView.Marker
               coordinate={{
@@ -253,15 +269,17 @@ class StartTravel extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { offers, companies } = state;
+  const { offers, companies, markers } = state;
   return {
     offers,
     companies,
+    markers,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
+  getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
 });
 
 export default connect(

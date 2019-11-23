@@ -12,7 +12,9 @@ import Payment from './Payment';
 import Coupons from './Coupons';
 import Status from './Status';
 import Password from './Password';
-
+import Markers from './Markers';
+import RateService from './RateService';
+import BankAccount from './BankAccount';
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
@@ -42,6 +44,9 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const coupons = new Coupons(api);
   const status = new Status(api);
   const password = new Password(api);
+  const markers = new Markers(api);
+  const rateService = new RateService(api);
+  const bankAccount = new BankAccount(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -60,6 +65,9 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     coupons,
     status,
     password,
+    markers,
+    rateService,
+    bankAccount,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.
