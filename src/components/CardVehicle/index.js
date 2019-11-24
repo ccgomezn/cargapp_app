@@ -8,7 +8,7 @@ import {
 
 function CardVehicle({ icon, press, data }) {
   return (
-    <MainWrapper>
+    <MainWrapper onPress={press}>
       <WrapperIcon>
         <IconTruck
           source={{ uri: 'https://raw.githubusercontent.com/cargappco/cargapp_lite_refac/master/src/Images/meTruck.png?token=AGFM22MMV75A5XZBXZGIMNK54BPN6' }}
@@ -18,15 +18,23 @@ function CardVehicle({ icon, press, data }) {
         <WrapperInfo>
           <WrapperText>
             <MainText>Placa: </MainText>
-            <SubText>TTT265</SubText>
+            <SubText>{data.plate}</SubText>
           </WrapperText>
           <WrapperText>
             <MainText>Tipo: </MainText>
-            <SubText>Sencillo</SubText>
+            <SubText>
+              {data.brand}
+              {' '}
+              {data.model}
+            </SubText>
           </WrapperText>
           <WrapperText>
-            <MainText>Carroceria: </MainText>
-            <SubText>Tanque lamina</SubText>
+            <MainText>Estado: </MainText>
+            <SubText>
+              {data.active ? (
+                'Activo'
+              ) : 'Deshabilitado' }
+            </SubText>
           </WrapperText>
         </WrapperInfo>
         <WrapperBtn>

@@ -27,7 +27,7 @@ import {
 import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
 import { getOffers, applyOffer } from './OffersSagas';
-import { getVehicles } from './VehicleSagas';
+import { getVehicles, getMeVehicles, registerVehicle } from './VehicleSagas';
 import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getLoadsType } from './LoadSagas';
@@ -62,5 +62,7 @@ export default function* root() {
     takeLatest(PaymentTypes.POST_REG_PAYMENT_REQUEST, registerPayment, api),
     takeLatest(PaymentTypes.GET_PAYMENT_METHOD_REQUEST, getPaymentMethod, api),
     takeLatest(UserTypes.GET_USERINFO_REQUEST, getInfoUser, api),
+    takeLatest(VehicleTypes.GET_ME_VEHICLES_REQUEST, getMeVehicles, api),
+    takeLatest(VehicleTypes.POST_REG_VEHICLE_REQUEST, registerVehicle, api),
   ]);
 }

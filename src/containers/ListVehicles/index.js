@@ -1,6 +1,9 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
   WrapperButtonsBottom, WrapperButtonGradient,
@@ -8,39 +11,76 @@ import {
 
 import ButtonGradient from '../../components/ButtonGradient';
 import CardVehicle from '../../components/CardVehicle';
+import VehicleActions from '../../redux/reducers/VehicleRedux';
 
-export default class ListVehicles extends Component {
+class ListVehicles extends Component {
   constructor() {
     super();
     this.state = {};
   }
 
+  componentDidMount() {
+    const { getListVehicles } = this.props;
+    getListVehicles();
+  }
+
   render() {
-    // eslint-disable-next-line react/prop-types
+    const { vehicles } = this.props;
     const { navigate } = this.props.navigation;
 
-    return (
-      <MainWrapper>
-        <ContentView>
-          <ContentBlock>
-            <TextBlack>Mis Vehículos</TextBlack>
-          </ContentBlock>
-        </ContentView>
+    console.log(vehicles);
 
-        <ContentView style={{ flexDirection: 'column' }}>
-          <CardVehicle />
-          <CardVehicle />
-          <CardVehicle />
-          <CardVehicle />
-        </ContentView>
+    if (vehicles.status && !vehicles.fetching) {
+      return (
+        <MainWrapper>
+          <ContentView>
+            <ContentBlock>
+              <TextBlack>Mis Vehículos</TextBlack>
+            </ContentBlock>
+          </ContentView>
 
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            <ButtonGradient content="Añadir Vehículo" press={() => navigate('DetailVehicle')} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
+          <ContentView style={{ flexDirection: 'column' }}>
+            { vehicles.list.map(data => (
+              <CardVehicle
+                data={data}
+              />
+            ))}
+          </ContentView>
 
-      </MainWrapper>
-    );
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonGradient content="Añadir Vehículo" press={() => navigate('DetailVehicle')} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
+
+        </MainWrapper>
+      );
+    // eslint-disable-next-line no-else-return
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0000ff"
+        />
+      );
+    }
   }
 }
+
+const mapStateToProps = (state) => {
+  const { user, vehicles } = state;
+  return {
+    user,
+    vehicles,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getListVehicles: params => dispatch(VehicleActions.getMeVehiclesRequest(params)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ListVehicles);
