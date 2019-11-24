@@ -59,3 +59,30 @@ export const WrapperButtonGradient = styled.TouchableOpacity`
   height: 100%;
   margin-left: 3%;
 `;
+
+export const WrapperError = styled.View`
+  font-size: 14px;
+  letter-spacing: -0.4px;
+  margin-bottom: 1%;
+`;
+
+export const TextError = styled.Text`
+  opacity: 0.95;
+  font-family: Roboto;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: -0.5px;
+  background-color: #ff2557; //#d3e5ff;
+  padding: 10px 6px;
+  color: #fff;
+  border-radius: 6px;
+  margin-bottom: 2px;
+`;
+
+export const TextLoad = styled.View`
+  display: flex;
+  height: auto;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+`;
