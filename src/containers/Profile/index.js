@@ -70,6 +70,8 @@ class Profile extends Component {
   }
 
   onPressButtonAccount(value) {
+    const { navigation } = this.props;
+    navigation.navigate('ScreenBankAccount');
     const { postBankAccount, profile } = this.props;
     const { numberAccount, accountType, bankType } = this.state;
     if (value) {
