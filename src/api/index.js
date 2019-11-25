@@ -15,6 +15,7 @@ import Password from './Password';
 import Markers from './Markers';
 import RateService from './RateService';
 import BankAccount from './BankAccount';
+import Geolocation from "./Geolocations";
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
@@ -31,6 +32,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     // 2000 SECOND TIMEOUT...
     timeout: 20000,
   });
+  const geolocation = new Geolocation(api);
   const driver = new Driver(api);
   const user = new User(api);
   const countrie = new Countrie(api);
@@ -68,6 +70,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     markers,
     rateService,
     bankAccount,
+    geolocation,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.
