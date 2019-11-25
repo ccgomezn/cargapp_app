@@ -38,8 +38,6 @@ class Navigation extends React.Component {
       logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
       stopOnTerminate: false,
       startOnBoot: true,
-      // HTTP / SQLite config
-      url: 'http://yourserver.com/locations',
       batchSync: false,
       autoSync: true,
       headers: {
@@ -60,7 +58,6 @@ class Navigation extends React.Component {
     });
   }
 
-  // You must remove listeners when your component unmounts
   componentWillUnmount() {
     BackgroundGeolocation.removeListeners();
   }
@@ -73,22 +70,26 @@ class Navigation extends React.Component {
   onHeartBeat(event) {
     // eslint-disable-next-line react/prop-types
     const { user, sendLocation, profile } = this.props;
-    console.log('user', user);
-    console.log('profile', profile);
-    console.log('[onHeartBeat] -', event);
+    BackgroundGeolocation.getCurrentPosition({
+      samples: 1,
+      persist: true,
+    }).then((location) => {
+      if (user.isLogged) {
+        sendLocation({
+          user_location: {
+            longitude: location.coords.longitude,
+            latitude: location.coords.latitude,
+            city_id: 5,
+            // eslint-disable-next-line react/prop-types
+            user_id: profile.data[0].user.id,
+            active: true,
+          },
+        });
+      }
+    });
+
     // eslint-disable-next-line react/prop-types
-    if (user.isLogged) {
-      sendLocation({
-        user_location: {
-          longitude: event.location.coords.longitude,
-          latitude: event.location.coords.latitude,
-          city_id: 5,
-          // eslint-disable-next-line react/prop-types
-          user_id: profile.data[0].user.id,
-          active: true,
-        },
-      });
-    }
+
   }
 
   render() {
