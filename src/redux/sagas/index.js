@@ -18,6 +18,7 @@ import { PasswordTypes } from '../reducers/PasswordRedux';
 import { MarkersTypes } from '../reducers/MarkersRedux';
 import { BankAccountTypes } from '../reducers/BankAccountRedux';
 import { RateTypes } from '../reducers/RateServiceRedux';
+import { ParametersTypes } from '../reducers/ParametersRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -43,7 +44,8 @@ import { getCoupons, postCoupon } from './CouponsSagas';
 import { getStatus } from './StatusSagas';
 import { putPassword } from './PasswordSagas';
 import { getMarkers } from './MarkersSagas';
-import { postBankAccount, parameters } from './BankAccountSagas';
+import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSagas';
+import { parameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
 /* ----------  API ------------ */
 
@@ -83,7 +85,9 @@ export default function* root() {
     takeLatest(OffersTypes.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST, putStateOriginTravel, api),
     takeLatest(MarkersTypes.GET_MARKERS_REQUEST, getMarkers, api),
     takeLatest(BankAccountTypes.POST_BANK_ACCOUNT_REQUEST, postBankAccount, api),
+    takeLatest(BankAccountTypes.PUT_BANK_ACCOUNT_REQUEST, putBankAccount, api),
+    takeLatest(BankAccountTypes.GET_BANK_ACCOUNT_REQUEST, getBankAccount, api),
     takeLatest(RateTypes.POST_RATE_SERVICE_REQUEST, postRateServices, api),
-    takeLatest(BankAccountTypes.PARAMETERS_REQUEST, parameters, api),
+    takeLatest(ParametersTypes.PARAMETERS_REQUEST, parameters, api),
   ]);
 }
