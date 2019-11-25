@@ -21,7 +21,8 @@ import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import PasswordActions from '../../redux/reducers/PasswordRedux';
-import ParametersActions from '../../redux/reducers/BankAccountRedux';
+import BankActions from '../../redux/reducers/BankAccountRedux';
+import ParametersActions from '../../redux/reducers/ParametersRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
 
 const itemsAccount = [
@@ -333,7 +334,7 @@ const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
   putPassword: data => dispatch(PasswordActions.putPasswordRequest(data)),
-  postBankAccount: data => dispatch(ParametersActions.postBankAccountSuccess(data)),
+  postBankAccount: data => dispatch(BankActions.postBankAccountSuccess(data)),
   parameters: data => dispatch(ParametersActions.parametersRequest(data)),
 });
 
