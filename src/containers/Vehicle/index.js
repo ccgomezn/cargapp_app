@@ -18,17 +18,7 @@ import InputPicker from '../../components/InputPicker';
 import ButtonGradient from '../../components/ButtonGradient';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
-
-/* const itemsYears = [
-  {
-    textItem: '1990',
-    valueItem: 1990,
-  },
-  {
-    textItem: '1991',
-    valueItem: 1992,
-  },
-]; */
+import ButtonWhite from '../../components/ButtonWhite';
 
 class Vehicle extends Component {
   constructor() {
@@ -60,21 +50,46 @@ class Vehicle extends Component {
       itemsYears: [],
       errorApi: false,
       modalreg: false,
+      edit: true,
     };
   }
 
   componentDidMount() {
-    const { getVehiclesType, user, profile } = this.props;
+    const {
+      getVehiclesType,
+      user,
+      profile,
+      navigation,
+    } = this.props;
     // get getPayment_methods
     getVehiclesType();
     this.getYearModel();
     // validate iduser - edit
     console.log(user);
-    this.setState({
-      userid: user.status.user.id,
-      dataownerdoc: user.status.user ? user.status.user.identification : '',
-      dataownername: profile.data ? profile.data[0].profile.firt_name : '',
-    });
+    const dtveh = navigation.getParam('dataVehicle', '');
+    if (dtveh !== '') {
+      console.log(dtveh);
+      this.setState({
+        edit: false,
+        userid: user.status.user.id,
+        dataplate: dtveh.plate,
+        databrand: dtveh.brand,
+        datavehicletype: dtveh.vehicle_type_id,
+        datamodel: dtveh.model,
+        datamodelyear: dtveh.model_year,
+        datacolor: dtveh.color,
+        datachassis: dtveh.chassis,
+        dataownerdoc: dtveh.owner_document_id,
+        dataownername: dtveh.owner_vehicle,
+      });
+    } else {
+      this.setState({
+        userid: user.status.user.id,
+        edit: true,
+        dataownerdoc: user.status.user ? user.status.user.identification : '',
+        dataownername: profile.data ? profile.data[0].profile.firt_name : '',
+      });
+    }
   }
 
   async onRegVehicle() {
@@ -203,6 +218,7 @@ class Vehicle extends Component {
 
   render() {
     const { vehicles } = this.props;
+    const { navigate } = this.props.navigation;
     const {
       dataplate,
       databrand,
@@ -229,6 +245,7 @@ class Vehicle extends Component {
       itemsYears,
       errorApi,
       modalreg,
+      edit,
     } = this.state;
 
     const itemsMethod = [];
@@ -288,13 +305,14 @@ class Vehicle extends Component {
                 holder="Ingrese número de placa"
                 errorText={invalidplate}
                 value={dataplate}
+                editable={edit}
                 onChangeText={value => this.setState({ dataplate: value })}
               />
               <InputPicker
                 title="Tipo de vehículo"
                 listdata={itemsMethod}
                 defaultSelect={datavehicletype}
-                editable
+                editable={edit}
                 onChangeValue={value => this.setState({ datavehicletype: value })}
                 errorText={invalidvehicletype}
               />
@@ -304,6 +322,7 @@ class Vehicle extends Component {
                 maxLength={20}
                 errorText={invalidbrand}
                 value={databrand}
+                editable={edit}
                 onChangeText={value => this.setState({ databrand: value })}
               />
               <Input
@@ -312,13 +331,14 @@ class Vehicle extends Component {
                 maxLength={20}
                 errorText={invalidmodel}
                 value={datamodel}
+                editable={edit}
                 onChangeText={value => this.setState({ datamodel: value })}
               />
               <InputPicker
                 title="Año"
                 listdata={itemsYears}
                 defaultSelect={datamodelyear}
-                editable
+                editable={edit}
                 onChangeValue={value => this.setState({ datamodelyear: value })}
                 errorText={invalidmodelyear}
               />
@@ -328,6 +348,7 @@ class Vehicle extends Component {
                 maxLength={15}
                 errorText={invalidcolor}
                 value={datacolor}
+                editable={edit}
                 onChangeText={value => this.setState({ datacolor: value })}
               />
               <Input
@@ -336,6 +357,7 @@ class Vehicle extends Component {
                 maxLength={20}
                 errorText={invalidchassis}
                 value={datachassis}
+                editable={edit}
                 onChangeText={value => this.setState({ datachassis: value })}
               />
             </WrapperInputs>
@@ -355,6 +377,7 @@ class Vehicle extends Component {
                 maxLength={20}
                 errorText={invalidownername}
                 value={dataownername}
+                editable={edit}
                 onChangeText={value => this.setState({ dataownername: value })}
               />
               <Input
@@ -364,6 +387,7 @@ class Vehicle extends Component {
                 type="numeric"
                 errorText={invalidownerdoc}
                 value={dataownerdoc}
+                editable={edit}
                 onChangeText={value => this.setState({ dataownerdoc: value })}
               />
             </WrapperInputs>
@@ -404,11 +428,13 @@ class Vehicle extends Component {
 
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
-              <ButtonGradient
-                press={() => this.validateForm()}
-                content="Añadir"
-                disabled={!inputValueCheck}
-              />
+              { edit ? (
+                <ButtonGradient
+                  press={() => this.validateForm()}
+                  content="Añadir"
+                  disabled={!inputValueCheck}
+                />
+              ) : <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'inset' }} press={() => navigate('ListVehicle')} /> }
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
 
