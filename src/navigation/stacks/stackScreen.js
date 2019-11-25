@@ -246,7 +246,7 @@ export const PointsStackNavigator = createStackNavigator({
   },
 },
 {
-  headerMode: 'none',
+  // headerMode: 'none',
 });
 
 export const AnalyticsStackNavigator = createStackNavigator({

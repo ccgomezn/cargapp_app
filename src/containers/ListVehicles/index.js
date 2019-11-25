@@ -12,11 +12,14 @@ import {
 import ButtonGradient from '../../components/ButtonGradient';
 import CardVehicle from '../../components/CardVehicle';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
+import PopUpDialog from '../../components/PopUpDialog';
 
 class ListVehicles extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      modalVeh: false,
+    };
   }
 
   componentDidMount() {
@@ -24,11 +27,31 @@ class ListVehicles extends Component {
     getListVehicles();
   }
 
+
+  onViewDetail(data) {
+    const { navigate } = this.props.navigation;
+    navigate('DetailVehicle', { dataVehicle: data });
+  }
+
+  onValidate() {
+    const { navigate } = this.props.navigation;
+    const { vehicles } = this.props;
+    const items = vehicles.list.length;
+    if (items > 3) {
+      // mostrar msj
+      this.setState({ modalVeh: true });
+    } else {
+      navigate('DetailVehicle');
+    }
+  }
+
+  closeModal() {
+    this.setState({ modalVeh: false });
+  }
+
   render() {
     const { vehicles } = this.props;
-    const { navigate } = this.props.navigation;
-
-    console.log(vehicles);
+    const { modalVeh } = this.state;
 
     if (vehicles.status && !vehicles.fetching) {
       return (
@@ -43,16 +66,27 @@ class ListVehicles extends Component {
             { vehicles.list.map(data => (
               <CardVehicle
                 data={data}
+                press={() => this.onViewDetail(data)}
               />
             ))}
           </ContentView>
 
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
-              <ButtonGradient content="Añadir Vehículo" press={() => navigate('DetailVehicle')} />
+              <ButtonGradient
+                content="Añadir Vehículo"
+                press={() => this.onValidate()}
+              />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
-
+          <PopUpDialog
+            textBlack="Advertencia"
+            textGray="Ya haz registrado mas de (3) vehículos."
+            visible={modalVeh}
+            textButton="Entendido"
+            onTouchOutside={() => this.closeModal()}
+            pressButton={() => this.closeModal()}
+          />
         </MainWrapper>
       );
     // eslint-disable-next-line no-else-return
