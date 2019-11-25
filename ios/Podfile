@@ -31,13 +31,10 @@ target 'Cargapp' do
 
 
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
-  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
-  pod 'RNStoreReview', :path => '../node_modules/react-native-store-review'
+
 
   target 'CargappTests' do
     inherit! :search_paths

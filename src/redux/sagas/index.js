@@ -18,6 +18,7 @@ import { PasswordTypes } from '../reducers/PasswordRedux';
 import { MarkersTypes } from '../reducers/MarkersRedux';
 import { BankAccountTypes } from '../reducers/BankAccountRedux';
 import { RateTypes } from '../reducers/RateServiceRedux';
+import { LocationTypes } from "../reducers/GeolocationRedux";
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -45,6 +46,7 @@ import { putPassword } from './PasswordSagas';
 import { getMarkers } from './MarkersSagas';
 import { postBankAccount, parameters } from './BankAccountSagas';
 import { postRateServices } from './RateService';
+import {sendLocation} from "./GeolocationSagas";
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -53,7 +55,7 @@ const api = API.create();
 
 /* ----------- Connects Types to Sagas ------------ */
 export default function* root() {
-  yield all([
+  yield all([takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),
     takeLatest(UserTypes.POST_VERIFY_REQUEST, verifyPhone, api),
     takeLatest(UserTypes.POST_VALIDATE_REQUEST, validatePin, api),
