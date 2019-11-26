@@ -3867,6 +3867,11 @@ inquirer@^6.2.2:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
+install@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/install/-/install-0.13.0.tgz#6af6e9da9dd0987de2ab420f78e60d9c17260776"
+  integrity sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==
+
 interpret@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
@@ -6295,6 +6300,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
+
+react-native-android-location-enabler@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-android-location-enabler/-/react-native-android-location-enabler-1.2.0.tgz#82ddf9743b257360c94647243d92497960005adc"
+  integrity sha512-9NGhjkfU5RMmBjSS2Rd2yYj9TBJNPhgXySo/FrDWAtN+137eN3F/KkOtEE5JFWzqGmBqp3GyEufCCOJf59R37w==
 
 react-native-background-fetch@^2.7.1, react-native-background-fetch@~2.7.1:
   version "2.7.1"
