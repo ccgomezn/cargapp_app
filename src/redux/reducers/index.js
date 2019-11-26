@@ -12,4 +12,5 @@ export default combineReducers({
   profile: require('./ProfileRedux').reducer,
   loadsType: require('./LoadRedux').reducer,
   payment: require('./PaymentRedux').reducer,
+  parameters: require('./ParametersRedux').reducer,
 });

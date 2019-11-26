@@ -20,6 +20,8 @@ import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
 import ButtonWhite from '../../components/ButtonWhite';
 
+import ParametersActions from '../../redux/reducers/ParametersRedux';
+
 class Vehicle extends Component {
   constructor() {
     super();
@@ -28,7 +30,7 @@ class Vehicle extends Component {
       dataplate: '',
       databrand: '',
       datamodel: '',
-      datacolor: '',
+      datacolor: '0',
       datachassis: '',
       dataownername: '',
       dataownerdoc: '',
@@ -59,16 +61,17 @@ class Vehicle extends Component {
       getVehiclesType,
       user,
       profile,
+      getparameters,
       navigation,
     } = this.props;
-    // get getPayment_methods
+    // get getTypes
     getVehiclesType();
     this.getYearModel();
+    // get colors
+    getparameters('VEHICLE_COLOR');
     // validate iduser - edit
-    console.log(user);
     const dtveh = navigation.getParam('dataVehicle', '');
     if (dtveh !== '') {
-      console.log(dtveh);
       this.setState({
         edit: false,
         userid: user.status.user.id,
@@ -112,7 +115,7 @@ class Vehicle extends Component {
         vehicle: {
           user_id: userid,
           active: true,
-          plate: dataplate,
+          plate: dataplate.toUpperCase(),
           vehicle_type_id: datavehicletype,
           brand: databrand,
           model: datamodel,
@@ -124,7 +127,6 @@ class Vehicle extends Component {
           owner_document_id: dataownerdoc,
         },
       };
-      console.log(data);
       await registerVehicle(data);
     }
     this.setState({ loading: true, msgApi: null });
@@ -189,7 +191,7 @@ class Vehicle extends Component {
     } else {
       this.setState({ invalidmodelyear: false });
     }
-    if (datacolor.length < 1 || datacolor === '') {
+    if (datacolor === '0') {
       errormsg.general = 'Campos sin completar *';
       this.setState({ invalidcolor: true });
     } else {
@@ -217,7 +219,7 @@ class Vehicle extends Component {
   }
 
   render() {
-    const { vehicles } = this.props;
+    const { vehicles, parameters } = this.props;
     const { navigate } = this.props.navigation;
     const {
       dataplate,
@@ -249,6 +251,7 @@ class Vehicle extends Component {
     } = this.state;
 
     const itemsMethod = [];
+    const itemsColors = [];
 
     // hide Toast
     if (errorApi) {
@@ -285,9 +288,13 @@ class Vehicle extends Component {
       }
     }
 
-    if (vehicles.data && !vehicles.fetching) {
+    if (vehicles.data !== null
+      && !vehicles.fetching && parameters.data !== null && !parameters.fetching) {
       vehicles.data.map((ele) => {
         itemsMethod.push({ textItem: ele.name, valueItem: ele.id });
+      });
+      parameters.data.parameters.map((colors) => {
+        itemsColors.push({ textItem: colors.name, valueItem: colors.code });
       });
       return (
         <MainWrapper>
@@ -302,6 +309,7 @@ class Vehicle extends Component {
               <Input
                 title="Placa del vehículo"
                 maxLength={8}
+                capitalize="characters"
                 holder="Ingrese número de placa"
                 errorText={invalidplate}
                 value={dataplate}
@@ -342,14 +350,13 @@ class Vehicle extends Component {
                 onChangeValue={value => this.setState({ datamodelyear: value })}
                 errorText={invalidmodelyear}
               />
-              <Input
+              <InputPicker
                 title="Color"
-                holder="Ingrese el color"
-                maxLength={15}
-                errorText={invalidcolor}
-                value={datacolor}
+                listdata={itemsColors}
+                defaultSelect={datacolor}
                 editable={edit}
-                onChangeText={value => this.setState({ datacolor: value })}
+                onChangeValue={value => this.setState({ datacolor: value })}
+                errorText={invalidcolor}
               />
               <Input
                 title="Chasis"
@@ -470,17 +477,21 @@ class Vehicle extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { vehicles, user, profile } = state;
+  const {
+    vehicles, user, profile, parameters,
+  } = state;
   return {
     vehicles,
     user,
     profile,
+    parameters,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getVehiclesType: params => dispatch(VehicleActions.getVehicleRequest(params)),
   registerVehicle: params => dispatch(VehicleActions.postRegVehicleRequest(params)),
+  getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
 });
 
 export default connect(

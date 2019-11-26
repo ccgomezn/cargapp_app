@@ -33,7 +33,6 @@ export const Text = styled.Text`
 
 export const InputPk = styled(Picker)`
   width: 100%;
-  font-size: 12px;
   top: -6;
 `;
 

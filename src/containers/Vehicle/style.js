@@ -58,6 +58,7 @@ export const WrapperButtonGradient = styled.TouchableOpacity`
   width: 45%;
   height: 100%;
   margin-left: 3%;
+  margin-bottom: 6px;
 `;
 
 export const WrapperError = styled.View`
