@@ -4,10 +4,11 @@ import { SafeAreaView, StatusBar } from 'react-native';
 import BackgroundGeolocation from 'react-native-background-geolocation';
 import { connect } from 'react-redux';
 import DrawerScreen from './stacks/drawerScreen';
-
+import { NativeModules } from 'react-native';
 import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
@@ -33,7 +34,7 @@ class Navigation extends React.Component {
       desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
       distanceFilter: 10,
       stopTimeout: 1,
-      heartbeatInterval: 1200,
+      heartbeatInterval: 60,
       debug: true,
       logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
       stopOnTerminate: false,
@@ -74,6 +75,7 @@ class Navigation extends React.Component {
       samples: 1,
       persist: true,
     }).then((location) => {
+      console.log(location);
       if (user.isLogged) {
         sendLocation({
           user_location: {
@@ -84,8 +86,16 @@ class Navigation extends React.Component {
             user_id: profile.data[0].user.id,
             active: true,
           },
-        });
+        })
       }
+    }).catch(error => {
+      console.log('- BackgroundGeolocation error: ', error);
+      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+        .then(data => {
+
+        }).catch(err => {
+
+        });
     });
 
     // eslint-disable-next-line react/prop-types
