@@ -15,7 +15,8 @@ class GeneralInput extends React.Component {
   render() {
     const { press } = this.state;
     const {
-      title, holder, value, editable, type, isPassword, maxLength, onChangeText, errorText,
+      title, holder, value, editable, type, isPassword,
+      maxLength, onChangeText, errorText, capitalize,
     } = this.props;
 
     const handleFocus = () => {
@@ -35,7 +36,7 @@ class GeneralInput extends React.Component {
       >
         <Text>{title}</Text>
         <Input
-          autoCapitalize="none"
+          autoCapitalize={capitalize != null ? capitalize : 'none'}
           autoCorrect={false}
           textContentType="none"
           keyboardType={type != null ? type : 'default'}
@@ -65,6 +66,7 @@ GeneralInput.propTypes = {
   maxLength: PropTypes.number.isRequired,
   onChangeText: PropTypes.func.isRequired,
   errorText: PropTypes.bool.isRequired,
+  capitalize: PropTypes.string.isRequired,
 };
 
 export default GeneralInput;

@@ -6,7 +6,9 @@ import {
   WrapperIcon, IconTruck, WrapperData, WrapperInfo, WrapperBtn, WrapperText, IconArrow,
 } from './style';
 
-function CardVehicle({ icon, press, data }) {
+function CardVehicle({
+  icon, press, data, types,
+}) {
   return (
     <MainWrapper onPress={press}>
       <WrapperIcon>
@@ -21,7 +23,7 @@ function CardVehicle({ icon, press, data }) {
             <SubText>{data.plate}</SubText>
           </WrapperText>
           <WrapperText>
-            <MainText>Tipo: </MainText>
+            <MainText>Marca: </MainText>
             <SubText>
               {data.brand}
               {' '}
@@ -29,11 +31,9 @@ function CardVehicle({ icon, press, data }) {
             </SubText>
           </WrapperText>
           <WrapperText>
-            <MainText>Estado: </MainText>
+            <MainText>Tipo: </MainText>
             <SubText>
-              {data.active ? (
-                'Activo'
-              ) : 'Deshabilitado' }
+              {types[data.vehicle_type_id]}
             </SubText>
           </WrapperText>
         </WrapperInfo>
@@ -51,6 +51,8 @@ CardVehicle.propTypes = {
   icon: PropTypes.string.isRequired,
   data: PropTypes.string.isRequired,
   press: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  types: PropTypes.array.isRequired,
 };
 
 export default CardVehicle;

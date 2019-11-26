@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/destructuring-assignment */
@@ -23,8 +24,10 @@ class ListVehicles extends Component {
   }
 
   componentDidMount() {
-    const { getListVehicles } = this.props;
+    const { getListVehicles, getVehiclesType } = this.props;
     getListVehicles();
+    // get getTypes
+    getVehiclesType();
   }
 
 
@@ -38,8 +41,9 @@ class ListVehicles extends Component {
     const { vehicles } = this.props;
     const items = vehicles.list.length;
     if (items > 3) {
-      // mostrar msj
+      // Alert not add
       this.setState({ modalVeh: true });
+      // navigate('DetailVehicle');
     } else {
       navigate('DetailVehicle');
     }
@@ -50,10 +54,15 @@ class ListVehicles extends Component {
   }
 
   render() {
-    const { vehicles } = this.props;
+    const { vehicles, user } = this.props;
     const { modalVeh } = this.state;
+    const itemsType = {};
+    console.log(user);
 
-    if (vehicles.status && !vehicles.fetching) {
+    if (vehicles.status && !vehicles.fetching && vehicles.data !== null) {
+      vehicles.data.map((ele) => {
+        itemsType[ele.id] = ele.name;
+      });
       return (
         <MainWrapper>
           <ContentView>
@@ -66,6 +75,7 @@ class ListVehicles extends Component {
             { vehicles.list.map(data => (
               <CardVehicle
                 data={data}
+                types={itemsType}
                 press={() => this.onViewDetail(data)}
               />
             ))}
@@ -112,6 +122,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   getListVehicles: params => dispatch(VehicleActions.getMeVehiclesRequest(params)),
+  getVehiclesType: params => dispatch(VehicleActions.getVehicleRequest(params)),
 });
 
 export default connect(

@@ -36,13 +36,15 @@ class InputPicker extends React.Component {
           mode="dropdown"
           enabled={editable != null ? editable : true}
           itemStyle={{ color: '#d00' }}
+          style={{ opacity: editable === false ? 0.4 : 1 }}
           iosHeader={title}
+          itemTextStyle={{ fontSize: 14 }}
         >
           <InputPk.Item label="- Seleccionar -" value="0" />
           {
             listdata != null ? (
               listdata.map((data, i) => (
-                <InputPk.Item key={i} label={data.textItem} value={data.valueItem} />
+                <InputPk.Item key={i} label={`${data.textItem}`} value={data.valueItem} />
               ))
             ) : null
           }
