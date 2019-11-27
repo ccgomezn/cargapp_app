@@ -14,6 +14,7 @@ import ScreenAnalytics from '../../containers/Analytics';
 import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
+import ScreenChat from '../../containers/Chat';
 // SIGN UP SCREENS
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
@@ -250,6 +251,19 @@ export const PointsStackNavigator = createStackNavigator({
 export const AnalyticsStackNavigator = createStackNavigator({
   Seventh: {
     screen: ScreenAnalytics,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const chatStackNavigator = createStackNavigator({
+  Eighth: {
+    screen: ScreenChat,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,

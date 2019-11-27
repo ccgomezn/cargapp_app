@@ -11,7 +11,7 @@ import { DrawIconMenu } from '../style';
 import {
   homeStackNavigator, viajesStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
-  ProfileStackNavigator, CouponsStackNavigator,
+  ProfileStackNavigator, CouponsStackNavigator, chatStackNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');
@@ -105,7 +105,7 @@ const DrawerScreen = createDrawerNavigator(
       },
     },
     ScreenChat: {
-      screen: viajesStackNavigator,
+      screen: chatStackNavigator,
       navigationOptions: {
         drawerLabel: 'Chat',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
