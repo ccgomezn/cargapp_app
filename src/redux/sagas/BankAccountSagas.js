@@ -20,6 +20,7 @@ export function* getBankAccount(api, action) {
 
 
 export function* postBankAccount(api, action) {
+  alert(JSON.stringify(action))
   const { data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);

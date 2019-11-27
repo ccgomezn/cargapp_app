@@ -6,13 +6,12 @@ import { connect } from 'react-redux';
 
 import { ActivityIndicator, Alert } from 'react-native';
 import EmptyDialog from '../../components/EmptyDialog';
-import InputPicker from '../../components/InputPicker';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
   WrapperInputs, RowContent, WrapperButtonsBottom, WrapperButtonGradient,
   ContentInitial, WrapperColumn, SecondWrapper, WrapperImage, Image,
   WrapperInfo, BoldText, NormalText, ContentButton,
-  MainWrapperDialog, TouchModal, TitleBlack, TextGray, ScrollDialog, ContentDialog,
+  MainWrapperDialog, TouchModal, TitleBlack, TextGray,
   WrapperMap,
 } from './style';
 
@@ -21,27 +20,13 @@ import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import PasswordActions from '../../redux/reducers/PasswordRedux';
-import BankActions from '../../redux/reducers/BankAccountRedux';
-import ParametersActions from '../../redux/reducers/ParametersRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
-
-const itemsAccount = [
-  {
-    textItem: 'Cuenta de ahorros',
-    valueItem: 'tipo1',
-  },
-  {
-    textItem: 'Cuenta corriente',
-    valueItem: 'tipo2',
-  },
-];
 
 class Profile extends Component {
   constructor() {
     super();
     this.state = {
       modalPassword: false,
-      modalAccount: false,
       name: '',
       lastName: '',
       fetch: true,
@@ -49,14 +34,11 @@ class Profile extends Component {
       previousPassword: null,
       newPassword: null,
       repeatPassword: null,
-      numberAccount: null,
     };
   }
 
   componentDidMount() {
-    const { getProfile, parameters } = this.props;
-    parameters('BANK');
-    parameters('ACCOUNT_TYPE');
+    const { getProfile } = this.props;
     getProfile();
   }
 
@@ -66,29 +48,7 @@ class Profile extends Component {
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
-    this.setState({ modalPassword: false, modalAccount: false });
-  }
-
-  onPressButtonAccount(value) {
-    const { navigation } = this.props;
-    navigation.navigate('ScreenBankAccount');
-    const { postBankAccount, profile } = this.props;
-    const { numberAccount, accountType, bankType } = this.state;
-    if (value) {
-      alert(value)
-      const data = {
-        bank_account: {
-          account_number: numberAccount,
-          account_type: accountType,
-          bank: bankType,
-          user_id: profile.data[0].user.id,
-          statu_id: 15,
-          active: true,
-        },
-      };
-      postBankAccount(data);
-    }
-    this.setState({ modalAccount: true });
+    this.setState({ modalPassword: false });
   }
 
   confirmProfile(id, name, lastName) {
@@ -124,7 +84,6 @@ class Profile extends Component {
   render() {
     const {
       modalPassword,
-      modalAccount,
       name,
       lastName,
       fetch,
@@ -132,13 +91,8 @@ class Profile extends Component {
       previousPassword,
       newPassword,
       repeatPassword,
-      numberAccount,
-      bankType,
-      accountType,
     } = this.state;
-    const { profile, bank } = this.props;
-    const arrayBanks = [];
-    const arrayAccounts = [];
+    const { profile, navigation } = this.props;
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
@@ -150,19 +104,11 @@ class Profile extends Component {
         }
       });
     }
-    console.log(this.props);
-    if (profile.data !== null
-        && !fetch && bank.data.parameters !== null && bank.banks.parameters !== null) {
+    if (profile.data !== null && !fetch) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
           this.setState({ name: data.profile.firt_name, lastName: data.profile.last_name });
         }
-      });
-      bank.banks.parameters.map((banks) => {
-        arrayAccounts.push({ textItem: banks.name, valueItem: banks.code });
-      });
-      bank.parameters.parameters.map((banks) => {
-        arrayBanks.push({ textItem: banks.name, valueItem: banks.code });
       });
       return (
         <MainWrapper>
@@ -190,7 +136,7 @@ class Profile extends Component {
                     <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
                   </RowContent>
                   <RowContent>
-                    <ButtonWhite border content="Cuenta Bancaria" press={() => this.onPressButtonAccount()} />
+                    <ButtonWhite border content="Cuenta Bancaria" press={() => navigation.navigate('BankAccount')} />
                   </RowContent>
                 </ContentView>
 
@@ -225,47 +171,6 @@ class Profile extends Component {
               visible={notification}
             />
           )}
-          <EmptyDialog
-            visible={modalAccount}
-          >
-            <MainWrapperDialog>
-              <ContentDialog>
-                <TitleBlack>Datos bancarios</TitleBlack>
-                <TextGray>Registra o modifica tu cuenta bancaria.</TextGray>
-                <ContentForm>
-                  <WrapperInputs>
-                    <Input
-                      title="Cuenta bancaria"
-                      holder="Ingrese tu número de cuenta"
-                      type="phone-pad"
-                      value={numberAccount}
-                      onChangeText={text => this.setState({ numberAccount: text })}
-                      maxLength={20}
-                    />
-                    <InputPicker
-                      title="Tipo de cuenta"
-                      listdata={arrayAccounts}
-                      onChangeValue={text => this.setState({ accountType: text })}
-                      defaultSelect={accountType}
-                    />
-                    <InputPicker
-                      title="Banco"
-                      listdata={arrayBanks}
-                      onChangeValue={text => this.setState({ bankType: text })}
-                      defaultSelect={bankType}
-                    />
-                  </WrapperInputs>
-                </ContentForm>
-                <TouchModal>
-                  <ButtonGradient content="Confirmar" press={() => this.onPressButtonAccount('post')} />
-                </TouchModal>
-                <TouchModal>
-                  <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
-                </TouchModal>
-              </ContentDialog>
-            </MainWrapperDialog>
-          </EmptyDialog>
-
           <EmptyDialog
             visible={modalPassword}
           >
@@ -336,8 +241,6 @@ const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
   putPassword: data => dispatch(PasswordActions.putPasswordRequest(data)),
-  postBankAccount: data => dispatch(BankActions.postBankAccountSuccess(data)),
-  parameters: data => dispatch(ParametersActions.parametersRequest(data)),
 });
 
 export default connect(
