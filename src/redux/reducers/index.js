@@ -18,4 +18,5 @@ export default combineReducers({
   markers: require('./MarkersRedux').reducer,
   bank: require('./BankAccountRedux').reducer,
   rateService: require('./RateServiceRedux').reducer,
+  chat: require('./ChatRedux').reducer,
 });

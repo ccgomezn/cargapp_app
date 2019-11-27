@@ -14,7 +14,7 @@ import ScreenAnalytics from '../../containers/Analytics';
 import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
-import ScreenChat from '../../containers/Chat';
+import ScreenChat from '../../containers/ChatList';
 // SIGN UP SCREENS
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
