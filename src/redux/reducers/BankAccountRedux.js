@@ -5,7 +5,7 @@ import { createReducer, createActions } from 'reduxsauce';
 export const { Types, Creators } = createActions({
   getBankAccountRequest: ['params'],
   getBankAccountSuccess: ['data'],
-  postBankAccountRequest: ['params'],
+  postBankAccountRequest: ['data'],
   postBankAccountSuccess: ['data'],
   postBankAccountFailure: ['params'],
   putBankAccountRequest: ['data'],
@@ -20,7 +20,7 @@ export const INITIAL_STATE = Immutable({
   data: null,
   error: false,
   fetching: false,
-  bank: null,
+  accounts: null,
   edit: null,
 });
 
@@ -58,7 +58,7 @@ export const getBankAccountSuccess = (state, { data }) => ({
 export const postBankAccountSuccess = (state, { data }) => ({
   ...state,
   fetching: false,
-  bank: data,
+  accounts: data,
 });
 
 export const postBankAccountFailure = state => ({
@@ -75,5 +75,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_BANK_ACCOUNT_SUCCESS]: getBankAccountSuccess,
   [Types.GET_BANK_ACCOUNT_REQUEST]: getBankAccountRequest,
   [Types.PUT_BANK_ACCOUNT_REQUEST]: putBankAccountRequest,
-  [Types.PUT_BANK_ACCOUNT_SUCCESS]: putBankAccountSuccess
+  [Types.PUT_BANK_ACCOUNT_SUCCESS]: putBankAccountSuccess,
 });

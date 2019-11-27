@@ -5,9 +5,9 @@ import {
 } from './style';
 
 const CardBank = ({
-  title, subTitle,
+  title, subTitle, press,
 }) => (
-  <MainWrapper>
+  <MainWrapper onPress={press}>
     <TextWrapper>
       <MainText>{title}</MainText>
       <SubText>{subTitle}</SubText>
@@ -17,6 +17,7 @@ const CardBank = ({
 CardBank.propTypes = {
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
+  press: PropTypes.func.isRequired,
 };
 
 export default CardBank;

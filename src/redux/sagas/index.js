@@ -45,7 +45,7 @@ import { getStatus } from './StatusSagas';
 import { putPassword } from './PasswordSagas';
 import { getMarkers } from './MarkersSagas';
 import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSagas';
-import { parameters } from './ParametersSagas';
+import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
 /* ----------  API ------------ */
 
@@ -88,6 +88,7 @@ export default function* root() {
     takeLatest(BankAccountTypes.PUT_BANK_ACCOUNT_REQUEST, putBankAccount, api),
     takeLatest(BankAccountTypes.GET_BANK_ACCOUNT_REQUEST, getBankAccount, api),
     takeLatest(RateTypes.POST_RATE_SERVICE_REQUEST, postRateServices, api),
-    takeLatest(ParametersTypes.PARAMETERS_REQUEST, parameters, api),
+    takeLatest(ParametersTypes.PARAMETERS_REQUEST, getParameters, api),
+    takeLatest(ParametersTypes.PARAMETERS_SECOND_REQUEST, getSecondParameters, api),
   ]);
 }
