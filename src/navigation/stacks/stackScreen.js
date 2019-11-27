@@ -24,6 +24,7 @@ import ScreenListVehicle from '../../containers/ListVehicles';
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
+import ScreenInnerChat from '../../containers/Chat';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
 import ScreenLoginEmail from '../../containers/LoginEmail';
@@ -47,7 +48,7 @@ function leftIconMenu({ navigation }) {
         // eslint-disable-next-line react/prop-types
         navigation.toggleDrawer();
       }
-      }
+            }
     >
       <IconImg
         source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png' }}
@@ -81,7 +82,7 @@ function rightIconMenu({ navigation }) {
       </BoxPerfil>
       <BoxPerfil style={{ width: '30%' }}>
         <ImagenArrow
-          // eslint-disable-next-line global-require
+                    // eslint-disable-next-line global-require
           source={require('../../Images/arrow-down.png')}
         />
       </BoxPerfil>
@@ -292,6 +293,15 @@ export const chatStackNavigator = createStackNavigator({
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  InnerChat: {
+    screen: ScreenInnerChat,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },

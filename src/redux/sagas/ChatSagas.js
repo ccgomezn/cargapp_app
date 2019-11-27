@@ -11,20 +11,32 @@
  *    you'll need to define a constant in that file.
  ************************************************************ */
 
-import {call, put, select} from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import ChatActions from '../reducers/ChatRedux';
-import {AuthSelectors} from "../reducers/UserRedux";
+import { AuthSelectors } from '../reducers/UserRedux';
 
 // eslint-disable-next-line import/prefer-default-export
 export function* getMineChats(api, action) {
-    const { params } = action;
-    const token = yield select(AuthSelectors.getToken);
-    api.setAuthToken(token);
-    const response = yield call(api.chats.getMineChats, params);
-    console.log(response);
-    if (response.ok) {
-        yield put(ChatActions.getMeChatsSuccess(response.data));
-    } else {
-        yield put(ChatActions.getMeChatsFailure());
-    }
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.chats.getMineChats, params);
+  console.log('chats', response);
+  if (response.ok) {
+    yield put(ChatActions.getMeChatsSuccess(response.data));
+  } else {
+    yield put(ChatActions.getMeChatsFailure());
+  }
+}
+// eslint-disable-next-line import/prefer-default-export
+export function* getActiveChats(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.chats.getActiveChats, params);
+  if (response.ok) {
+    yield put(ChatActions.getActiveChatsSuccess(response.data));
+  } else {
+    yield put(ChatActions.getActiveChatsFailure());
+  }
 }

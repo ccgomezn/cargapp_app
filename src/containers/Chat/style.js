@@ -36,7 +36,7 @@ export const MainWrapper = styled.View`
 
 export const WrapperInfoUser = styled.View`
     top: 0;
-    height: 13%;
+    height: 40px;
     width: 100%;
     flex-direction: row;
     justify-content: center;
@@ -63,12 +63,19 @@ export const WrapperInfo = styled.View`
     justify-content: space-around;
     align-items: flex-start;
     padding-vertical: 20px;
+    padding-left: 20px;
 `;
 
 export const BoldText = styled.Text`
     font-weight: bold;
     font-size: 16px;
     color: black;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    letter-spacing: -0.3px;
+    color: #010935;
 `;
 
 export const NormalText = styled.Text`

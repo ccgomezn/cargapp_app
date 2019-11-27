@@ -53,6 +53,7 @@ import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
 import { sendLocation } from './GeolocationSagas';
 import { getMineChats } from './ChatSagas';
+import { getActiveChats } from './ChatSagas';
 
 /* ----------  API ------------ */
 
@@ -64,6 +65,7 @@ const api = API.create();
 export default function* root() {
   yield all([takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
     takeLatest(ChatTypes.GET_ME_CHATS_REQUEST, getMineChats, api),
+    takeLatest(ChatTypes.GET_ACTIVE_CHATS_REQUEST, getActiveChats, api),
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),
     takeLatest(UserTypes.POST_VERIFY_REQUEST, verifyPhone, api),
     takeLatest(UserTypes.POST_VALIDATE_REQUEST, validatePin, api),
