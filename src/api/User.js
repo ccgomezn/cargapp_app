@@ -7,5 +7,6 @@ export default function (api) {
     loginUser: params => api.post('users/login/', params),
     forgotPass: params => api.post('users/reset_password', params),
     resetPass: params => api.post('users/new_password', params),
+    getUserRole: params => api.get('users/me', params),
   };
 }

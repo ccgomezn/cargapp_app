@@ -10,9 +10,13 @@ import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
 import ScreenPoints from '../../containers/Points';
 import ScreenAnalytics from '../../containers/Analytics';
+// CUPONS
 import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
+// VEHICLES
+import ScreenListVehicle from '../../containers/ListVehicles';
+
 // SIGN UP SCREENS
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
@@ -195,13 +199,22 @@ export const myTravelsStackNavigator = createStackNavigator({
 });
 
 export const myVehicleStackNavigator = createStackNavigator({
-  Quarter: {
-    screen: ScreenMyVehicle,
+  ListVehicle: {
+    screen: ScreenListVehicle,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  DetailVehicle: {
+    screen: ScreenMyVehicle,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },
@@ -223,17 +236,17 @@ export const ProfileStackNavigator = createStackNavigator({
 export const PointsStackNavigator = createStackNavigator({
   Sixth: {
     screen: ScreenPoints,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
-      // headerStyle: HeaderStyle,
-      // headerTitle: centerIconMenu({ navigation }),
-      // headerLeft: leftIconMenu({ navigation }),
-      // headerRight: rightIconMenu({ navigation }),
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 },
 {
-  headerMode: 'none',
+  // headerMode: 'none',
 });
 
 export const AnalyticsStackNavigator = createStackNavigator({
