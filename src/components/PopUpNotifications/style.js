@@ -28,7 +28,7 @@ export const Dialog = styled.TouchableOpacity`
   justify-content: flex-start;
   align-items: flex-start;
   padding-bottom: 4%;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0,0,0,0.2);
 `;
 
 export const Wrapper = styled(LinearGradient)`

@@ -51,8 +51,10 @@ class BankAccount extends Component {
   }
 
   onPressButtonAccount() {
-    const { postBankAccount, profile } = this.props;
-    const { numberAccount, accountType, bankType, modify, id } = this.state;
+    const { postBankAccount, putBankAccount, profile } = this.props;
+    const {
+      numberAccount, accountType, bankType, modify, id,
+    } = this.state;
     if (numberAccount !== '' && accountType !== '' && bankType !== '') {
       const data = {
         bank_account: {
@@ -64,14 +66,23 @@ class BankAccount extends Component {
           active: true,
         },
       };
-      if(modify) {
-        alert('modificando' + id)
-      }else {
+      if (modify) {
+        putBankAccount(id, data);
+        this.componentDidMount();
+      } else {
         postBankAccount(data);
+        this.componentDidMount();
       }
-      this.componentDidMount();
-      this.setState({ modalAccount: false });
-      this.setState({ popUp: true });
+      this.setState({
+        modalAccount: false,
+        popUp: true,
+        accountType: '',
+        bankType: '',
+        numberAccount: '',
+        modify: false,
+        id: '',
+        modalData: null,
+      });
     } else Alert.alert('Advertencia...', 'Revisa todos los campos');
   }
 
@@ -81,6 +92,9 @@ class BankAccount extends Component {
       accountType: '',
       bankType: '',
       numberAccount: '',
+      modify: false,
+      id: '',
+      modalData: null,
     });
   }
 
@@ -145,6 +159,7 @@ class BankAccount extends Component {
           ) : null}
           <EmptyDialog
             visible={modalAccount}
+            onTouchOutside={() => this.setState({ modalAccount: false })}
           >
             <MainWrapperDialog>
               <ContentDialog>

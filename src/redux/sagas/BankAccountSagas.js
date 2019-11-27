@@ -34,10 +34,11 @@ export function* postBankAccount(api, action) {
 }
 
 export function* putBankAccount(api, action) {
-  const { data } = action;
+  alert(JSON.stringify(action));
+  const { id, data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.bankAccount.putBankAccount, data);
+  const response = yield call(api.bankAccount.putBankAccount, id, data);
   console.log(response);
   if (response.ok) {
     yield put(BankAccountActions.putBankAccountSuccess(response.data));
