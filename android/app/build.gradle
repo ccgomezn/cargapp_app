@@ -82,6 +82,8 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+Project background_geolocation = project(':react-native-background-geolocation')
+apply from: "${background_geolocation.projectDir}/app.gradle"
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -190,8 +192,10 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-webview')
-    implementation project(':react-native-camera')
+    implementation project(':@react-native-firebase_firestore')
+    implementation project(':@react-native-firebase_auth')
+    implementation project(':@react-native-firebase_messaging')
+    implementation project(':react-native-android-location-enabler')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-svg')
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -215,3 +219,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'

@@ -28,25 +28,28 @@ class ApplyOffer extends Component {
   }
 
   componentDidMount() {
-    const { navigation, getCompanies } = this.props;
+    const { navigation, getCompanies, getServices } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     this.setState({ offer: dataOffer });
     getCompanies();
+    getServices();
   }
 
   applyOffer(value) {
-    const { user, applyOffer } = this.props;
+    const { applyOffer, navigation, profile } = this.props;
     const data = {
-      service_id: value,
-      user_id: user.info.user.id,
+      service_id: value.id,
+      user_id: profile.data[0].user.id,
       active: true,
     };
     applyOffer(data);
+    navigation.navigate('StartTravel', { Offer: value });
     this.setState({ fetch: true });
   }
 
   render() {
     const { offers, navigation, companies } = this.props;
+    console.log(this.props);
     const {
       offer, successNotification, errorFalse, fetch,
     } = this.state;
@@ -113,10 +116,11 @@ class ApplyOffer extends Component {
                   extra={offer.description}
                   normalText={company.address}
                   amount={offer.price}
-                  onPressBG={() => this.applyOffer(offer.id)}
+                  onPressBG={() => this.applyOffer(offer)}
                   onPressBW={() => navigation.goBack()}
                   delivery="5 días"
                   company={company.name}
+                  mainButton={offer.statu_id === 10 ? 'En Aprobación' : 'Empezar viaje'}
                 />
               );
             }
@@ -136,19 +140,21 @@ class ApplyOffer extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    vehicles, companies, user, offers,
+    vehicles, companies, user, offers, profile,
   } = state;
   return {
     vehicles,
     companies,
     user,
     offers,
+    profile,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
+  getServices: (params = {}) => dispatch(OffersActions.getServicesRequest(params)),
 });
 
 export default connect(

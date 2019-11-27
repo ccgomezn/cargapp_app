@@ -4,15 +4,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import EmptyDialog from '../../components/EmptyDialog';
-import InputPicker from '../../components/InputPicker';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
   WrapperInputs, RowContent, WrapperButtonsBottom, WrapperButtonGradient,
   ContentInitial, WrapperColumn, SecondWrapper, WrapperImage, Image,
   WrapperInfo, BoldText, NormalText, ContentButton,
-  MainWrapperDialog, TouchModal, TitleBlack, TextGray, ScrollDialog, ContentDialog,
+  MainWrapperDialog, TouchModal, TitleBlack, TextGray,
   WrapperMap,
 } from './style';
 
@@ -20,29 +19,21 @@ import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
+import PasswordActions from '../../redux/reducers/PasswordRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
-
-const itemsAccount = [
-  {
-    textItem: 'Cuenta de ahorros',
-    valueItem: 'tipo1',
-  },
-  {
-    textItem: 'Cuenta corriente',
-    valueItem: 'tipo2',
-  },
-];
 
 class Profile extends Component {
   constructor() {
     super();
     this.state = {
       modalPassword: false,
-      modalAccount: false,
       name: '',
       lastName: '',
       fetch: true,
       notification: false,
+      previousPassword: null,
+      newPassword: null,
+      repeatPassword: null,
     };
   }
 
@@ -57,11 +48,7 @@ class Profile extends Component {
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
-    this.setState({ modalPassword: false, modalAccount: false });
-  }
-
-  onPressButtonAccount() {
-    this.setState({ modalAccount: true });
+    this.setState({ modalPassword: false });
   }
 
   confirmProfile(id, name, lastName) {
@@ -77,11 +64,35 @@ class Profile extends Component {
     this.setState({ notification: true });
   }
 
+  refreshPassword() {
+    const { previousPassword, newPassword, repeatPassword } = this.state;
+    const { putPassword } = this.props;
+    if (repeatPassword === newPassword) {
+      const data = {
+        user: {
+          password: newPassword,
+          password_confirmation: repeatPassword,
+          current_password: previousPassword,
+        },
+      };
+      putPassword(data);
+    } else {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+    }
+  }
+
   render() {
     const {
-      modalPassword, modalAccount, name, lastName, fetch, notification,
+      modalPassword,
+      name,
+      lastName,
+      fetch,
+      notification,
+      previousPassword,
+      newPassword,
+      repeatPassword,
     } = this.state;
-    const { profile } = this.props;
+    const { profile, navigation } = this.props;
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
@@ -125,7 +136,7 @@ class Profile extends Component {
                     <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
                   </RowContent>
                   <RowContent>
-                    <ButtonWhite border content="Cuenta Bancaria" press={() => this.onPressButtonAccount()} />
+                    <ButtonWhite border content="Cuenta Bancaria" press={() => navigation.navigate('BankAccount')} />
                   </RowContent>
                 </ContentView>
 
@@ -161,57 +172,44 @@ class Profile extends Component {
             />
           )}
           <EmptyDialog
-            visible={modalAccount}
-          >
-            <MainWrapperDialog>
-              <ScrollDialog>
-                <ContentDialog>
-                  <TitleBlack>Datos bancarios</TitleBlack>
-                  <TextGray>Registra o modifica tu cuenta bancaria.</TextGray>
-                  <ContentForm>
-                    <WrapperInputs>
-                      <Input title="Cuenta bancaria" holder="Ingrese tu número de cuenta" type="phone-pad" />
-                      <InputPicker title="Tipo de cuenta" listdata={itemsAccount} />
-                      <InputPicker title="Banco" listdata={itemsAccount} />
-                    </WrapperInputs>
-                  </ContentForm>
-                  <TouchModal>
-                    <ButtonGradient content="Confirmar" press={() => this.onPressButtonAccount()} />
-                  </TouchModal>
-                  <TouchModal>
-                    <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
-                  </TouchModal>
-                </ContentDialog>
-              </ScrollDialog>
-            </MainWrapperDialog>
-          </EmptyDialog>
-
-          <EmptyDialog
             visible={modalPassword}
           >
-            <MainWrapperDialog style={{ height: '56%' }}>
-              <ScrollDialog>
-                <ContentDialog>
-                  <TitleBlack>Cambiar tu contraseña</TitleBlack>
-                  <TextGray>
+            <MainWrapperDialog>
+              <TitleBlack>Cambiar tu contraseña</TitleBlack>
+              <TextGray>
                   Ingresa la contraseña anterior.
                   La nueva contraseña deberá tener entre 4 a 6 caracteres.
-                  </TextGray>
-                  <ContentForm>
-                    <WrapperInputs>
-                      <Input title="Clave anterior" holder="Ingrese la contraseña anterior" isPassword />
-                      <Input title="Nueva clave" holder="Ingrese la contraseña nueva" isPassword />
-                      <Input title="Confirmar clave" isPassword />
-                    </WrapperInputs>
-                  </ContentForm>
-                  <TouchModal>
-                    <ButtonGradient content="Confirmar" />
-                  </TouchModal>
-                  <TouchModal>
-                    <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
-                  </TouchModal>
-                </ContentDialog>
-              </ScrollDialog>
+              </TextGray>
+              <ContentForm>
+                <WrapperInputs>
+                  <Input
+                    title="Clave anterior"
+                    holder="Ingrese la contraseña anterior"
+                    value={previousPassword}
+                    onChangeText={value => this.setState({ previousPassword: value })}
+                    isPassword
+                  />
+                  <Input
+                    title="Nueva clave"
+                    holder="Ingrese la contraseña nueva"
+                    value={newPassword}
+                    onChangeText={value => this.setState({ newPassword: value })}
+                    isPassword
+                  />
+                  <Input
+                    title="Confirmar clave"
+                    value={repeatPassword}
+                    onChangeText={value => this.setState({ repeatPassword: value })}
+                    isPassword
+                  />
+                </WrapperInputs>
+              </ContentForm>
+              <TouchModal>
+                <ButtonGradient content="Confirmar" press={() => this.refreshPassword()} />
+              </TouchModal>
+              <TouchModal>
+                <ButtonWhite content="Cancelar" press={() => this.OnHideModal()} />
+              </TouchModal>
             </MainWrapperDialog>
           </EmptyDialog>
         </MainWrapper>
@@ -228,16 +226,21 @@ class Profile extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, profile } = state;
+  const {
+    user, profile, password, bank,
+  } = state;
   return {
     user,
     profile,
+    password,
+    bank,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   editProfile: (id, data) => dispatch(ProfileActions.editProfileRequest(id, data)),
+  putPassword: data => dispatch(PasswordActions.putPasswordRequest(data)),
 });
 
 export default connect(

@@ -6,6 +6,7 @@ import ScreenHome from '../../containers/Home';
 import ScreenTravels from '../../containers/Travels';
 import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
 import ScreenMyTravels from '../../containers/MyTravels';
+import ScreenStartTravel from '../../containers/Travels/StartTravel';
 import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
 import ScreenPoints from '../../containers/Points';
@@ -14,6 +15,8 @@ import ScreenAnalytics from '../../containers/Analytics';
 import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
+import ScreenChat from '../../containers/ChatList';
+import ScreenBankAccount from '../../containers/BankAccount';
 // VEHICLES
 import ScreenListVehicle from '../../containers/ListVehicles';
 
@@ -21,6 +24,7 @@ import ScreenListVehicle from '../../containers/ListVehicles';
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
 import ScreenVehicle from '../../containers/Registration/Vehicle';
+import ScreenInnerChat from '../../containers/Chat';
 import ScreenPersonalData from '../../containers/Registration/PersonalData';
 import ScreenDocuments from '../../containers/Registration/Documents';
 import ScreenLoginEmail from '../../containers/LoginEmail';
@@ -44,7 +48,7 @@ function leftIconMenu({ navigation }) {
         // eslint-disable-next-line react/prop-types
         navigation.toggleDrawer();
       }
-      }
+            }
     >
       <IconImg
         source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png' }}
@@ -78,7 +82,7 @@ function rightIconMenu({ navigation }) {
       </BoxPerfil>
       <BoxPerfil style={{ width: '30%' }}>
         <ImagenArrow
-          // eslint-disable-next-line global-require
+                    // eslint-disable-next-line global-require
           source={require('../../Images/arrow-down.png')}
         />
       </BoxPerfil>
@@ -196,6 +200,16 @@ export const myTravelsStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  StartTravel: {
+    screen: ScreenStartTravel,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const myVehicleStackNavigator = createStackNavigator({
@@ -231,6 +245,15 @@ export const ProfileStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  BankAccount: {
+    screen: ScreenBankAccount,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const PointsStackNavigator = createStackNavigator({
@@ -257,6 +280,28 @@ export const AnalyticsStackNavigator = createStackNavigator({
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const chatStackNavigator = createStackNavigator({
+  Eighth: {
+    screen: ScreenChat,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  InnerChat: {
+    screen: ScreenInnerChat,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },

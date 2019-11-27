@@ -21,7 +21,7 @@ import ButtonWhite from '../ButtonWhite';
 import ButtonGradient from '../ButtonGradient';
 
 function CardMapBeginTravel({
-  company, normalText, amount, delivery, extra, onPressBW, onPressBG,
+  company, normalText, amount, delivery, extra, onPressBW, onPressBG, mainButton,
 }) {
   return (
     <MainWrapper>
@@ -63,7 +63,7 @@ function CardMapBeginTravel({
           <ButtonWhite press={onPressBW} content="Cancelar" />
         </WrapperButton>
         <WrapperButton>
-          <ButtonGradient press={onPressBG} content="Aplicar viaje" />
+          <ButtonGradient press={onPressBG} content={mainButton} />
         </WrapperButton>
       </WrapperFooter>
     </MainWrapper>
@@ -77,6 +77,7 @@ CardMapBeginTravel.propTypes = {
   extra: PropTypes.string.isRequired,
   onPressBW: PropTypes.func.isRequired,
   onPressBG: PropTypes.func.isRequired,
+  mainButton: PropTypes.func.isRequired,
 };
 
 export default CardMapBeginTravel;
