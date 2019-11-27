@@ -15,6 +15,7 @@ import ScreenCoupons from '../../containers/Coupons/General';
 import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 import ScreenChat from '../../containers/ChatList';
+import ScreenBankAccount from '../../containers/BankAccount';
 // SIGN UP SCREENS
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
@@ -228,6 +229,15 @@ export const ProfileStackNavigator = createStackNavigator({
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  BankAccount: {
+    screen: ScreenBankAccount,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
     }),
   },
 });
