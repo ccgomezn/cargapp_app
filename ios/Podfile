@@ -30,10 +30,12 @@ target 'Cargapp' do
 
 
 
+  pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+  pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
+
+  pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
 
   target 'CargappTests' do
     inherit! :search_paths

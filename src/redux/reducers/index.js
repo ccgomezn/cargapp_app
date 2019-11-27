@@ -12,5 +12,12 @@ export default combineReducers({
   profile: require('./ProfileRedux').reducer,
   loadsType: require('./LoadRedux').reducer,
   payment: require('./PaymentRedux').reducer,
+  coupons: require('./CouponsRedux').reducer,
+  status: require('./StatusRedux').reducer,
+  password: require('./PasswordRedux').reducer,
+  markers: require('./MarkersRedux').reducer,
+  bank: require('./BankAccountRedux').reducer,
+  rateService: require('./RateServiceRedux').reducer,
+  chat: require('./ChatRedux').reducer,
   parameters: require('./ParametersRedux').reducer,
 });

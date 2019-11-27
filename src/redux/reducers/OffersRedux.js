@@ -7,6 +7,12 @@ import Immutable from 'seamless-immutable';
 export const { Types, Creators } = createActions({
   getOffersRequest: ['params'],
   postApplyOfferRequest: ['service'],
+  getMyOffersRequest: ['id'],
+  getServicesRequest: ['params'],
+  getServicesSuccess: ['data'],
+  getMyOffersSuccess: ['myOffers'],
+  putStateInTravelOriginSuccess: ['data'],
+  putStateInTravelOriginRequest: ['id', 'data'],
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
   getOffersFailure: null,
@@ -21,6 +27,9 @@ export const INITIAL_STATE = Immutable({
   fetching: false,
   error: false,
   service: null,
+  myOffers: null,
+  services: null,
+  statusTravelOrigin: null,
 });
 
 /* ----------- Reducers ------------- */
@@ -33,11 +42,60 @@ export const getOffersRequest = (state) => {
   };
 };
 
+export const putStateInTravelOriginRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const putStateInTravelOriginSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    statusTravelOrigin: data,
+    error: false,
+  };
+};
+
 export const postApplyOfferRequest = (state) => {
   return {
     ...state,
     fetching: true,
     error: false,
+  };
+};
+
+export const getMyOffersRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const getServicesRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const getServicesSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    services: data,
+  };
+};
+
+export const getMyOffersSuccess = (state, { myOffers }) => {
+  return {
+    ...state,
+    myOffers,
+    fetching: false,
   };
 };
 
@@ -73,4 +131,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_OFFERS_FAILURE]: getOffersFailure,
   [Types.POST_APPLY_OFFER_REQUEST]: postApplyOfferRequest,
   [Types.POST_APPLY_OFFER_SUCCESS]: postApplyOfferSuccess,
+  [Types.GET_MY_OFFERS_REQUEST]: getMyOffersRequest,
+  [Types.GET_MY_OFFERS_SUCCESS]: getMyOffersSuccess,
+  [Types.GET_SERVICES_REQUEST]: getServicesRequest,
+  [Types.GET_SERVICES_SUCCESS]: getServicesSuccess,
+  [Types.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST]: putStateInTravelOriginRequest,
+  [Types.PUT_STATE_IN_TRAVEL_ORIGIN_SUCCESS]: putStateInTravelOriginSuccess,
 });

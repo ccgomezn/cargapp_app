@@ -7,6 +7,7 @@ export const MainWrapper = {
   backgroundColor: 'transparent',
 };
 
+/*
 export const Dialog = styled.TouchableOpacity`
   width: 100%;
   height: 100%;
@@ -18,13 +19,25 @@ export const Dialog = styled.TouchableOpacity`
   padding-bottom: 4%;
 `;
 
+*/
+export const Dialog = styled.TouchableOpacity`
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  padding-horizontal: 4%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-bottom: 4%;
+  background-color: rgba(0,0,0,0.2);
+`;
+
 export const Wrapper = styled(LinearGradient)`
-    width: 100%;
-    height: 18%;
-    border-radius: 10px;
-    flex-direction: row;
-    padding: 10px;
-    align-self: flex-end;
+  width: 100%;
+  height: 18%;
+  border-radius: 10px;
+  flex-direction: row;
+  padding: 10px;
+  align-self: flex-end;
 `;
 
 export const WrapperIcon = styled.View`

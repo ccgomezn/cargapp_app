@@ -9,6 +9,14 @@ import Companies from './Company';
 import Profile from './Profile';
 import Load from './Load';
 import Payment from './Payment';
+import Coupons from './Coupons';
+import Status from './Status';
+import Password from './Password';
+import Markers from './Markers';
+import RateService from './RateService';
+import BankAccount from './BankAccount';
+import Geolocation from "./Geolocations";
+import Chats from "./Chats"
 import Parameters from './Parameters';
 
 /* URL
@@ -27,6 +35,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     // 2000 SECOND TIMEOUT...
     timeout: 20000,
   });
+  const geolocation = new Geolocation(api);
   const driver = new Driver(api);
   const user = new User(api);
   const countrie = new Countrie(api);
@@ -37,6 +46,13 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const profile = new Profile(api);
   const load = new Load(api);
   const payment = new Payment(api);
+  const coupons = new Coupons(api);
+  const status = new Status(api);
+  const password = new Password(api);
+  const markers = new Markers(api);
+  const rateService = new RateService(api);
+  const bankAccount = new BankAccount(api);
+  const chats = new Chats(api);
   const parameters = new Parameters(api);
   // RETURN API
   return {
@@ -53,6 +69,14 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     profile,
     load,
     payment,
+    coupons,
+    status,
+    password,
+    markers,
+    rateService,
+    bankAccount,
+    geolocation,
+    chats,
     parameters,
   };
 };

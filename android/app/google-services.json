@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "949419419550",
+    "firebase_url": "https://cargapp-mvp.firebaseio.com",
+    "project_id": "cargapp-mvp",
+    "storage_bucket": "cargapp-mvp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949419419550:android:0c511de3886c2ed40f188f",
+        "android_client_info": {
+          "package_name": "com.cargapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949419419550-jnhuo0u6p9mjd97e1c4a8jtoin36n0tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLkk1-hVq9DjIRaPGCVRSNxU-1d5LjT3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949419419550-jnhuo0u6p9mjd97e1c4a8jtoin36n0tk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

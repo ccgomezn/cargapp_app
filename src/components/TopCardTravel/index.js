@@ -15,9 +15,10 @@ import {
   LineVerical,
   Icon,
 } from './style';
+import { PropsType } from 'react-native/ReactCommon/hermes/inspector/tools/msggen/src/Type';
 
 function TopCardTravel({
-  company, travelsCount, amount, arrive, isConfirmLoad, unLoad,
+  company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk,
 }) {
   if (arrive) {
     return (
@@ -51,7 +52,7 @@ function TopCardTravel({
           )
           : (
             <WrapperColumn>
-              <TouchableContact>
+              <TouchableContact onPress={actionBtnOk}>
                 <BlueText style={{ paddingVertical: 10 }}>
                   Confirmar
                   {' '}
@@ -88,6 +89,7 @@ TopCardTravel.propTypes = {
   arrive: PropTypes.bool.isRequired,
   isConfirmLoad: PropTypes.bool.isRequired,
   unLoad: PropTypes.bool.isRequired,
+  actionBtnOk: PropTypes.func.isRequired,
 };
 
 export default TopCardTravel;
