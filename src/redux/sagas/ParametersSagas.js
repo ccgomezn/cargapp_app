@@ -28,3 +28,4 @@ export function* getSecondParameters(api, action) {
     yield put(ParametersActions.parametersFailure(response.data));
   }
 }
+

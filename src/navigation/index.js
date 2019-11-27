@@ -3,8 +3,8 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { SafeAreaView, StatusBar } from 'react-native';
 import BackgroundGeolocation from 'react-native-background-geolocation';
 import { connect } from 'react-redux';
-import DrawerScreen from './stacks/drawerScreen';
-import { NativeModules } from 'react-native';
+import { ContainerDriver, ContainerGenerator } from './stacks/drawerScreen';
+
 import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
@@ -13,10 +13,12 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
   SignUpStack: SignUpStackNavigator,
-  drawerScreen: DrawerScreen,
+  DriverMenu: ContainerDriver,
+  GeneratorMenu: ContainerGenerator,
 }, {
   headerMode: 'none',
   initialRouteName: 'Splash',
+  backBehavior: false,
 }));
 
 class Navigation extends React.Component {

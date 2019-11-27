@@ -18,7 +18,7 @@ export const MainWrapper = styled.View`
   padding: 5px;
   padding-left: 10px;
   justify-content: space-between;
-  bottom: 0;
+  bottom: 4px;
 `;
 
 export const Text = styled.Text` 
@@ -33,7 +33,6 @@ export const Text = styled.Text`
 
 export const InputPk = styled(Picker)`
   width: 100%;
-  font-size: 12px;
   top: -6;
 `;
 
@@ -55,6 +54,7 @@ export const ItemPk = {
 };
 
 export const errorInput = {
+  borderColor: '#ff647c',
   borderLeftWidth: 1,
   borderLeftColor: '#ff647c',
   borderTopWidth: 1,

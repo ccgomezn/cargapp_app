@@ -15,7 +15,8 @@ class GeneralInput extends React.Component {
   render() {
     const { press } = this.state;
     const {
-      title, holder, value, editable, type, isPassword, maxLength, onChangeText, errorText,
+      title, holder, value, editable, type, isPassword,
+      maxLength, onChangeText, errorText, capitalize,
     } = this.props;
 
     const handleFocus = () => {
@@ -35,16 +36,20 @@ class GeneralInput extends React.Component {
       >
         <Text>{title}</Text>
         <Input
+          autoCapitalize={capitalize != null ? capitalize : 'none'}
+          autoCorrect={false}
+          textContentType="none"
+          keyboardType={type != null ? type : 'default'}
+          autoCompleteType="off"
           style={{ opacity: editable === false ? 0.5 : 1 }}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          keyboardType={type != null ? type : 'default'}
           value={value != null ? value : null}
           placeholder={holder != null ? holder : ''}
           editable={editable != null ? editable : true}
+          onChangeText={text => onChangeText(text)}
           secureTextEntry={isPassword != null ? isPassword : false}
           maxLength={maxLength != null ? maxLength : null}
-          onChangeText={text => onChangeText(text)}
         />
       </MainWrapper>
     );
@@ -61,6 +66,7 @@ GeneralInput.propTypes = {
   maxLength: PropTypes.number.isRequired,
   onChangeText: PropTypes.func.isRequired,
   errorText: PropTypes.bool.isRequired,
+  capitalize: PropTypes.string.isRequired,
 };
 
 export default GeneralInput;

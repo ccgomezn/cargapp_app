@@ -18,6 +18,7 @@ import BankAccount from './BankAccount';
 import Geolocation from "./Geolocations";
 import Chats from "./Chats"
 import Parameters from './Parameters';
+
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
