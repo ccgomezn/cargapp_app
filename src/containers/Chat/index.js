@@ -3,6 +3,7 @@ import { GiftedChat, Send } from 'react-native-gifted-chat';
 import { firebase } from '@react-native-firebase/firestore';
 
 import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 import {
   WrapperFooter,
   Input,
@@ -26,11 +27,13 @@ class Chat extends Component {
     this.state = {
       messages: [],
     };
+    this.onSend = this.onSend.bind(this);
   }
 
   // eslint-disable-next-line react/sort-comp
-  enableFirestoreSubscription() {
-    firebase.firestore().collection('room_1234')
+  enableFirestoreSubscription(uid) {
+    console.log(uid);
+    firebase.firestore().collection(uid.toString())
       .onSnapshot({
         error: e => console.error(e),
         next: (documentSnapshot) => {
@@ -58,11 +61,17 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.enableFirestoreSubscription();
+    const { navigation } = this.props;
+    const chat = navigation.getParam('data', '');
+    this.setState({
+      chat_data: chat,
+
+    });
+    this.enableFirestoreSubscription(chat.id);
   }
 
   onSend(messages = []) {
-    firebase.firestore().collection('room_1234').add({
+    firebase.firestore().collection(this.state.chat_data.id.toString()).add({
       text: messages[0].text,
       user_id: messages[0].user._id,
       user_name: messages[0].user.name,
@@ -85,37 +94,44 @@ class Chat extends Component {
 
   render() {
     const { profile } = this.props;
+    const { chat_data } = this.state;
     const name = `${profile.data[0].profile.firt_name} ${profile.data[0].profile.last_name}`;
-    const id = profile.data[0].user.id;
+    const { id } = profile.data[0].user;
+    if (chat_data) {
+      return (
+        <MainWrapper>
+          <WrapperInfoUser>
+            <WrapperInfo>
+              <BoldText>{chat_data.name}</BoldText>
+            </WrapperInfo>
+
+          </WrapperInfoUser>
+          <GiftedChat
+                /* eslint-disable-next-line react/destructuring-assignment */
+            messages={this.state.messages}
+            onSend={message => this.onSend(message)}
+            loadEarlier={this.state.loadEarlier}
+            onLoadEarlier={this.onLoadEarlier}
+            isLoadingEarlier={this.state.isLoadingEarlier}
+            user={{
+              _id: id,
+              name,
+            }}
+            scrollToBottom
+            keyboardShouldPersistTaps="never"
+            quickReplyStyle={{ borderRadius: 2 }}
+            renderSend={props => this.renderSend(props)}
+            placeholder="Escriba un mensaje..."
+          />
+        </MainWrapper>
+      );
+    }
     return (
-      <MainWrapper>
-        <WrapperInfoUser>
-          <WrapperIcon />
-          <WrapperInfo>
-            <BoldText>Servicio CargApp</BoldText>
-          </WrapperInfo>
-          <TouchableCall>
-            <TextTouch>Llamar</TextTouch>
-          </TouchableCall>
-        </WrapperInfoUser>
-        <GiftedChat
-                    /* eslint-disable-next-line react/destructuring-assignment */
-          messages={this.state.messages}
-          onSend={message => this.onSend(message)}
-          loadEarlier={this.state.loadEarlier}
-          onLoadEarlier={this.onLoadEarlier}
-          isLoadingEarlier={this.state.isLoadingEarlier}
-          user={{
-            _id: id,
-            name: name,
-          }}
-          scrollToBottom
-          keyboardShouldPersistTaps="never"
-          quickReplyStyle={{ borderRadius: 2 }}
-          renderSend={props => this.renderSend(props)}
-          placeholder="Escriba un mensaje..."
-        />
-      </MainWrapper>
+      <ActivityIndicator
+        style={{ alignSelf: 'center', height: '100%' }}
+        size="large"
+        color="#0000ff"
+      />
     );
   }
 }

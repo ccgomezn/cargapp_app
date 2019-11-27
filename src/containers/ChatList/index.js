@@ -10,6 +10,7 @@ import {
 } from './style';
 
 import ChatActions from '../../redux/reducers/ChatRedux';
+import OfferActions from '../../redux/reducers/OffersRedux';
 import CardChat from '../../components/CardChat';
 
 class ListChat extends Component {
@@ -20,21 +21,45 @@ class ListChat extends Component {
   }
 
   componentDidMount() {
-    const { getMineChats } = this.props;
+    const { getMineChats, getActiveChats, getOffers } = this.props;
     getMineChats();
+    getActiveChats();
+    getOffers();
   }
 
 
   onViewDetail(data) {
     const { navigate } = this.props.navigation;
-    navigate('DetailVehicle', { dataVehicle: data });
+    navigate('InnerChat', { data });
   }
 
+  transformInputData(data, key){
+    let real_data = {};
+    data.forEach(data => {
+      real_data[data[key]] = data;
+    });
+    return real_data;
+  }
   render() {
-    const { chat, user } = this.props;
-    console.log(chat);
+    const { chat, offers } = this.props;
 
-    if (chat.status && !chat.fetching && chat.myRooms !== null && chat.myRooms !== undefined) {
+    if (!chat.fetching && chat.myRooms !== null
+    && chat.activeRooms !== null
+    && !offers.fetching && offers.data !== null) {
+      let real_offers = this.transformInputData(offers.data ,'id');
+      let chatsId = [];
+      chat.myRooms.forEach(chat => {
+        chatsId.push(chat.room_id);
+      });
+      let realChats = [];
+
+      chat.activeRooms.forEach(chat => {
+        if(chatsId.includes(chat.id)) {
+          chat.service = real_offers[chat.service_id];
+          realChats.push(chat);
+        }
+      });
+
       return (
         <MainWrapper>
           <ContentView>
@@ -44,7 +69,7 @@ class ListChat extends Component {
           </ContentView>
 
           <ContentView style={{ flexDirection: 'column' }}>
-            { chat.myRooms.list.map(data => (
+            { realChats.map(data => (
               <CardChat
                 data={data}
                 press={() => this.onViewDetail(data)}
@@ -69,15 +94,18 @@ class ListChat extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, chat } = state;
+  const { user, chat, offers } = state;
   return {
     user,
     chat,
+    offers,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getMineChats: params => dispatch(ChatActions.getMeChatsRequest(params)),
+  getActiveChats: params => dispatch(ChatActions.getActiveChatsRequest(params)),
+  getOffers: params => dispatch(OfferActions.getOffersRequest(params)),
 });
 
 export default connect(
