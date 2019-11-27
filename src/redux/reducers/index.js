@@ -19,4 +19,5 @@ export default combineReducers({
   bank: require('./BankAccountRedux').reducer,
   rateService: require('./RateServiceRedux').reducer,
   chat: require('./ChatRedux').reducer,
+  parameters: require('./ParametersRedux').reducer,
 });

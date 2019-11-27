@@ -1,6 +1,7 @@
 export default function (api) {
   return {
     postBankAccount: data => api.post('bank_accounts', data),
-    parameters: data => api.get(`parameters/find/${data}`),
+    getBankAccount: (params = {}) => api.get('bank_accounts/me', params),
+    putBankAccount: (id, data) => api.put(`bank_accounts/${id}`, data),
   };
 }

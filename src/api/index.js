@@ -17,6 +17,7 @@ import RateService from './RateService';
 import BankAccount from './BankAccount';
 import Geolocation from "./Geolocations";
 import Chats from "./Chats"
+import Parameters from './Parameters';
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
@@ -51,6 +52,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const rateService = new RateService(api);
   const bankAccount = new BankAccount(api);
   const chats = new Chats(api);
+  const parameters = new Parameters(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -74,6 +76,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     bankAccount,
     geolocation,
     chats,
+    parameters,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.
