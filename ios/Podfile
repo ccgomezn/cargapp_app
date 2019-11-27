@@ -36,6 +36,13 @@ target 'Cargapp' do
 
 
 
+  pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
+
+
+  pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
+
+  pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
+
   target 'CargappTests' do
     inherit! :search_paths
     # Pods for testing

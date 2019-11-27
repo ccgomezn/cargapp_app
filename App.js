@@ -5,15 +5,16 @@
  */
 
 import React from 'react';
-import { Text } from 'react-native';
-import { connect, Provider } from 'react-redux';
+import {
+  Text, Alert, AsyncStorage, useState, useEffect,
+} from 'react-native';
+import { Provider } from 'react-redux';
 // import { PersistGate } from 'redux-persist/lib/integration/react';
 import { PersistGate } from 'redux-persist/integration/react';
-import BackgroundGeolocation from 'react-native-background-geolocation';
-
+import { firebase } from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
 import Navigator from './src/navigation';
 import { store, persistor } from './src/redux/store';
-import GeolocationActions from './src/redux/reducers/GeolocationRedux';
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
@@ -24,7 +25,65 @@ class App extends React.Component {
     this.state = {};
   }
 
+  async componentDidMount() {
+    this.checkPermission();
+    this.createNotificationListeners();
+    this.createBackgroundNotifications();
+  }
 
+
+
+
+
+  // eslint-disable-next-line class-methods-use-this
+  async createBackgroundNotifications() {
+    firebase.messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      // Update a users messages list using AsyncStorage
+      const currentMessages = await AsyncStorage.getItem('messages');
+      const messageArray = JSON.parse(currentMessages);
+      messageArray.push(remoteMessage.data);
+      await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
+    });
+  }
+
+  async checkPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+    } else {
+      this.requestPermission();
+    }
+  }
+
+
+  async requestPermission() {
+    try {
+      await firebase.messaging().requestPermission();
+    } catch (error) {
+      console.log('permission rejected');
+    }
+  }
+
+  async createNotificationListeners() {
+    firebase.messaging().onMessage(async (remoteMessage) => {
+      console.log('FCM Message Data:', remoteMessage.data);
+
+      // Update a users messages list using AsyncStorage
+      const currentMessages = await AsyncStorage.getItem('messages');
+      const messageArray = JSON.parse(currentMessages);
+      messageArray.push(remoteMessage.data);
+      await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
+    });
+  }
+
+  showAlert(title, body) {
+    Alert.alert(
+      title, body,
+      [
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ],
+      { cancelable: false },
+    );
+  }
 
 
   render() {
