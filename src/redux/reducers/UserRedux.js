@@ -33,6 +33,10 @@ export const { Types, Creators } = createActions({
   postPasswordUnprocess: ['data'],
   // new password
   postResetPassRequest: ['params'],
+  // get userInfo
+  getUserinfoRequest: ['params'],
+  getUserinfoSuccess: ['data'],
+  getUserinfoFailure: null,
 });
 
 export const UserTypes = Types;
@@ -47,6 +51,7 @@ export const INITIAL_STATE = Immutable({
   status: null, // respuesta success
   unprocess: false,
   session: null, // respuesta login
+  roles: null,
 });
 
 /* ----------------- Selectors ---------------- */
@@ -266,6 +271,35 @@ export const postResetPassRequest = (state) => {
   };
 };
 
+/* --------------- get userInfo --------------- */
+export const getUserinfoRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+    status: null,
+    roles: null,
+  };
+};
+
+export const getUserinfoSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    status: data,
+    roles: data.roles,
+  };
+};
+
+export const getUserinfoFailure = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: true,
+  };
+};
+
 /* ----------------- Reducers ------------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_USER_LOGIN]: onUserLogin,
@@ -297,4 +331,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_PASSWORD_UNPROCESS]: postPasswordUnprocess,
   // new password
   [Types.POST_RESET_PASS_REQUEST]: postResetPassRequest,
+  // get userinfo
+  [Types.GET_USERINFO_REQUEST]: getUserinfoRequest,
+  [Types.GET_USERINFO_SUCCESS]: getUserinfoSuccess,
+  [Types.GET_USERINFO_FAILURE]: getUserinfoFailure,
 });

@@ -1,5 +1,4 @@
 /* eslint-disable radix */
-/* eslint-disable no-alert */
 /* eslint-disable no-else-return */
 /* eslint-disable global-require */
 /* eslint-disable react/destructuring-assignment */
@@ -67,6 +66,7 @@ class Registration extends Component {
       dataphone: '',
       dataemail: '',
       datapassword: '',
+      datapassconf: '',
       datadocument: '',
       loadingRegister: false,
       error: {},
@@ -90,6 +90,7 @@ class Registration extends Component {
       visibleError: false,
       codeCountrie: '57',
       msgError: '',
+      invalidpassconf: false,
     };
   }
 
@@ -204,7 +205,7 @@ class Registration extends Component {
 
   validateForm() {
     const {
-      dataemail, datapassword, dataphone, datadocument,
+      dataemail, datapassword, dataphone, datadocument, datapassconf,
     } = this.state;
     const errormsg = {};
     this.setState({ error: null });
@@ -212,6 +213,7 @@ class Registration extends Component {
     errormsg.doc = '';
     errormsg.pass = '';
     errormsg.phone = '';
+    errormsg.valpass = '';
     // validate info
     if (dataemail.length < 8 || dataemail === '') {
       errormsg.email = 'Correo incorrecto: valor inválido';
@@ -230,8 +232,18 @@ class Registration extends Component {
       this.setState({ invalidphone: true });
     }
     if (datadocument.length < 10 || datadocument === '') {
-      errormsg.doc = 'Cñedula incorrecta: minímo 10 caracteres';
+      errormsg.doc = 'Cedula incorrecta: minímo 10 caracteres';
       this.setState({ invaliddoc: true });
+    }
+    if (datapassword === '' || datapassword.length < 5) {
+      errormsg.pass = 'Contraseña incorrecta: minímo 6 caracteres';
+      this.setState({ invalidpass: true });
+    }
+    if (datapassword) {
+      if (datapassword !== datapassconf) {
+        errormsg.valpass = 'Contraseñas erroneas';
+        this.setState({ invalidpassconf: true });
+      }
     }
 
     this.setState({ error: errormsg });
@@ -248,8 +260,11 @@ class Registration extends Component {
     if (errormsg.doc === '') {
       this.setState({ invaliddoc: false });
     }
+    if (errormsg.valpass === '') {
+      this.setState({ invalidpassconf: false });
+    }
 
-    if (errormsg.email === '' && errormsg.pass === '' && errormsg.phone === '' && errormsg.doc === '') {
+    if (errormsg.email === '' && errormsg.pass === '' && errormsg.phone === '' && errormsg.doc === '' && errormsg.valpass === '') {
       this.onRegisterPress();
     }
   }
@@ -290,6 +305,7 @@ class Registration extends Component {
       dataphone,
       dataemail,
       datapassword,
+      datapassconf,
       datapin,
       datadocument,
       loadingRegister,
@@ -312,6 +328,7 @@ class Registration extends Component {
       visibleError,
       msgError,
       datarol,
+      invalidpassconf,
     } = this.state;
 
     // hide Toast
@@ -407,7 +424,8 @@ class Registration extends Component {
             if (datarol === 11) {
               navigate('Documents', { userdata: user.info });
             } else {
-              navigate('RegCompany', { userdata: user.info });
+              // navigate('RegCompany', { userdata: user.info });
+              navigate('Personal', { idrol: datarol });
             }
           }, 1500);
         } else if (loadingLogin && user.unprocess) {
@@ -520,6 +538,14 @@ class Registration extends Component {
               errorText={invalidpass}
               onChangeText={value => this.setState({ datapassword: value })}
             />
+            <Input
+              title="Confirmar contraseña"
+              holder="Ingrese contraseña"
+              onChangeText={value => this.setState({ datapassconf: value })}
+              value={datapassconf}
+              isPassword
+              errorText={invalidpassconf}
+            />
           </WrapperInputs>
           <WrapperError>
             { error.phone ? (
@@ -542,6 +568,11 @@ class Registration extends Component {
                 {error.pass}
               </TextError>
             ) : null }
+            { error.valpass ? (
+              <TextError>
+                {error.valpass}
+              </TextError>
+            ) : null }
             { msgApi ? (
               <TextError>
                 {msgApi}
@@ -550,7 +581,6 @@ class Registration extends Component {
           </WrapperError>
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
-              {/* eslint-disable-next-line react/prop-types */}
               <ButtonGradient content="Registrarse" press={() => this.validateForm()} disabled={!inputValueCheck} />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>

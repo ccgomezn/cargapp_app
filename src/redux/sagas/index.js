@@ -31,6 +31,7 @@ import {
   loginUser,
   forgotPass,
   resetPass,
+  getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
 import { registerDocument } from './DocumentSagas';
@@ -38,6 +39,7 @@ import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
 import { getVehicles } from './VehicleSagas';
+import { getMeVehicles, registerVehicle } from './VehicleSagas';
 import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getLoadsType } from './LoadSagas';
@@ -51,6 +53,7 @@ import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
 import { sendLocation } from './GeolocationSagas';
 import { getMineChats } from './ChatSagas';
+
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -95,5 +98,8 @@ export default function* root() {
     takeLatest(RateTypes.POST_RATE_SERVICE_REQUEST, postRateServices, api),
     takeLatest(ParametersTypes.PARAMETERS_REQUEST, getParameters, api),
     takeLatest(ParametersTypes.PARAMETERS_SECOND_REQUEST, getSecondParameters, api),
+    takeLatest(UserTypes.GET_USERINFO_REQUEST, getInfoUser, api),
+    takeLatest(VehicleTypes.GET_ME_VEHICLES_REQUEST, getMeVehicles, api),
+    takeLatest(VehicleTypes.POST_REG_VEHICLE_REQUEST, registerVehicle, api),
   ]);
 }

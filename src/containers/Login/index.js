@@ -131,7 +131,6 @@ class Registration extends Component {
 
   onPressPin() {
     this.onLoginPress();
-    // this.setState({ modalPin: true });
   }
 
   onPressResendPin() {
@@ -148,7 +147,8 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     if (user.isLogged) {
-      navigate('Personal');// ScreenHome
+      // falta validar rol de user
+      navigate('DriverMenu');// ScreenHome--DriverMenu--GeneratorMenu
     }
   }
 

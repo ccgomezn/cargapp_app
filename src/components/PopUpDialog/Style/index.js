@@ -56,7 +56,7 @@ export const Wrapper = styled.View`
   border-radius: 10px;
   width: 100%;
   max-height: 85%;
-  min-height: 30%;
+  min-height: 33%;
   height: auto;
   justify-content: space-between;
   padding-horizontal: 5%;

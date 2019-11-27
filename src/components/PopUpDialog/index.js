@@ -38,7 +38,7 @@ PopUpDialog.propTypes = {
   textGray: PropTypes.string.isRequired,
   textBlack: PropTypes.string.isRequired,
   textButton: PropTypes.string.isRequired,
-  pressButton: PropTypes.string.isRequired,
+  pressButton: PropTypes.func.isRequired,
 };
 
 export default PopUpDialog;

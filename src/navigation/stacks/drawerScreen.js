@@ -37,7 +37,6 @@ const CustomDrawerContentComponent = props => (
 function DrawerIcon({ urlicon, tint }) {
   return (
     <DrawIconMenu
-      // fill={tint}
       style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
       fillAll
       source={{ uri: urlicon }}
@@ -45,14 +44,87 @@ function DrawerIcon({ urlicon, tint }) {
   );
 }
 
-const DrawerScreen = createDrawerNavigator(
+const DrawerGenerator = createDrawerNavigator(
   {
     ScreenHome: {
       screen: homeStackNavigator,
       navigationOptions: {
         drawerLabel: 'Inicio',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-home.svg', tint: tintColor }),
-        headerTintColor: 'red',
+      },
+    },
+    ScreenProfile: {
+      screen: ProfileStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Mi perfil',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
+      },
+    },
+    ScreenStats: {
+      screen: AnalyticsStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Analíticas',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
+      },
+    },
+    ScreenMyTravels: {
+      screen: myTravelsStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Mis viajes',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-mytravels.svg', tint: tintColor }),
+      },
+    },
+    ScreenChat: {
+      screen: viajesStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Chat',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+      },
+    },
+    ScreenConfig: {
+      screen: viajesStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Configuraciones',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-settings.svg', tint: tintColor }),
+      },
+    },
+  },
+  {
+    initialRouteName: 'ScreenHome',
+    drawerPosition: 'right',
+    drawerBackgroundColor: '#010935',
+    drawerWidth: width * 0.7,
+    unmountInactiveRoutes: true,
+    contentOptions: {
+      activeTintColor: '#fff',
+      inactiveTintColor: '#ffffff61',
+      activeBackgroundColor: '',
+      labelStyle: {
+        fontFamily: 'Roboto',
+        fontSize: 17,
+        fontWeight: '300',
+        marginLeft: 0,
+      },
+      itemsContainerStyle: {
+        marginVertical: 32,
+      },
+      iconContainerStyle: {
+        opacity: 1,
+        marginLeft: 25,
+      },
+    },
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+  },
+);
+
+const DrawerDriver = createDrawerNavigator(
+  {
+    ScreenHome: {
+      screen: homeStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Inicio',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-home.svg', tint: tintColor }),
       },
     },
     ScreenProfile: {
@@ -122,8 +194,9 @@ const DrawerScreen = createDrawerNavigator(
     initialRouteName: 'ScreenHome',
     drawerPosition: 'left',
     drawerBackgroundColor: '',
+    drawerWidth: width * 0.7,
     contentComponent: CustomDrawerContentComponent,
-    drawerWidth: width * 0.6,
+    unmountInactiveRoutes: true,
     contentOptions: {
       activeTintColor: '#fff',
       inactiveTintColor: '#ffffff61',
@@ -133,16 +206,13 @@ const DrawerScreen = createDrawerNavigator(
         fontSize: 17,
         fontWeight: '300',
         marginLeft: 0,
-        // backgroundColor: 'blue',
       },
       itemsContainerStyle: {
         marginVertical: 32,
-        // backgroundColor: 'gray',
       },
       iconContainerStyle: {
         opacity: 1,
         marginLeft: 25,
-        // backgroundColor: 'green',
       },
     },
     drawerOpenRoute: 'DrawerOpen',
@@ -150,10 +220,10 @@ const DrawerScreen = createDrawerNavigator(
   },
 );
 
-
 DrawerIcon.propTypes = {
   tint: PropTypes.string.isRequired,
   urlicon: PropTypes.string.isRequired,
 };
 
-export default createAppContainer(DrawerScreen);
+export const ContainerGenerator = createAppContainer(DrawerGenerator);
+export const ContainerDriver = createAppContainer(DrawerDriver);

@@ -8,6 +8,7 @@ export const { Types, Creators } = createActions({
   parametersSuccess: ['data'],
   parametersSecondSuccess: ['data'],
   parametersFailure: null,
+
 });
 
 export const ParametersTypes = Types;
@@ -19,6 +20,7 @@ export const INITIAL_STATE = Immutable({
   error: false,
   fetching: false,
   second: null,
+
 });
 
 /* -------------------- REDUCERS ------------------------ */
@@ -60,4 +62,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PARAMETERS_FAILURE]: parametersFailure,
   [Types.PARAMETERS_SECOND_SUCCESS]: parametersSecondSuccess,
   [Types.PARAMETERS_SECOND_REQUEST]: parametersSecondRequest,
+
 });
