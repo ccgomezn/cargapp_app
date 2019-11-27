@@ -16,14 +16,6 @@ export const ContentView = styled.View`
   padding: ${props => (props.subcontent ? '0px 10px' : '0px')};
 `;
 
-export const ContentForm = styled.View`
-  width: 100%;
-  justify-content: center;
-  flex-direction: column;
-  height: auto;
-  margin-bottom: 15px;
-`;
-
 export const ContentBlock = styled.View`
   width: 100%;
   height: 20px;
@@ -40,11 +32,6 @@ export const TextBlack = styled.Text`
   color: #010935;
 `;
 
-export const WrapperInputs = styled.View`
-  width: 100%;
-  height: auto;
-`;
-
 export const WrapperButtonsBottom = styled.View`
   width: 100%;
   flex-direction: row;
@@ -55,35 +42,7 @@ export const WrapperButtonsBottom = styled.View`
 `;
 
 export const WrapperButtonGradient = styled.TouchableOpacity`
-  width: 45%;
+  width: 50%;
   height: 100%;
   margin-left: 3%;
-  margin-bottom: 6px;
-`;
-
-export const WrapperError = styled.View`
-  font-size: 14px;
-  letter-spacing: -0.4px;
-  margin-bottom: 1%;
-`;
-
-export const TextError = styled.Text`
-  opacity: 0.95;
-  font-family: Roboto;
-  font-weight: 600;
-  font-style: normal;
-  letter-spacing: -0.5px;
-  background-color: #ff2557; //#d3e5ff;
-  padding: 10px 6px;
-  color: #fff;
-  border-radius: 6px;
-  margin-bottom: 2px;
-`;
-
-export const TextLoad = styled.View`
-  display: flex;
-  height: auto;
-  align-items: center;
-  align-self: center;
-  text-align: center;
 `;

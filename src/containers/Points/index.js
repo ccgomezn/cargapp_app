@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { WebView } from 'react-native-webview';
 
 import {
-// MainWrapper, ContentView, TextBlack, ContentBlock,
+  MainWrapper, ContentView, TextBlack, ContentBlock,
 } from './style';
 
 export default class Points extends Component {
@@ -13,10 +12,13 @@ export default class Points extends Component {
 
   render() {
     return (
-      <WebView
-        source={{ uri: 'https://previews.customer.envatousercontent.com/files/257305718/index.html' }}
-        style={{ marginTop: 0, height: '100%', with: '100%' }}
-      />
+      <MainWrapper>
+        <ContentView>
+          <ContentBlock>
+            <TextBlack>Retos</TextBlack>
+          </ContentBlock>
+        </ContentView>
+      </MainWrapper>
     );
   }
 }

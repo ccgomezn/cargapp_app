@@ -76,9 +76,9 @@ class Home extends Component {
   render() {
     const { modalSearch, multiSliderValue } = this.state;
     const {
-      driver, offers, vehicles, navigation, user,
+      driver, offers, vehicles, navigation,
     } = this.props;
-    console.log(user);
+    // console.log(user);
     if (offers.data && vehicles.data) {
       return (
         <MainView>
