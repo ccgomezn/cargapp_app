@@ -8,7 +8,7 @@ export const { Types, Creators } = createActions({
   postBankAccountRequest: ['data'],
   postBankAccountSuccess: ['data'],
   postBankAccountFailure: ['params'],
-  putBankAccountRequest: ['data'],
+  putBankAccountRequest: ['id', 'data'],
   putBankAccountSuccess: ['data'],
 });
 

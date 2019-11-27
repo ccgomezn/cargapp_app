@@ -9,6 +9,7 @@ export const MainWrapper = styled.TouchableOpacity`
   justify-content: space-between;
   align-items: center;
   border-radius: 5px;
+  margin-bottom: 2%;
 `;
 
 export const TextWrapper = styled.View`
