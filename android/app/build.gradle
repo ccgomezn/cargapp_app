@@ -192,6 +192,9 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-firebase_firestore')
+    implementation project(':@react-native-firebase_auth')
+    implementation project(':@react-native-firebase_messaging')
     implementation project(':react-native-android-location-enabler')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-svg')
