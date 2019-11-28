@@ -131,7 +131,6 @@ export const ContentButton = styled.View`
 // estilos Modal
 export const MainWrapperDialog = styled.View`
   width: 90%;
-  height: 55%;
   padding: 5%;
   padding-bottom: 0px;
   border-radius: 10px;
@@ -148,7 +147,7 @@ export const ScrollDialog = styled.ScrollView`
 
 export const ContentDialog = styled.View`
   width: 100%;
-  height: 100%;
+  height: auto;
   justify-content: center;
   align-self: center;
   align-items: center;
@@ -165,7 +164,7 @@ export const TitleBlack = styled.Text`
 
 export const TextGray = styled.Text`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto-Bold;
   font-size: 14px; 
   color: #010935;
   padding-bottom: 10px;

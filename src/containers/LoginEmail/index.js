@@ -119,6 +119,12 @@ class Registration extends Component {
     }
   }
 
+  changeView(view) {
+    const { navigate } = this.props.navigation;
+    this.setState({ dataemail: '', datapass: '' });
+    navigate(view);
+  }
+
   validateForm() {
     const {
       dataemail,
@@ -147,7 +153,6 @@ class Registration extends Component {
 
   render() {
     const { user } = this.props;
-    const { navigate } = this.props.navigation;
     const {
       loading,
       dataemail,
@@ -261,7 +266,7 @@ class Registration extends Component {
                 <WrapperButtonWhite>
                   <ButtonLink
                     text="Recuperar contraseña"
-                    press={() => navigate('ForgotPass')}
+                    press={() => this.changeView('ForgotPass')}
                   />
                 </WrapperButtonWhite>
               </WrapperInputs>
@@ -286,7 +291,7 @@ class Registration extends Component {
               <ButtonWhite
                 border={{ borderWidth: 1, borderStyle: 'inset' }}
                 content="Registrarse"
-                press={() => navigate('Register')}
+                press={() => this.changeView('Register')}
               />
             </WrapperButtonGradient>
             <WrapperButtonGradient>

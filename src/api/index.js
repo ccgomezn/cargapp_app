@@ -10,6 +10,7 @@ import Profile from './Profile';
 import Load from './Load';
 import Payment from './Payment';
 import Parameters from './Parameters';
+import Permissions from './Permissions';
 
 /* URL
   'https://api.cargapp.co/api/v1/';
@@ -38,6 +39,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const load = new Load(api);
   const payment = new Payment(api);
   const parameters = new Parameters(api);
+  const permissions = new Permissions(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -54,6 +56,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     load,
     payment,
     parameters,
+    permissions,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.

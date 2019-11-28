@@ -1,3 +1,7 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-const-assign */
+/* eslint-disable array-callback-return */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
@@ -19,11 +23,20 @@ import Swipeable from '../../components/Swipeable';
 import InputPicker from '../../components/InputPicker';
 import Input from '../../components/GeneralInput';
 import InputSlider from '../../components/InputSlider';
+import EmptyDialog from '../../components/EmptyDialog';
+import CardPermissions from '../../components/CardPermissions';
+
+import {
+  ContentDialog,
+  MainWrapperDialog,
+  TextGray,
+  TitleBlack,
+} from '../Profile/style';
 
 // action - reducers
-import DriverActions from '../../redux/reducers/DriverRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
+import PermissionsActions from '../../redux/reducers/PermissionsRedux';
 
 const itemsTipo = [
   {
@@ -36,26 +49,47 @@ const itemsTipo = [
   },
 ];
 
+const itemList = [
+  {
+    label: 'Perfil',
+    url: 'ScreenProfile',
+  },
+  {
+    label: 'Vehículos',
+    url: 'ScreenVehicle',
+  },
+  {
+    label: 'Documentos',
+    url: 'ScreenDocuments',
+  },
+  {
+    label: 'Cuenta bancaria',
+    url: 'ScreenProfile',
+  },
+];
+
 class Home extends Component {
   constructor() {
     super();
     this.state = {
       modalSearch: false,
       multiSliderValue: [150000, 2300000],
+      modalPermission: false,
+      fetch: false,
+      listview: ['profiles', 'vehicles', 'documents', 'bank_accounts'],
     };
   }
 
   componentDidMount() {
-    const { profileDriver, getsOffers, getVehicles } = this.props;
+    const { getsOffers, getVehicles, getPermission } = this.props;
 
-    const data = {
-      driver: {
-        token: '3560660900101009',
-      },
-    };
-    profileDriver(data);
     getsOffers();
     getVehicles();
+    getPermission();
+  }
+
+  componentWillUnmount() {
+    this.setState({ modalPermission: false });
   }
 
   onPressFilter() {
@@ -64,7 +98,15 @@ class Home extends Component {
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
-    this.setState({ modalSearch: false });
+    this.setState({ modalSearch: false, modalPermission: false });
+  }
+
+  onNavigate(nameView) {
+    const { navigate } = this.props.navigation;
+    this.setState({ modalPermission: false });
+    setTimeout(() => {
+      navigate(nameView);
+    }, 1000);
   }
 
   multiSliderValuesChange(values) {
@@ -73,13 +115,61 @@ class Home extends Component {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  missingViews(list) {
+    const { listview } = this.state;
+    return (
+      <View style={{ flexDirection: 'column' }}>
+        {list.map(pem => (
+          (listview.includes(pem.name)) ? (
+            <CardPermissions
+              label={itemList[listview.lastIndexOf(pem.name)].label}
+              permission={pem.permission}
+              textfail="Diligenciar"
+              textCorrect="OK"
+              press={() => this.onNavigate(itemList[listview.lastIndexOf(pem.name)].url)}
+            />
+          ) : null
+        ))
+        }
+        <WrapperButtonsBottom style={{ marginTop: 10 }}>
+          <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
+        </WrapperButtonsBottom>
+      </View>
+    );
+  }
+
   render() {
-    const { modalSearch, multiSliderValue } = this.state;
     const {
-      driver, offers, vehicles, navigation,
+      modalSearch,
+      multiSliderValue,
+      modalPermission,
+      listview,
+      fetch,
+    } = this.state;
+    const {
+      driver, offers, vehicles, navigation, permissions,
     } = this.props;
-    // console.log(user);
-    if (offers.data && vehicles.data) {
+
+    if (permissions.data && !permissions.fetching && !fetch) {
+      // validate permisson
+      let perm = 0;
+      permissions.data.map((pem) => {
+        if (listview.includes(pem.name)) {
+          if (!pem.permission) {
+            perm++;
+          }
+        }
+      });
+      if (perm >= 1) {
+        this.setState({ modalPermission: true });
+      }
+      this.setState({ fetch: true });
+    }
+    if (offers.data !== null && !offers.fetching
+      && vehicles.data !== null && !vehicles.fetching
+      && permissions.data !== null && !permissions.fetching
+    ) {
       return (
         <MainView>
           <MainWrapper>
@@ -91,6 +181,7 @@ class Home extends Component {
                 <IconService
                   icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
                   text="Premios"
+                  press={() => this.setState({ modalPermission: true })}
                 />
                 <IconService
                   icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
@@ -191,6 +282,24 @@ class Home extends Component {
               </WrapperButtonsBottom>
             </WrapperSwipe>
           </Swipeable>
+
+          <EmptyDialog
+            visible={modalPermission}
+            opacity={0.4}
+            onTouchOutside={() => this.OnHideModal()}
+          >
+            <MainWrapperDialog>
+              <ContentDialog>
+                <TitleBlack>Datos Faltantes</TitleBlack>
+                <TextGray>Para aplicar a ofertas, primero debes completar tus datos.</TextGray>
+                <ContentForm>
+                  <TextGray>Datos sin completar:</TextGray>
+                  {this.missingViews(permissions.data)}
+                </ContentForm>
+              </ContentDialog>
+            </MainWrapperDialog>
+          </EmptyDialog>
+
         </MainView>
       );
     }
@@ -206,24 +315,24 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user,
+    driver, offers, vehicles, user, permissions,
   } = state;
   return {
     driver,
     offers,
     vehicles,
     user,
+    permissions,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  profileDriver: params => dispatch(DriverActions.postDriverMeRequest(params)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
+  getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Home);
-// export default Home;
