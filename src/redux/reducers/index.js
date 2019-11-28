@@ -20,4 +20,5 @@ export default combineReducers({
   rateService: require('./RateServiceRedux').reducer,
   chat: require('./ChatRedux').reducer,
   parameters: require('./ParametersRedux').reducer,
+  filterOffers: require('./FilterOffersRedux').reducer,
 });
