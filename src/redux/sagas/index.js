@@ -19,6 +19,7 @@ import { MarkersTypes } from '../reducers/MarkersRedux';
 import { BankAccountTypes } from '../reducers/BankAccountRedux';
 import { RateTypes } from '../reducers/RateServiceRedux';
 import { ParametersTypes } from '../reducers/ParametersRedux';
+import { FilterTypes } from '../reducers/FilterOffersRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -47,6 +48,7 @@ import { getMarkers } from './MarkersSagas';
 import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSagas';
 import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
+import { getFilterOffers } from './FilterOffersSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -90,5 +92,6 @@ export default function* root() {
     takeLatest(RateTypes.POST_RATE_SERVICE_REQUEST, postRateServices, api),
     takeLatest(ParametersTypes.PARAMETERS_REQUEST, getParameters, api),
     takeLatest(ParametersTypes.PARAMETERS_SECOND_REQUEST, getSecondParameters, api),
+    takeLatest(FilterTypes.GET_OFFERS_BY_FILTER_REQUEST, getFilterOffers, api),
   ]);
 }

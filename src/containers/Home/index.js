@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import { View } from 'native-base';
 import { ScrollView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import PickerModal from 'react-native-picker-modal-view';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
   WrapperSwipe, RowContent, ContentSlider, ContentForm,
   ContentRange, RowInput, WrapperInputs,
-  WrapperButtonsBottom, WrapperButtonGradient,
+  WrapperButtonsBottom, WrapperButtonGradient, WrapperTouch,
+  TextTouch, WrapperSpecific, GrayText, Line,
 } from './style';
 import WhiteCardTravels from '../../components/WhiteCardTravels';
 import ButtonLink from '../../components/ButtonLink';
@@ -25,6 +27,7 @@ import DriverActions from '../../redux/reducers/DriverRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
+import FilterOffers from '../../redux/reducers/FilterOffersRedux';
 
 const itemsTipo = [
   {
@@ -43,6 +46,10 @@ class Home extends Component {
     this.state = {
       modalSearch: false,
       multiSliderValue: [150000, 2300000],
+      labelOrigin: '',
+      labelDestination: '',
+      labelVehicle: '',
+      idVehicle: null,
     };
   }
 
@@ -76,12 +83,73 @@ class Home extends Component {
     });
   }
 
-  render() {
-    const { modalSearch, multiSliderValue } = this.state;
+  onSelected(selected, type) {
+    if (selected.Name) {
+      if (selected.Name.slice(0, 11) === '* Cualquier') {
+        if (type === 'origin') {
+          this.setState({ labelOrigin: '' });
+        }
+        if (type === 'destin') {
+          this.setState({ labelDestination: '' });
+        }
+        if (type === 'vehicle') {
+          this.setState({ labelVehicle: '', idVehicle: null });
+        }
+      } else {
+        if (type === 'origin') {
+          this.setState({ labelOrigin: selected.Name });
+        }
+        if (type === 'destin') {
+          this.setState({ labelDestination: selected.Name });
+        }
+        if (type === 'vehicle') {
+          this.setState({ labelVehicle: selected.Name, idVehicle: selected.id });
+        }
+      }
+    }
+    return selected;
+  }
+
+  searchByFilter() {
     const {
-      driver, offers, vehicles, navigation
+      multiSliderValue,
+      labelDestination,
+      labelOrigin,
+      idVehicle,
+    } = this.state;
+    const { getFilterOffers } = this.props;
+    const data = {
+      startPrice: multiSliderValue[0],
+      endPrice: multiSliderValue[1],
+      vehicle: idVehicle,
+      origin: labelOrigin,
+      destination: labelDestination,
+    };
+    getFilterOffers(data);
+  }
+
+  render() {
+    const {
+      modalSearch, multiSliderValue, labelDestination, labelOrigin,
+      labelVehicle,
+    } = this.state;
+    const {
+      driver, offers, vehicles, navigation,
     } = this.props;
+    const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
+    const dataPickDesti = [{ Name: '* Cualquier Destino' }];
+    const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
+    console.log(this.props);
     if (offers.data && vehicles.data) {
+      offers.data.map((originData) => {
+        dataPickOrigin.push({ Name: originData.origin });
+      });
+      offers.data.map((destinationData) => {
+        dataPickDesti.push({ Name: destinationData.destination });
+      });
+      vehicles.data.map((vehiclesData) => {
+        dataPickVehi.push({ Name: vehiclesData.name, id: vehiclesData.id });
+      });
       return (
         <MainView>
           <MainWrapper>
@@ -181,14 +249,88 @@ class Home extends Component {
                   </RowInput>
                 </ContentRange>
                 <WrapperInputs>
-                  <InputPicker title="Origen" listdata={itemsTipo} />
-                  <InputPicker title="Destino" listdata={itemsTipo} defaultSelect="opc1" />
-                  <InputPicker title="Vehiculo" listdata={itemsTipo} />
+                  <WrapperSpecific>
+                    <GrayText>Origen</GrayText>
+                    <PickerModal
+                      renderSelectView={(disabled, selected, showModal) => (
+                        <WrapperTouch onPress={showModal}>
+                          <TextTouch>
+                            {!labelOrigin ? 'Todos los origenes...' : labelOrigin}
+                          </TextTouch>
+                        </WrapperTouch>
+                      )}
+                      onSelected={data => this.onSelected(data, 'origin')}
+                      items={dataPickOrigin}
+                      sortingLanguage="es"
+                      showToTopButton
+                      selected={labelOrigin}
+                      showAlphabeticalIndex
+                      autoGenerateAlphabeticalIndex
+                      selectPlaceholderText="Seleccione origen..."
+                      onEndReached={() => console.log('Lista terminada...')}
+                      searchPlaceholderText="Buscar..."
+                      requireSelection={false}
+                      autoSort
+                      SearchInputProps={{ borderRadius: 10 }}
+                    />
+                  </WrapperSpecific>
+                  <WrapperSpecific>
+                    <GrayText>Origen</GrayText>
+                    <PickerModal
+                      renderSelectView={(disabled, selected, showModal) => (
+                        <WrapperTouch onPress={showModal}>
+                          <TextTouch>
+                            {!labelDestination
+                              ? 'Todos los destinos...'
+                              : labelDestination}
+                          </TextTouch>
+                        </WrapperTouch>
+                      )}
+                      onSelected={data => this.onSelected(data, 'destin')}
+                      items={dataPickDesti}
+                      sortingLanguage="es"
+                      showToTopButton
+                      selected={labelDestination}
+                      showAlphabeticalIndex
+                      autoGenerateAlphabeticalIndex
+                      selectPlaceholderText="Seleccione destino..."
+                      onEndReached={() => console.log('Lista terminada...')}
+                      searchPlaceholderText="Buscar..."
+                      requireSelection={false}
+                      autoSort
+                    />
+                  </WrapperSpecific>
+                  <WrapperSpecific>
+                    <GrayText>Vehículo</GrayText>
+                    <PickerModal
+                      renderSelectView={(disabled, selected, showModal) => (
+                        <WrapperTouch onPress={showModal}>
+                          <TextTouch>
+                            {!labelVehicle
+                              ? 'Todos los vehículos...'
+                              : labelVehicle}
+                          </TextTouch>
+                        </WrapperTouch>
+                      )}
+                      onSelected={data => this.onSelected(data, 'vehicle')}
+                      items={dataPickVehi}
+                      sortingLanguage="es"
+                      showToTopButton
+                      selected={labelVehicle}
+                      showAlphabeticalIndex
+                      autoGenerateAlphabeticalIndex
+                      selectPlaceholderText="Seleccione vehículo..."
+                      onEndReached={() => console.log('Lista terminada...')}
+                      searchPlaceholderText="Buscar..."
+                      requireSelection={false}
+                      autoSort
+                    />
+                  </WrapperSpecific>
                 </WrapperInputs>
               </ContentForm>
               <WrapperButtonsBottom>
                 <WrapperButtonGradient>
-                  <ButtonGradient content="Buscar" />
+                  <ButtonGradient content="Buscar" press={() => this.searchByFilter()}/>
                 </WrapperButtonGradient>
               </WrapperButtonsBottom>
             </WrapperSwipe>
@@ -208,7 +350,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile,
+    driver, offers, vehicles, user, profile, filterOffers,
   } = state;
   return {
     driver,
@@ -216,6 +358,7 @@ const mapStateToProps = (state) => {
     vehicles,
     user,
     profile,
+    filterOffers,
   };
 };
 
@@ -224,6 +367,7 @@ const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
+  getFilterOffers: data => dispatch(FilterOffers.getOffersByFilterRequest(data)),
 });
 
 export default connect(
