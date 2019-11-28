@@ -13,4 +13,5 @@ export default combineReducers({
   loadsType: require('./LoadRedux').reducer,
   payment: require('./PaymentRedux').reducer,
   parameters: require('./ParametersRedux').reducer,
+  permissions: require('./PermissionsRedux').reducer,
 });
