@@ -32,7 +32,6 @@ class Chat extends Component {
 
   // eslint-disable-next-line react/sort-comp
   enableFirestoreSubscription(uid) {
-    console.log(uid);
     firebase.firestore().collection(uid.toString())
       .onSnapshot({
         error: e => console.error(e),
