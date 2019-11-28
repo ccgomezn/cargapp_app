@@ -150,9 +150,3 @@ export const GrayText = styled.Text`
   font-size: 12px;
   color: gray;
 `;
-
-export const Line = styled.View`
-  width: 100%;
-  height: 0.2px;
-  border: 0.5px solid #c0c0c0;
-`;
