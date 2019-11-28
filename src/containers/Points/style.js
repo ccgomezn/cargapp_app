@@ -31,11 +31,31 @@ export const ContentBlock = styled.View`
 `;
 
 export const TextBlack = styled.Text`
-  width: 40%;
-  font-family: Arial;
-  font-size: 16px;
+  width: 100%;
+  font-family: Roboto;
+  font-size: 15px;
   font-weight: bold;
-  font-style: normal;
-  letter-spacing: -0.3px;
+  letter-spacing: 0px;
   color: #010935;
+`;
+
+export const TextGray = styled.Text`
+  font-family: Roboto-Regular;
+  font-size: 16px;
+  letter-spacing: 0px;
+  color: #8a8c9d;
+`;
+
+export const Section = styled.TouchableOpacity`
+  min-width: 30%;
+  border-radius: 6px;
+  background-color: white;
+  padding: 8px 12px;
+`;
+
+export const PointRet = styled.View`
+  position: absolute;
+  right: 0px;
+  top: 5px;
+  margin-right: 5px;
 `;
