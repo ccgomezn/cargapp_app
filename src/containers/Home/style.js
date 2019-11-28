@@ -124,3 +124,35 @@ export const WrapperButtonGradient = styled.TouchableOpacity`
   height: 100%;
   margin-left: 3%;
 `;
+
+export const WrapperTouch = styled.TouchableOpacity`
+  width: 100%;
+  height: auto;
+`;
+
+export const TextTouch = styled.Text`
+  font-size: 16px;
+  color: black;
+  padding-vertical: 8px;
+`;
+
+export const WrapperSpecific = styled.View`
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  padding-left: 10px;
+  border: 1px solid #f3f3f3;
+  background-color: white;
+`;
+
+export const GrayText = styled.Text`
+  font-size: 12px;
+  color: gray;
+`;
+
+export const Line = styled.View`
+  width: 100%;
+  height: 0.2px;
+  border: 0.5px solid #c0c0c0;
+`;
