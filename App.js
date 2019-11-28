@@ -85,6 +85,7 @@ class App extends React.Component {
 
   render() {
     return (
+
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Navigator />

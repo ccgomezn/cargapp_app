@@ -35,8 +35,8 @@ class Navigation extends React.Component {
     BackgroundGeolocation.ready({
       desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
       distanceFilter: 10,
-      stopTimeout: 1,
       heartbeatInterval: 60,
+      preventSuspend: true,
       debug: true,
       logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
       stopOnTerminate: false,

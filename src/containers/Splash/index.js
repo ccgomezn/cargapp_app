@@ -14,20 +14,24 @@ class Splash extends Component {
 
   async requestPermission() {
     try {
-      const grantedTwo = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Cargapp',
-          message: 'Cargapp neccesita acceso a tu ubicación',
-          buttonNegative: 'Cancelar',
-          buttonPositive: 'OK',
-        },
-      ).then(() => {
+      if (Platform.OS === 'android') {
+        const grantedTwo = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Cargapp',
+            message: 'Cargapp neccesita acceso a tu ubicación',
+            buttonNegative: 'Cancelar',
+            buttonPositive: 'OK',
+          },
+        ).then(() => {
+          this.setState({ permission: true });
+        })
+          .catch(() => {
+            this.setState({ permission: false });
+          });
+      } else {
         this.setState({ permission: true });
-      })
-        .catch(() => {
-          this.setState({ permission: false });
-        });
+      }
     } catch (e) {
       this.setState({ permission: false });
     }
