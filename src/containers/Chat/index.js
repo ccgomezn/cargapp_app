@@ -44,8 +44,8 @@ class Chat extends Component {
             const data = message._data;
             messages.push({
               _id: message.id,
-              text: data.text,
-              createdAt: data.date.toDate(),
+              text: data.message,
+              createdAt: data.created_at.toDate(),
               user: {
                 _id: data.user_id,
                 name: data.user_name,
@@ -72,10 +72,11 @@ class Chat extends Component {
 
   onSend(messages = []) {
     firebase.firestore().collection(this.state.chat_data.id.toString()).add({
-      text: messages[0].text,
+      message: messages[0].text,
       user_id: messages[0].user._id,
       user_name: messages[0].user.name,
-      date: new Date(),
+      created_at: new Date(),
+      message_type: 'text',
     });
   }
 
