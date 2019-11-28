@@ -11,14 +11,13 @@ import {
   WrapperSwipe, RowContent, ContentSlider, ContentForm,
   ContentRange, RowInput, WrapperInputs,
   WrapperButtonsBottom, WrapperButtonGradient, WrapperTouch,
-  TextTouch, WrapperSpecific, GrayText, Line,
+  TextTouch, WrapperSpecific, GrayText,
 } from './style';
 import WhiteCardTravels from '../../components/WhiteCardTravels';
 import ButtonLink from '../../components/ButtonLink';
 import IconService from '../../components/IconService';
 import ButtonGradient from '../../components/ButtonGradient';
 import Swipeable from '../../components/Swipeable';
-import InputPicker from '../../components/InputPicker';
 import Input from '../../components/GeneralInput';
 import InputSlider from '../../components/InputSlider';
 
