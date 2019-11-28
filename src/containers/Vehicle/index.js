@@ -53,6 +53,8 @@ class Vehicle extends Component {
       errorApi: false,
       modalreg: false,
       edit: true,
+      selectID: null,
+      dataOffer: null,
     };
   }
 
@@ -71,6 +73,9 @@ class Vehicle extends Component {
     getparameters('VEHICLE_COLOR');
     // validate iduser - edit
     const dtveh = navigation.getParam('dataVehicle', '');
+    const selectID = navigation.getParam('selectID');
+    const offer = navigation.getParam('dataOffer');
+    this.setState({ selectID: selectID, dataOffer: offer });
     if (dtveh !== '') {
       this.setState({
         edit: false,
@@ -248,6 +253,8 @@ class Vehicle extends Component {
       errorApi,
       modalreg,
       edit,
+      selectID,
+      dataOffer,
     } = this.state;
 
     const itemsMethod = [];
@@ -441,7 +448,7 @@ class Vehicle extends Component {
                   content="Añadir"
                   disabled={!inputValueCheck}
                 />
-              ) : <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'inset' }} press={() => navigate('ListVehicle')} /> }
+              ) : <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'inset' }} press={() => navigate('ListVehicle', { selectID, dataOffer })} /> }
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
 

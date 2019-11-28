@@ -6531,11 +6531,16 @@ react-native-maps@~0.25.0:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
   integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
-"react-native-parsed-text@git+https://github.com/EvanBacon/react-native-parsed-text.git":
+"react-native-parsed-text@https://github.com/EvanBacon/react-native-parsed-text.git":
   version "0.0.22"
-  resolved "git+https://github.com/EvanBacon/react-native-parsed-text.git#f55c4713c62961f13a2eec99cbc1ec619615ee72"
+  resolved "https://github.com/EvanBacon/react-native-parsed-text.git#f55c4713c62961f13a2eec99cbc1ec619615ee72"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-picker-modal-view@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/react-native-picker-modal-view/-/react-native-picker-modal-view-1.2.8.tgz#8faf6dc9db06d5ee2bcf94c95c0c2fb9fa07b2f7"
+  integrity sha512-yIvLeXvpd5z0iWVt6mwqouStmPxBdHF/Fgt95KueIQHhSlOT9/eYzVdjZADNJ9jVo/qJWV3TyLf+N+GUt6t+gQ==
 
 react-native-popup-dialog@^0.18.3:
   version "0.18.3"

@@ -20,24 +20,36 @@ class ListVehicles extends Component {
     super();
     this.state = {
       modalVeh: false,
+      selectID: null,
+      offer: null,
     };
   }
 
   componentDidMount() {
-    const { getListVehicles, getVehiclesType } = this.props;
+    const { getListVehicles, getVehiclesType, navigation } = this.props;
     getListVehicles();
     // get getTypes
     getVehiclesType();
+    const selectID = navigation.getParam('selectID');
+    const offer = navigation.getParam('offer');
+    this.setState({ selectID: selectID, offer: offer });
   }
 
 
   onViewDetail(data) {
     const { navigate } = this.props.navigation;
-    navigate('DetailVehicle', { dataVehicle: data });
+    const { selectID, offer } = this.state;
+    if (selectID) {
+      navigate('ApplyTravels', { selectID: data.id, dataOffer: offer });
+      this.setState({ selectID: null });
+    } else {
+      navigate('DetailVehicle', { dataVehicle: data });
+    }
   }
 
   onValidate() {
     const { navigate } = this.props.navigation;
+    const { selectID, offer } = this.state;
     const { vehicles } = this.props;
     const items = vehicles.list.length;
     if (items > 3) {
@@ -45,7 +57,7 @@ class ListVehicles extends Component {
       this.setState({ modalVeh: true });
       // navigate('DetailVehicle');
     } else {
-      navigate('DetailVehicle');
+      navigate('DetailVehicle', { selectID: selectID, dataOffer: offer });
     }
   }
 
