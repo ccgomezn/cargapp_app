@@ -14,6 +14,8 @@ import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
 import OffersActions from '../../../redux/reducers/OffersRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
+import EmptyDialog from '../../../components/EmptyDialog';
+import Vehicle from '../../Vehicle';
 
 class ApplyOffer extends Component {
   constructor() {
@@ -24,6 +26,8 @@ class ApplyOffer extends Component {
       errorFalse: false,
       fetchError: false,
       fetchSuccess: false,
+      fetchID: false,
+      valueApplyOffer: null,
     };
   }
 
@@ -35,23 +39,33 @@ class ApplyOffer extends Component {
     getServices();
   }
 
-  applyOffer(value) {
+  vehicleType(value, id) {
+    const { navigation } = this.props;
+    const dataOffer = navigation.getParam('dataOffer');
+    if (id) {
+      this.applyOffer(id, value);
+    } else {
+      navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
+    }
+  }
+
+  applyOffer(value, valueApplyOffer) {
     const { applyOffer, navigation, profile } = this.props;
+    alert('IM HERE' + value);
     const data = {
-      service_id: value.id,
+      service_id: valueApplyOffer.id,
       user_id: profile.data[0].user.id,
       active: true,
     };
     applyOffer(data);
-    navigation.navigate('StartTravel', { Offer: value });
-    this.setState({ fetch: true });
+    navigation.navigate('StartTravel', { Offer: valueApplyOffer });
   }
 
   render() {
     const { offers, navigation, companies } = this.props;
     console.log(this.props);
     const {
-      offer, successNotification, errorFalse, fetch,
+      offer, successNotification, errorFalse, fetch, fetchID,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -59,9 +73,21 @@ class ApplyOffer extends Component {
     if (offers.service === null && fetch) {
       this.setState({ errorFalse: true, fetch: false });
     }
+    const selectID = navigation.getParam('selectID');
+    if (selectID !== undefined && selectID !== null && fetchID === false) {
+      this.setState({ fetchID: true });
+    }
     if (offer !== null && companies.data !== null) {
       return (
         <MainWrapper>
+          {fetchID && (
+            <PopUpNotification
+              subText="Ahora ya puedes postularte al viaje"
+              mainText="Muy bien, seleccionaste tu vehículo!"
+              onTouchOutside={() => this.setState({ fetchID: null })}
+              visible={fetchID}
+            />
+          )}
           <MapView
             initialRegion={{
               latitude: 4.624335,
@@ -116,7 +142,7 @@ class ApplyOffer extends Component {
                   extra={offer.description}
                   normalText={company.address}
                   amount={offer.price}
-                  onPressBG={() => this.applyOffer(offer)}
+                  onPressBG={() => this.vehicleType(offer, selectID)}
                   onPressBW={() => navigation.goBack()}
                   delivery="5 días"
                   company={company.name}
