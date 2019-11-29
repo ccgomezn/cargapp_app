@@ -21,6 +21,7 @@ import { RateTypes } from '../reducers/RateServiceRedux';
 import { LocationTypes } from '../reducers/GeolocationRedux';
 import { ChatTypes } from '../reducers/ChatRedux';
 import { ParametersTypes } from '../reducers/ParametersRedux';
+import { FilterTypes } from '../reducers/FilterOffersRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -38,8 +39,7 @@ import { registerDocument } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
-import { getVehicles } from './VehicleSagas';
-import { getMeVehicles, registerVehicle } from './VehicleSagas';
+import { getVehicles, getMeVehicles, registerVehicle } from './VehicleSagas';
 import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getLoadsType } from './LoadSagas';
@@ -52,9 +52,8 @@ import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSa
 import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
 import { sendLocation } from './GeolocationSagas';
-import { getMineChats } from './ChatSagas';
-import { getActiveChats } from './ChatSagas';
-
+import { getActiveChats, getMineChats } from './ChatSagas';
+import { getFilterOffers } from './FilterOffersSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -63,7 +62,8 @@ const api = API.create();
 
 /* ----------- Connects Types to Sagas ------------ */
 export default function* root() {
-  yield all([takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
+  yield all([
+    takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
     takeLatest(ChatTypes.GET_ME_CHATS_REQUEST, getMineChats, api),
     takeLatest(ChatTypes.GET_ACTIVE_CHATS_REQUEST, getActiveChats, api),
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),
@@ -103,5 +103,6 @@ export default function* root() {
     takeLatest(UserTypes.GET_USERINFO_REQUEST, getInfoUser, api),
     takeLatest(VehicleTypes.GET_ME_VEHICLES_REQUEST, getMeVehicles, api),
     takeLatest(VehicleTypes.POST_REG_VEHICLE_REQUEST, registerVehicle, api),
+    takeLatest(FilterTypes.GET_OFFERS_BY_FILTER_REQUEST, getFilterOffers, api),
   ]);
 }
