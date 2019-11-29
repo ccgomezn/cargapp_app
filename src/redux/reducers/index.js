@@ -22,4 +22,5 @@ export default combineReducers({
   parameters: require('./ParametersRedux').reducer,
   filterOffers: require('./FilterOffersRedux').reducer,
   permissions: require('./PermissionsRedux').reducer,
+  destinations: require('./DestinationsRedux').reducer,
 });
