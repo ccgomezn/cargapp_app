@@ -62,7 +62,8 @@ const api = API.create();
 
 /* ----------- Connects Types to Sagas ------------ */
 export default function* root() {
-  yield all([takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
+  yield all([
+    takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
     takeLatest(ChatTypes.GET_ME_CHATS_REQUEST, getMineChats, api),
     takeLatest(ChatTypes.GET_ACTIVE_CHATS_REQUEST, getActiveChats, api),
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),

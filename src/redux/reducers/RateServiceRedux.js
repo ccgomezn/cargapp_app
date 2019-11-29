@@ -1,5 +1,5 @@
-import Immutable from 'seamless-immutable';
 import { createReducer, createActions } from 'reduxsauce';
+import Immutable from 'seamless-immutable';
 
 /* -------------------- Actions --------------------- */
 export const { Types, Creators } = createActions({

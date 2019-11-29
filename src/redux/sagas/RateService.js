@@ -9,7 +9,7 @@ export function* postRateServices(api, action) {
   const { data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.rateService.postRateService, data);
+  const response = yield call(api.rateService.postRateServices, data);
   console.log(response);
   if (response.ok) {
     yield put(RateActions.postRateServiceSuccess(response.data));

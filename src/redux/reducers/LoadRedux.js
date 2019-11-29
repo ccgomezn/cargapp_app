@@ -13,7 +13,7 @@ export default Creators;
 
 /* ------------------- INITIAL STATE ------------------- */
 export const INITIAL_STATE = Inmutable({
-    data: null,
+  data: null,
   error: false,
   fetching: false,
 });

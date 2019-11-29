@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import StarRating from 'react-native-star-rating';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
+import RateTypes from '../../../redux/reducers/RateServiceRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
 import {
   MainWrapper,
@@ -16,11 +17,11 @@ import {
   WrapperAdresses,
   WrapperTopCard,
   BlueText,
+  WrapperModal,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import TopCardTravel from '../../../components/TopCardTravel';
 import EmptyDialog from '../../../components/EmptyDialog';
-import { RateTypes } from '../../../redux/reducers/RateServiceRedux';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -197,6 +198,23 @@ class StartTravel extends Component {
     return dist;
   }
 
+  rating(value) {
+    const { postRateServices, profile, navigation } = this.props;
+    const { offerSpecific } = this.state;
+    const data = {
+      rate_service: {
+        service_point: value,
+        service_id: offerSpecific.id,
+        user_id: profile.data[0].user.id,
+        driver_id: profile.data[0].user.id,
+        active: true,
+      },
+    };
+    postRateServices(data);
+    this.setState({ modalRating: false });
+    navigation.navigate('First');
+  }
+
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, unload,
@@ -282,13 +300,16 @@ class StartTravel extends Component {
             />
           </WrapperAdresses>
           <EmptyDialog visible={modalRating}>
-            <BlueText>¿Que tal estuvo tu viaje?</BlueText>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={starCount}
-              selectedStar={rating => this.setState({ starCount: rating })}
-            />
+            <WrapperModal>
+              <BlueText>¿Que tal estuvo tu viaje?</BlueText>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={starCount}
+                selectedStar={rating => this.rating(rating)}
+                fullStarColor="#0068ff"
+              />
+            </WrapperModal>
           </EmptyDialog>
         </MainWrapper>
       );
@@ -304,12 +325,15 @@ class StartTravel extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { offers, companies, markers, rateService } = state;
+  const {
+    offers, companies, markers, rateService, profile,
+  } = state;
   return {
     offers,
     companies,
     markers,
     rateService,
+    profile,
   };
 };
 

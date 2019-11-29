@@ -48,5 +48,13 @@ export const BlueText = styled.Text`
   font-size: 18px;
   align-self: center;
   text-align: center;
-  padding-bottom: 3%:
+  padding-bottom: 5%;
+`;
+
+export const WrapperModal = styled.View`
+  width: 80%;
+  background-color: white;
+  align-self: center;
+  border-radius: 30px;
+  padding: 7%;
 `;
