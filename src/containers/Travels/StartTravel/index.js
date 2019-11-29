@@ -265,8 +265,10 @@ class StartTravel extends Component {
         active: true,
       },
     };
-    postRateServices(data);
-    navigation.navigate('First');
+    setTimeout(() => {
+      postRateServices(data);
+      navigation.navigate('First');
+    }, 1000);
   }
 
   render() {
