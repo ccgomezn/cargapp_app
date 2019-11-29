@@ -1,9 +1,9 @@
-import Immutable from 'seamless-immutable';
 import { createReducer, createActions } from 'reduxsauce';
+import Immutable from 'seamless-immutable';
 
 /* -------------------- Actions --------------------- */
 export const { Types, Creators } = createActions({
-  postRateServiceRequest: ['params'],
+  postRateServiceRequest: ['data'],
   postRateServiceSuccess: ['data'],
   postRateServiceFailure: ['params'],
 });
