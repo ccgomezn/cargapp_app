@@ -50,6 +50,7 @@ class Home extends Component {
         token: '3560660900101009',
       },
     };
+    this.setState({callMine: false});
     profileDriver(data);
     getsOffers();
     getVehicles();
@@ -58,11 +59,11 @@ class Home extends Component {
 
   getMineOffers() {
     const {
-      getMyOffers, profile,
+      getMyOffersPostulation, profile,
     } = this.props;
 
 
-    getMyOffers(profile.data[0].user.id);
+    getMyOffersPostulation(profile.data[0].user.id);
   }
 
   onPressFilter() {
@@ -136,11 +137,12 @@ class Home extends Component {
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    if(offers.data && !offers.myOffers && !callMine && profile.data){
+    console.log(callMine);
+    if(offers.data && !callMine && profile.data){
       this.getMineOffers();
       this.setState({callMine: true});
     }
-    if (offers.data && offers.myOffers && vehicles.data) {
+    if (offers.data && offers.services && vehicles.data &&!offers.fetching) {
       offers.data.map((originData) => {
         dataPickOrigin.push({ Name: originData.origin });
       });
@@ -155,9 +157,10 @@ class Home extends Component {
         vehicle_data[vehicle.id] = vehicle.name;
       });
       const mine_offers = [];
-      offers.myOffers.forEach((offer) => {
-        mine_offers.push(offer.id);
+      offers.services.forEach((offer) => {
+        mine_offers.push(offer.service_id);
       });
+
 
       return (
         <MainView>
@@ -214,7 +217,7 @@ class Home extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((services) => {
-                //if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
+                if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
                   return (
                     <WhiteCardTravels
                       from={services.origin}
@@ -222,13 +225,14 @@ class Home extends Component {
                       vehicle={vehicle_data[services.vehicle_type_id]}
                       pay={services.price}
                       date="hoy"
-                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
+                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services})}
                       btnPrimary="Aplicar"
                       btnSecondary
                     />
                   );
-                //}
+                }
               })}
+
             </ContentOffer>
           </MainWrapper>
           <Swipeable
@@ -379,7 +383,7 @@ const mapDispatchToProps = dispatch => ({
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getFilterOffers: data => dispatch(FilterOffers.getOffersByFilterRequest(data)),
-  getMyOffers: params => dispatch(OffersActions.getMyOffersRequest(params)),
+  getMyOffersPostulation: params => dispatch(OffersActions.getServicesRequest(params)),
 });
 
 export default connect(

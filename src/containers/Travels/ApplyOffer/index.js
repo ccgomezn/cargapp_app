@@ -8,14 +8,16 @@ import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { MainWrapper, AddressesWrapper } from './style';
+import {
+  MainWrapper, AddressesWrapper, WrapperModal, BlueText,
+} from './style';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
 import OffersActions from '../../../redux/reducers/OffersRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import EmptyDialog from '../../../components/EmptyDialog';
-import Vehicle from '../../Vehicle';
+import ButtonGradient from '../../../components/ButtonGradient';
 
 class ApplyOffer extends Component {
   constructor() {
@@ -29,13 +31,18 @@ class ApplyOffer extends Component {
       fetchID: false,
       valueApplyOffer: null,
       showTravel: false,
+      modalFinish: false,
     };
   }
 
   componentDidMount() {
     const { navigation, getCompanies, getServices } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
+    const booked = navigation.getParam('booked');
     this.setState({ offer: dataOffer });
+    if (dataOffer.statu_id === 11 || (dataOffer.statu_id === 10 && booked)) {
+      this.setState({ modalFinish: true });
+    }
     getCompanies();
     getServices();
   }
@@ -55,7 +62,6 @@ class ApplyOffer extends Component {
 
   applyOffer(value, valueApplyOffer) {
     const { applyOffer, navigation, profile } = this.props;
-    alert(`IM HERE${value}`);
     const data = {
       service_id: valueApplyOffer.id,
       user_id: profile.data[0].user.id,
@@ -72,19 +78,27 @@ class ApplyOffer extends Component {
       if (offer.statu_id === 10) {
         return 'Esperando respuesta';
       }
-      if(!showTravel){
-        this.setState({showTravel: true});
+      if (!showTravel) {
+        this.setState({ showTravel: true });
       }
       return 'Iniciar viaje';
     }
     return 'Aplicar a oferta';
   }
 
+  modalBack() {
+    const { navigation } = this.props;
+    this.setState({ modalFinish: false });
+    setTimeout(() => {
+      navigation.navigate('First');
+    }, 100);
+  }
+
   render() {
     const { offers, navigation, companies } = this.props;
     console.log(this.props);
     const {
-      offer, successNotification, errorFalse, fetch, fetchID,
+      offer, successNotification, errorFalse, fetch, fetchID, modalFinish,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -107,6 +121,12 @@ class ApplyOffer extends Component {
               visible={fetchID}
             />
           )}
+          <EmptyDialog visible={modalFinish}>
+            <WrapperModal>
+              <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10  && 'Estamos esperando que acepten el viaje'}</BlueText>
+              <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
+            </WrapperModal>
+          </EmptyDialog>
           <MapView
             initialRegion={{
               latitude: 4.624335,
