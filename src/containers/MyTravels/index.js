@@ -55,13 +55,17 @@ class MyTravels extends Component {
   }
 
   componentDidMount() {
-    const { getMyOffers, getStatus, profile } = this.props;
+    const {
+      getMyOffers, getStatus, profile, getsOffers,
+    } = this.props;
     getMyOffers(profile.data[0].user.id);
+    getsOffers();
     getStatus();
   }
 
-  onPressButton() {
-    this.setState({ alertVisible: true });
+  onPressButton(value) {
+    const { navigation } = this.props;
+    navigation.navigate('ApplyTravels', { dataOffer: value, booked: true });
   }
 
   onPressButtonPopup() {
@@ -86,8 +90,14 @@ class MyTravels extends Component {
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const { offers, vehicles, status } = this.props;
-    console.log(this.props);
-    if (offers.myOffers !== null && status.data !== null) {
+    if (offers.services !== null && offers.data !== null && status.data !== null) {
+      let services_ids = [];
+      let service_map = {};
+      offers.services.forEach((service) => {
+        services_ids.push(service.service_id);
+        service_map[service.service_id] = service.approved;
+      });
+      console.log(services_ids);
       return (
         <MainView>
           <MainWrapper>
@@ -106,27 +116,30 @@ class MyTravels extends Component {
             </ContentView>
 
             <ContentOffer subcontent>
-              {offers.myOffers.map((allOffers) => {
-                return vehicles.data.map((vehicle) => {
-                  if (vehicle.id === allOffers.vehicle_type_id) {
-                    return status.data.map((statusOffer) => {
-                      if (allOffers.statu_id === statusOffer.id) {
-                        return (
-                          <WhiteCardTravels
-                            from={allOffers.destination}
-                            to={allOffers.origin}
-                            vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
-                            pay={allOffers.price}
-                            date="Hoy"
-                            status={allOffers.statu_id === statusOffer.id && statusOffer.name}
-                            actionbtnPrimary={() => this.onPressButton()}
-                            btnPrimary="Ver detalle"
-                          />
-                        );
-                      }
-                    });
-                  }
-                });
+              {offers.data.map((allOffers) => {
+
+                if (services_ids.includes(allOffers.id)) {
+                  return vehicles.data.map((vehicle) => {
+                    if (vehicle.id === allOffers.vehicle_type_id) {
+                      return status.data.map((statusOffer) => {
+                        if (allOffers.statu_id === statusOffer.id) {
+                          return (
+                            <WhiteCardTravels
+                              from={allOffers.destination}
+                              to={allOffers.origin}
+                              vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
+                              pay={allOffers.price}
+                              date="Hoy"
+                              status={service_map[allOffers.id] === false? "Rechazado": allOffers.statu_id === statusOffer.id && statusOffer.name}
+                              actionbtnPrimary={() => this.onPressButton(allOffers)}
+                              btnPrimary={service_map[allOffers.id] === null || service_map[allOffers.id]? "Ver detalle": null}
+                            />
+                          );
+                        }
+                      });
+                    }
+                  });
+                }
               })}
             </ContentOffer>
 
@@ -207,7 +220,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
+  getMyOffers: id => dispatch(OffersActions.getServicesRequest(id)),
+  getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getStatus: () => dispatch(StatusActions.getStatusRequest()),
 });
 
