@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, PermissionsAndroid } from 'react-native';
+import { StatusBar, PermissionsAndroid, Platform } from 'react-native';
 import { MainWrapper, ImageUrl, Text } from './style';
 
 const THREE_SECONDS = 3000;
@@ -24,7 +24,19 @@ class Splash extends Component {
             buttonPositive: 'OK',
           },
         ).then(() => {
-          this.setState({ permission: true });
+          PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+              {
+                title: 'Cargapp',
+                message: 'Cargapp neccesita acceso a su almacenamiento',
+                buttonNegative: 'Cancelar',
+                buttonPositive: 'OK',
+              },
+          ).then(() => {
+            this.setState({permission: true});
+          }).catch(() => {
+            this.setState({ permission: false });
+          });
         })
           .catch(() => {
             this.setState({ permission: false });

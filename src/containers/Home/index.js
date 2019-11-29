@@ -136,7 +136,7 @@ class Home extends Component {
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    if(offers.data && !offers.myOffers && !callMine){
+    if(offers.data && !offers.myOffers && !callMine && profile.data){
       this.getMineOffers();
       this.setState({callMine: true});
     }
@@ -214,7 +214,7 @@ class Home extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((services) => {
-                if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
+                //if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
                   return (
                     <WhiteCardTravels
                       from={services.origin}
@@ -227,7 +227,7 @@ class Home extends Component {
                       btnSecondary
                     />
                   );
-                }
+                //}
               })}
             </ContentOffer>
           </MainWrapper>

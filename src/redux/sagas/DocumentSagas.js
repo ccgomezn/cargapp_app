@@ -6,6 +6,7 @@
 
 import { call, put, select } from 'redux-saga/effects';
 import DocumentActions, { AuthSelectors } from '../reducers/DocumentRedux';
+import OffersActions from "../reducers/OffersRedux";
 
 export function* registerDocument(api, action) {
   const { params } = action;
@@ -23,6 +24,21 @@ export function* registerDocument(api, action) {
   } else {
     // status error
     yield put(DocumentActions.postRegisterDocFailure(response.data));
+  }
+}
+
+
+export function* getDocsServiceRequest(api, action) {
+  const { id } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  api.setContent('application/json');
+  const response = yield call(api.document.getDocumentsOfService, id);
+  console.log('docresponse', response);
+  if (response.ok) {
+    yield put(DocumentActions.getDocsServiceSuccess(response.data));
+  } else {
+    yield put(DocumentActions.getDocsServiceFailure());
   }
 }
 

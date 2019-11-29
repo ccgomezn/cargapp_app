@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import {Platform} from 'react-native';
+
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { ActivityIndicator, Linking } from 'react-native';
+import { ActivityIndicator, Linking, PermissionsAndroid } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import StarRating from 'react-native-star-rating';
 import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import RateTypes from '../../../redux/reducers/RateServiceRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
@@ -43,35 +46,72 @@ class StartTravel extends Component {
       inTravel: false,
       unLoad: false,
       finished: false,
+      manifestSet: false,
     };
+  }
+
+  actionMan() {
+    console.log(this.props.user.session.access_token);
+    const { android } = RNFetchBlob;
+    const { dirs } = RNFetchBlob.fs;
+
+      RNFetchBlob
+        .config({
+          fileCache: false,
+          appendExt: 'pdf',
+          addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            mime: 'application/pdf',
+            mediaScannable: true,
+            title: 'manifest.pdf',
+            path: `${dirs.DownloadDir}/manifest.pdf`,
+          },
+        })
+        .fetch('GET', this.state.manifest)
+        .then((resp) => {
+
+          if(Platform.OS == 'ios') RNFetchBlob.ios.openDocument(resp.path());
+          if (Platform.OS == 'android') android.actionViewIntent(resp.path(), 'application/pdf');
+
+        });
+
   }
 
   componentDidMount() {
     const {
-      navigation, offers, getMarkers, putStateOriginTravel,
+      navigation, offers, getMarkers, getDocsServiceRequest,
     } = this.props;
-    let real_offer = {};
     const offer = navigation.getParam('Offer');
     offers.data.map((newOffer) => {
       if (newOffer.id === offer.id) {
         this.setState({ offerSpecific: offer, status: offer.statu_id });
       }
     });
-    Geolocation.watchPosition((e) => this.ads(e.coords));
-
+    Geolocation.watchPosition(e => this.ads(e.coords));
+    getDocsServiceRequest(offer.id);
     this.callLocation();
     if (offer.statu_id === 7) {
-      this.setState({ load: true,inTravel: false });
+      this.setState({ load: true, inTravel: false });
     } else if (offer.statu_id === 8 || offer.statu_id === 6) {
-      console.log('onroad');
       this.setState({ inTravel: true });
     }
     getMarkers();
   }
 
+
+  setManifest() {
+    const { document } = this.props;
+    document.serviceDocuments.forEach((document_data) => {
+      if (document_data.document_type === 'manifiesto') {
+        this.setState({ manifest: document_data.document });
+      }
+    });
+  }
+
   async getDirections(startLoc, destinationLoc) {
     const { offerSpecific } = this.state;
-    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=4.710988599999999,-74.072092&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
     const respJson = await resp.json();
 
     const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
@@ -114,7 +154,6 @@ class StartTravel extends Component {
   ads(e) {
     const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
-    console.log(status);
     if (status === 6) {
       this.setState({ lastLat: e.latitude, lastLong: e.longitude });
       this.callLocation();
@@ -133,7 +172,7 @@ class StartTravel extends Component {
         putStateOriginTravel(offerSpecific.id, data);
         this.setState({ status: 7, load: true, inTravel: false });
 
-       // this.componentDidMount();
+        // this.componentDidMount();
       }
     } else if (status === 8) {
       const result = this.destinationService(
@@ -151,7 +190,7 @@ class StartTravel extends Component {
         setTimeout(() => {
           putStateOriginTravel(offerSpecific.id, data);
           this.setState({ status: 9, load: false, inTravel: false });
-          //this.componentDidMount();
+          // this.componentDidMount();
         }, 1000);
       }
     }
@@ -215,7 +254,6 @@ class StartTravel extends Component {
             statu_id,
           },
         };
-        console.log('offer');
         putStateOriginTravel(offerSpecific.id, data);
         this.componentDidMount();
         this.setState({ status: statu_id, inTravel: true });
@@ -274,10 +312,13 @@ class StartTravel extends Component {
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, finished, unload,
-      modalRating, starCount, load, unLoad, inTravel,
+      modalRating, starCount, load, unLoad, inTravel, manifestSet, manifest,
     } = this.state;
-    console.log(modalRating);
-    const { companies, markers } = this.props;
+    const { companies, markers, document } = this.props;
+    if (document.serviceDocuments && !manifestSet) {
+      this.setManifest();
+      this.setState({ manifestSet: true });
+    }
     if (offerSpecific !== null && waypoints !== undefined && markers.data !== null) {
       markers.data.map(commerce => (
         commerce.longitude = commerce.geolocation.split(',')[0],
@@ -333,17 +374,26 @@ class StartTravel extends Component {
                     isConfirmLoad={inTravel}
                     company={CompanyInfo.name}
                     actionBtnOk={() => this.confirmTravel()}
+                    actionMan={() => this.actionMan()}
                   />
                 </WrapperTopCard>
               );
             }
           })}
           <AbsoluteWrapper>
-            <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}>
-              <WrapperImage source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }} />
+            <TouchableNavigationButtons
+              onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}
+            >
+              <WrapperImage
+                source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }}
+              />
             </TouchableNavigationButtons>
-            <TouchableNavigationButtons onPress={() => Linking.openURL(`https://www.google.com/maps/place/${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}`)}>
-              <WrapperImage source={{ uri: 'https://lh3.googleusercontent.com/xmZuOCh0e0NeVpgsKn99K5Amo4PA2r5y078RIrvXY24zLAEwSLSwYvVcwT7zWSv512n4=w300' }} />
+            <TouchableNavigationButtons
+              onPress={() => Linking.openURL(`https://www.google.com/maps/place/${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}`)}
+            >
+              <WrapperImage
+                source={{ uri: 'https://lh3.googleusercontent.com/xmZuOCh0e0NeVpgsKn99K5Amo4PA2r5y078RIrvXY24zLAEwSLSwYvVcwT7zWSv512n4=w300' }}
+              />
             </TouchableNavigationButtons>
           </AbsoluteWrapper>
           <WrapperAdresses>
@@ -381,7 +431,7 @@ class StartTravel extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    offers, companies, markers, rateService, profile,
+    offers, companies, markers, rateService, profile, document, user,
   } = state;
   return {
     offers,
@@ -389,6 +439,8 @@ const mapStateToProps = (state) => {
     markers,
     rateService,
     profile,
+    document,
+    user,
   };
 };
 
@@ -397,6 +449,7 @@ const mapDispatchToProps = dispatch => ({
   getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
   postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
+  getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
 });
 
 export default connect(
