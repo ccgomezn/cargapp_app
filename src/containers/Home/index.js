@@ -1,3 +1,7 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-const-assign */
+/* eslint-disable array-callback-return */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
@@ -20,12 +24,49 @@ import ButtonGradient from '../../components/ButtonGradient';
 import Swipeable from '../../components/Swipeable';
 import Input from '../../components/GeneralInput';
 import InputSlider from '../../components/InputSlider';
+
+import EmptyDialog from '../../components/EmptyDialog';
+import CardPermissions from '../../components/CardPermissions';
+
+import {
+  ContentDialog,
+  MainWrapperDialog,
+  TextGray,
+  TitleBlack,
+} from '../Profile/style';
+
 // action - reducers
-import DriverActions from '../../redux/reducers/DriverRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
+import PermissionsActions from '../../redux/reducers/PermissionsRedux';
+import DriverActions from '../../redux/reducers/DriverRedux';
+const itemsTipo = [
+  {
+    textItem: 'Opcion 1',
+    valueItem: 'opc1',
+  },
+  {
+    textItem: 'Opcion 2',
+    valueItem: 'opc2',
+  },
+];
+
+const itemList = [
+  {
+    label: 'Perfil',
+    url: 'ScreenProfile',
+  },
+  {
+    label: 'Vehículos',
+    url: 'ScreenVehicle',
+  },
+  {
+    label: 'Cuenta bancaria',
+    url: 'BankAccount',
+  },
+];
 
 class Home extends Component {
   constructor() {
@@ -38,12 +79,15 @@ class Home extends Component {
       labelVehicle: '',
       idVehicle: null,
       callMine: false,
+      modalPermission: false,
+      fetch: false,
+      listview: ['profiles', 'vehicles', 'bank_accounts'],
     };
   }
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile
+      profileDriver, getsOffers, getVehicles, getProfile, getPermission,
     } = this.props;
     const data = {
       driver: {
@@ -55,6 +99,7 @@ class Home extends Component {
     getsOffers();
     getVehicles();
     getProfile();
+    getPermission();
   }
 
   getMineOffers() {
@@ -66,13 +111,25 @@ class Home extends Component {
     getMyOffersPostulation(profile.data[0].user.id);
   }
 
+  componentWillUnmount() {
+    this.setState({ modalPermission: false });
+  }
+
   onPressFilter() {
     this.setState({ modalSearch: true });
   }
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
-    this.setState({ modalSearch: false });
+    this.setState({ modalSearch: false, modalPermission: false });
+  }
+
+  onNavigate(nameView) {
+    const { navigate } = this.props.navigation;
+    this.setState({ modalPermission: false });
+    setTimeout(() => {
+      navigate(nameView);
+    }, 1000);
   }
 
   multiSliderValuesChange(values) {
@@ -115,7 +172,7 @@ class Home extends Component {
       labelOrigin,
       idVehicle,
     } = this.state;
-    const { getFilterOffers } = this.props;
+    const {getFilterOffers} = this.props;
     const data = {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
@@ -125,14 +182,39 @@ class Home extends Component {
     };
     getFilterOffers(data);
   }
+  // eslint-disable-next-line class-methods-use-this
+  missingViews(list) {
+    const { listview } = this.state;
+    return (
+      <View style={{ flexDirection: 'column' }}>
+        {list.map(pem => (
+          (listview.includes(pem.name)) ? (
+            <CardPermissions
+              label={itemList[listview.lastIndexOf(pem.name)].label}
+              permission={pem.permission}
+              textfail="Diligenciar"
+              textCorrect="OK"
+              press={() => this.onNavigate(itemList[listview.lastIndexOf(pem.name)].url)}
+            />
+          ) : null
+        ))
+        }
+        <WrapperButtonsBottom style={{ marginTop: 10 }}>
+          <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
+        </WrapperButtonsBottom>
+      </View>
+    );
+  }
 
   render() {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
-      labelVehicle, callMine
+      labelVehicle, callMine,modalPermission,
+          listview,
+          fetch,
     } = this.state;
     const {
-      driver, offers, vehicles, navigation, profile,
+      driver, offers, vehicles, navigation, profile,permissions
     } = this.props;
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
@@ -142,7 +224,22 @@ class Home extends Component {
       this.getMineOffers();
       this.setState({callMine: true});
     }
-    if (offers.data && offers.services && vehicles.data &&!offers.fetching) {
+    if (permissions.data && !permissions.fetching && !fetch) {
+      // validate permisson
+      let perm = 0;
+      permissions.data.map((pem) => {
+        if (listview.includes(pem.name)) {
+          if (!pem.permission) {
+            perm++;
+          }
+        }
+      });
+      if (perm >= 1) {
+        this.setState({ modalPermission: true });
+      }
+      this.setState({ fetch: true });
+    }
+    if (offers.data && offers.services && vehicles.data &&!offers.fetching && permissions.data !== null && !permissions.fetching) {
       offers.data.map((originData) => {
         dataPickOrigin.push({ Name: originData.origin });
       });
@@ -173,6 +270,7 @@ class Home extends Component {
                 <IconService
                   icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
                   text="Premios"
+                  press={() => this.setState({ modalPermission: true })}
                 />
                 <IconService
                   icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
@@ -350,6 +448,24 @@ class Home extends Component {
               </WrapperButtonsBottom>
             </WrapperSwipe>
           </Swipeable>
+
+          <EmptyDialog
+            visible={modalPermission}
+            opacity={0.4}
+            onTouchOutside={() => this.OnHideModal()}
+          >
+            <MainWrapperDialog>
+              <ContentDialog>
+                <TitleBlack>Datos Faltantes</TitleBlack>
+                <TextGray>Para aplicar a ofertas, primero debes completar tus datos.</TextGray>
+                <ContentForm>
+                  <TextGray>Datos sin completar:</TextGray>
+                  {this.missingViews(permissions.data)}
+                </ContentForm>
+              </ContentDialog>
+            </MainWrapperDialog>
+          </EmptyDialog>
+
         </MainView>
       );
     }
@@ -365,7 +481,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers,
+    driver, offers, vehicles, user, profile, filterOffers,permissions
+
   } = state;
   return {
     driver,
@@ -374,6 +491,7 @@ const mapStateToProps = (state) => {
     user,
     profile,
     filterOffers,
+    permissions,
   };
 };
 
@@ -384,10 +502,10 @@ const mapDispatchToProps = dispatch => ({
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getFilterOffers: data => dispatch(FilterOffers.getOffersByFilterRequest(data)),
   getMyOffersPostulation: params => dispatch(OffersActions.getServicesRequest(params)),
+  getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Home);
-// export default Home;

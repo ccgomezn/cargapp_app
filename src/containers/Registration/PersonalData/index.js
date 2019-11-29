@@ -11,7 +11,7 @@ import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
-import ButtonWhite from '../../../components/ButtonWhite';
+// import ButtonWhite from '../../../components/ButtonWhite';
 import ArrowBack from '../../../components/ArrowBack';
 
 // action - reducers
@@ -46,6 +46,8 @@ class Registration extends Component {
       msgApi: '',
       errorApi: false,
       datarol: '',
+      invalidname: false,
+      invalidlastname: false,
     };
   }
 
@@ -67,7 +69,6 @@ class Registration extends Component {
     if (dataname !== '' || datalastname !== '') {
       const data = {};
       const profile = {};
-      // const user = {};
       if (dataname !== '') {
         profile.firt_name = dataname;
       }
@@ -88,15 +89,23 @@ class Registration extends Component {
     const { dataname, datalastname } = this.state;
     const errormsg = {};
     errormsg.name = '';
-    errormsg.doc = '';
+    errormsg.last = '';
     // validate info
-    if ((dataname.length < 4 && dataname.length >= 1)
-    || (datalastname.length < 4 && datalastname.length >= 1)) {
-      errormsg.name = 'Incorrecto: formato inválido';
+    if (dataname.length < 4 || dataname === '') {
+      errormsg.name = 'Nombre incorrecto: formato inválido';
+      this.setState({ invalidname: true });
+    } else {
+      this.setState({ invalidname: false });
+    }
+    if (datalastname.length < 4 || datalastname === '') {
+      errormsg.last = 'Apellido incorrecto: formato inválido';
+      this.setState({ invalidlastname: true });
+    } else {
+      this.setState({ invalidlastname: false });
     }
 
     this.setState({ error: errormsg });
-    if (errormsg.name === '' && errormsg.doc === '') {
+    if (errormsg.name === '' && errormsg.last === '') {
       this.onUpdatePress();
     }
   }
@@ -124,6 +133,8 @@ class Registration extends Component {
       msgApi,
       errorApi,
       fetchdata,
+      invalidname,
+      invalidlastname,
     } = this.state;
 
     // hide Toast
@@ -178,6 +189,7 @@ class Registration extends Component {
               title="Nombre"
               holder="Ingrese nombre"
               type="default"
+              errorText={invalidname}
               value={dataname}
               onChangeText={value => this.setState({ dataname: value })}
             />
@@ -185,6 +197,7 @@ class Registration extends Component {
               title="Apellidos"
               holder="Ingrese apellido"
               type="default"
+              errorText={invalidlastname}
               value={datalastname}
               onChangeText={value => this.setState({ datalastname: value })}
             />
@@ -195,6 +208,11 @@ class Registration extends Component {
                 {error.name}
               </TextError>
             ) : null }
+            { error.last ? (
+              <TextError>
+                {error.last}
+              </TextError>
+            ) : null }
             { msgApi ? (
               <TextError>
                 {msgApi}
@@ -203,11 +221,11 @@ class Registration extends Component {
           </WrapperError>
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
-              <ButtonWhite
+              {/* <ButtonWhite
                 border={{ borderWidth: 1, borderStyle: 'inset' }}
                 content="Omitir"
                 press={() => this.validateRol()}
-              />
+              /> */}
             </WrapperButtonGradient>
             <WrapperButtonGradient>
               <ButtonGradient content="Confirmar" press={() => this.validateForm()} />

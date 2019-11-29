@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import {
   MainWrapper, MainText, SubText,
   WrapperIcon, IconTruck, WrapperData, WrapperInfo, WrapperBtn, WrapperText, IconArrow,
@@ -13,7 +14,7 @@ function CardVehicle({
     <MainWrapper onPress={press}>
       <WrapperIcon>
         <IconTruck
-          source={{ uri: 'https://raw.githubusercontent.com/cargappco/cargapp_lite_refac/master/src/Images/meTruck.png?token=AGFM22MMV75A5XZBXZGIMNK54BPN6' }}
+          source={require('../../icons/meTruck.png')}
         />
       </WrapperIcon>
       <WrapperData>
