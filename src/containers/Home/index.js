@@ -136,9 +136,9 @@ class Home extends Component {
       vehicles.data.map((vehiclesData) => {
         dataPickVehi.push({ Name: vehiclesData.name, id: vehiclesData.id });
       });
-      let vehicle_data = {};
+      const vehicle_data = {};
       vehicles.data.forEach((vehicle) => {
-        vehicle_data[vehicle.id] = vehicle.name
+        vehicle_data[vehicle.id] = vehicle.name;
       });
       return (
         <MainView>
@@ -195,19 +195,16 @@ class Home extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map(services => (
-
                 <WhiteCardTravels
-                from={services.origin}
-                to={services.destination}
-                vehicle={vehicle_data[services.vehicle_type_id]}
-                pay={services.price}
-                date="hoy"
-                actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
-                btnPrimary="Aplicar"
-                btnSecondary
+                  from={services.origin}
+                  to={services.destination}
+                  vehicle={vehicle_data[services.vehicle_type_id]}
+                  pay={services.price}
+                  date="hoy"
+                  actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
+                  btnPrimary="Aplicar"
+                  btnSecondary
                 />
-
-
               ))}
             </ContentOffer>
           </MainWrapper>
@@ -321,7 +318,7 @@ class Home extends Component {
               </ContentForm>
               <WrapperButtonsBottom>
                 <WrapperButtonGradient>
-                  <ButtonGradient content="Buscar" press={() => this.searchByFilter()}/>
+                  <ButtonGradient content="Buscar" press={() => this.searchByFilter()} />
                 </WrapperButtonGradient>
               </WrapperButtonsBottom>
             </WrapperSwipe>

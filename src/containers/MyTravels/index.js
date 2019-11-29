@@ -60,8 +60,9 @@ class MyTravels extends Component {
     getStatus();
   }
 
-  onPressButton() {
-    this.setState({ alertVisible: true });
+  onPressButton(value) {
+    const { navigation } = this.props;
+    navigation.navigate('ApplyTravels', { dataOffer: value });
   }
 
   onPressButtonPopup() {
@@ -106,28 +107,26 @@ class MyTravels extends Component {
             </ContentView>
 
             <ContentOffer subcontent>
-              {offers.myOffers.map((allOffers) => {
-                return vehicles.data.map((vehicle) => {
-                  if (vehicle.id === allOffers.vehicle_type_id) {
-                    return status.data.map((statusOffer) => {
-                      if (allOffers.statu_id === statusOffer.id) {
-                        return (
-                          <WhiteCardTravels
-                            from={allOffers.destination}
-                            to={allOffers.origin}
-                            vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
-                            pay={allOffers.price}
-                            date="Hoy"
-                            status={allOffers.statu_id === statusOffer.id && statusOffer.name}
-                            actionbtnPrimary={() => this.onPressButton()}
-                            btnPrimary="Ver detalle"
-                          />
-                        );
-                      }
-                    });
-                  }
-                });
-              })}
+              {offers.myOffers.map(allOffers => vehicles.data.map((vehicle) => {
+                if (vehicle.id === allOffers.vehicle_type_id) {
+                  return status.data.map((statusOffer) => {
+                    if (allOffers.statu_id === statusOffer.id) {
+                      return (
+                        <WhiteCardTravels
+                          from={allOffers.destination}
+                          to={allOffers.origin}
+                          vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
+                          pay={allOffers.price}
+                          date="Hoy"
+                          status={allOffers.statu_id === statusOffer.id && statusOffer.name}
+                          actionbtnPrimary={() => this.onPressButton(allOffers)}
+                          btnPrimary="Ver detalle"
+                        />
+                      );
+                    }
+                  });
+                }
+              }))}
             </ContentOffer>
 
             <PopUpDialog
