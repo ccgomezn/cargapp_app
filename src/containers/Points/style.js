@@ -9,8 +9,7 @@ export const MainWrapper = styled.ScrollView`
 
 export const ContentView = styled.View`
   width: 100%;
-  justify-content: center;
-  flex-direction: row;
+  justify-content: flex-start;
   height: auto;
   margin-bottom: 5%;
   padding: ${props => (props.subcontent ? '0px 10px' : '0px')};
@@ -31,13 +30,13 @@ export const ContentBlock = styled.View`
 `;
 
 export const ContentSection = styled.View`
-  flex: 1;
+  width: 100%;
   height: auto;
-  backgroundColor: transparent;
-  flexDirection: row;
-  paddingVertical: 2;
-  alignSelf: center;
-  justifyContent: space-between;
+  background-color: transparent;
+  flex-direction: row;
+  padding-vertical: 2px;
+  align-self: center;
+  justify-content: space-between;
 `;
 
 export const TextBlack = styled.Text`
@@ -56,9 +55,7 @@ export const TextGray = styled.Text`
   color: #8a8c9d;
 `;
 
-export const PointRet = styled.View`
-  position: absolute;
-  right: 0px;
-  top: 5px;
-  margin-right: 5px;
+export const CardItems = styled.View`
+  flexDirection: column;
+  width: 100%;
 `;

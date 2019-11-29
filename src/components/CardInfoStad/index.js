@@ -43,7 +43,7 @@ function CardInfoStad({
           <ViewRow>
             <ViewFlex>
               <IconCircle
-                source={require('../../icons/circle2x.png')}
+                source={require('../../icons/circlem2x.png')}
               />
             </ViewFlex>
             <ContentStad>

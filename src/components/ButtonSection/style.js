@@ -2,15 +2,17 @@ import styled from 'styled-components/native';
 
 export const WrapperSection = styled.TouchableOpacity`
   min-width: 30%;
+  height: 32px;
   border-radius: 6px;
   background-color: white;
-  padding: 8px 12px;
   shadowColor: #589b9b9b;
   shadowOffset: { width: 0, height: 1 };
   shadowOpacity: 0.2;
   shadowRadius: 2;
   elevation: 1;
   align-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const TextGray = styled.Text`

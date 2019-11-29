@@ -14,7 +14,7 @@ function CardVehicle({
     <MainWrapper onPress={press}>
       <WrapperIcon>
         <IconTruck
-          source={{ uri: 'https://raw.githubusercontent.com/cargappco/cargapp_lite_refac/master/src/Images/meTruck.png?token=AGFM22MMV75A5XZBXZGIMNK54BPN6' }}
+          source={require('../../icons/meTruck.png')}
         />
       </WrapperIcon>
       <WrapperData>
