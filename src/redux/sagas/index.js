@@ -23,6 +23,7 @@ import { ChatTypes } from '../reducers/ChatRedux';
 import { ParametersTypes } from '../reducers/ParametersRedux';
 import { FilterTypes } from '../reducers/FilterOffersRedux';
 import { PermissionTypes } from '../reducers/PermissionsRedux';
+import { DestinationsTypes } from '../reducers/DestinationsRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -36,7 +37,7 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import {registerDocument, registerDocumentService, getDocsServiceRequest} from './DocumentSagas';
+import { registerDocument, registerDocumentService,getDocsServiceRequest } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -56,6 +57,7 @@ import { sendLocation } from './GeolocationSagas';
 import { getActiveChats, getMineChats } from './ChatSagas';
 import { getFilterOffers } from './FilterOffersSagas';
 import { getPermission } from './PermissionsSagas';
+import { getDestinations } from './DestinationsSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -109,5 +111,6 @@ export default function* root() {
     takeLatest(VehicleTypes.POST_REG_VEHICLE_REQUEST, registerVehicle, api),
     takeLatest(FilterTypes.GET_OFFERS_BY_FILTER_REQUEST, getFilterOffers, api),
     takeLatest(PermissionTypes.GET_PERMISSION_REQUEST, getPermission, api),
+    takeLatest(DestinationsTypes.GET_DESTINATIONS_REQUEST, getDestinations, api),
   ]);
 }

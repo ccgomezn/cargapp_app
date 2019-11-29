@@ -40,6 +40,8 @@ import OffersActions from '../../redux/reducers/OffersRedux';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
+import DestinationsActions from '../../redux/reducers/DestinationsRedux';
+
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
 import DriverActions from '../../redux/reducers/DriverRedux';
 const itemsTipo = [
@@ -87,7 +89,7 @@ class Home extends Component {
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile, getPermission,
+      profileDriver, getsOffers, getVehicles, getProfile, getPermission,getDestinations
     } = this.props;
     const data = {
       driver: {
@@ -100,6 +102,8 @@ class Home extends Component {
     getVehicles();
     getProfile();
     getPermission();
+    getDestinations();
+
   }
 
   getMineOffers() {
@@ -113,6 +117,7 @@ class Home extends Component {
 
   componentWillUnmount() {
     this.setState({ modalPermission: false });
+
   }
 
   onPressFilter() {
@@ -172,7 +177,8 @@ class Home extends Component {
       labelOrigin,
       idVehicle,
     } = this.state;
-    const {getFilterOffers} = this.props;
+
+    const { getFilterOffers, navigation } = this.props;
     const data = {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
@@ -181,6 +187,9 @@ class Home extends Component {
       destination: labelDestination,
     };
     getFilterOffers(data);
+    this.setState({modalSearch: false});
+    setTimeout(() => {    navigation.navigate('Filter')
+                },1000);
   }
   // eslint-disable-next-line class-methods-use-this
   missingViews(list) {
@@ -214,7 +223,8 @@ class Home extends Component {
           fetch,
     } = this.state;
     const {
-      driver, offers, vehicles, navigation, profile,permissions
+      driver, offers, vehicles, navigation, profile,permissions,destinations
+
     } = this.props;
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
@@ -239,12 +249,16 @@ class Home extends Component {
       }
       this.setState({ fetch: true });
     }
-    if (offers.data && offers.services && vehicles.data &&!offers.fetching && permissions.data !== null && !permissions.fetching) {
-      offers.data.map((originData) => {
+    if (offers.data && offers.services && vehicles.data && destinations.data.origins !== null && !offers.fetching && permissions.data !== null && !permissions.fetching) {
+        destinations.data.origins.map((originData) => {
+            dataPickOrigin.push({Name: originData.name});
+        });
+        offers.data.map((originData) => {
         dataPickOrigin.push({ Name: originData.origin });
+
       });
-      offers.data.map((destinationData) => {
-        dataPickDesti.push({ Name: destinationData.destination });
+      destinations.data.destinations.map((destinationData) => {
+        dataPickDesti.push({ Name: destinationData.name });
       });
       vehicles.data.map((vehiclesData) => {
         dataPickVehi.push({ Name: vehiclesData.name, id: vehiclesData.id });
@@ -388,7 +402,7 @@ class Home extends Component {
                     />
                   </WrapperSpecific>
                   <WrapperSpecific>
-                    <GrayText>Origen</GrayText>
+                    <GrayText>Destino</GrayText>
                     <PickerModal
                       renderSelectView={(disabled, selected, showModal) => (
                         <WrapperTouch onPress={showModal}>
@@ -481,7 +495,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers,permissions
+    driver, offers, vehicles, user, profile, filterOffers,permissions,destinations,
 
   } = state;
   return {
@@ -492,6 +506,7 @@ const mapStateToProps = (state) => {
     profile,
     filterOffers,
     permissions,
+    destinations,
   };
 };
 
@@ -503,6 +518,7 @@ const mapDispatchToProps = dispatch => ({
   getFilterOffers: data => dispatch(FilterOffers.getOffersByFilterRequest(data)),
   getMyOffersPostulation: params => dispatch(OffersActions.getServicesRequest(params)),
   getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
+  getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
 });
 
 export default connect(

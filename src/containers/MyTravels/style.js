@@ -20,11 +20,12 @@ export const ContentView = styled.View`
 `;
 
 export const ContentOffer = styled.View`
-width: 100%;
-justify-content: center;
-flex-direction: column;
-height: auto;
-margin-bottom: 15px;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  height: auto;
+  margin-bottom: 15px;
+  padding-bottom: 20px;
 `;
 
 export const ContentBlock = styled.View`
@@ -40,7 +41,7 @@ export const TextBlack = styled.Text`
   font-weight: bold;
   font-style: normal;
   letter-spacing: -0.3px;
-  color: #010935;
+  color: #0068ff;
 `;
 
 export const ContentFilter = styled.View`
