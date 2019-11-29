@@ -1,12 +1,12 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { Image } from 'react-native';
 import { View, Text } from 'native-base';
 import {
   MainWrapper, ContentView, TextBlack, TextGray,
-  Section, PointRet,
+  PointRet, ContentSection,
 } from './style';
 import CardinfoStad from '../../components/CardInfoStad';
+import ButtonSection from '../../components/ButtonSection';
 
 export default class Points extends Component {
   constructor() {
@@ -20,7 +20,7 @@ export default class Points extends Component {
 
         <ContentView>
           <CardinfoStad
-            title="Hola BJ"
+            title="¡Hola BJ!"
             valueKm="15.999"
             textKm="Kms recorridos"
             valuePoint="120"
@@ -29,26 +29,18 @@ export default class Points extends Component {
         </ContentView>
 
         <ContentView>
-          <View style={{
-            flex: 1,
-            height: 'auto',
-            backgroundColor: '',
-            flexDirection: 'row',
-            paddingVertical: 2,
-            alignSelf: 'center',
-            justifyContent: 'space-between',
-          }}
-          >
-            <Section>
-              <TextGray>Premios</TextGray>
-            </Section>
-            <Section style={{ backgroundColor: '#8a8c9d', alignContent: 'center' }}>
-              <TextGray style={{ color: 'white', textAlign: 'center' }}>Mis retos</TextGray>
-            </Section>
-            <Section>
-              <TextGray>Ranking</TextGray>
-            </Section>
-          </View>
+          <ContentSection>
+            <ButtonSection
+              title="Premios"
+            />
+            <ButtonSection
+              title="Mis Retos"
+              status
+            />
+            <ButtonSection
+              title="Ranking"
+            />
+          </ContentSection>
         </ContentView>
 
         <ContentView>
@@ -61,12 +53,12 @@ export default class Points extends Component {
               flexDirection: 'column',
               paddingVertical: 10,
               paddingHorizontal: 20,
-              marginBottom: 10,
+              marginBottom: '5%',
               shadowColor: '#589b9b9b',
               shadowOffset: { width: 0, height: 1 },
               shadowOpacity: 0.5,
               shadowRadius: 2,
-              elevation: 3,
+              elevation: 5,
             }}
             >
               <TextBlack>Nombre del Reto</TextBlack>
