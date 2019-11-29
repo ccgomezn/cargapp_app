@@ -20,8 +20,6 @@ import ButtonGradient from '../../components/ButtonGradient';
 import Swipeable from '../../components/Swipeable';
 import Input from '../../components/GeneralInput';
 import InputSlider from '../../components/InputSlider';
-import StarRating from 'react-native-star-rating';
-
 // action - reducers
 import DriverActions from '../../redux/reducers/DriverRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
@@ -39,7 +37,6 @@ class Home extends Component {
       labelDestination: '',
       labelVehicle: '',
       idVehicle: null,
-      starCount: 3.5,
     };
   }
 
@@ -194,12 +191,20 @@ class Home extends Component {
             </ContentView>
 
             <ContentOffer subcontent>
-              <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={this.state.starCount}
-                selectedStar={(rating) => this.setState({ starCount: rating})}
-              />
+              {offers.data.map(services => (
+                vehicles.data.map(vehicle => (
+                  <WhiteCardTravels
+                    from={services.origin}
+                    to={services.destination}
+                    vehicle={vehicle.id === services.vehicle_type_id && vehicle.name}
+                    pay={services.price}
+                    date="hoy"
+                    actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
+                    btnPrimary="Aplicar"
+                    btnSecondary
+                  />
+                ))
+              ))}
             </ContentOffer>
           </MainWrapper>
           <Swipeable

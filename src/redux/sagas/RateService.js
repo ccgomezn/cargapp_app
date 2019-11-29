@@ -6,10 +6,10 @@ import { AuthSelectors } from '../reducers/UserRedux';
 
 // eslint-disable-next-line import/prefer-default-export
 export function* postRateServices(api, action) {
-  const { params } = action;
+  const { data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.rateService.postRateService, params);
+  const response = yield call(api.rateService.postRateService, data);
   console.log(response);
   if (response.ok) {
     yield put(RateActions.postRateServiceSuccess(response.data));

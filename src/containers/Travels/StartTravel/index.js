@@ -5,6 +5,7 @@ import { ActivityIndicator, Linking } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
+import StarRating from 'react-native-star-rating';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
 import {
@@ -14,9 +15,12 @@ import {
   TouchableNavigationButtons,
   WrapperAdresses,
   WrapperTopCard,
+  BlueText,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import TopCardTravel from '../../../components/TopCardTravel';
+import EmptyDialog from '../../../components/EmptyDialog';
+import { RateTypes } from '../../../redux/reducers/RateServiceRedux';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -30,18 +34,34 @@ class StartTravel extends Component {
       lastLong: null,
       status: null,
       unload: false,
+      starCount: 4.5,
+      modalRating: false,
+      load: false,
+      inTravel: false,
+      unLoad: false,
     };
   }
 
   componentDidMount() {
-    const { navigation, offers, getMarkers } = this.props;
+    const {
+      navigation, offers, getMarkers, putStateOriginTravel,
+    } = this.props;
     const offer = navigation.getParam('Offer');
     offers.data.map((newOffer) => {
       if (newOffer.id === offer.id) {
-        this.setState({ offerSpecific: offer });
+        this.setState({ offerSpecific: offer, status: offer.statu_id });
       }
     });
     this.callLocation();
+    if (offer.statu_id === 10) {
+      alert('holi');
+      const data = {
+        service: {
+          statu_id: 6,
+        },
+      };
+      putStateOriginTravel(offer.id, data);
+    }
     getMarkers();
   }
 
@@ -89,41 +109,45 @@ class StartTravel extends Component {
   ads(e) {
     const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
-    if (offerSpecific.statu_id !== 7 && offerSpecific.statu_id !== 8) {
-      setTimeout(() => {
-        this.setState({ lastLat: e.latitude, lastLong: e.longitude });
-        this.callLocation();
-        if (status !== 8 || offerSpecific.statu_id !== 8) {
-          const result = this.destinationService(
-            e.latitude,
-            e.longitude,
-            offerSpecific.origin_latitude,
-            offerSpecific.origin_longitude,
-          );
-          if (result > 0.5 && offerSpecific.statu_id === 6 && status !== 7) {
-            alert('seis');
-            const data = {
-              service: {
-                statu_id: 7,
-              },
-            };
-            putStateOriginTravel(offerSpecific.id, data);
-            this.componentDidMount();
-            this.setState({ status: 7 });
-          }
-        } else if (offerSpecific.statu_id === 8 || status === 8) {
-          const result = this.destinationService(
-            e.latitude,
-            e.longitude,
-            offerSpecific.destination_latitude,
-            offerSpecific.destination_longitude,
-          );
-          if (result > 0.5) {
-            this.componentDidMount();
-            this.setState({ unload: true });
-          }
-        }
-      }, 5000);
+    if (offerSpecific.statu_id === 6) {
+      this.setState({ lastLat: e.latitude, lastLong: e.longitude });
+      this.callLocation();
+      const result = this.destinationService(
+        e.latitude,
+        e.longitude,
+        offerSpecific.origin_latitude,
+        offerSpecific.origin_longitude,
+      );
+      if (result > 0.5 && offerSpecific.statu_id === 6) {
+        const data = {
+          service: {
+            statu_id: 7,
+          },
+        };
+        putStateOriginTravel(offerSpecific.id, data);
+        alert('soy 7 ahora');
+        this.componentDidMount();
+        this.setState({ status: 7, load: true });
+      }
+    } else if (offerSpecific.statu_id === 8) {
+      const result = this.destinationService(
+        e.latitude,
+        e.longitude,
+        offerSpecific.destination_latitude,
+        offerSpecific.destination_longitude,
+      );
+      if (result > 0.5) {
+        const data = {
+          service: {
+            statu_id: 9,
+          },
+        };
+        setTimeout(() => {
+          putStateOriginTravel(offerSpecific.id, data);
+          this.setState({ unload: false, inTravel: true });
+          this.componentDidMount();
+        }, 1000);
+      }
     }
   }
 
@@ -131,6 +155,7 @@ class StartTravel extends Component {
     const { putStateOriginTravel } = this.props;
     const { offerSpecific, status } = this.state;
     if (status === 7 || offerSpecific.statu_id === 7) {
+      alert('soy 8 ahora');
       const data = {
         service: {
           statu_id: 8,
@@ -138,16 +163,17 @@ class StartTravel extends Component {
       };
       putStateOriginTravel(offerSpecific.id, data);
       this.componentDidMount();
-      this.setState({ status: 8 });
-    } else if (status === 8 || offerSpecific.statu_id === 8) {
+      this.setState({ status: 8, inTravel: true });
+    } else if (status === 9 || offerSpecific.statu_id === 9) {
+      alert('soy 11 ahora');
       const data = {
         service: {
-          statu_id: 9,
+          statu_id: 11,
         },
       };
       putStateOriginTravel(offerSpecific.id, data);
       this.componentDidMount();
-      this.setState({ status: 9 });
+      this.setState({ status: 11, modalRating: true });
     }
   }
 
@@ -174,16 +200,18 @@ class StartTravel extends Component {
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, unload,
+      modalRating, starCount, load, unLoad, inTravel,
     } = this.state;
     const { companies, markers } = this.props;
-    console.log(this.props);
+    console.log(offerSpecific);
     if (offerSpecific !== null && waypoints !== undefined && markers.data !== null) {
-      { markers.data.map(commerce => (
+      markers.data.map(commerce => (
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
-      )); }
-
-
+      ));
+      if (offerSpecific.statu_id === 11 && !modalRating) {
+        this.setState({ modalRating: true });
+      }
       return (
         <MainWrapper>
           <MapView
@@ -226,12 +254,10 @@ class StartTravel extends Component {
                 <WrapperTopCard>
                   <TopCardTravel
                     travelsCount="20"
-                    arrive={
-                      (status === 7 || status === 8)
-                      || (offerSpecific.statu_id === 7 || offerSpecific.statu_id === 8)}
-                    unLoad={status !== 7 || offerSpecific.statu_id !== 7}
+                    arrive={offerSpecific.statu_id !== 6 || offerSpecific.statu_id !== 11}
+                    unLoad={load}
                     amount="20k"
-                    isConfirmLoad={unload || offerSpecific.statu_id !== 8 || status === 8}
+                    isConfirmLoad={inTravel}
                     company={CompanyInfo.name}
                     actionBtnOk={() => this.confirmTravel()}
                   />
@@ -255,6 +281,15 @@ class StartTravel extends Component {
               secondAddress={offerSpecific.destination_address}
             />
           </WrapperAdresses>
+          <EmptyDialog visible={modalRating}>
+            <BlueText>¿Que tal estuvo tu viaje?</BlueText>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={starCount}
+              selectedStar={rating => this.setState({ starCount: rating })}
+            />
+          </EmptyDialog>
         </MainWrapper>
       );
     }
@@ -269,17 +304,19 @@ class StartTravel extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { offers, companies, markers } = state;
+  const { offers, companies, markers, rateService } = state;
   return {
     offers,
     companies,
     markers,
+    rateService,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
   getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
+  postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
 });
 
 export default connect(
