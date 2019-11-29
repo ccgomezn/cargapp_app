@@ -22,6 +22,7 @@ import { LocationTypes } from '../reducers/GeolocationRedux';
 import { ChatTypes } from '../reducers/ChatRedux';
 import { ParametersTypes } from '../reducers/ParametersRedux';
 import { FilterTypes } from '../reducers/FilterOffersRedux';
+import { DestinationsTypes } from '../reducers/DestinationsRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -35,7 +36,7 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import {registerDocument, registerDocumentService} from './DocumentSagas';
+import { registerDocument, registerDocumentService } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -54,6 +55,7 @@ import { postRateServices } from './RateService';
 import { sendLocation } from './GeolocationSagas';
 import { getActiveChats, getMineChats } from './ChatSagas';
 import { getFilterOffers } from './FilterOffersSagas';
+import { getDestinations } from './DestinationsSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -105,5 +107,6 @@ export default function* root() {
     takeLatest(VehicleTypes.GET_ME_VEHICLES_REQUEST, getMeVehicles, api),
     takeLatest(VehicleTypes.POST_REG_VEHICLE_REQUEST, registerVehicle, api),
     takeLatest(FilterTypes.GET_OFFERS_BY_FILTER_REQUEST, getFilterOffers, api),
+    takeLatest(DestinationsTypes.GET_DESTINATIONS_REQUEST, getDestinations, api),
   ]);
 }

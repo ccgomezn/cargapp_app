@@ -26,6 +26,7 @@ import OffersActions from '../../redux/reducers/OffersRedux';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
+import DestinationsActions from '../../redux/reducers/DestinationsRedux';
 
 class Home extends Component {
   constructor() {
@@ -42,7 +43,7 @@ class Home extends Component {
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile,
+      profileDriver, getsOffers, getVehicles, getProfile, getDestinations,
     } = this.props;
     const data = {
       driver: {
@@ -53,6 +54,7 @@ class Home extends Component {
     getsOffers();
     getVehicles();
     getProfile();
+    getDestinations();
   }
 
   onPressFilter() {
@@ -104,7 +106,7 @@ class Home extends Component {
       labelOrigin,
       idVehicle,
     } = this.state;
-    const { getFilterOffers } = this.props;
+    const { getFilterOffers, navigation } = this.props;
     const data = {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
@@ -113,6 +115,7 @@ class Home extends Component {
       destination: labelDestination,
     };
     getFilterOffers(data);
+    navigation.navigate('Filter');
   }
 
   render() {
@@ -121,17 +124,17 @@ class Home extends Component {
       labelVehicle,
     } = this.state;
     const {
-      driver, offers, vehicles, navigation,
+      driver, offers, vehicles, navigation, destinations,
     } = this.props;
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    if (offers.data && vehicles.data) {
-      offers.data.map((originData) => {
-        dataPickOrigin.push({ Name: originData.origin });
+    if (offers.data && vehicles.data && destinations.data.origins !== null) {
+      destinations.data.origins.map((originData) => {
+        dataPickOrigin.push({ Name: originData.name });
       });
-      offers.data.map((destinationData) => {
-        dataPickDesti.push({ Name: destinationData.destination });
+      destinations.data.destinations.map((destinationData) => {
+        dataPickDesti.push({ Name: destinationData.name });
       });
       vehicles.data.map((vehiclesData) => {
         dataPickVehi.push({ Name: vehiclesData.name, id: vehiclesData.id });
@@ -263,7 +266,7 @@ class Home extends Component {
                     />
                   </WrapperSpecific>
                   <WrapperSpecific>
-                    <GrayText>Origen</GrayText>
+                    <GrayText>Destino</GrayText>
                     <PickerModal
                       renderSelectView={(disabled, selected, showModal) => (
                         <WrapperTouch onPress={showModal}>
@@ -338,7 +341,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers,
+    driver, offers, vehicles, user, profile, filterOffers, destinations,
   } = state;
   return {
     driver,
@@ -347,6 +350,7 @@ const mapStateToProps = (state) => {
     user,
     profile,
     filterOffers,
+    destinations,
   };
 };
 
@@ -356,6 +360,7 @@ const mapDispatchToProps = dispatch => ({
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getFilterOffers: data => dispatch(FilterOffers.getOffersByFilterRequest(data)),
+  getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
 });
 
 export default connect(
