@@ -37,12 +37,13 @@ class Home extends Component {
       labelDestination: '',
       labelVehicle: '',
       idVehicle: null,
+      callMine: false,
     };
   }
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile,
+      profileDriver, getsOffers, getVehicles, getProfile
     } = this.props;
     const data = {
       driver: {
@@ -53,6 +54,15 @@ class Home extends Component {
     getsOffers();
     getVehicles();
     getProfile();
+  }
+
+  getMineOffers() {
+    const {
+      getMyOffers, profile,
+    } = this.props;
+
+
+    getMyOffers(profile.data[0].user.id);
   }
 
   onPressFilter() {
@@ -118,15 +128,19 @@ class Home extends Component {
   render() {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
-      labelVehicle,
+      labelVehicle, callMine
     } = this.state;
     const {
-      driver, offers, vehicles, navigation,
+      driver, offers, vehicles, navigation, profile,
     } = this.props;
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    if (offers.data && vehicles.data) {
+    if(offers.data && !offers.myOffers && !callMine){
+      this.getMineOffers();
+      this.setState({callMine: true});
+    }
+    if (offers.data && offers.myOffers && vehicles.data) {
       offers.data.map((originData) => {
         dataPickOrigin.push({ Name: originData.origin });
       });
@@ -136,10 +150,15 @@ class Home extends Component {
       vehicles.data.map((vehiclesData) => {
         dataPickVehi.push({ Name: vehiclesData.name, id: vehiclesData.id });
       });
-      let vehicle_data = {};
+      const vehicle_data = {};
       vehicles.data.forEach((vehicle) => {
-        vehicle_data[vehicle.id] = vehicle.name
+        vehicle_data[vehicle.id] = vehicle.name;
       });
+      const mine_offers = [];
+      offers.myOffers.forEach((offer) => {
+        mine_offers.push(offer.id);
+      });
+
       return (
         <MainView>
           <MainWrapper>
@@ -194,21 +213,22 @@ class Home extends Component {
             </ContentView>
 
             <ContentOffer subcontent>
-              {offers.data.map(services => (
-
-                <WhiteCardTravels
-                from={services.origin}
-                to={services.destination}
-                vehicle={vehicle_data[services.vehicle_type_id]}
-                pay={services.price}
-                date="hoy"
-                actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
-                btnPrimary="Aplicar"
-                btnSecondary
-                />
-
-
-              ))}
+              {offers.data.map((services) => {
+                if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
+                  return (
+                    <WhiteCardTravels
+                      from={services.origin}
+                      to={services.destination}
+                      vehicle={vehicle_data[services.vehicle_type_id]}
+                      pay={services.price}
+                      date="hoy"
+                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
+                      btnPrimary="Aplicar"
+                      btnSecondary
+                    />
+                  );
+                }
+              })}
             </ContentOffer>
           </MainWrapper>
           <Swipeable
@@ -321,7 +341,7 @@ class Home extends Component {
               </ContentForm>
               <WrapperButtonsBottom>
                 <WrapperButtonGradient>
-                  <ButtonGradient content="Buscar" press={() => this.searchByFilter()}/>
+                  <ButtonGradient content="Buscar" press={() => this.searchByFilter()} />
                 </WrapperButtonGradient>
               </WrapperButtonsBottom>
             </WrapperSwipe>
@@ -359,6 +379,7 @@ const mapDispatchToProps = dispatch => ({
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getFilterOffers: data => dispatch(FilterOffers.getOffersByFilterRequest(data)),
+  getMyOffers: params => dispatch(OffersActions.getMyOffersRequest(params)),
 });
 
 export default connect(
