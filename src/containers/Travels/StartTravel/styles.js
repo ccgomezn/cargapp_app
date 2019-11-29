@@ -42,3 +42,11 @@ export const WrapperTopCard = styled.View`
   padding-horizontal: 5%;
   top: 10px;
 `;
+
+export const BlueText = styled.Text`
+  color: #0068ff;
+  font-size: 18px;
+  align-self: center;
+  text-align: center;
+  padding-bottom: 3%:
+`;

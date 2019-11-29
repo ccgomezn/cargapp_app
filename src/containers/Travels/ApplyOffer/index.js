@@ -28,6 +28,7 @@ class ApplyOffer extends Component {
       fetchSuccess: false,
       fetchID: false,
       valueApplyOffer: null,
+      showTravel: false,
     };
   }
 
@@ -41,9 +42,13 @@ class ApplyOffer extends Component {
 
   vehicleType(value, id) {
     const { navigation } = this.props;
+    const { showTravel } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
+    alert(showTravel);
     if (id) {
       this.applyOffer(id, value);
+    } else if (id || showTravel) {
+      navigation.navigate('StartTravel', { Offer: value });
     } else {
       navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
     }
@@ -51,7 +56,7 @@ class ApplyOffer extends Component {
 
   applyOffer(value, valueApplyOffer) {
     const { applyOffer, navigation, profile } = this.props;
-    alert('IM HERE' + value);
+    alert(`IM HERE${value}`);
     const data = {
       service_id: valueApplyOffer.id,
       user_id: profile.data[0].user.id,
@@ -61,11 +66,23 @@ class ApplyOffer extends Component {
     navigation.navigate('StartTravel', { Offer: valueApplyOffer });
   }
 
+  nameButton() {
+    const { profile } = this.props;
+    const { offer, showTravel } = this.state;
+    if (profile.data[0].user.id === offer.user_driver_id) {
+      if (offer.statu_id === 10) {
+        return 'Esperando respuesta';
+      }
+      return 'Iniciar viaje';
+    }
+    return 'Aplicar a oferta';
+  }
+
   render() {
     const { offers, navigation, companies } = this.props;
     console.log(this.props);
     const {
-      offer, successNotification, errorFalse, fetch, fetchID,
+      offer, successNotification, errorFalse, fetch, fetchID, showTravel,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -76,6 +93,8 @@ class ApplyOffer extends Component {
     const selectID = navigation.getParam('selectID');
     if (selectID !== undefined && selectID !== null && fetchID === false) {
       this.setState({ fetchID: true });
+    } else if (!showTravel) {
+      this.setState({ showTravel: true });
     }
     if (offer !== null && companies.data !== null) {
       return (
@@ -146,7 +165,7 @@ class ApplyOffer extends Component {
                   onPressBW={() => navigation.goBack()}
                   delivery="5 días"
                   company={company.name}
-                  mainButton={offer.statu_id === 10 ? 'En Aprobación' : 'Empezar viaje'}
+                  mainButton={this.nameButton()}
                 />
               );
             }
