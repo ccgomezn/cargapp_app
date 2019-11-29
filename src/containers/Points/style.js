@@ -30,6 +30,16 @@ export const ContentBlock = styled.View`
   flex-direction: row;
 `;
 
+export const ContentSection = styled.View`
+  flex: 1;
+  height: auto;
+  backgroundColor: transparent;
+  flexDirection: row;
+  paddingVertical: 2;
+  alignSelf: center;
+  justifyContent: space-between;
+`;
+
 export const TextBlack = styled.Text`
   width: 100%;
   font-family: Roboto;
@@ -44,13 +54,6 @@ export const TextGray = styled.Text`
   font-size: 16px;
   letter-spacing: 0px;
   color: #8a8c9d;
-`;
-
-export const Section = styled.TouchableOpacity`
-  min-width: 30%;
-  border-radius: 6px;
-  background-color: white;
-  padding: 8px 12px;
 `;
 
 export const PointRet = styled.View`
