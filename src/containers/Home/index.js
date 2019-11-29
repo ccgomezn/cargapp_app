@@ -126,7 +126,6 @@ class Home extends Component {
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    console.log(this.props);
     if (offers.data && vehicles.data) {
       offers.data.map((originData) => {
         dataPickOrigin.push({ Name: originData.origin });
@@ -136,6 +135,10 @@ class Home extends Component {
       });
       vehicles.data.map((vehiclesData) => {
         dataPickVehi.push({ Name: vehiclesData.name, id: vehiclesData.id });
+      });
+      let vehicle_data = {};
+      vehicles.data.forEach((vehicle) => {
+        vehicle_data[vehicle.id] = vehicle.name
       });
       return (
         <MainView>
@@ -192,18 +195,19 @@ class Home extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map(services => (
-                vehicles.data.map(vehicle => (
-                  <WhiteCardTravels
-                    from={services.origin}
-                    to={services.destination}
-                    vehicle={vehicle.id === services.vehicle_type_id && vehicle.name}
-                    pay={services.price}
-                    date="hoy"
-                    actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
-                    btnPrimary="Aplicar"
-                    btnSecondary
-                  />
-                ))
+
+                <WhiteCardTravels
+                from={services.origin}
+                to={services.destination}
+                vehicle={vehicle_data[services.vehicle_type_id]}
+                pay={services.price}
+                date="hoy"
+                actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
+                btnPrimary="Aplicar"
+                btnSecondary
+                />
+
+
               ))}
             </ContentOffer>
           </MainWrapper>

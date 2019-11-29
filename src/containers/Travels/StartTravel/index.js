@@ -6,6 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import StarRating from 'react-native-star-rating';
+import ImagePicker from 'react-native-image-picker';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import RateTypes from '../../../redux/reducers/RateServiceRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
@@ -22,6 +23,7 @@ import {
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import TopCardTravel from '../../../components/TopCardTravel';
 import EmptyDialog from '../../../components/EmptyDialog';
+import DocumentActions from '../../../redux/reducers/DocumentRedux';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -40,6 +42,7 @@ class StartTravel extends Component {
       load: false,
       inTravel: false,
       unLoad: false,
+      finished: false,
     };
   }
 
@@ -47,21 +50,21 @@ class StartTravel extends Component {
     const {
       navigation, offers, getMarkers, putStateOriginTravel,
     } = this.props;
+    let real_offer = {};
     const offer = navigation.getParam('Offer');
     offers.data.map((newOffer) => {
       if (newOffer.id === offer.id) {
         this.setState({ offerSpecific: offer, status: offer.statu_id });
       }
     });
+    Geolocation.watchPosition((e) => this.ads(e.coords));
+
     this.callLocation();
-    if (offer.statu_id === 10) {
-      alert('holi');
-      const data = {
-        service: {
-          statu_id: 6,
-        },
-      };
-      putStateOriginTravel(offer.id, data);
+    if (offer.statu_id === 7) {
+      this.setState({ load: true,inTravel: false });
+    } else if (offer.statu_id === 8 || offer.statu_id === 6) {
+      console.log('onroad');
+      this.setState({ inTravel: true });
     }
     getMarkers();
   }
@@ -70,6 +73,7 @@ class StartTravel extends Component {
     const { offerSpecific } = this.state;
     const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
     const respJson = await resp.json();
+
     const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
     const coords = points.map((point, index) => ({
       latitude: point[0],
@@ -110,7 +114,8 @@ class StartTravel extends Component {
   ads(e) {
     const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
-    if (offerSpecific.statu_id === 6) {
+    console.log(status);
+    if (status === 6) {
       this.setState({ lastLat: e.latitude, lastLong: e.longitude });
       this.callLocation();
       const result = this.destinationService(
@@ -119,25 +124,25 @@ class StartTravel extends Component {
         offerSpecific.origin_latitude,
         offerSpecific.origin_longitude,
       );
-      if (result > 0.5 && offerSpecific.statu_id === 6) {
+      if (result < 0.5) {
         const data = {
           service: {
             statu_id: 7,
           },
         };
         putStateOriginTravel(offerSpecific.id, data);
-        alert('soy 7 ahora');
-        this.componentDidMount();
-        this.setState({ status: 7, load: true });
+        this.setState({ status: 7, load: true, inTravel: false });
+
+       // this.componentDidMount();
       }
-    } else if (offerSpecific.statu_id === 8) {
+    } else if (status === 8) {
       const result = this.destinationService(
         e.latitude,
         e.longitude,
         offerSpecific.destination_latitude,
         offerSpecific.destination_longitude,
       );
-      if (result > 0.5) {
+      if (result < 0.5) {
         const data = {
           service: {
             statu_id: 9,
@@ -145,36 +150,85 @@ class StartTravel extends Component {
         };
         setTimeout(() => {
           putStateOriginTravel(offerSpecific.id, data);
-          this.setState({ unload: false, inTravel: true });
-          this.componentDidMount();
+          this.setState({ status: 9, load: false, inTravel: false });
+          //this.componentDidMount();
         }, 1000);
       }
     }
   }
 
-  confirmTravel() {
+
+  async onRegisterDoc(source, name) {
+    const { registerDocument, profile } = this.props;
+    const { offerSpecific } = this.state;
+
+    const user_id = profile.data[0].user.id;
+    let photoName = source.fileName;
+    if (source.fileName === '' || source.fileName === null) {
+      photoName = `img_${source.fileSize}.jpg`;
+    }
+    const data = new FormData();
+    data.append('service_document[document_type]', 'foto');
+    data.append('service_document[document]', {
+      name: photoName,
+      uri: source.uri,
+      type: source.type,
+    });
+    data.append('service_document[user_id]', user_id);
+    data.append('service_document[name]', name);
+    data.append('service_document[active]', 1);
+    data.append('service_document[service_id]', offerSpecific.id);
+
+    await registerDocument(data);
+    this.setState({ loadingRegister: true });
+  }
+
+
+  async load(statu_id, name) {
     const { putStateOriginTravel } = this.props;
+    const { offerSpecific } = this.state;
+
+
+    const options = {
+      title: 'Vincular Documento',
+      cancelButtonTitle: 'Cancelar',
+      takePhotoButtonTitle: 'Tomar Foto',
+      chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
+      customButtons: [],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        // user cancelled image picker
+        this.setState({ error: 'Tienes 1 o más documentos invalidos' });
+      } else if (response.error) {
+        // Error imagePicker
+        this.setState({ error: 'Tienes 1 o más documentos con formato incorrecto' });
+      } else {
+        this.onRegisterDoc(response, name);
+        const data = {
+          service: {
+            statu_id,
+          },
+        };
+        console.log('offer');
+        putStateOriginTravel(offerSpecific.id, data);
+        this.componentDidMount();
+        this.setState({ status: statu_id, inTravel: true });
+      }
+    });
+  }
+
+  async confirmTravel() {
     const { offerSpecific, status } = this.state;
     if (status === 7 || offerSpecific.statu_id === 7) {
-      alert('soy 8 ahora');
-      const data = {
-        service: {
-          statu_id: 8,
-        },
-      };
-      putStateOriginTravel(offerSpecific.id, data);
-      this.componentDidMount();
-      this.setState({ status: 8, inTravel: true });
+      await this.load(8, 'Confirmacion de cargue');
     } else if (status === 9 || offerSpecific.statu_id === 9) {
-      alert('soy 11 ahora');
-      const data = {
-        service: {
-          statu_id: 11,
-        },
-      };
-      putStateOriginTravel(offerSpecific.id, data);
-      this.componentDidMount();
-      this.setState({ status: 11, modalRating: true });
+      await this.load(11, 'Confirmacion de descargue');
     }
   }
 
@@ -201,6 +255,7 @@ class StartTravel extends Component {
   rating(value) {
     const { postRateServices, profile, navigation } = this.props;
     const { offerSpecific } = this.state;
+    this.setState({ modalRating: false, finished: true });
     const data = {
       rate_service: {
         service_point: value,
@@ -211,23 +266,22 @@ class StartTravel extends Component {
       },
     };
     postRateServices(data);
-    this.setState({ modalRating: false });
     navigation.navigate('First');
   }
 
   render() {
     const {
-      offerSpecific, lastLat, lastLong, waypoints, status, unload,
+      offerSpecific, lastLat, lastLong, waypoints, status, finished, unload,
       modalRating, starCount, load, unLoad, inTravel,
     } = this.state;
+    console.log(modalRating);
     const { companies, markers } = this.props;
-    console.log(offerSpecific);
     if (offerSpecific !== null && waypoints !== undefined && markers.data !== null) {
       markers.data.map(commerce => (
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
       ));
-      if (offerSpecific.statu_id === 11 && !modalRating) {
+      if ((offerSpecific.statu_id === 11 || status === 11) && !modalRating && !finished) {
         this.setState({ modalRating: true });
       }
       return (
@@ -239,7 +293,6 @@ class StartTravel extends Component {
               latitudeDelta: 0.10,
               longitudeDelta: 0.10,
             }}
-            onUserLocationChange={e => this.ads(e.nativeEvent.coordinate)}
             showsUserLocation
             followsUserLocation
             showsIndoorLevelPicker
@@ -272,8 +325,8 @@ class StartTravel extends Component {
                 <WrapperTopCard>
                   <TopCardTravel
                     travelsCount="20"
-                    arrive={offerSpecific.statu_id !== 6 || offerSpecific.statu_id !== 11}
-                    unLoad={load}
+                    arrive={status !== 6 || status !== 11}
+                    unLoad={!load}
                     amount="20k"
                     isConfirmLoad={inTravel}
                     company={CompanyInfo.name}
@@ -299,7 +352,7 @@ class StartTravel extends Component {
               secondAddress={offerSpecific.destination_address}
             />
           </WrapperAdresses>
-          <EmptyDialog visible={modalRating}>
+          <EmptyDialog visible={modalRating && !finished}>
             <WrapperModal>
               <BlueText>¿Que tal estuvo tu viaje?</BlueText>
               <StarRating
@@ -341,6 +394,7 @@ const mapDispatchToProps = dispatch => ({
   putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
   getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
   postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
+  registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
 });
 
 export default connect(
