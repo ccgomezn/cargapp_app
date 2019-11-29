@@ -95,14 +95,6 @@ class MyTravels extends Component {
             <ContentView subcontent>
               <ContentBlock>
                 <TextBlack>Mis Viajes</TextBlack>
-                <ContentFilter>
-                  <TouchFilter onPress={() => this.onPressFilter()}>
-                    <TextFilter>
-                    Filtrar: Todos
-                      { ' >' }
-                    </TextFilter>
-                  </TouchFilter>
-                </ContentFilter>
               </ContentBlock>
             </ContentView>
 
