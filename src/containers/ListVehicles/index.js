@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-named-as-default-member */
@@ -111,7 +112,6 @@ class ListVehicles extends Component {
           />
         </MainWrapper>
       );
-    // eslint-disable-next-line no-else-return
     } else {
       return (
         <ActivityIndicator

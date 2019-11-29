@@ -21,4 +21,5 @@ export default combineReducers({
   chat: require('./ChatRedux').reducer,
   parameters: require('./ParametersRedux').reducer,
   filterOffers: require('./FilterOffersRedux').reducer,
+  permissions: require('./PermissionsRedux').reducer,
 });

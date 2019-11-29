@@ -19,6 +19,8 @@ import Geolocation from './Geolocations';
 import Chats from './Chats';
 import Parameters from './Parameters';
 import FilterOffers from './FilterOffers';
+import Permissions from './Permissions';
+
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
@@ -55,6 +57,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const chats = new Chats(api);
   const parameters = new Parameters(api);
   const filterOffers = new FilterOffers(api);
+  const permissions = new Permissions(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -80,6 +83,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     chats,
     parameters,
     filterOffers,
+    permissions,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.

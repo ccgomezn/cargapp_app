@@ -60,6 +60,7 @@ export const getMeVehiclesRequest = state => ({
   fetching: true,
   status: false,
   reg: false,
+  list: null,
 });
 
 export const getMeVehiclesSuccess = (state, { data }) => ({
