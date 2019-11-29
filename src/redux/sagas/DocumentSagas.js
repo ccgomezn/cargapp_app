@@ -26,6 +26,27 @@ export function* registerDocument(api, action) {
   }
 }
 
+
+export function* registerDocumentService(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  api.setContent('multipart/form-data');
+  const response = yield call(api.document.registerDocumentService, params);
+   console.log('doc',response);
+  if (response.ok) {
+    // save response ok
+    yield put(DocumentActions.postRegisterDocSuccess(response.data));
+  } else if (response.status === 302 || response.status === 422) {
+    // save response(302, 422: ya registrado; falta un campo; password incorrecto)
+    yield put(DocumentActions.postRegisterDocUnprocess(null));
+  } else {
+    // status error
+    yield put(DocumentActions.postRegisterDocFailure(response.data));
+  }
+}
+
+
 export function* validateDocument(api, action) {
   const { params } = action;
   const response = yield call(api.document.registerDocument, params);

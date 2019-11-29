@@ -35,7 +35,7 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { registerDocument } from './DocumentSagas';
+import {registerDocument, registerDocumentService} from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -74,6 +74,7 @@ export default function* root() {
     takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
     takeLatest(UserTypes.POST_LOGIN_REQUEST, loginUser, api),
     takeLatest(DocumentTypes.POST_REGISTER_DOC_REQUEST, registerDocument, api),
+    takeLatest(DocumentTypes.POST_REGISTER_DOC_SERVICE_REQUEST, registerDocumentService, api),
     takeLatest(OffersTypes.GET_OFFERS_REQUEST, getOffers, api),
     takeLatest(VehicleTypes.GET_VEHICLE_REQUEST, getVehicles, api),
     takeLatest(CompanyTypes.GET_COMPANIES_REQUEST, getCompanies, api),

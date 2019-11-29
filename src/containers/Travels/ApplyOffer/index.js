@@ -44,10 +44,9 @@ class ApplyOffer extends Component {
     const { navigation } = this.props;
     const { showTravel } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
-    alert(showTravel);
     if (id) {
       this.applyOffer(id, value);
-    } else if (id || showTravel) {
+    } else if (showTravel) {
       navigation.navigate('StartTravel', { Offer: value });
     } else {
       navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
@@ -63,7 +62,7 @@ class ApplyOffer extends Component {
       active: true,
     };
     applyOffer(data);
-    navigation.navigate('StartTravel', { Offer: valueApplyOffer });
+    navigation.navigate('First');
   }
 
   nameButton() {
@@ -72,6 +71,9 @@ class ApplyOffer extends Component {
     if (profile.data[0].user.id === offer.user_driver_id) {
       if (offer.statu_id === 10) {
         return 'Esperando respuesta';
+      }
+      if(!showTravel){
+        this.setState({showTravel: true});
       }
       return 'Iniciar viaje';
     }
@@ -82,7 +84,7 @@ class ApplyOffer extends Component {
     const { offers, navigation, companies } = this.props;
     console.log(this.props);
     const {
-      offer, successNotification, errorFalse, fetch, fetchID, showTravel,
+      offer, successNotification, errorFalse, fetch, fetchID,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -93,8 +95,6 @@ class ApplyOffer extends Component {
     const selectID = navigation.getParam('selectID');
     if (selectID !== undefined && selectID !== null && fetchID === false) {
       this.setState({ fetchID: true });
-    } else if (!showTravel) {
-      this.setState({ showTravel: true });
     }
     if (offer !== null && companies.data !== null) {
       return (
