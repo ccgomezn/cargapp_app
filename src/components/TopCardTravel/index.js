@@ -18,7 +18,7 @@ import {
 import { PropsType } from 'react-native/ReactCommon/hermes/inspector/tools/msggen/src/Type';
 
 function TopCardTravel({
-  company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk,
+  company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk, actionMan,
 }) {
   if (arrive) {
     return (
@@ -46,7 +46,9 @@ function TopCardTravel({
               <LineVerical />
               <WrapperColumn>
                 <Icon />
-                <BlueText>Ver manifiesto</BlueText>
+                <TouchableContact onPress={actionMan}>
+                  <BlueText>Ver manifiesto</BlueText>
+                </TouchableContact>
               </WrapperColumn>
             </WrapperColumn>
           )

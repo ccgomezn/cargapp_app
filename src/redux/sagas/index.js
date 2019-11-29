@@ -5,7 +5,7 @@ import API from '../../api';
 import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 import { CountrieTypes } from '../reducers/CountrieRedux';
-import { DocumentTypes } from '../reducers/DocumentRedux';
+import {DocumentTypes } from '../reducers/DocumentRedux';
 import { OffersTypes } from '../reducers/OffersRedux';
 import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
@@ -35,7 +35,7 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import {registerDocument, registerDocumentService} from './DocumentSagas';
+import {registerDocument, registerDocumentService, getDocsServiceRequest} from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -90,6 +90,7 @@ export default function* root() {
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
     takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),
     takeLatest(OffersTypes.GET_MY_OFFERS_REQUEST, getMyOffers, api),
+    takeLatest(DocumentTypes.GET_DOCS_SERVICE_REQUEST, getDocsServiceRequest, api),
     takeLatest(PasswordTypes.PUT_PASSWORD_REQUEST, putPassword, api),
     takeLatest(StatusTypes.GET_STATUS_REQUEST, getStatus, api),
     takeLatest(OffersTypes.GET_SERVICES_REQUEST, getServices, api),
