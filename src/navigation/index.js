@@ -77,8 +77,8 @@ class Navigation extends React.Component {
       samples: 1,
       persist: true,
     }).then((location) => {
-      console.log(location);
-      if (user.isLogged) {
+
+      if (user.isLogged && profile.data) {
         sendLocation({
           user_location: {
             longitude: location.coords.longitude,

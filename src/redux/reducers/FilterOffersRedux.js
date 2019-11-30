@@ -19,3 +19,28 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* ---------- REDUCERS ---------- */
+
+export const getOffersByFilterRequest = state => ({
+  ...state,
+  fetching: true,
+  error: false,
+});
+
+export const getOffersByFilterSuccess = (state, { data }) => ({
+  ...state,
+  fetching: false,
+  data,
+});
+
+export const getOffersByFilterFailure = state => ({
+  ...state,
+  fetching: false,
+  error: true,
+});
+
+/* --------- REDUCERS TO ACTIONS ---------- */
+export const reducer = createReducer(INITIAL_STATE, {
+  [Types.GET_OFFERS_BY_FILTER_REQUEST]: getOffersByFilterRequest,
+  [Types.GET_OFFERS_BY_FILTER_SUCCESS]: getOffersByFilterSuccess,
+  [Types.GET_OFFERS_BY_FILTER_FAILURE]: getOffersByFilterFailure,
+});

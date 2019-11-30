@@ -13,6 +13,7 @@ export function* getOffers(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.offers.getOffers, params);
+  console.log(response);
   if (response.ok) {
     yield put(OffersActions.getOffersSuccess(response.data));
   } else {
@@ -62,6 +63,7 @@ export function* putStateOriginTravel(api, action) {
   const { id, data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
+  api.setContent('application/json');
   const response = yield call(api.offers.putStateOriginTravel, id, data);
   console.log(response);
   if (response.ok) {

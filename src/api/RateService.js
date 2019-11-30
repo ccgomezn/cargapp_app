@@ -1,5 +1,5 @@
 export default function (api) {
   return {
-    postRateService: data => api.get('rate/services', data),
+    postRateServices: data => api.post('rate_services', data),
   };
 }

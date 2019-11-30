@@ -5,7 +5,7 @@ import API from '../../api';
 import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 import { CountrieTypes } from '../reducers/CountrieRedux';
-import { DocumentTypes } from '../reducers/DocumentRedux';
+import {DocumentTypes } from '../reducers/DocumentRedux';
 import { OffersTypes } from '../reducers/OffersRedux';
 import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
@@ -21,6 +21,9 @@ import { RateTypes } from '../reducers/RateServiceRedux';
 import { LocationTypes } from '../reducers/GeolocationRedux';
 import { ChatTypes } from '../reducers/ChatRedux';
 import { ParametersTypes } from '../reducers/ParametersRedux';
+import { FilterTypes } from '../reducers/FilterOffersRedux';
+import { PermissionTypes } from '../reducers/PermissionsRedux';
+import { DestinationsTypes } from '../reducers/DestinationsRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -34,12 +37,11 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { registerDocument } from './DocumentSagas';
+import { registerDocument, registerDocumentService,getDocsServiceRequest } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
-import { getVehicles } from './VehicleSagas';
-import { getMeVehicles, registerVehicle } from './VehicleSagas';
+import { getVehicles, getMeVehicles, registerVehicle } from './VehicleSagas';
 import { getCompanies, registerCompanies } from './CompanySagas';
 import { getProfile, editProfile } from './ProfileSagas';
 import { getLoadsType } from './LoadSagas';
@@ -52,9 +54,10 @@ import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSa
 import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
 import { sendLocation } from './GeolocationSagas';
-import { getMineChats } from './ChatSagas';
-import { getActiveChats } from './ChatSagas';
-
+import { getActiveChats, getMineChats } from './ChatSagas';
+import { getFilterOffers } from './FilterOffersSagas';
+import { getPermission } from './PermissionsSagas';
+import { getDestinations } from './DestinationsSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -63,7 +66,8 @@ const api = API.create();
 
 /* ----------- Connects Types to Sagas ------------ */
 export default function* root() {
-  yield all([takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
+  yield all([
+    takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
     takeLatest(ChatTypes.GET_ME_CHATS_REQUEST, getMineChats, api),
     takeLatest(ChatTypes.GET_ACTIVE_CHATS_REQUEST, getActiveChats, api),
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),
@@ -74,6 +78,7 @@ export default function* root() {
     takeLatest(CountrieTypes.POST_COUNTRIES_REQUEST, countriesActive, api),
     takeLatest(UserTypes.POST_LOGIN_REQUEST, loginUser, api),
     takeLatest(DocumentTypes.POST_REGISTER_DOC_REQUEST, registerDocument, api),
+    takeLatest(DocumentTypes.POST_REGISTER_DOC_SERVICE_REQUEST, registerDocumentService, api),
     takeLatest(OffersTypes.GET_OFFERS_REQUEST, getOffers, api),
     takeLatest(VehicleTypes.GET_VEHICLE_REQUEST, getVehicles, api),
     takeLatest(CompanyTypes.GET_COMPANIES_REQUEST, getCompanies, api),
@@ -89,6 +94,7 @@ export default function* root() {
     takeLatest(CouponsTypes.GET_COUPONS_REQUEST, getCoupons, api),
     takeLatest(CouponsTypes.POST_COUPONS_REQUEST, postCoupon, api),
     takeLatest(OffersTypes.GET_MY_OFFERS_REQUEST, getMyOffers, api),
+    takeLatest(DocumentTypes.GET_DOCS_SERVICE_REQUEST, getDocsServiceRequest, api),
     takeLatest(PasswordTypes.PUT_PASSWORD_REQUEST, putPassword, api),
     takeLatest(StatusTypes.GET_STATUS_REQUEST, getStatus, api),
     takeLatest(OffersTypes.GET_SERVICES_REQUEST, getServices, api),
@@ -103,5 +109,8 @@ export default function* root() {
     takeLatest(UserTypes.GET_USERINFO_REQUEST, getInfoUser, api),
     takeLatest(VehicleTypes.GET_ME_VEHICLES_REQUEST, getMeVehicles, api),
     takeLatest(VehicleTypes.POST_REG_VEHICLE_REQUEST, registerVehicle, api),
+    takeLatest(FilterTypes.GET_OFFERS_BY_FILTER_REQUEST, getFilterOffers, api),
+    takeLatest(PermissionTypes.GET_PERMISSION_REQUEST, getPermission, api),
+    takeLatest(DestinationsTypes.GET_DESTINATIONS_REQUEST, getDestinations, api),
   ]);
 }
