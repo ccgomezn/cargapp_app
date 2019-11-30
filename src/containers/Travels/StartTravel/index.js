@@ -111,7 +111,7 @@ class StartTravel extends Component {
 
   async getDirections(startLoc, destinationLoc) {
     const { offerSpecific } = this.state;
-    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=4.710988599999999,-74.072092&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
     const respJson = await resp.json();
 
     const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
