@@ -70,6 +70,7 @@ class Chat extends Component {
   }
 
   onSend(messages = []) {
+
     firebase.firestore().collection(this.state.chat_data.id.toString()).add({
       message: messages[0].text,
       user_id: messages[0].user._id,
