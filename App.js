@@ -35,11 +35,7 @@ class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   async createBackgroundNotifications() {
     firebase.messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      // Update a users messages list using AsyncStorage
-      const currentMessages = await AsyncStorage.getItem('messages');
-      const messageArray = JSON.parse(currentMessages);
-      messageArray.push(remoteMessage.data);
-      await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
+
     });
   }
 

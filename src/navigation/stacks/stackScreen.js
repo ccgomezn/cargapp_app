@@ -39,6 +39,8 @@ import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
   BoxPerfil, ImagenPerfil, CircleBorder, ImagenArrow, HeaderStyle,
 } from '../style';
+// FILTER
+import ScreenFilterOffers from '../../containers/FilterOffers';
 
 // eslint-disable-next-line react/prop-types
 function leftIconMenu({ navigation }) {
@@ -109,6 +111,16 @@ function centerIconMenu({ navigation }) {
 export const homeStackNavigator = createStackNavigator({
   First: {
     screen: ScreenHome,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  Filter: {
+    screen: ScreenFilterOffers,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,

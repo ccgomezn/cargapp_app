@@ -141,7 +141,7 @@ const DrawerDriver = createDrawerNavigator(
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
       },
     },
-    ScreenVehicule: {
+    ScreenVehicle: {
       screen: myVehicleStackNavigator,
       navigationOptions: {
         drawerLabel: 'Mi Vehículo',

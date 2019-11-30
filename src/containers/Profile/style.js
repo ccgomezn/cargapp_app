@@ -164,7 +164,7 @@ export const TitleBlack = styled.Text`
 
 export const TextGray = styled.Text`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto-Bold;
   font-size: 14px; 
   color: #010935;
   padding-bottom: 10px;
