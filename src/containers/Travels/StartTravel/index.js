@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import {Platform} from 'react-native';
+import {
+  Platform, ActivityIndicator, Linking, PermissionsAndroid,
+} from 'react-native';
 
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { ActivityIndicator, Linking, PermissionsAndroid } from 'react-native';
+
 import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
@@ -55,27 +57,24 @@ class StartTravel extends Component {
     const { android } = RNFetchBlob;
     const { dirs } = RNFetchBlob.fs;
 
-      RNFetchBlob
-        .config({
-          fileCache: false,
-          appendExt: 'pdf',
-          addAndroidDownloads: {
-            useDownloadManager: true,
-            notification: true,
-            mime: 'application/pdf',
-            mediaScannable: true,
-            title: 'manifest.pdf',
-            path: `${dirs.DownloadDir}/manifest.pdf`,
-          },
-        })
-        .fetch('GET', this.state.manifest)
-        .then((resp) => {
-
-          if(Platform.OS == 'ios') RNFetchBlob.ios.openDocument(resp.path());
-          if (Platform.OS == 'android') android.actionViewIntent(resp.path(), 'application/pdf');
-
-        });
-
+    RNFetchBlob
+      .config({
+        fileCache: false,
+        appendExt: 'pdf',
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          mime: 'application/pdf',
+          mediaScannable: true,
+          title: 'manifest.pdf',
+          path: `${dirs.DownloadDir}/manifest.pdf`,
+        },
+      })
+      .fetch('GET', this.state.manifest)
+      .then((resp) => {
+        if (Platform.OS == 'ios') RNFetchBlob.ios.openDocument(resp.path());
+        if (Platform.OS == 'android') android.actionViewIntent(resp.path(), 'application/pdf');
+      });
   }
 
   componentDidMount() {
@@ -110,17 +109,33 @@ class StartTravel extends Component {
   }
 
   async getDirections(startLoc, destinationLoc) {
-    const { offerSpecific } = this.state;
-    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${offerSpecific.origin_latitude},${offerSpecific.origin_longitude}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const { offerSpecific, status } = this.state;
+    let lat_des = offerSpecific.origin_latitude;
+    let lng_des = offerSpecific.origin_longitude;
+    if (status === 8) {
+      lat_des = offerSpecific.destination_latitude;
+      lng_des = offerSpecific.destination_longitude;
+    }
 
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    console.log(resp);
     const respJson = await resp.json();
+    console.log(respJson);
+    const points = respJson.routes[0].legs[0].steps;
 
-    const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
-    const coords = points.map((point, index) => ({
-      latitude: point[0],
-      longitude: point[1],
-    }));
+    const coords = [];
+    points.forEach((point) => {
+      const decodedPoints = Polyline.decode(point.polyline.points);
+      decodedPoints.forEach((dec) => {
+          coords.push({
+            latitude: dec[0],
+            longitude: dec[1],
+          });
+
+      });
+    });
     this.setState({ coords });
+    console.log(coords);
     return coords;
   }
 
@@ -182,6 +197,8 @@ class StartTravel extends Component {
         offerSpecific.destination_latitude,
         offerSpecific.destination_longitude,
       );
+      this.callLocation();
+
       if (result < 0.5) {
         const data = {
           service: {
