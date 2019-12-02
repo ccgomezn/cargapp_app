@@ -23,4 +23,5 @@ export default combineReducers({
   filterOffers: require('./FilterOffersRedux').reducer,
   permissions: require('./PermissionsRedux').reducer,
   destinations: require('./DestinationsRedux').reducer,
+  geolocation: require('./GeolocationRedux').reducer,
 });
