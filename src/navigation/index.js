@@ -3,12 +3,13 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { SafeAreaView, StatusBar } from 'react-native';
 import BackgroundGeolocation from 'react-native-background-geolocation';
 import { connect } from 'react-redux';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import { firebase } from '@react-native-firebase/firestore';
 import { ContainerDriver, ContainerGenerator } from './stacks/drawerScreen';
 
 import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
-import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
@@ -30,7 +31,9 @@ class Navigation extends React.Component {
 
 
   componentWillMount() {
+    const {getLocationTargetRequest,} = this.props;
     BackgroundGeolocation.onHeartbeat(this.onHeartBeat);
+    getLocationTargetRequest();
 
     BackgroundGeolocation.ready({
       desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
@@ -53,7 +56,6 @@ class Navigation extends React.Component {
       console.log('- BackgroundGeolocation is configured and ready: ', state.enabled);
 
       if (!state.enabled) {
-
         BackgroundGeolocation.start(() => {
           console.log('- Start success');
         });
@@ -72,36 +74,49 @@ class Navigation extends React.Component {
 
   onHeartBeat(event) {
     // eslint-disable-next-line react/prop-types
-    const { user, sendLocation, profile } = this.props;
+    const {
+      user, sendLocation, profile, geolocation,
+    } = this.props;
     BackgroundGeolocation.getCurrentPosition({
       samples: 1,
       persist: true,
     }).then((location) => {
-
       if (user.isLogged && profile.data) {
-        sendLocation({
-          user_location: {
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
-            city_id: 5,
-            // eslint-disable-next-line react/prop-types
-            user_id: profile.data[0].user.id,
-            active: true,
-          },
-        })
-      }
-    }).catch(error => {
-      console.log('- BackgroundGeolocation error: ', error);
-      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
-        .then(data => {
+        if (geolocation.target) {
+          if (geolocation.target.parameters[0].name === 'local') {
+            console.log('local');
 
-        }).catch(err => {
+            sendLocation({
+              user_location: {
+                longitude: location.coords.longitude,
+                latitude: location.coords.latitude,
+                city_id: 5,
+                // eslint-disable-next-line react/prop-types
+                user_id: profile.data[0].user.id,
+                active: true,
+              },
+            });
+          } else if (geolocation.target.parameters[0].name === 'firebase') {
+            console.log('firebase');
+            firebase.firestore().collection('geolocation').add({
+              user_id: profile.data[0].user.id,
+              longitude: location.coords.longitude,
+              latitude: location.coords.latitude,
+            });
+          }
+        }
+      }
+    }).catch((error) => {
+      console.log('- BackgroundGeolocation error: ', error);
+      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({ interval: 10000, fastInterval: 5000 })
+        .then((data) => {
+
+        }).catch((err) => {
 
         });
     });
 
     // eslint-disable-next-line react/prop-types
-
   }
 
   render() {
@@ -117,15 +132,16 @@ class Navigation extends React.Component {
 
 const mapStateToProps = (state) => {
   const {
-    user, profile,
+    user, profile, geolocation,
   } = state;
   return {
-    user, profile,
+    user, profile, geolocation,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   sendLocation: params => dispatch(GeolocationActions.postLocationRequest(params)),
+  getLocationTargetRequest: params => dispatch(GeolocationActions.getLocationTargetRequest(params)),
 });
 
 export default connect(

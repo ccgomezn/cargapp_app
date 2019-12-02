@@ -16,11 +16,22 @@ import GeolocationActions from '../reducers/GeolocationRedux';
 
 // eslint-disable-next-line import/prefer-default-export
 export function* sendLocation(api, action) {
-    const { params } = action;
-    const response = yield call(api.geolocation.postLocation, params);
-    if (response.ok) {
-        yield put(GeolocationActions.postLocationSuccess(response.data));
-    } else {
-        yield put(GeolocationActions.postLocationFailure());
-    }
+  const { params } = action;
+  const response = yield call(api.geolocation.postLocation, params);
+  if (response.ok) {
+    yield put(GeolocationActions.postLocationSuccess(response.data));
+  } else {
+    yield put(GeolocationActions.postLocationFailure());
+  }
+}
+
+
+export function* getLocationTarget(api, action) {
+  const { params } = action;
+  const response = yield call(api.geolocation.getLocationTarget, params);
+  if (response.ok) {
+    yield put(GeolocationActions.getLocationTargetSuccess(response.data));
+  } else {
+    yield put(GeolocationActions.getLocationTargetFailure());
+  }
 }
