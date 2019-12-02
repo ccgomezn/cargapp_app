@@ -1,12 +1,16 @@
 import styled from 'styled-components/native';
 
 export const MainWrapper = styled.TouchableOpacity`
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-    border-radius: 10px;
-    background-color: white;
-    margin-bottom: 5px;
+  width: 100%;
+  height: auto;
+  flex-direction: row;
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 5px;
+  shadowColor: #589b9b9b;
+  shadowOffset: { width: 0, height: 1 };
+  shadowOpacity: 0.4;
+  shadowRadius: 6;
 `;
 
 export const MainText = styled.Text`

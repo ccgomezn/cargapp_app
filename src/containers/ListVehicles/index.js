@@ -36,7 +36,6 @@ class ListVehicles extends Component {
     this.setState({ selectID: selectID, offer: offer });
   }
 
-
   onViewDetail(data) {
     const { navigate } = this.props.navigation;
     const { selectID, offer } = this.state;
@@ -67,10 +66,9 @@ class ListVehicles extends Component {
   }
 
   render() {
-    const { vehicles, user } = this.props;
+    const { vehicles } = this.props;
     const { modalVeh } = this.state;
     const itemsType = {};
-    console.log(user);
 
     if (vehicles.status && !vehicles.fetching && vehicles.data !== null) {
       vehicles.data.map((ele) => {
