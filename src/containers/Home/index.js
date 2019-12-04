@@ -44,6 +44,7 @@ import DestinationsActions from '../../redux/reducers/DestinationsRedux';
 
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
 import DriverActions from '../../redux/reducers/DriverRedux';
+
 const itemsTipo = [
   {
     textItem: 'Opcion 1',
@@ -89,21 +90,20 @@ class Home extends Component {
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile, getPermission,getDestinations
+      profileDriver, getsOffers, getVehicles, getProfile, getPermission, getDestinations,
     } = this.props;
     const data = {
       driver: {
         token: '3560660900101009',
       },
     };
-    this.setState({callMine: false});
+    this.setState({ callMine: false });
     profileDriver(data);
     getsOffers();
     getVehicles();
     getProfile();
     getPermission();
     getDestinations();
-
   }
 
   getMineOffers() {
@@ -117,7 +117,6 @@ class Home extends Component {
 
   componentWillUnmount() {
     this.setState({ modalPermission: false });
-
   }
 
   onPressFilter() {
@@ -187,10 +186,12 @@ class Home extends Component {
       destination: labelDestination,
     };
     getFilterOffers(data);
-    this.setState({modalSearch: false});
-    setTimeout(() => {    navigation.navigate('Filter')
-                },1000);
+    this.setState({ modalSearch: false });
+    setTimeout(() => {
+      navigation.navigate('Filter');
+    }, 1000);
   }
+
   // eslint-disable-next-line class-methods-use-this
   missingViews(list) {
     const { listview } = this.state;
@@ -218,21 +219,21 @@ class Home extends Component {
   render() {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
-      labelVehicle, callMine,modalPermission,
-          listview,
-          fetch,
+      labelVehicle, callMine, modalPermission,
+      listview,
+      fetch,
     } = this.state;
     const {
-      driver, offers, vehicles, navigation, profile,permissions,destinations
+      driver, offers, vehicles, navigation, profile, permissions, destinations,
 
     } = this.props;
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
     console.log(callMine);
-    if(offers.data && !callMine && profile.data){
+    if (offers.data && !callMine && profile.data) {
       this.getMineOffers();
-      this.setState({callMine: true});
+      this.setState({ callMine: true });
     }
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
@@ -250,12 +251,11 @@ class Home extends Component {
       this.setState({ fetch: true });
     }
     if (offers.data && offers.services && vehicles.data && destinations.data.origins !== null && !offers.fetching && permissions.data !== null && !permissions.fetching) {
-        destinations.data.origins.map((originData) => {
-            dataPickOrigin.push({Name: originData.name});
-        });
-        offers.data.map((originData) => {
+      destinations.data.origins.map((originData) => {
+        dataPickOrigin.push({ Name: originData.name });
+      });
+      offers.data.map((originData) => {
         dataPickOrigin.push({ Name: originData.origin });
-
       });
       destinations.data.destinations.map((destinationData) => {
         dataPickDesti.push({ Name: destinationData.name });
@@ -316,10 +316,10 @@ class Home extends Component {
 
             <ContentView subcontent>
               <ContentBlock>
-                <TextBlack>Viajes</TextBlack>
+                <TextBlack>Viajes disponibles</TextBlack>
                 <ContentFilter>
                   <ButtonLink
-                    text="Filtrar viajes disponibles"
+                    text="Filtrar"
                     icon
                     press={() => this.onPressFilter()}
                   />
@@ -337,7 +337,7 @@ class Home extends Component {
                       vehicle={vehicle_data[services.vehicle_type_id]}
                       pay={services.price}
                       date="hoy"
-                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services})}
+                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
                       btnPrimary="Aplicar"
                       btnSecondary
                     />
@@ -495,7 +495,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers,permissions,destinations,
+    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations,
 
   } = state;
   return {

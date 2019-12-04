@@ -5,9 +5,11 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* CargappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CargappTests.m */; };
 		01EAC2C9045843629B6C98EC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C31F1C072E146FB907E6611 /* EvilIcons.ttf */; };
+		04B99F872395614E00FB8587 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04B99F862395614E00FB8587 /* GoogleService-Info.plist */; };
 		07C424D251744C168A107F75 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDEFDC6CD0C54520B45F5F44 /* Roboto-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
@@ -86,6 +88,8 @@
 		0234E2348CFD4590A8642E58 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		0373109C94444E45B7AE6515 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		040EB56D2350C8E4006945C0 /* ReactNativeCameraKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeCameraKit.xcodeproj; path = ../ReactNativeCameraKit.xcodeproj; sourceTree = "<group>"; };
+		04B99F862395614E00FB8587 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		04B99F88239561AB00FB8587 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0F053FF3835847E6848655FA /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Cargapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cargapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Cargapp/AppDelegate.h; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				1B8B45B7239078340030363C /* GoogleService-Info.plist */,
+				04B99F88239561AB00FB8587 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -306,6 +311,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				04B99F862395614E00FB8587 /* GoogleService-Info.plist */,
 				1B1C48DA2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m */,
 				13B07FAE1A68108700A75B9A /* Cargapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -519,6 +525,7 @@
 				ADC92F6944284BF5BCE1B5AF /* MaterialCommunityIcons.ttf in Resources */,
 				C7E1C6C5DE6E4C29A09DABCE /* MaterialIcons.ttf in Resources */,
 				E59ACE96F31848B6944CD8F3 /* Octicons.ttf in Resources */,
+				04B99F872395614E00FB8587 /* GoogleService-Info.plist in Resources */,
 				23EDC8B551C5470EBA473A32 /* Roboto_medium.ttf in Resources */,
 				6DDF537F55ED48B0BCFF4447 /* Roboto.ttf in Resources */,
 				1B8B45B8239078340030363C /* GoogleService-Info.plist in Resources */,

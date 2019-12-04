@@ -13,6 +13,7 @@ import {
   TextBlue,
   WrapperButton,
   WrapperButtons,
+  Line,
 } from './style';
 import ButtonGradient from '../ButtonGradient';
 
@@ -26,28 +27,28 @@ function WhiteCardTravels({
     <MainWrapper>
       <WrapperColumn>
         <WrapperDataLeft>
-          <TextBold>De</TextBold>
-          <NormalText>{from}</NormalText>
+          <TextBold>{from}</TextBold>
+          <NormalText>Origen</NormalText>
         </WrapperDataLeft>
         { vehicle != null ? (
           <WrapperData>
-            <TextBold>Vehículo</TextBold>
-            <NormalText>{vehicle}</NormalText>
+            <TextBold>{to}</TextBold>
+            <NormalText>Destino</NormalText>
           </WrapperData>
         ) : null }
       </WrapperColumn>
-
+      <Line />
       <WrapperColumn>
         <WrapperDataLeft>
-          <TextBold>A</TextBold>
-          <NormalText>{to}</NormalText>
+          <TextBold>Tipo de vehículo</TextBold>
+          <NormalText>{vehicle}</NormalText>
         </WrapperDataLeft>
         <WrapperData>
-          <TextBold>Flete</TextBold>
-          <NormalText>
+          <TextBold>
             $
             {pay}
-          </NormalText>
+          </TextBold>
+          <NormalText>Flete</NormalText>
         </WrapperData>
       </WrapperColumn>
 

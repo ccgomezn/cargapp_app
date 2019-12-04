@@ -9,6 +9,7 @@ import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import AppStack from './stacks/bottomNavigator';
 
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
@@ -92,7 +93,10 @@ class Navigation extends React.Component {
       }
     }).catch(error => {
       console.log('- BackgroundGeolocation error: ', error);
-      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+        interval: 10000,
+        fastInterval: 5000,
+      })
         .then(data => {
 
         }).catch(err => {
