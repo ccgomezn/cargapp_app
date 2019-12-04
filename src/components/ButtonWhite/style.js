@@ -15,7 +15,7 @@ export const Text = styled.Text`
   font-weight: 500; 
   letter-spacing: -0.35px;
   color: #0068ff;
-  padding: 15px;
+  padding: 10px;
 `;
 
 export const StyleBorder = {

@@ -31,13 +31,14 @@ padding: ${props => (props.subcontent ? '8px 10px' : '0px')};
 export const ContentBlock = styled.View`
   width: 100%;
   flex-direction: row;
+  justify-content: space-between;
   height: auto;
 `;
 
 export const TextBlack = styled.Text`
-  width: 30%;
+  width: auto;
   font-family: Arial;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   font-style: normal;
   letter-spacing: -0.3px;
@@ -45,8 +46,12 @@ export const TextBlack = styled.Text`
 `;
 
 export const ContentFilter = styled.View`
-  width: 70%;
+  width: auto;
   align-self: stretch;
+  border: 1px solid #0068ff;
+  border-radius: 5px;
+  padding-horizontal: 3%;
+  padding-vertical: 1%;
 `;
 
 export const Touchablebtn = styled.TouchableHighlight`

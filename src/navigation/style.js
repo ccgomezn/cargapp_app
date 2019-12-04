@@ -73,3 +73,5 @@ export const HeaderStyle = {
   height: Platform.OS === 'ios' ? 45 : 45,
   marginTop: Platform.OS === 'ios' ? -38 : 0,
 };
+
+export const NormalText = styled.Text``;
