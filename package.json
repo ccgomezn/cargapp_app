@@ -47,6 +47,7 @@
     "react-native-picker-modal-view": "^1.2.8",
     "react-native-popup-dialog": "^0.18.3",
     "react-native-root-toast": "^3.1.2",
+    "react-native-segmented-control-tab": "^3.4.1",
     "react-native-snap-carousel": "^3.8.2",
     "react-native-star-rating": "^1.1.0",
     "react-native-svg": "^9.5.3",
