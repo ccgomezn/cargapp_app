@@ -16,3 +16,14 @@ export const BlueText = styled.Text`
     align-self: center;
     color: #0068ff;
 `;
+
+export const Title = styled.Text`
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  letter-spacing: -0.3px;
+  color: #0068ff;
+  align-self: flex-start;
+  padding-bottom: 4%;
+`;
