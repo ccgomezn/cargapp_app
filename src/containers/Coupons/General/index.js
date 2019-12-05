@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
-import { MainWrapper, BlueText } from './style';
+import { MainWrapper, BlueText, Title } from './style';
 import CardCoupons from '../../../components/CardCoupons';
 import CouponsActions from '../../../redux/reducers/CouponsRedux';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
@@ -10,9 +10,7 @@ import CompanyActions from '../../../redux/reducers/CompanyRedux';
 class General extends Component {
   constructor() {
     super();
-    this.state = {
-      companyID: 8888,
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -23,30 +21,34 @@ class General extends Component {
 
   render() {
     const { navigation, companies, coupons } = this.props;
-    const { companyID } = this.state;
-    console.log(companyID);
+    const newCompanies = new Set();
+
+    console.log(newCompanies);
     if (companies.data !== null && coupons.data !== null) {
-      return (
-        <MainWrapper>
-          {coupons.data.map(couponsData => companies.data.map((companiesData) => {
-            if (companiesData.id === couponsData.company_id) {
-              console.log(companyID !== couponsData.company_id)
-              if (companyID !== couponsData.company_id) {
-                this.setState({ companyID: companiesData.id });
-                return (
-                  <CardCoupons
-                    subText={companiesData.description}
-                    text={companiesData.name}
-                    press={() => navigation.navigate('CommerceCoupons')}
-                    button
-                    fullCard={false}
-                    img={companiesData.image}
-                  />
-                );
-              }
-            }
-          }))}
-        </MainWrapper>
+      coupons.data.map(couponsData => companies.data.map((companiesData) => {
+        if (companiesData.id === couponsData.company_id) {
+          newCompanies.add(companiesData);
+        }
+      }));
+      const newCompaniesArray = Array.from(newCompanies)
+      if (newCompaniesArray) {
+        return (
+          <MainWrapper>
+            <Title>Cupones</Title>
+            {newCompaniesArray.map(companiesData => (
+              <CardCoupons
+                subText={companiesData.description}
+                text={companiesData.name}
+                press={() => navigation.navigate('CommerceCoupons')}
+                button
+                fullCard={false}
+                img={companiesData.image}
+              />
+            ))}
+          </MainWrapper>
+        );
+      } return (
+        <BlueText>No hay cupones en estos momentos</BlueText>
       );
     } return (
       <ActivityIndicator
