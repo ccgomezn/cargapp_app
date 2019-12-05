@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* CargappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CargappTests.m */; };
 		01EAC2C9045843629B6C98EC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C31F1C072E146FB907E6611 /* EvilIcons.ttf */; };
@@ -15,7 +16,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1AF5F714E54343508E518FDB /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF9C516CA6094BF580684BE3 /* FontAwesome5_Solid.ttf */; };
 		1B1C48DB2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B1C48DA2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m */; };
-		1B8B45B8239078340030363C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B8B45B7239078340030363C /* GoogleService-Info.plist */; };
+		1BF36EA52399A5200066F0F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BF36EA42399A5200066F0F7 /* GoogleService-Info.plist */; };
 		23EDC8B551C5470EBA473A32 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1B3A3224C7649AEB3C03F46 /* Roboto_medium.ttf */; };
 		244CE734E32945E0B8638448 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28F0F797068549E4A9F04FD4 /* FontAwesome5_Regular.ttf */; };
 		25FDB955B7A14E139A3FB1A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3A780DCFFE44ABFB8E2929D /* Roboto-BoldItalic.ttf */; };
@@ -95,7 +96,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Cargapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Cargapp/main.m; sourceTree = "<group>"; };
 		1B1C48DA2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
-		1B8B45B7239078340030363C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1BF36EA42399A5200066F0F7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1C0BE0970AD7437C809CDAF6 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		24579A52E44CAF97BF3C847D /* Pods-Cargapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOSTests/Pods-Cargapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		287CC04E0F802FBF096C1F76 /* libPods-Cargapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Cargapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,7 +232,7 @@
 		13B07FAE1A68108700A75B9A /* Cargapp */ = {
 			isa = PBXGroup;
 			children = (
-				1B8B45B7239078340030363C /* GoogleService-Info.plist */,
+				1BF36EA42399A5200066F0F7 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -521,7 +522,7 @@
 				E59ACE96F31848B6944CD8F3 /* Octicons.ttf in Resources */,
 				23EDC8B551C5470EBA473A32 /* Roboto_medium.ttf in Resources */,
 				6DDF537F55ED48B0BCFF4447 /* Roboto.ttf in Resources */,
-				1B8B45B8239078340030363C /* GoogleService-Info.plist in Resources */,
+				1BF36EA52399A5200066F0F7 /* GoogleService-Info.plist in Resources */,
 				68E4922F3595451696E6139F /* rubicon-icon-font.ttf in Resources */,
 				D320312ECE0A40D0B2E1BA7D /* SimpleLineIcons.ttf in Resources */,
 				D50360E89C1F4292A241BDA4 /* Zocial.ttf in Resources */,

@@ -91,7 +91,7 @@ class Home extends Component {
 
   componentDidMount() {
     const {
-      // eslint-disable-next-line max-len
+
       profileDriver, getsOffers, getVehicles, getProfile, getPermission, getDestinations,
     } = this.props;
     const data = {
@@ -99,7 +99,6 @@ class Home extends Component {
         token: '3560660900101009',
       },
     };
-
 
     this.setState({ callMine: false });
     profileDriver(data);
@@ -257,6 +256,7 @@ class Home extends Component {
     if(offers.data && !callDriverMine && profile.data){
       this.getMineOffersDriver();
       this.setState({callDriverMine: true});
+
     }
 
 
@@ -276,9 +276,15 @@ class Home extends Component {
       this.setState({ fetch: true });
     }
 
-
-
-    if (offers.data && offers.services && vehicles.data && destinations.data.origins !== null && !offers.fetching && permissions.data !== null && !permissions.fetching) {
+    if (
+      offers.data
+      && offers.services
+      && vehicles.data
+      && destinations.data.origins !== null
+      && !offers.fetching
+      && permissions.data !== null
+      && !permissions.fetching
+    ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
       });
@@ -344,10 +350,10 @@ class Home extends Component {
 
             <ContentView subcontent>
               <ContentBlock>
-                <TextBlack>Viajes</TextBlack>
+                <TextBlack>Viajes disponibles</TextBlack>
                 <ContentFilter>
                   <ButtonLink
-                    text="Filtrar viajes disponibles"
+                    text="Filtrar"
                     icon
                     press={() => this.onPressFilter()}
                   />

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { colors } from '../../themes/theme.style';
 
 export const MainView = styled.View`
 `;
@@ -7,7 +8,7 @@ export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
   padding: 5%;
-  background-color: #f5f6fa;
+  background-color: ${colors.MainWrapperColor};
 `;
 
 export const ContentView = styled.View`
@@ -112,7 +113,7 @@ export const WrapperButtonGradient = styled.TouchableOpacity`
 export const WrapperSwipe = styled.View`
   display: flex;
   height: auto;
-  background-color: #f5f6fa;
+  background-color: ${colors.MainWrapperColor};
   padding: 5%;
 `;
 
