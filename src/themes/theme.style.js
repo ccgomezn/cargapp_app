@@ -17,6 +17,11 @@ export const color = {
   TEXT_COLOT_RED: '#f21d2f',
 };
 
+export const colors = {
+  MainWrapperColor: '#f5f6fa',
+  black: '#000000',
+};
+
 export const button = {
   BUTTON_PRIMARY_ACTIVE: '#2c60f5',
   BUTTON_PRIMARY_DISABLED: '#8698ab',

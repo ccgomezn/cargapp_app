@@ -250,7 +250,15 @@ class Home extends Component {
       }
       this.setState({ fetch: true });
     }
-    if (offers.data && offers.services && vehicles.data && destinations.data.origins !== null && !offers.fetching && permissions.data !== null && !permissions.fetching) {
+    if (
+      offers.data
+      && offers.services
+      && vehicles.data
+      && destinations.data.origins !== null
+      && !offers.fetching
+      && permissions.data !== null
+      && !permissions.fetching
+    ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
       });

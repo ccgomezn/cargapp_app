@@ -42,6 +42,7 @@ class Commerce extends Component {
   render() {
     const { sliderActive } = this.state;
     const { navigation, data } = this.props;
+    console.log(this.props);
     if (data !== null) {
       return (
         <MainWrapper>

@@ -24,7 +24,7 @@ function WhiteCardTravels({
   status, statusColor,
 }) {
   return (
-    <MainWrapper>
+    <MainWrapper onPress={btnPrimary !== null ? actionbtnPrimary : null}>
       <WrapperColumn>
         <WrapperDataLeft>
           <TextBold>{from}</TextBold>
