@@ -23,6 +23,7 @@ import Permissions from './Permissions';
 
 import Destinations from './Destinations';
 import Challenges from './Challenges';
+import Prizes from './Prizes';
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
@@ -62,6 +63,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const permissions = new Permissions(api);
   const destinations = new Destinations(api);
   const challenges = new Challenges(api);
+  const prizes = new Prizes(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -90,6 +92,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     permissions,
     destinations,
     challenges,
+    prizes,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.

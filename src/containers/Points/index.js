@@ -16,6 +16,7 @@ import CardRanking from '../../components/CardRanking';
 import CardAward from '../../components/CardAward';
 
 import ChallengeActions from '../../redux/reducers/ChallengeRedux';
+import PrizesActions from '../../redux/reducers/PrizesRedux';
 
 class Points extends Component {
   constructor() {
@@ -23,20 +24,30 @@ class Points extends Component {
     this.state = {
       selectedIndex: 0,
       reload: false,
+      modalChallenge: false,
     };
   }
 
   componentDidMount() {
-    const { getActiveChallenge } = this.props;
-    // get challenge
-    getActiveChallenge();
+    const { getActivePrizes } = this.props;
+    // get data
+    getActivePrizes();
+  }
+
+  OnPressChallenge(data) {
+    this.setState({ modalChallenge: true});
+    alert(data.name);
   }
 
   handleSingleIndexSelect = (index) => {
-    const { getActiveChallenge } = this.props;
+    const { getActiveChallenge, getActivePrizes } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));
     console.log(index);
+    if (index == 0) {
+      // get prozes
+      getActivePrizes();
+    }
     if (index == 1) {
       // get challenge
       getActiveChallenge();
@@ -46,7 +57,7 @@ class Points extends Component {
 
   render() {
     const { selectedIndex, reload } = this.state;
-    const { challenge } = this.props;
+    const { challenge ,prizes } = this.props;
 
     if (reload) {
       setTimeout(() => this.setState({
@@ -78,7 +89,7 @@ class Points extends Component {
         />
 
         {selectedIndex === 0 && (
-          reload ? (
+          prizes.activePrizes === null ? (
             <ContentView>
               <ActivityIndicator
                 style={{ alignSelf: 'center', height: 'auto' }}
@@ -88,17 +99,19 @@ class Points extends Component {
             </ContentView>
           ) : (
             <ContentSection style={{ flexWrap: 'wrap' }}>
-              <CardAward
-                desc="Descripción del premio conductor 1"
-                point={350}
-              />
-              <CardAward
-                desc="Descripción del premio conductor 2"
-                point={350}
-              />
+              { prizes.activePrizes.map(data =>(
+                <CardAward
+                  desc={data.name}
+                  point={data.point}
+                  // image={data.media}
+                  image="https://image.freepik.com/vector-gratis/concepto-carga-imagen-pagina-destino_52683-22225.jpg"
+                />
+              ))}
               <CardAward
                 desc="Descripción del premio conductor 3"
                 point={350}
+                status
+                
               />
             </ContentSection>
           ))}
@@ -120,6 +133,7 @@ class Points extends Component {
                   desc={data.body}
                   point={data.point}
                   percentage={33}
+                  press={() => this.OnPressChallenge(data)}
                 />
               ))}
               <CardChallenge
@@ -151,13 +165,13 @@ class Points extends Component {
               <CardRanking
                 title="Conductor 1"
                 textKM={20.00}
-                textPoint={140}
+                textPoint={14.000}
                 position={1}
               />
               <CardRanking
                 title="Conductor 2"
                 textKM={20.00}
-                textPoint={140}
+                textPoint={14.000}
                 position={2}
               />
               <CardRanking
@@ -175,14 +189,16 @@ class Points extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { challenge } = state;
+  const { challenge, prizes } = state;
   return {
     challenge,
+    prizes,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getActiveChallenge: params => dispatch(ChallengeActions.getActiveChallengeRequest(params)),
+  getActivePrizes: params => dispatch(PrizesActions.getActivePrizesRequest(params)),
 });
 
 export default connect(
