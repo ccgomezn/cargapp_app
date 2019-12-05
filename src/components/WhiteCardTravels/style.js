@@ -1,58 +1,64 @@
 import styled from 'styled-components/native';
 
-export const MainWrapper = styled.View`
-    width: 100%;
+export const MainWrapper = styled.TouchableOpacity`
+    width: 98%;
     height: auto;
     border: 1px solid #f3f3f3;
     border-radius: 5px;
     background-color: white;
-    margin-bottom: 5px;
-    padding: 5px;
+    margin-bottom: 25px;
+    padding-horizontal: 15px;
+    padding-top: 35px;
+    padding-bottom: 35px;
     `;
 
 export const TextBold = styled.Text`
     font-family: Roboto;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
+    opacity: 0.5;
+    font-weight: normal;
     color: #010935;
     padding-bottom: 5px;
     `;
 
 export const NormalText = styled.Text`
-    opacity: 0.5;
     font-family: Roboto;
     font-size: 12px;
-    font-weight: normal;
-    color: #010935;
+    font-weight: 500;
+    color: black;
     `;
 
 export const WrapperColumn = styled.View`
     width: 100%;
     flex-direction: row;
-    border-bottom-color: #f3f3f3;
-    border-bottom-width: 0.5px;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding: 5px;
     margin: 5px;
-    margin-right: 18px;
+    `;
+
+export const Line = styled.View`
+    width: 100%;
+    height: 1px;
+    background-color: #8a8c9d;
+    opacity: 0.5;
+    align-self: center !important;
     `;
 
 export const WrapperDataLeft = styled.View`
-    flex: 4;
     height: auto;
+    flex: 5.5;
     justify-content: space-around;
     `;
 
 export const WrapperData = styled.View`
-    flex: 6;
     height: auto;
+    flex: 4.5;
     `;
 
 export const WrapperDate = styled.View`
     position: absolute;
-    top: 5px;
-    right: 15px;
-    border-radius: 3px;
+    top: 0px;
+    left: 25px;
     border: solid 1px #0068ff0D;
     background-color: ${props => (props.bgcolor ? props.bgcolor.concat('21') : '#0068ff21')};
     `;
@@ -82,7 +88,9 @@ export const TextBlue = styled.Text`
 
 export const WrapperButton = styled.View`
     width: 40%;
-    padding-right: 15px;
+    position: absolute;
+    bottom: -45px;
+    right: -18px;
     `;
 
 export const WrapperButtons = styled.View`

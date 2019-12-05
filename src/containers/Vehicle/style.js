@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
+import { colors } from '../../themes/theme.style';
 
 export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
   padding: 5%;
-  background-color: #f5f6fa;
+  background-color: ${colors.MainWrapperColor};
 `;
 
 export const ContentView = styled.View`
