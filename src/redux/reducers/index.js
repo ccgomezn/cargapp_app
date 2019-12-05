@@ -24,4 +24,5 @@ export default combineReducers({
   permissions: require('./PermissionsRedux').reducer,
   destinations: require('./DestinationsRedux').reducer,
   challenge: require('./ChallengeRedux').reducer,
+  prizes: require('./PrizesRedux').reducer,
 });

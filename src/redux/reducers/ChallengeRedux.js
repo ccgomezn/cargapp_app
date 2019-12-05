@@ -45,11 +45,31 @@ export const getActiveChallengeFailure = state => ({
 });
 
 /* Me challenges */
+export const getMeChallengeRequest = state => ({
+  ...state,
+  fetching: true,
+  me: null,
+});
 
+export const getMeChallengeSuccess = (state, { data }) => ({
+  ...state,
+  fetching: false,
+  error: false,
+  me: data,
+});
+
+export const getMeChallengeFailure = state => ({
+  ...state,
+  fetching: false,
+  error: true,
+});
 
 /* REDUCER TO TYPES */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_ACTIVE_CHALLENGE_REQUEST]: getActiveChallengeRequest,
   [Types.GET_ACTIVE_CHALLENGE_SUCCESS]: getActiveChallengeSuccess,
   [Types.GET_ACTIVE_CHALLENGE_FAILURE]: getActiveChallengeFailure,
+  [Types.GET_ME_CHALLENGE_REQUEST]: getMeChallengeRequest,
+  [Types.GET_ME_CHALLENGE_SUCCESS]: getMeChallengeSuccess,
+  [Types.GET_ME_CHALLENGE_FAILURE]: getMeChallengeFailure,
 });

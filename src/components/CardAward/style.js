@@ -24,6 +24,7 @@ export const WrapperContent = styled.View`
 export const WrapperImage = styled.View`
   backgroundColor: #d8d8d8;
   height: 100;
+  border-radius: 4;
 `;
 
 export const WrapperText = styled.View`
@@ -62,5 +63,9 @@ export const WrapperCheck = styled.View`
 `;
 
 export const CheckImage = styled.Image`
+`;
 
+export const ImageView = styled.Image`
+  width: 100%;
+  height: 100;
 `;
