@@ -149,8 +149,12 @@ class Vehicle extends Component {
 
   closeModal() {
     const { navigate } = this.props.navigation;
+    const { getListVehicles } = this.props;
     this.setState({ modalreg: false });
-    navigate('ListVehicle');
+    setTimeout(() => {
+      getListVehicles();
+      navigate('ListVehicle');
+    }, 100);
   }
 
   validateForm() {
@@ -499,6 +503,7 @@ const mapDispatchToProps = dispatch => ({
   getVehiclesType: params => dispatch(VehicleActions.getVehicleRequest(params)),
   registerVehicle: params => dispatch(VehicleActions.postRegVehicleRequest(params)),
   getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
+  getListVehicles: params => dispatch(VehicleActions.getMeVehiclesRequest(params)),
 });
 
 export default connect(
