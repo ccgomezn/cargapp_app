@@ -15,7 +15,6 @@ import { call, put, select } from 'redux-saga/effects';
 import ChatActions from '../reducers/ChatRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
-// eslint-disable-next-line import/prefer-default-export
 export function* getMineChats(api, action) {
   const { params } = action;
   const token = yield select(AuthSelectors.getToken);
@@ -28,7 +27,7 @@ export function* getMineChats(api, action) {
     yield put(ChatActions.getMeChatsFailure());
   }
 }
-// eslint-disable-next-line import/prefer-default-export
+
 export function* getActiveChats(api, action) {
   const { params } = action;
   const token = yield select(AuthSelectors.getToken);
