@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { WrapperButton, TextBlue } from './style';
 
-function SwipeableHome({ text }) {
+function SwipeableHome({ text, press }) {
   return (
-    <WrapperButton>
+    <WrapperButton onPress={press}>
       <TextBlue>{text}</TextBlue>
     </WrapperButton>
   );
@@ -12,6 +12,7 @@ function SwipeableHome({ text }) {
 
 SwipeableHome.propTypes = {
   text: PropTypes.string.isRequired,
+  press: PropTypes.func.isRequired,
 };
 
 export default SwipeableHome;

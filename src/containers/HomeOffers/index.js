@@ -45,16 +45,6 @@ import DestinationsActions from '../../redux/reducers/DestinationsRedux';
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
 import DriverActions from '../../redux/reducers/DriverRedux';
 
-const itemsTipo = [
-  {
-    textItem: 'Opcion 1',
-    valueItem: 'opc1',
-  },
-  {
-    textItem: 'Opcion 2',
-    valueItem: 'opc2',
-  },
-];
 
 const itemList = [
   {
@@ -85,12 +75,19 @@ class HomeOffers extends Component {
       modalPermission: false,
       fetch: false,
       listview: ['profiles', 'vehicles', 'bank_accounts'],
+      modalFromHome: true,
     };
   }
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile, getPermission, getDestinations,
+      profileDriver,
+      getsOffers,
+      getVehicles,
+      getProfile,
+      getPermission,
+      getDestinations,
+      navigation,
     } = this.props;
     const data = {
       driver: {
@@ -106,26 +103,12 @@ class HomeOffers extends Component {
     getDestinations();
   }
 
-  getMineOffers() {
-    const {
-      getMyOffersPostulation, profile,
-    } = this.props;
-
-
-    getMyOffersPostulation(profile.data[0].user.id);
-  }
-
   componentWillUnmount() {
     this.setState({ modalPermission: false });
   }
 
   onPressFilter() {
-    this.setState({ modalSearch: true });
-  }
-
-  // eslint-disable-next-line react/sort-comp
-  OnHideModal() {
-    this.setState({ modalSearch: false, modalPermission: false });
+    this.setState({ modalSearch: true, modalFromHome: false });
   }
 
   onNavigate(nameView) {
@@ -134,12 +117,6 @@ class HomeOffers extends Component {
     setTimeout(() => {
       navigate(nameView);
     }, 1000);
-  }
-
-  multiSliderValuesChange(values) {
-    this.setState({
-      multiSliderValue: values,
-    });
   }
 
   onSelected(selected, type) {
@@ -169,30 +146,15 @@ class HomeOffers extends Component {
     return selected;
   }
 
-  searchByFilter() {
+  getMineOffers() {
     const {
-      multiSliderValue,
-      labelDestination,
-      labelOrigin,
-      idVehicle,
-    } = this.state;
+      getMyOffersPostulation, profile,
+    } = this.props;
 
-    const { getFilterOffers, navigation } = this.props;
-    const data = {
-      startPrice: multiSliderValue[0],
-      endPrice: multiSliderValue[1],
-      vehicle: idVehicle,
-      origin: labelOrigin,
-      destination: labelDestination,
-    };
-    getFilterOffers(data);
-    this.setState({ modalSearch: false });
-    setTimeout(() => {
-      navigation.navigate('Filter');
-    }, 1000);
+
+    getMyOffersPostulation(profile.data[0].user.id);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   missingViews(list) {
     const { listview } = this.state;
     return (
@@ -216,12 +178,45 @@ class HomeOffers extends Component {
     );
   }
 
+  searchByFilter() {
+    const {
+      multiSliderValue,
+      labelDestination,
+      labelOrigin,
+      idVehicle,
+    } = this.state;
+
+    const { getFilterOffers, navigation } = this.props;
+    const data = {
+      startPrice: multiSliderValue[0],
+      endPrice: multiSliderValue[1],
+      vehicle: idVehicle,
+      origin: labelOrigin,
+      destination: labelDestination,
+    };
+    getFilterOffers(data);
+    this.setState({ modalSearch: false });
+    setTimeout(() => {
+      navigation.navigate('Filter');
+    }, 1000);
+  }
+
+  // eslint-disable-next-line react/sort-comp
+  OnHideModal() {
+    this.setState({ modalSearch: false, modalPermission: false });
+  }
+
+  multiSliderValuesChange(values) {
+    this.setState({
+      multiSliderValue: values,
+    });
+  }
+
   render() {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,
-      listview,
-      fetch,
+      listview, fetch, modalFromHome,
     } = this.state;
     const {
       driver, offers, vehicles, navigation, profile, permissions, destinations,
@@ -279,7 +274,10 @@ class HomeOffers extends Component {
       offers.services.forEach((offer) => {
         mine_offers.push(offer.service_id);
       });
-
+      const filter = navigation.getParam('filter');
+      if (filter && modalFromHome) {
+        this.onPressFilter();
+      }
 
       return (
         <MainView>

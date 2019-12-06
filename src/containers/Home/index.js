@@ -16,6 +16,7 @@ export default class Home extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
       <MainWrapper>
         <MapView
@@ -34,9 +35,8 @@ export default class Home extends Component {
           <CardInfoStad valuePoint="12000" textKm="Kms recorridos" valueKm="12000" textPoint="1222" title="¡Hola Ernesto!" />
           <NormalText>Buscar viajes disponibles</NormalText>
           <WrapperSwipeable>
-            <SwipeableHome text="Cerca a tí" />
-            <SwipeableHome text="Todos" />
-            <SwipeableHome text="Filtros específicos" />
+            <SwipeableHome text="Todos" press={() => navigation.navigate('Second')} />
+            <SwipeableHome text="Filtros específicos" press={() => navigation.navigate('Second', { filter: true })} />
           </WrapperSwipeable>
         </WrapperContent>
       </MainWrapper>
