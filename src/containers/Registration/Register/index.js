@@ -231,11 +231,11 @@ class Registration extends Component {
       errormsg.phone = 'Teléfono incorrecto: minímo 10 caracteres';
       this.setState({ invalidphone: true });
     }
-    if (datadocument.length < 10 || datadocument === '') {
-      errormsg.doc = 'Cedula incorrecta: minímo 10 caracteres';
+    if (datadocument.length < 6 || datadocument === '') {
+      errormsg.doc = 'Cedula incorrecta: minímo 6 caracteres';
       this.setState({ invaliddoc: true });
     }
-    if (datapassword === '' || datapassword.length < 5) {
+    if (datapassconf === '' || datapassconf.length < 5) {
       errormsg.pass = 'Contraseña incorrecta: minímo 6 caracteres';
       this.setState({ invalidpass: true });
     }
@@ -533,7 +533,7 @@ class Registration extends Component {
               title="Contraseña"
               holder="Ingrese contraseña min.(6)"
               isPassword
-              maxLength={10}
+              maxLength={20}
               value={datapassword}
               errorText={invalidpass}
               onChangeText={value => this.setState({ datapassword: value })}
@@ -543,6 +543,7 @@ class Registration extends Component {
               holder="Ingrese contraseña"
               onChangeText={value => this.setState({ datapassconf: value })}
               value={datapassconf}
+              maxLength={20}
               isPassword
               errorText={invalidpassconf}
             />
