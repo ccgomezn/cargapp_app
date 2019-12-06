@@ -64,6 +64,7 @@ export const Position = styled.View`
   right: 0;
   top: 6;
   marginRight: 0;
+  width: 25px;
   backgroundColor: #deeafb;
   padding: 5px;
 `;

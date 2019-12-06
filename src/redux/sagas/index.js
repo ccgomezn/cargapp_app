@@ -24,6 +24,8 @@ import { ParametersTypes } from '../reducers/ParametersRedux';
 import { FilterTypes } from '../reducers/FilterOffersRedux';
 import { PermissionTypes } from '../reducers/PermissionsRedux';
 import { DestinationsTypes } from '../reducers/DestinationsRedux';
+import { ChallengeTypes } from '../reducers/ChallengeRedux';
+import { PrizesTypes } from '../reducers/PrizesRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -58,6 +60,8 @@ import { getActiveChats, getMineChats } from './ChatSagas';
 import { getFilterOffers } from './FilterOffersSagas';
 import { getPermission } from './PermissionsSagas';
 import { getDestinations } from './DestinationsSagas';
+import { getActiveChallenge } from './ChallengeSagas';
+import { getActivePrizes } from './PrizesSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -113,5 +117,7 @@ export default function* root() {
     takeLatest(FilterTypes.GET_OFFERS_BY_FILTER_REQUEST, getFilterOffers, api),
     takeLatest(PermissionTypes.GET_PERMISSION_REQUEST, getPermission, api),
     takeLatest(DestinationsTypes.GET_DESTINATIONS_REQUEST, getDestinations, api),
+    takeLatest(ChallengeTypes.GET_ACTIVE_CHALLENGE_REQUEST, getActiveChallenge, api),
+    takeLatest(PrizesTypes.GET_ACTIVE_PRIZES_REQUEST, getActivePrizes, api),
   ]);
 }
