@@ -368,7 +368,7 @@ class HomeOffers extends Component {
                       to={services.destination}
                       vehicle={vehicle_data[services.vehicle_type_id]}
                       pay={services.price}
-                      date="hoy"
+                      date="Hoy"
                       actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
                       btnPrimary="Aplicar"
                     />
