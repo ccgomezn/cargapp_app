@@ -44,6 +44,7 @@ import DestinationsActions from '../../redux/reducers/DestinationsRedux';
 
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
 import DriverActions from '../../redux/reducers/DriverRedux';
+
 const itemsTipo = [
   {
     textItem: 'Opcion 1',
