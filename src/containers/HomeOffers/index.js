@@ -371,7 +371,6 @@ class HomeOffers extends Component {
                       date="hoy"
                       actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
                       btnPrimary="Aplicar"
-                      btnSecondary
                     />
                   );
                 }
