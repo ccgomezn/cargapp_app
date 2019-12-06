@@ -3,6 +3,8 @@ import styled from 'styled-components/native';
 export const MainWrapper = styled.TouchableOpacity`
     width: 100%;
     height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
     flex-direction: row;
     border-radius: 10px;
     background-color: white;

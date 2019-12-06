@@ -5,6 +5,7 @@ import { Container, Content } from 'native-base';
 import PropTypes from 'prop-types';
 
 import LinearGradient from 'react-native-linear-gradient';
+import AppStack from './bottomNavigator';
 import { DrawIconMenu } from '../style';
 
 // StackMenu
@@ -121,7 +122,7 @@ const DrawerGenerator = createDrawerNavigator(
 const DrawerDriver = createDrawerNavigator(
   {
     ScreenHome: {
-      screen: homeStackNavigator,
+      screen: AppStack,
       navigationOptions: {
         drawerLabel: 'Inicio',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-home.svg', tint: tintColor }),

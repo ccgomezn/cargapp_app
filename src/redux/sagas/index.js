@@ -5,7 +5,7 @@ import API from '../../api';
 import { DriverTypes } from '../reducers/DriverRedux';
 import { UserTypes } from '../reducers/UserRedux';
 import { CountrieTypes } from '../reducers/CountrieRedux';
-import {DocumentTypes } from '../reducers/DocumentRedux';
+import { DocumentTypes } from '../reducers/DocumentRedux';
 import { OffersTypes } from '../reducers/OffersRedux';
 import { VehicleTypes } from '../reducers/VehicleRedux';
 import { CompanyTypes } from '../reducers/CompanyRedux';
@@ -37,7 +37,7 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { registerDocument, registerDocumentService,getDocsServiceRequest } from './DocumentSagas';
+import { registerDocument, registerDocumentService, getDocsServiceRequest } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -53,7 +53,7 @@ import { getMarkers } from './MarkersSagas';
 import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSagas';
 import { getParameters, getSecondParameters } from './ParametersSagas';
 import { postRateServices } from './RateService';
-import { sendLocation } from './GeolocationSagas';
+import { sendLocation, getLocationTarget } from './GeolocationSagas';
 import { getActiveChats, getMineChats } from './ChatSagas';
 import { getFilterOffers } from './FilterOffersSagas';
 import { getPermission } from './PermissionsSagas';
@@ -68,6 +68,7 @@ const api = API.create();
 export default function* root() {
   yield all([
     takeLatest(LocationTypes.POST_LOCATION_REQUEST, sendLocation, api),
+    takeLatest(LocationTypes.GET_LOCATION_TARGET_REQUEST, getLocationTarget, api),
     takeLatest(ChatTypes.GET_ME_CHATS_REQUEST, getMineChats, api),
     takeLatest(ChatTypes.GET_ACTIVE_CHATS_REQUEST, getActiveChats, api),
     takeLatest(DriverTypes.POST_DRIVER_ME_REQUEST, profileDriver, api),
