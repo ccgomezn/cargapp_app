@@ -1,14 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Text } from 'react-native';
-import ScreenHome from '../../containers/Home';
-import { homeStackNavigator, myTravelsStackNavigator } from './stackScreen';
+import ScreenHome from '../../containers/HomeOffers';
+import { homeStackNavigator, myTravelsStackNavigator, travelsStackNavigator } from './stackScreen';
 import ButtonGradient from '../components/ButtonGradient';
 import { NormalText } from '../style';
 
 const AppStack = createBottomTabNavigator({
   First: { screen: homeStackNavigator },
-  Gif: { screen: ScreenHome },
+  HomeOffers: { screen: travelsStackNavigator },
   Services: { screen: ScreenHome },
   MyTravels: { screen: myTravelsStackNavigator },
 }, {
@@ -20,10 +20,10 @@ const AppStack = createBottomTabNavigator({
           ? <ButtonGradient press={null} content="Inicio" disabled={false} />
           : <NormalText>Inicio</NormalText>;
       }
-      if (routeName === 'Gif') {
+      if (routeName === 'HomeOffers') {
         return focused
-          ? <ButtonGradient press={null} content="Premios" disabled={false} />
-          : <NormalText>Premios</NormalText>;
+          ? <ButtonGradient press={null} content="Ofertas" disabled={false} />
+          : <NormalText>Ofertas</NormalText>;
       }
       if (routeName === 'Services') {
         return focused
