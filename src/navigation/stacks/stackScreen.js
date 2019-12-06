@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
 // MENU SCREENS
+import ScreenHomeOffers from '../../containers/HomeOffers';
 import ScreenHome from '../../containers/Home';
 import ScreenTravels from '../../containers/Travels';
 import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
@@ -178,9 +179,9 @@ export const SignUpStackNavigator = createStackNavigator({
   headerMode: 'none',
 });
 
-export const viajesStackNavigator = createStackNavigator({
+export const travelsStackNavigator = createStackNavigator({
   Second: {
-    screen: ScreenTravels,
+    screen: ScreenHomeOffers,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,
