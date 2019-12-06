@@ -163,20 +163,6 @@ const DrawerDriver = createDrawerNavigator(
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
       },
     },
-    ScreenTravels: {
-      screen: travelsStackNavigator,
-      navigationOptions: {
-        drawerLabel: 'Viajes',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-travels.svg', tint: tintColor }),
-      },
-    },
-    ScreenMyTravels: {
-      screen: myTravelsStackNavigator,
-      navigationOptions: {
-        drawerLabel: 'Mis viajes',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-mytravels.svg', tint: tintColor }),
-      },
-    },
     ScreenChat: {
       screen: chatStackNavigator,
       navigationOptions: {
