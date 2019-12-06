@@ -69,7 +69,7 @@ export const ContentStad = styled.View`
 `;
 
 export const TextSubt = styled.Text`
-  fontSize: 10;
+  fontSize: 11;
   color: #010935;
   letterSpacing: 0;
   fontFamily: Roboto-Regular;

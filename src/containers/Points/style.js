@@ -71,3 +71,95 @@ export const LastTab = {
   marginRight: 0,
   marginLeft: 0,
 };
+
+// estilos Modal
+export const MainWrapperDialog = styled.View`
+  width: 90%;
+  padding: 5%;
+  padding-bottom: 0px;
+  border-radius: 10px;
+  align-self: center
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+`;
+
+export const ContentDialog = styled.View`
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  font-family: Roboto;
+  padding-top: 6px;
+`;
+
+export const TitleBlack = styled.Text`
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: bold;
+  color: #010935;
+  padding-bottom: 5%;
+`;
+
+export const TextGray = styled.Text`
+  opacity: 0.5;
+  font-family: Roboto-Bold;
+  font-size: 14px; 
+  color: #010935;
+  padding-bottom: 10px;
+`;
+
+export const WrapperButtonsBottom = styled.View`
+  width: 100%;
+  flex-direction: row;
+  height: auto;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+`;
+
+export const WrapperStad = styled.View`
+  flexDirection: row;
+  backgroundColor: white;
+`;
+
+export const StadLeft = styled.View`
+  flex: 3;
+  marginRight: 5;
+`;
+
+export const StadRight = styled.View`
+  flex: 3;
+`;
+
+export const WrapperImage = styled.View`
+  width: 100%;
+  margin-top: 10px;
+  marginBottom: 15px;
+`;
+
+export const TextDesc = styled.Text`
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  letterSpacing: 0;
+  text-align: left;
+  width: 100%;
+  color: #010935;
+  marginTop: 8px;
+  marginBottom: 8px;
+`;
+
+export const TitleDesc = styled.Text`
+  font-family: Roboto-Regular;
+  font-size: 16px;
+  font-weight: 500;
+  letterSpacing: 0;
+  text-align: left;
+  width: 100%;
+  color: #8a8c9d;
+`;
+
+export const ImageDetail = styled.Image`
+  width: 100%;
+  height: 140;
+`;

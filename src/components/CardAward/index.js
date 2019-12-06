@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'native-base';
-import { Image } from 'react-native';
 
 import {
   WrapperCard, WrapperContent, WrapperImage,
@@ -18,7 +17,7 @@ function CardAward({
         <WrapperImage>
           { image ? (
             <ImageView
-              resizeMode="cover"
+              resizeMode="contain"
               source={{ uri: image }}
             />
           ) : null }
@@ -34,8 +33,8 @@ function CardAward({
         </TextPoint>
       </WrapperContent>
       { status ? (
-        <WrapperCheck>
-          <Text>icon</Text>
+        <WrapperCheck style={{ alignContent: 'center', alignSelf: 'center' }}>
+          <Text>OK</Text>
         </WrapperCheck>
       ) : null }
     </WrapperCard>

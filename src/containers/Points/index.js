@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -8,12 +10,22 @@ import {
   MainWrapper, ContentView, ContentSection, CardItems,
   WrapperTab, SegmentTab, TitleTab, ActiveTitleText,
   ActiveButtonTab, FirstTab, LastTab,
+  MainWrapperDialog, ContentDialog, WrapperImage,
+  WrapperButtonsBottom, TextDesc, TitleDesc, ImageDetail
 } from './style';
 
+import {
+  WrapperStad, StadLeft, StadRight,
+  ViewRow, ViewFlex, IconCircle, ContentStad, TextSubt, TextGray,
+} from '../../components/CardInfoStad/style';
+
+import EmptyDialog from '../../components/EmptyDialog';
 import CardinfoStad from '../../components/CardInfoStad';
 import CardChallenge from '../../components/CardChallenge';
 import CardRanking from '../../components/CardRanking';
 import CardAward from '../../components/CardAward';
+import ButtonGradient from '../../components/ButtonGradient';
+import ButtonWhite from '../../components/ButtonWhite';
 
 import ChallengeActions from '../../redux/reducers/ChallengeRedux';
 import PrizesActions from '../../redux/reducers/PrizesRedux';
@@ -25,6 +37,9 @@ class Points extends Component {
       selectedIndex: 0,
       reload: false,
       modalChallenge: false,
+      activeChallenge: null,
+      modalPrizes: false,
+      activePrize: null,
     };
   }
 
@@ -35,8 +50,15 @@ class Points extends Component {
   }
 
   OnPressChallenge(data) {
-    this.setState({ modalChallenge: true});
-    alert(data.name);
+    this.setState({ modalChallenge: true, activeChallenge: data });
+  }
+
+  OnHideModal() {
+    this.setState({ modalChallenge: false, modalPrizes: false });
+  }
+
+  OnPressPrizes(data) {
+    this.setState({ modalPrizes: true, activePrize: data });
   }
 
   handleSingleIndexSelect = (index) => {
@@ -52,12 +74,14 @@ class Points extends Component {
       // get challenge
       getActiveChallenge();
     }
-    
   };
 
   render() {
-    const { selectedIndex, reload } = this.state;
-    const { challenge ,prizes } = this.props;
+    const {
+      selectedIndex, reload, modalChallenge, activeChallenge,
+      modalPrizes, activePrize,
+    } = this.state;
+    const { challenge, prizes } = this.props;
 
     if (reload) {
       setTimeout(() => this.setState({
@@ -99,20 +123,20 @@ class Points extends Component {
             </ContentView>
           ) : (
             <ContentSection style={{ flexWrap: 'wrap' }}>
-              { prizes.activePrizes.map(data =>(
+              { prizes.activePrizes.map(data => (
                 <CardAward
                   desc={data.name}
                   point={data.point}
-                  // image={data.media}
-                  image="https://image.freepik.com/vector-gratis/concepto-carga-imagen-pagina-destino_52683-22225.jpg"
+                  image={data.image}
+                  press={() => this.OnPressPrizes(data)}
                 />
               ))}
-              <CardAward
+              {/* <CardAward
                 desc="Descripción del premio conductor 3"
                 point={350}
+                image="https://image.freepik.com/vector-gratis/concepto-carga-imagen-pagina-destino_52683-22225.jpg"
                 status
-                
-              />
+              /> */}
             </ContentSection>
           ))}
 
@@ -127,7 +151,7 @@ class Points extends Component {
             </ContentView>
           ) : (
             <CardItems>
-              { challenge.activeChallenge.map(data =>(
+              { challenge.activeChallenge.map(data => (
                 <CardChallenge
                   title={data.name}
                   desc={data.body}
@@ -136,12 +160,6 @@ class Points extends Component {
                   press={() => this.OnPressChallenge(data)}
                 />
               ))}
-              <CardChallenge
-                title="Compartir App"
-                desc="Descripción breve"
-                point={400}
-                percentage={0}
-              />
               <CardChallenge
                 title="Recorrer 100KM"
                 desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
@@ -183,6 +201,142 @@ class Points extends Component {
             </View>
           ))}
 
+        {/* Modal */}
+        <EmptyDialog
+          visible={modalPrizes}
+          opacity={0.5}
+          onTouchOutside={() => this.OnHideModal()}
+        >
+          <MainWrapperDialog>
+            {activePrize !== null ? (
+              <ContentDialog>
+                <WrapperStad>
+                  <StadLeft>
+                    <ViewRow>
+                      <ViewFlex>
+                        <TitleDesc>
+                          {activePrize.name}
+                        </TitleDesc>
+                        <TextSubt>
+                          {`Premio ${activePrize.code}`}
+                        </TextSubt>
+                      </ViewFlex>
+                    </ViewRow>
+                  </StadLeft>
+                  <StadRight>
+                    <ViewRow>
+                      <ViewFlex>
+                        <IconCircle
+                          source={require('../../icons/circlem2x.png')}
+                        />
+                      </ViewFlex>
+                      <ContentStad>
+                        <TextGray>
+                          {activePrize.point}
+                        </TextGray>
+                        <TextSubt>
+                          {'Puntos requeridos'}
+                        </TextSubt>
+                      </ContentStad>
+                    </ViewRow>
+                  </StadRight>
+                </WrapperStad>
+                <WrapperImage>
+                  <TextGray>
+                    {activePrize.description}
+                  </TextGray>
+                  <ImageDetail
+                    resizeMode="contain"
+                    source={{ 
+                      uri: "https://image.freepik.com/vector-gratis/concepto-carga-imagen-pagina-destino_52683-22225.jpg" 
+                      // activePrize.image 
+                    }}
+                  />
+                </WrapperImage>
+                <TitleDesc>
+                  {'Descripción'}
+                </TitleDesc>
+                <TextDesc>
+                  {activePrize.body}
+                  {'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam'}
+                </TextDesc>
+                <WrapperButtonsBottom style={{ marginTop: 10 }}>
+                  <ButtonGradient
+                    content="Reclamar"
+                    disabled 
+                    press={() => this.OnHideModal()} />
+                </WrapperButtonsBottom>
+                <WrapperButtonsBottom style={{ marginTop: 0 }}>
+                  <ButtonWhite
+                    content="Cerrar"
+                    border={{ }}
+                    press={() => this.OnHideModal()}
+                  />
+                </WrapperButtonsBottom>
+              </ContentDialog>
+            ) : null }
+          </MainWrapperDialog>
+        </EmptyDialog>
+
+        <EmptyDialog
+          visible={modalChallenge}
+          opacity={0.5}
+          onTouchOutside={() => this.OnHideModal()}
+        >
+          <MainWrapperDialog>
+            {activeChallenge !== null ? (
+              <ContentDialog>
+                <WrapperStad>
+                  <StadLeft>
+                    <ViewRow>
+                      <ViewFlex>
+                        <TitleDesc>
+                          {activeChallenge.name}
+                        </TitleDesc>
+                        <TextSubt>
+                          {'Reto'}
+                        </TextSubt>
+                      </ViewFlex>
+                    </ViewRow>
+                  </StadLeft>
+                  <StadRight>
+                    <ViewRow>
+                      <ViewFlex>
+                        <IconCircle
+                          source={require('../../icons/circlem2x.png')}
+                        />
+                      </ViewFlex>
+                      <ContentStad>
+                        <TextGray>
+                          {activeChallenge.point}
+                        </TextGray>
+                        <TextSubt>
+                          {'Puntos adquiridos'}
+                        </TextSubt>
+                      </ContentStad>
+                    </ViewRow>
+                  </StadRight>
+                </WrapperStad>
+                <WrapperImage>
+                  <ImageDetail
+                    resizeMode="contain"
+                    source={{ uri: activeChallenge.image }}
+                  />
+                </WrapperImage>
+                <TitleDesc>
+                  {'¿Como ganar?'}
+                </TitleDesc>
+                <TextDesc>
+                  {activeChallenge.body}
+                  {'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam'}
+                </TextDesc>
+                <WrapperButtonsBottom style={{ marginTop: 10 }}>
+                  <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
+                </WrapperButtonsBottom>
+              </ContentDialog>
+            ) : null }
+          </MainWrapperDialog>
+        </EmptyDialog>
       </MainWrapper>
     );
   }
