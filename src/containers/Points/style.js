@@ -16,20 +16,6 @@ export const ContentView = styled.View`
   padding: ${props => (props.subcontent ? '0px 10px' : '0px')};
 `;
 
-export const ContentForm = styled.View`
-  width: 100%;
-  justify-content: center;
-  flex-direction: column;
-  height: auto;
-  margin-bottom: 15px;
-`;
-
-export const ContentBlock = styled.View`
-  width: 100%;
-  height: 20px;
-  flex-direction: row;
-`;
-
 export const ContentSection = styled.View`
   width: 100%;
   height: auto;
@@ -40,23 +26,49 @@ export const ContentSection = styled.View`
   justify-content: space-between;
 `;
 
-export const TextBlack = styled.Text`
-  width: 100%;
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: bold;
-  letter-spacing: 0px;
-  color: #010935;
-`;
-
-export const TextGray = styled.Text`
-  font-family: Roboto-Regular;
-  font-size: 16px;
-  letter-spacing: 0px;
-  color: #8a8c9d;
-`;
-
 export const CardItems = styled.View`
   flexDirection: column;
   width: 100%;
 `;
+
+export const WrapperTab = {
+  height: 35,
+  backgroundColor: 'transparent',
+  marginBottom: 15,
+  marginTop: 15,
+};
+
+export const SegmentTab = {
+  backgroundColor: '#FFF',
+  borderWidth: 1,
+  borderColor: 'transparent',
+  borderRadius: 6,
+  marginLeft: 14,
+  marginRight: 14,
+};
+
+export const ActiveButtonTab = {
+  backgroundColor: '#8a8c9d',
+  borderRadius: 6,
+};
+
+export const TitleTab = {
+  fontFamily: 'Roboto-Regular',
+  fontSize: 16,
+  color: '#8a8c9d',
+  letterSpacing: 0,
+};
+
+export const ActiveTitleText = {
+  color: '#ffffff',
+};
+
+export const FirstTab = {
+  marginLeft: 0,
+  marginRight: 14,
+};
+
+export const LastTab = {
+  marginRight: 0,
+  marginLeft: 0,
+};
