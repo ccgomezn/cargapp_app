@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, TouchFilter, TextFilter, ContentOffer,
@@ -51,6 +52,7 @@ class MyTravels extends Component {
       alertVisible: false,
       modalSearch: false,
       multiSliderValue: [150000, 2300000],
+      unmount: false,
     };
   }
 
@@ -58,10 +60,32 @@ class MyTravels extends Component {
     const {
       getMyOffers, getStatus, profile, getsOffers,
     } = this.props;
+    console.log('mount my travels');
+    let that = this;
+    if (!this.didFocusListener) {
+      this.didFocusListener = this.props.navigation.addListener(
+        'didFocus',
+        () => {
+          if (that.state.unmount) {
+            this.setState({ unmount: false });
+            this.componentDidMount();
+          }
+        },
+      );
+    }
+    if (!this.didBlurListener) {
+      this.didBlurListener = this.props.navigation.addListener(
+        'didBlur',
+        () => {
+          that.setState({ unmount: true });
+        },
+      );
+    }
     getMyOffers(profile.data[0].user.id);
     getsOffers();
     getStatus();
   }
+
 
   onPressButton(value) {
     const { navigation } = this.props;
@@ -87,7 +111,7 @@ class MyTravels extends Component {
     });
   }
 
-  getMineOffersDriver(){
+  getMineOffersDriver() {
     const {
       getMyOffersRequest, profile,
     } = this.props;
@@ -96,11 +120,13 @@ class MyTravels extends Component {
 
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
-    const { offers, vehicles, status,navigation } = this.props;
-    if(offers.myOffers){
-      offers.myOffers.forEach(offer => {
+    const {
+      offers, vehicles, status, navigation,
+    } = this.props;
+    if (offers.myOffers) {
+      offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if(offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id ===  9){
+        if (offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id === 9) {
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
@@ -108,8 +134,8 @@ class MyTravels extends Component {
 
     console.log(offers.services);
     if (offers.services !== null && offers.data !== null && status.data !== null) {
-      let services_ids = [];
-      let service_map = {};
+      const services_ids = [];
+      const service_map = {};
       offers.services.forEach((service) => {
         services_ids.push(service.service_id);
         service_map[service.service_id] = service.approved;
@@ -126,7 +152,6 @@ class MyTravels extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((allOffers) => {
-
                 if (services_ids.includes(allOffers.id)) {
                   return vehicles.data.map((vehicle) => {
                     if (vehicle.id === allOffers.vehicle_type_id) {
@@ -139,9 +164,9 @@ class MyTravels extends Component {
                               vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
                               pay={allOffers.price}
                               date="Hoy"
-                              status={service_map[allOffers.id] === false? "Rechazado": allOffers.statu_id === statusOffer.id && statusOffer.name}
+                              status={service_map[allOffers.id] === false ? 'Rechazado' : allOffers.statu_id === statusOffer.id && statusOffer.name}
                               actionbtnPrimary={() => this.onPressButton(allOffers)}
-                              btnPrimary={service_map[allOffers.id] === null || service_map[allOffers.id]? "Ver detalle": null}
+                              btnPrimary={service_map[allOffers.id] === null || service_map[allOffers.id] ? 'Ver detalle' : null}
                             />
                           );
                         }

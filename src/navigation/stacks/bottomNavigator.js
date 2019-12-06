@@ -37,6 +37,7 @@ const AppStack = createBottomTabNavigator({
       }
     },
   }),
+  unmountInactiveScreens: true,
   tabBarOptions: {
     inactiveTintColor: 'gray',
     showLabel: false,

@@ -9,6 +9,7 @@ import { View } from 'native-base';
 import { ScrollView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
+import { withNavigationFocus, StackActions, NavigationActions } from 'react-navigation';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -34,6 +35,7 @@ import {
   TextGray,
   TitleBlack,
 } from '../Profile/style';
+
 
 // action - reducers
 import OffersActions from '../../redux/reducers/OffersRedux';
@@ -86,14 +88,43 @@ class Home extends Component {
       fetch: false,
       listview: ['profiles', 'vehicles', 'bank_accounts'],
       callDriverMine: false,
+      unmount: false,
     };
   }
 
-  componentDidMount() {
-    const {
 
+  componentDidMount() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'First' })],
+    });
+
+    const { unmount } = this.state;
+    const {
       profileDriver, getsOffers, getVehicles, getProfile, getPermission, getDestinations,
     } = this.props;
+    const that = this;
+    if (!this.didFocusListener) {
+      this.didFocusListener = this.props.navigation.addListener(
+        'didFocus',
+        () => {
+          if (that.state.unmount) {
+            this.setState({ unmount: false });
+            this.componentDidMount();
+          }
+        },
+      );
+    }
+    if (!this.didBlurListener) {
+      this.didBlurListener = this.props.navigation.addListener(
+        'didBlur',
+        () => {
+          that.setState({ unmount: true });
+        },
+      );
+    }
+
+
     const data = {
       driver: {
         token: '3560660900101009',
@@ -118,7 +149,7 @@ class Home extends Component {
     getMyOffersPostulation(profile.data[0].user.id);
   }
 
-  getMineOffersDriver(){
+  getMineOffersDriver() {
     const {
       getMyOffersRequest, profile,
     } = this.props;
@@ -218,12 +249,24 @@ class Home extends Component {
             />
           ) : null
         ))
-        }
+                }
         <WrapperButtonsBottom style={{ marginTop: 10 }}>
           <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
         </WrapperButtonsBottom>
       </View>
     );
+  }
+
+  getActiveRouteName(navigationState) {
+    if (!navigationState) {
+      return null;
+    }
+    const route = navigationState.routes[navigationState.index];
+    // dive into nested navigators
+    if (route.routes) {
+      return getActiveRouteName(route);
+    }
+    return route.routeName;
   }
 
   render() {
@@ -234,13 +277,14 @@ class Home extends Component {
       fetch,
     } = this.state;
     const {
-      driver, offers, vehicles, navigation, profile, permissions, destinations
+      driver, offers, vehicles, navigation, profile, permissions, destinations,
     } = this.props;
 
-    if(offers.myOffers){
-      offers.myOffers.forEach(offer => {
+
+    if (offers.myOffers) {
+      offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if(offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id ===  9){
+        if (offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id === 9) {
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
@@ -253,10 +297,9 @@ class Home extends Component {
       this.getMineOffers();
       this.setState({ callMine: true });
     }
-    if(offers.data && !callDriverMine && profile.data){
+    if (offers.data && !callDriverMine && profile.data) {
       this.getMineOffersDriver();
-      this.setState({callDriverMine: true});
-
+      this.setState({ callDriverMine: true });
     }
 
 
@@ -278,12 +321,12 @@ class Home extends Component {
 
     if (
       offers.data
-      && offers.services
-      && vehicles.data
-      && destinations.data.origins !== null
-      && !offers.fetching
-      && permissions.data !== null
-      && !permissions.fetching
+          && offers.services
+          && vehicles.data
+          && destinations.data.origins !== null
+          && !offers.fetching
+          && permissions.data !== null
+          && !permissions.fetching
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
@@ -308,6 +351,7 @@ class Home extends Component {
 
 
       return (
+
         <MainView>
           <MainWrapper>
             <ContentView>
@@ -340,12 +384,12 @@ class Home extends Component {
             </ContentView>
 
             <ContentView>
-              { driver.me != null ? (
+              {driver.me != null ? (
                 <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
                   <TextBlack>{driver.me.telephone}</TextBlack>
                   <TextBlack>{driver.me.plate}</TextBlack>
                 </View>
-              ) : null }
+              ) : null}
             </ContentView>
 
             <ContentView subcontent>
@@ -403,10 +447,16 @@ class Home extends Component {
               <ContentForm>
                 <ContentRange>
                   <RowInput>
-                    <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} />
+                    <Input
+                      title="Valor mínimo"
+                      value={'$'.concat('', multiSliderValue[0].toString())}
+                    />
                   </RowInput>
                   <RowInput>
-                    <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} />
+                    <Input
+                      title="Valor máximo"
+                      value={'$'.concat('', multiSliderValue[1].toString())}
+                    />
                   </RowInput>
                 </ContentRange>
                 <WrapperInputs>
