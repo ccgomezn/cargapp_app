@@ -92,7 +92,9 @@ class Profile extends Component {
       newPassword,
       repeatPassword,
     } = this.state;
-    const { profile, navigation } = this.props;
+    const { profile } = this.props;
+    // eslint-disable-next-line react/destructuring-assignment
+    const { navigate } = this.props.navigation;
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
@@ -124,7 +126,10 @@ class Profile extends Component {
                     <NormalText>Conductor nivel 7</NormalText>
                   </WrapperInfo>
                   <ContentButton>
-                    <ButtonGradient content="Ver retos" />
+                    <ButtonGradient
+                      content="Ver retos"
+                      press={() => navigate('ScreenPoints')}
+                    />
                   </ContentButton>
                 </WrapperColumn>
               </ContentInitial>
@@ -136,7 +141,7 @@ class Profile extends Component {
                     <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
                   </RowContent>
                   <RowContent>
-                    <ButtonWhite border content="Cuenta Bancaria" press={() => navigation.navigate('BankAccount')} />
+                    <ButtonWhite border content="Cuenta Bancaria" press={() => navigate('BankAccount')} />
                   </RowContent>
                 </ContentView>
 

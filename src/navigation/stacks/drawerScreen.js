@@ -10,7 +10,7 @@ import { DrawIconMenu } from '../style';
 
 // StackMenu
 import {
-  homeStackNavigator, viajesStackNavigator, myTravelsStackNavigator,
+  homeStackNavigator, travelsStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
   ProfileStackNavigator, CouponsStackNavigator, chatStackNavigator,
 } from './stackScreen';
@@ -76,14 +76,14 @@ const DrawerGenerator = createDrawerNavigator(
       },
     },
     ScreenChat: {
-      screen: viajesStackNavigator,
+      screen: travelsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Chat',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
       },
     },
     ScreenConfig: {
-      screen: viajesStackNavigator,
+      screen: travelsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Configuraciones',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-settings.svg', tint: tintColor }),
@@ -163,20 +163,6 @@ const DrawerDriver = createDrawerNavigator(
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
       },
     },
-    ScreenTravels: {
-      screen: viajesStackNavigator,
-      navigationOptions: {
-        drawerLabel: 'Viajes',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-travels.svg', tint: tintColor }),
-      },
-    },
-    ScreenMyTravels: {
-      screen: myTravelsStackNavigator,
-      navigationOptions: {
-        drawerLabel: 'Mis viajes',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-mytravels.svg', tint: tintColor }),
-      },
-    },
     ScreenChat: {
       screen: chatStackNavigator,
       navigationOptions: {
@@ -185,7 +171,7 @@ const DrawerDriver = createDrawerNavigator(
       },
     },
     ScreenConfig: {
-      screen: viajesStackNavigator,
+      screen: travelsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Configuraciones',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-settings.svg', tint: tintColor }),
