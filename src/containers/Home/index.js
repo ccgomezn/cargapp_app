@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
-import MainWrapper from './style';
-import CardHome from '../../components/CardHome';
+import {
+  MainWrapper, NormalText, WrapperSwipeable, WrapperContent,
+} from './style';
+import SwipeableHome from '../../components/SwipeableHome';
+import CardInfoStad from '../../components/CardInfoStad';
 
 export default class Home extends Component {
   constructor() {
@@ -27,7 +30,15 @@ export default class Home extends Component {
           showsIndoorLevelPicker
           style={{ height: '100%', width: '100%' }}
         />
-        <CardHome points={500} km={1222} name="¡Hola Ernesto!" />
+        <WrapperContent>
+          <CardInfoStad valuePoint="12000" textKm="Kms recorridos" valueKm="12000" textPoint="1222" title="¡Hola Ernesto!" />
+          <NormalText>Buscar viajes disponibles</NormalText>
+          <WrapperSwipeable>
+            <SwipeableHome text="Cerca a tí" />
+            <SwipeableHome text="Todos" />
+            <SwipeableHome text="Filtros específicos" />
+          </WrapperSwipeable>
+        </WrapperContent>
       </MainWrapper>
     );
   }
