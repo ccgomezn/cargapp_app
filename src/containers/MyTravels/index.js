@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
-import { NavigationActions, StackActions } from 'react-navigation';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, TouchFilter, TextFilter, ContentOffer,
@@ -60,8 +59,8 @@ class MyTravels extends Component {
     const {
       getMyOffers, getStatus, profile, getsOffers,
     } = this.props;
-    console.log('mount my travels');
-    let that = this;
+
+    const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
         'didFocus',
@@ -85,7 +84,6 @@ class MyTravels extends Component {
     getsOffers();
     getStatus();
   }
-
 
   onPressButton(value) {
     const { navigation } = this.props;
@@ -133,7 +131,7 @@ class MyTravels extends Component {
     }
 
     console.log(offers.services);
-    if (offers.services !== null && offers.data !== null && status.data !== null) {
+    if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
       const services_ids = [];
       const service_map = {};
       offers.services.forEach((service) => {

@@ -91,7 +91,7 @@ class HomeOffers extends Component {
 
   componentDidMount() {
     const {
-      profileDriver, getsOffers, getVehicles, getProfile, getPermission, getDestinations,
+       getsOffers, getVehicles, getProfile, getPermission, getDestinations,
     } = this.props;
     const data = {
       driver: {
@@ -121,7 +121,6 @@ class HomeOffers extends Component {
       );
     }
     this.setState({ callMine: false });
-    profileDriver(data);
     getsOffers();
     getVehicles();
     getProfile();
@@ -208,6 +207,8 @@ class HomeOffers extends Component {
       origin: labelOrigin,
       destination: labelDestination,
     };
+
+
     getFilterOffers(data);
     this.setState({ modalSearch: false });
     setTimeout(() => {
@@ -542,7 +543,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  profileDriver: params => dispatch(DriverActions.postDriverMeRequest(params)),
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),

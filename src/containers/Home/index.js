@@ -7,8 +7,12 @@ import {
 import SwipeableHome from '../../components/SwipeableHome';
 import CardInfoStad from '../../components/CardInfoStad';
 
+import {connect} from "react-redux";
+import DriverActions from '../../redux/reducers/DriverRedux';
+import ProfileActions from "../../redux/reducers/ProfileRedux";
 
-export default class Home extends Component {
+
+class Home extends Component {
   constructor() {
     super();
     this.state = {
@@ -18,6 +22,10 @@ export default class Home extends Component {
 
 
   componentDidMount() {
+    const { getProfile } = this.props;
+
+    getProfile();
+
     const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
@@ -80,3 +88,22 @@ export default class Home extends Component {
     );
   }
 }
+
+
+
+const mapStateToProps = (state) => {
+  const {
+
+  } = state;
+  return {
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Home);
