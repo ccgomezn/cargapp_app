@@ -32,7 +32,7 @@ class Chat extends Component {
 
   // eslint-disable-next-line react/sort-comp
   enableFirestoreSubscription(uid) {
-    firebase.firestore().collection(uid.toString())
+    firebase.firestore().collection(`chat_${uid.toString()}`)
       .onSnapshot({
         error: e => console.error(e),
         next: (documentSnapshot) => {
@@ -71,7 +71,7 @@ class Chat extends Component {
 
   onSend(messages = []) {
 
-    firebase.firestore().collection(this.state.chat_data.id.toString()).add({
+    firebase.firestore().collection(`chat_${this.state.chat_data.id.toString()}`).add({
       message: messages[0].text,
       user_id: messages[0].user._id,
       user_name: messages[0].user.name,

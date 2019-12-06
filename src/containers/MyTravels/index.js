@@ -87,9 +87,26 @@ class MyTravels extends Component {
     });
   }
 
+  getMineOffersDriver(){
+    const {
+      getMyOffersRequest, profile,
+    } = this.props;
+    getMyOffersRequest(profile.data[0].user.id);
+  }
+
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
-    const { offers, vehicles, status } = this.props;
+    const { offers, vehicles, status,navigation } = this.props;
+    if(offers.myOffers){
+      offers.myOffers.forEach(offer => {
+        // eslint-disable-next-line max-len
+        if(offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id ===  9){
+          navigation.navigate('StartTravel', { Offer: offer });
+        }
+      });
+    }
+
+    console.log(offers.services);
     if (offers.services !== null && offers.data !== null && status.data !== null) {
       let services_ids = [];
       let service_map = {};
@@ -215,6 +232,7 @@ const mapDispatchToProps = dispatch => ({
   getMyOffers: id => dispatch(OffersActions.getServicesRequest(id)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getStatus: () => dispatch(StatusActions.getStatusRequest()),
+  getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
 });
 
 export default connect(

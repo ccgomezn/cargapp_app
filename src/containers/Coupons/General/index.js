@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { MainWrapper } from './style';
+import { ActivityIndicator } from 'react-native';
+import { MainWrapper, BlueText, Title } from './style';
 import CardCoupons from '../../../components/CardCoupons';
 import CouponsActions from '../../../redux/reducers/CouponsRedux';
+import CompanyActions from '../../../redux/reducers/CompanyRedux';
 
 class General extends Component {
   constructor() {
@@ -12,40 +14,63 @@ class General extends Component {
   }
 
   componentDidMount() {
-    const { getCoupons } = this.props;
+    const { getCoupons, getCompanies } = this.props;
     getCoupons();
+    getCompanies();
   }
 
   render() {
-    const { navigation } = this.props;
-    return (
-      <MainWrapper>
-        <CardCoupons
-          subText="10% en todos los productos"
-          text="Starbucks"
-          press={() => navigation.navigate('CommerceCoupons')}
-          button
-          fullCard={false}
-        />
-        <CardCoupons
-          subText="50% en las Mc Donal's"
-          text="Mc Donal's"
-          press={() => navigation.navigate('CommerceCoupons')}
-          fullCard={false}
-          button
-        />
-      </MainWrapper>
+    const { navigation, companies, coupons } = this.props;
+    const newCompanies = new Set();
+
+    console.log(newCompanies);
+    if (companies.data !== null && coupons.data !== null) {
+      coupons.data.map(couponsData => companies.data.map((companiesData) => {
+        if (companiesData.id === couponsData.company_id) {
+          newCompanies.add(companiesData);
+        }
+      }));
+      const newCompaniesArray = Array.from(newCompanies)
+      if (newCompaniesArray) {
+        return (
+          <MainWrapper>
+            <Title>Cupones</Title>
+            {newCompaniesArray.map(companiesData => (
+              <CardCoupons
+                subText={companiesData.description}
+                text={companiesData.name}
+                press={() => navigation.navigate('CommerceCoupons')}
+                button
+                fullCard={false}
+                img={companiesData.image}
+              />
+            ))}
+          </MainWrapper>
+        );
+      } return (
+        <BlueText>No hay cupones en estos momentos</BlueText>
+      );
+    } return (
+      <ActivityIndicator
+        style={{ alignSelf: 'center', height: '100%' }}
+        size="large"
+        color="#0000ff"
+      />
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { coupons } = state;
-  return coupons;
+  const { coupons, companies } = state;
+  return {
+    coupons,
+    companies,
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
   getCoupons: params => dispatch(CouponsActions.getCouponsRequest(params)),
+  getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
 });
 
 export default connect(

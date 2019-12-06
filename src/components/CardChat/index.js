@@ -13,7 +13,7 @@ function CardChat({
     <MainWrapper onPress={press}>
       <WrapperIcon>
         <IconTruck
-          source={{ uri: 'https://raw.githubusercontent.com/cargappco/cargapp_lite_refac/master/src/Images/meTruck.png?token=AGFM22MMV75A5XZBXZGIMNK54BPN6' }}
+            source={require('../../icons/meTruck.png')}
         />
       </WrapperIcon>
       <WrapperData>
@@ -25,7 +25,7 @@ function CardChat({
           <WrapperText>
             <MainText>Servicio: </MainText>
             <SubText>
-              {`${data.service.origin} - ${data.service.destination}`}
+              {`${data.service.origin.length > 12? data.service.origin.slice(0, 10) + '...':data.service.origin} - ${data.service.destination.length > 12? data.service.destination.slice(0, 10) + '...':data.service.destination}`}
             </SubText>
           </WrapperText>
         </WrapperInfo>

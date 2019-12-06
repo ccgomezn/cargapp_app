@@ -54,6 +54,8 @@ class StartTravel extends Component {
 
   actionMan() {
     console.log(this.props.user.session.access_token);
+    console.log(this.state.manifest);
+    console.log(this.state.manifest);
     const { android } = RNFetchBlob;
     const { dirs } = RNFetchBlob.fs;
 
@@ -103,7 +105,7 @@ class StartTravel extends Component {
     const { document } = this.props;
     document.serviceDocuments.forEach((document_data) => {
       if (document_data.document_type === 'manifiesto') {
-        this.setState({ manifest: document_data.document });
+        this.setState({ manifest: encodeURI(document_data.document) });
       }
     });
   }
@@ -127,11 +129,10 @@ class StartTravel extends Component {
     points.forEach((point) => {
       const decodedPoints = Polyline.decode(point.polyline.points);
       decodedPoints.forEach((dec) => {
-          coords.push({
-            latitude: dec[0],
-            longitude: dec[1],
-          });
-
+        coords.push({
+          latitude: dec[0],
+          longitude: dec[1],
+        });
       });
     });
     this.setState({ coords });
@@ -327,6 +328,20 @@ class StartTravel extends Component {
     }, 1000);
   }
 
+  actionCall() {
+    Linking.canOpenURL(`tel:${this.state.offerSpecific.contact}`)
+      .then((supported) => {
+        if (!supported) {
+          console.error(`Can't handle url: ${url}`);
+        } else {
+          return Linking.openURL(url)
+            .then(data => console.error('then', data))
+            .catch((err) => { throw err; });
+        }
+      })
+      .catch(err => console.error('An error occurred', err));
+  }
+
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, finished, unload,
@@ -393,6 +408,7 @@ class StartTravel extends Component {
                     company={CompanyInfo.name}
                     actionBtnOk={() => this.confirmTravel()}
                     actionMan={() => this.actionMan()}
+                    actionCall={() => this.actionCall()}
                   />
                 </WrapperTopCard>
               );
