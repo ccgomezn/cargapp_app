@@ -13,6 +13,7 @@ export function* getCoupons(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.coupons.getCoupons, params);
+  console.log('respuesta cupones', response);
   if (response.ok) {
     yield put(CouponsActions.getCouponsSuccess(response.data));
   } else {
