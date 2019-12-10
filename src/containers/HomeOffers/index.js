@@ -6,7 +6,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { View } from 'native-base';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView, ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
 import {
@@ -75,8 +75,8 @@ class HomeOffers extends Component {
       modalPermission: false,
       fetch: false,
       listview: ['profiles', 'vehicles', 'bank_accounts'],
-      unmount: false,
       modalFromHome: true,
+      share: false,
     };
   }
 
@@ -101,21 +101,21 @@ class HomeOffers extends Component {
     const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
-          'didFocus',
-          () => {
-            if (that.state.unmount) {
-              this.setState({ unmount: false });
-              this.componentDidMount();
-            }
-          },
+        'didFocus',
+        () => {
+          if (that.state.unmount) {
+            this.setState({ unmount: false });
+            this.componentDidMount();
+          }
+        },
       );
     }
     if (!this.didBlurListener) {
       this.didBlurListener = this.props.navigation.addListener(
-          'didBlur',
-          () => {
-            that.setState({ unmount: true });
-          },
+        'didBlur',
+        () => {
+          that.setState({ unmount: true });
+        },
       );
     }
     this.setState({ callMine: false });
@@ -132,6 +132,24 @@ class HomeOffers extends Component {
 
   onPressFilter() {
     this.setState({ modalSearch: true, modalFromHome: false });
+  }
+
+  onClickShare(offers) {
+    Share.share(
+      {
+        message:
+          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+            offers.id}`,
+        url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
+        title: 'Oferta Cargapp',
+      },
+      {
+        // Android only:
+        dialogTitle: 'Compartir Oferta',
+        // iOS only:
+        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+      },
+    );
   }
 
   onNavigate(nameView) {
@@ -368,6 +386,7 @@ class HomeOffers extends Component {
                       date="Hoy"
                       actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
                       btnPrimary="Aplicar"
+                      actionbtnSecondary={() => this.onClickShare(services)}
                     />
                   );
                 }

@@ -20,7 +20,7 @@ import ButtonGradient from '../ButtonGradient';
 function WhiteCardTravels({
   from, to, vehicle, pay, date,
   actionbtnPrimary, btnPrimary,
-  actionbtnSecondary, btnSecondary,
+  actionbtnSecondary,
   status, statusColor,
 }) {
   return (
@@ -60,15 +60,15 @@ function WhiteCardTravels({
       }
 
       <WrapperButtons>
-        { btnSecondary != null ? (
-          <TouchableDetails onPress={actionbtnSecondary}>
-            <TextBlue>Ver más</TextBlue>
-          </TouchableDetails>
-        ) : null }
         { btnPrimary != null ? (
-          <WrapperButton>
-            <ButtonGradient press={actionbtnPrimary} content={btnPrimary} />
-          </WrapperButton>
+          <>
+            <TouchableDetails onPress={actionbtnSecondary}>
+              <TextBlue>Compartir</TextBlue>
+            </TouchableDetails>
+            <WrapperButton>
+              <ButtonGradient press={actionbtnPrimary} content={btnPrimary} />
+            </WrapperButton>
+          </>
         ) : null }
       </WrapperButtons>
     </MainWrapper>
@@ -84,7 +84,6 @@ WhiteCardTravels.propTypes = {
   // add
   actionbtnPrimary: PropTypes.func.isRequired,
   btnPrimary: PropTypes.string.isRequired,
-  btnSecondary: PropTypes.string.isRequired,
   actionbtnSecondary: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
   statusColor: PropTypes.string.isRequired,
