@@ -39,6 +39,7 @@ class DetailCoupon extends Component {
             fullCard
             subText={coupon.name}
             button={false}
+            img={coupon.image}
           />
           <MainText>{coupon.description}</MainText>
           <BlueText>Código de mi cupón</BlueText>

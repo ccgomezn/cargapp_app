@@ -30,6 +30,7 @@ class Commerce extends Component {
         button={false}
         key={index}
         fullCard={false}
+        img={item.image}
       />
     );
   }
