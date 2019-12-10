@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-
+import { Linking } from 'react-native';
 import MapView from 'react-native-maps';
+import { connect } from 'react-redux';
 import {
   MainWrapper, NormalText, WrapperSwipeable, WrapperContent,
 } from './style';
 import SwipeableHome from '../../components/SwipeableHome';
 import CardInfoStad from '../../components/CardInfoStad';
-
-import {connect} from "react-redux";
-import DriverActions from '../../redux/reducers/DriverRedux';
-import ProfileActions from "../../redux/reducers/ProfileRedux";
+import ProfileActions from '../../redux/reducers/ProfileRedux';
 
 
 class Home extends Component {
@@ -46,6 +44,10 @@ class Home extends Component {
         },
       );
     }
+    Linking.getInitialURL().then((url) => {
+      this.navigate(url);
+    });
+    Linking.addEventListener('url', this.handleOpenURL);
   }
 
   getActiveRouteName(navigationState) {
@@ -58,6 +60,25 @@ class Home extends Component {
       return getActiveRouteName(route);
     }
     return route.routeName;
+  }
+
+  handleOpenURL(event) {
+    this.navigate(event.url);
+  }
+
+  navigate(url) {
+    const { navigation } = this.props;
+    if (
+      url !== 'cargapplite://'
+      && url !== 'exp://yx-zvg.cargapp.cargapp-lite.exp.direct:80'
+    ) {
+      let idItem = url.replace(/.*?:\/\/cargapp.app.link\/psicLa1y7Y/g, '');
+      idItem = idItem.replace(/\?offer=/g, '');
+      console.log(idItem);
+      if (idItem !== '') {
+        navigation.navigate('Detail', { itemId: idItem, share: true });
+      }
+    }
   }
 
   render() {
@@ -90,7 +111,6 @@ class Home extends Component {
 }
 
 
-
 const mapStateToProps = (state) => {
   const {
 
@@ -104,6 +124,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Home);

@@ -1030,7 +1030,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.1.0.tgz#b7a2cd678e7c54f0b17d1e2faa7b8131333facdb"
   integrity sha512-w5VxtgMyqx0DU5y2vKzBT8f313ruaykC4T14P/vp8sQwVeitUolLrD7SLOZW9SUm7epExrQDPrdW7M3SFeze0g==
 
-"@react-native-firebase/app@^6.1.0":
+"@react-native-firebase/app@6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-6.1.0.tgz#c7b9b70f9aea65ba3fa68d9a25005ee5a746424a"
   integrity sha512-ZNnb9kgJxpohW+S5zGF3HECSdktmFuozIiuK5rkghpnzO9ZMgPIudIjOYX4P/wdm8w1gj5wXH4sQDtyJ2ryE9w==
