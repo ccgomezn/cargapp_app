@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable react/no-unused-state */
 /* eslint-disable radix */
 /* eslint-disable no-else-return */
 /* eslint-disable global-require */
@@ -7,7 +9,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import InputCode from 'react-native-input-code';
-import Toast from 'react-native-root-toast';
+import Toast from 'react-native-tiny-toast';
 import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
@@ -71,7 +73,7 @@ class Registration extends Component {
       loadingRegister: false,
       error: {},
       datapin: '',
-      modalPin: false,
+      modalPin: false, // test
       loadingPin: false,
       loadingResendPin: false,
       pinErrorCheck: false,
@@ -91,6 +93,7 @@ class Registration extends Component {
       codeCountrie: '57',
       msgError: '',
       invalidpassconf: false,
+      step: null,
     };
   }
 
@@ -102,6 +105,12 @@ class Registration extends Component {
     const dtphone = navigation.getParam('phone', '');
     if (dtphone !== '') {
       this.setState({ dataphone: dtphone });
+    }
+    // get pin validate
+    const pinVal = navigation.getParam('pin', null);
+    console.log(pinVal);
+    if (pinVal === 1) {
+      this.setState({ modalPin: true, step: pinVal });
     }
   }
 
@@ -166,28 +175,39 @@ class Registration extends Component {
   }
 
   async onValidatePin() {
-    const { dataphone, datapin, codeCountrie } = this.state;
-    const { validatePin } = this.props;
+    const {
+      dataphone, datapin, codeCountrie, step,
+    } = this.state;
+    const { validatePin, user } = this.props;
 
     if (datapin != null) {
-      const fullPhone = codeCountrie.concat(dataphone);
+      let fullPhone = codeCountrie.concat(dataphone);
+      if (step === 1) {
+        console.log(user.fullPhone);
+        fullPhone = user.fullPhone;
+      }
       const data = {
         user: {
           phone_number: parseInt(fullPhone, 10),
           mobile_code: datapin,
         },
       };
+      console.log(data);
       await validatePin(data);
     }
     this.setState({ loadingPin: true });
   }
 
   async onResendPin() {
-    const { dataphone, codeCountrie } = this.state;
+    const { dataphone, codeCountrie, step } = this.state;
     const { resendPin } = this.props;
 
     if (dataphone != null) {
-      const fullPhone = codeCountrie.concat(dataphone);
+      let fullPhone = codeCountrie.concat(dataphone);
+      if (step === 1) {
+        console.log(user.fullPhone);
+        fullPhone = user.fullPhone;
+      }
       const data = {
         user: {
           phone_number: parseInt(fullPhone, 10),
@@ -331,6 +351,8 @@ class Registration extends Component {
       invalidpassconf,
     } = this.state;
 
+    console.log(user);
+
     // hide Toast
     if (visibleError || errorApi || msgError) {
       setTimeout(() => this.setState({
@@ -389,7 +411,7 @@ class Registration extends Component {
           this.OnHideModal();
           this.onLogin();
           this.setState({ loadingPin: false });
-        } else if (loadingPin) {
+        } else if (loadingPin && user.unprocess) {
           this.setState({ loadingPin: false, msgError: `pin ${user.status.message}` });
         }
       }
@@ -582,7 +604,11 @@ class Registration extends Component {
           </WrapperError>
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
-              <ButtonGradient content="Registrarse" press={() => this.validateForm()} disabled={!inputValueCheck} />
+              <ButtonGradient
+                content="Registrarse"
+                press={() => this.validateForm()}
+                disabled={!inputValueCheck}
+              />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <TextLoad>
@@ -599,22 +625,10 @@ class Registration extends Component {
             visible={modalPin}
             opacity={0.5}
             animation="top"
-            onTouchOutside={() => this.OnHideModal()}
+            styleWrapper={{ width: '85%' }}
+            // onTouchOutside={() => this.OnHideModal()}
           >
-            <IconModal>
-              {/* eslint-disable-next-line global-require */}
-              <SvgModal source={require('../../../icons/oval3x.png')}>
-                <SvgUriModal source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-smartphone.svg' }} />
-              </SvgModal>
-            </IconModal>
-            <TouchCloseModal
-              onPress={() => this.setState({ modalPin: false })}
-            >
-              <WrapperCloseX>
-                <TextModal>x</TextModal>
-              </WrapperCloseX>
-            </TouchCloseModal>
-            <MainWrapperDialog style={{ height: '45%', width: '80%' }}>
+            <MainWrapperDialog>
               <ScrollDialog>
                 <ContentDialog>
                   <WrapperText>
@@ -648,24 +662,30 @@ class Registration extends Component {
                     }}
                     autoFocus
                   />
-                  <TouchModal style={{ paddingTop: 15 }}>
-                    <WrapperError>
-                      { pinErrorCheck ? (
-                        <TextError>
-                          Campo incompleto o erroneo
-                        </TextError>
-                      ) : null }
-                    </WrapperError>
-                    <ButtonGradient press={() => this.init()} content="Continuar" />
+                  <WrapperError style={{ marginVertical: 12 }}>
+                    { pinErrorCheck ? (
+                      <TextError>
+                        Campo incompleto o erroneo
+                      </TextError>
+                    ) : null }
+                  </WrapperError>
+                  <TouchModal>
+                    <ButtonGradient
+                      press={() => this.init()}
+                      content="Continuar"
+                    />
                   </TouchModal>
                   <TouchModal>
-                    <ButtonWhite content="Reenviar pin" press={() => this.onPressResendPin()} />
+                    <ButtonWhite
+                      content="Reenviar pin"
+                      press={() => this.onPressResendPin()}
+                    />
                   </TouchModal>
                   <TextLoad>
                     { loadingPin || loadingResendPin ? (
                       <ActivityIndicator
                         style={{ alignSelf: 'center', height: 'auto' }}
-                        size="small"
+                        size="large"
                         color="#0068ff"
                       />
                     ) : null }
@@ -676,9 +696,8 @@ class Registration extends Component {
           </Dialog>
           <Toast
             visible={errorApi}
-            position={-50}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            position={-40}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >
@@ -686,19 +705,17 @@ class Registration extends Component {
           </Toast>
           <Toast
             visible={visibleError}
-            position={-50}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            position={-40}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >
-            Los datos son incorrectos, intenta de nuevo
+            Los datos son erroneos y/o ya están registrados.
           </Toast>
           <Toast
             visible={msgError !== ''}
             position={-80}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >

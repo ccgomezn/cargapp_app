@@ -14,6 +14,7 @@ export const { Types, Creators } = createActions({
   postValidateSuccess: ['data'],
   postValidateFailure: ['params'],
   postValidateRequest: ['params'],
+  postValidateUnprocess: ['data'],
   // register User
   postRegisterSuccess: ['data'],
   postRegisterFailure: ['params'],
@@ -21,6 +22,7 @@ export const { Types, Creators } = createActions({
   postRegisterUnprocess: ['params'],
   // resend pin
   postResendRequest: ['params'],
+  postResendSuccess: ['data'],
   // login User
   postLoginSuccess: ['data'],
   postLoginFailure: ['params'],
@@ -52,6 +54,8 @@ export const INITIAL_STATE = Immutable({
   unprocess: false,
   session: null, // respuesta login
   roles: null,
+  fullPhone: null,
+  step: 0, // step [1:registrado - 2:PinOK - 3: OKlogin ]
 });
 
 /* ----------------- Selectors ---------------- */
@@ -114,6 +118,17 @@ export const postValidateSuccess = (state, { data }) => {
     error: false,
     status: data,
     info: data,
+    step: 2,
+  };
+};
+
+export const postValidateUnprocess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    unprocess: true,
+    status: data,
   };
 };
 
@@ -141,6 +156,8 @@ export const postRegisterSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    step: 1,
+    fullPhone: data.phone_number,
   };
 };
 
@@ -179,6 +196,15 @@ export const postResendRequest = (state) => {
     fetching: true,
     error: false,
     status: null,
+  };
+};
+
+export const postResendSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    status: data,
   };
 };
 
@@ -312,6 +338,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_VALIDATE_SUCCESS]: postValidateSuccess,
   [Types.POST_VALIDATE_FAILURE]: postValidateFailure,
   [Types.POST_VALIDATE_REQUEST]: postValidateRequest,
+  [Types.POST_VALIDATE_UNPROCESS]: postValidateUnprocess,
   // register user
   [Types.POST_REGISTER_SUCCESS]: postRegisterSuccess,
   [Types.POST_REGISTER_FAILURE]: postRegisterFailure,
@@ -319,6 +346,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_REGISTER_UNPROCESS]: postRegisterUnprocess,
   // resend code
   [Types.POST_RESEND_REQUEST]: postResendRequest,
+  [Types.POST_RESEND_SUCCESS]: postResendSuccess,
   // login user
   [Types.POST_LOGIN_SUCCESS]: postLoginSuccess,
   [Types.POST_LOGIN_FAILURE]: postLoginFailure,
