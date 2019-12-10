@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
-import Toast from 'react-native-root-toast';
+import Toast from 'react-native-tiny-toast';
 
 import Card from '../../../components/ComponentCard';
 import ArrowBack from '../../../components/ArrowBack';
@@ -274,8 +274,7 @@ class Registration extends Component {
         <Toast
           visible={visible_error}
           position={-50}
-          duration={Toast.durations.LONG}
-          opacity={0.8}
+          duration={Toast.duration.LONG}
           shadow
           animation
         >

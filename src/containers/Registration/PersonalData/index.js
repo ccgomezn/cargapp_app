@@ -6,7 +6,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Toast from 'react-native-root-toast';
+import Toast from 'react-native-tiny-toast';
 import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
@@ -244,8 +244,7 @@ class Registration extends Component {
           <Toast
             visible={errorApi}
             position={-50}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >
