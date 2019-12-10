@@ -76,7 +76,7 @@ class Home extends Component {
       idItem = idItem.replace(/\?offer=/g, '');
       console.log(idItem);
       if (idItem !== '') {
-        navigation.navigate('Detail', { itemId: idItem, share: true });
+        navigation.navigate('ApplyTravels', { dataOffer: idItem, share: true });
       }
     }
   }

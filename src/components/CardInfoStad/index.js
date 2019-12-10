@@ -7,6 +7,7 @@ import {
   WrapperStad, StadLeft, StadRight, ViewRow, ViewFlex,
   IconCircle, ContentStad, TextSubt,
 } from './style';
+import images from '../../icons';
 
 function CardInfoStad({
   press, title, valueKm, valuePoint, textKm, textPoint,
@@ -23,7 +24,7 @@ function CardInfoStad({
           <ViewRow>
             <ViewFlex>
               <IconCircle
-                source={require('../../icons/circle2x.png')}
+                source={images.blueCircle}
               />
             </ViewFlex>
             <ContentStad style={{
@@ -43,7 +44,7 @@ function CardInfoStad({
           <ViewRow>
             <ViewFlex>
               <IconCircle
-                source={require('../../icons/circlem2x.png')}
+                source={images.purpleCircle}
               />
             </ViewFlex>
             <ContentStad>

@@ -77,6 +77,9 @@ export const TouchableDetails = styled.TouchableOpacity`
     margin-horizontal: 20px;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    bottom: -45px;
+    right: 30%;
     `;
 
 export const TextBlue = styled.Text`
