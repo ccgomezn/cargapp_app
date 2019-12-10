@@ -41,10 +41,7 @@ import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
 import DestinationsActions from '../../redux/reducers/DestinationsRedux';
-
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
-import DriverActions from '../../redux/reducers/DriverRedux';
-
 
 const itemList = [
   {

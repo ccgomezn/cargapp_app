@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Share } from 'react-native';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, TouchFilter, TextFilter, ContentOffer,
@@ -17,6 +17,7 @@ import InputSlider from '../../components/InputSlider';
 import InputPicker from '../../components/InputPicker';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import StatusActions from '../../redux/reducers/StatusRedux';
+import VehiclesActions from '../../redux/reducers/VehicleRedux';
 
 const itemsTipo = [
   {
@@ -57,7 +58,7 @@ class MyTravels extends Component {
 
   componentDidMount() {
     const {
-      getMyOffers, getStatus, profile, getsOffers,
+      getMyOffers, getStatus, profile, getsOffers, getVehicles,
     } = this.props;
 
     const that = this;
@@ -83,6 +84,7 @@ class MyTravels extends Component {
     getMyOffers(profile.data[0].user.id);
     getsOffers();
     getStatus();
+    getVehicles();
   }
 
   onPressButton(value) {
@@ -116,6 +118,24 @@ class MyTravels extends Component {
     getMyOffersRequest(profile.data[0].user.id);
   }
 
+  onClickShare(offers) {
+    Share.share(
+      {
+        message:
+          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+            offers.id}`,
+        url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
+        title: 'Oferta Cargapp',
+      },
+      {
+        // Android only:
+        dialogTitle: 'Compartir Oferta',
+        // iOS only:
+        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+      },
+    );
+  }
+
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const {
@@ -129,7 +149,6 @@ class MyTravels extends Component {
         }
       });
     }
-
     console.log(offers.services);
     if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
       const services_ids = [];
@@ -165,6 +184,7 @@ class MyTravels extends Component {
                               status={service_map[allOffers.id] === false ? 'Rechazado' : allOffers.statu_id === statusOffer.id && statusOffer.name}
                               actionbtnPrimary={() => this.onPressButton(allOffers)}
                               btnPrimary={service_map[allOffers.id] === null || service_map[allOffers.id] ? 'Ver detalle' : null}
+                              actionbtnSecondary={() => this.onClickShare(allOffers)}
                             />
                           );
                         }
@@ -255,6 +275,7 @@ const mapDispatchToProps = dispatch => ({
   getMyOffers: id => dispatch(OffersActions.getServicesRequest(id)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
   getStatus: () => dispatch(StatusActions.getStatusRequest()),
+  getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
 });
 
