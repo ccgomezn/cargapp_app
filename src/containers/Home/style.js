@@ -24,3 +24,10 @@ export const MainWrapper = styled.View`
 export const WrapperSwipeable = styled.View`
   flex-direction: row;
 `;
+
+export const CustomImage = styled.Image`
+  width: 50px;
+  height: 50px;
+  resize-mode: stretch;
+  z-index: 1000;
+`;
