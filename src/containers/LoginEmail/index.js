@@ -94,8 +94,8 @@ class Registration extends Component {
     const { navigate } = this.props.navigation;
     alert(user.step);
     if (user.step === 1 || user.step === 2) {
-      // register - Pin no validate
-      navigate('Register', { pin: user.step });
+      // register - 1:Pin no validate, 2:errorLogin, 3: no dataPersonal
+      navigate('Register', { stepUser: user.step });
     } else {
       if (user.isLogged) {
         this.setState({ loadinitial: true });
@@ -303,7 +303,11 @@ class Registration extends Component {
               />
             </WrapperButtonGradient>
             <WrapperButtonGradient>
-              <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
+              <ButtonGradient
+                press={() => this.validateForm()}
+                content="Ingresar"
+                disabled={!inputValueCheck}
+              />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <TextLoad>
