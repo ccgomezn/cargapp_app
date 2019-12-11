@@ -8,6 +8,7 @@ import {
 import SwipeableHome from '../../components/SwipeableHome';
 import CardInfoStad from '../../components/CardInfoStad';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
+import OffersActions from '../../redux/reducers/OffersRedux';
 
 
 class Home extends Component {
@@ -20,8 +21,8 @@ class Home extends Component {
 
 
   componentDidMount() {
-    const { getProfile } = this.props;
-
+    const { getProfile, getsOffers } = this.props;
+    getsOffers();
     getProfile();
 
     const that = this;
@@ -76,7 +77,7 @@ class Home extends Component {
       idItem = idItem.replace(/\?offer=/g, '');
       console.log(idItem);
       if (idItem !== '') {
-        navigation.navigate('ApplyTravels', { dataOffer: idItem, share: true });
+        navigation.navigate('ApplyTravels', { idShare: idItem, share: true });
       }
     }
   }
@@ -113,14 +114,18 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   const {
-
+    offers,
+    profile,
   } = state;
   return {
+    offers,
+    profile,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
+  getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
 });
 
 export default connect(

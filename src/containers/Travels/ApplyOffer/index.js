@@ -36,10 +36,23 @@ class ApplyOffer extends Component {
   }
 
   componentDidMount() {
-    const { navigation, getCompanies, getServices } = this.props;
+    const {
+      navigation, getCompanies, getServices, offers,
+    } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     const booked = navigation.getParam('booked');
-    this.setState({ offer: dataOffer });
+    const share = navigation.getParam('share');
+    const idShare = navigation.getParam('idShare');
+    if (share) {
+      offers.data.map((services) => {
+        if (services.id === idShare) {
+          this.setState({ offer: services });
+        }
+      });
+    }
+    if (dataOffer) {
+      this.setState({ offer: dataOffer });
+    }
     if (dataOffer.statu_id === 11 || (dataOffer.statu_id === 10 && booked)) {
       this.setState({ modalFinish: true });
     }
@@ -123,7 +136,7 @@ class ApplyOffer extends Component {
           )}
           <EmptyDialog visible={modalFinish}>
             <WrapperModal>
-              <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10  && 'Estamos esperando que acepten el viaje'}</BlueText>
+              <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
               <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
             </WrapperModal>
           </EmptyDialog>
