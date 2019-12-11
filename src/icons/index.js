@@ -6,6 +6,8 @@ const images = {
   myTravels: require('./v_1.png'),
   blueCircle: require('./blueCircle.png'),
   purpleCircle: require('./purpleCircle.png'),
+  originPin: require('./originPin.png'),
+  markersPin: require('./markerTravelPin.png'),
 };
 
 export default images;
