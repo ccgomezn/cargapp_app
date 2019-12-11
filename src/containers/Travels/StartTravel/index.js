@@ -369,12 +369,18 @@ class StartTravel extends Component {
               latitudeDelta: 0.10,
               longitudeDelta: 0.10,
             }}
-            showsUserLocation
             followsUserLocation
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
-
+            <MapView.Marker
+              coordinate={{
+                latitude: lastLat,
+                longitude: lastLong,
+              }}
+            >
+              <CustomImage source={images.truck} />
+            </MapView.Marker>
             {markers.data.map(commerce => (
               <MapView.Marker
                 coordinate={{

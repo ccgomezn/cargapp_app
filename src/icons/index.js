@@ -8,6 +8,7 @@ const images = {
   purpleCircle: require('./purpleCircle.png'),
   originPin: require('./originPin.png'),
   markersPin: require('./markerTravelPin.png'),
+  truck: require('./truck.png'),
 };
 
 export default images;
