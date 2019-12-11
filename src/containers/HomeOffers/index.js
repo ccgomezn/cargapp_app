@@ -9,6 +9,7 @@ import { View } from 'native-base';
 import { ScrollView, ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
+import RNFirebase from 'react-native-firebase';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -42,6 +43,8 @@ import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
 import DestinationsActions from '../../redux/reducers/DestinationsRedux';
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
+
+const Analytics = RNFirebase.analytics();
 
 const itemList = [
   {
@@ -251,6 +254,7 @@ class HomeOffers extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('home_offers_cargapp');
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,

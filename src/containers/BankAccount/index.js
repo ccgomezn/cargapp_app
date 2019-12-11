@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator, Alert } from 'react-native';
+import RNFirebase from 'react-native-firebase';
 import {
   MainWrapper,
   TouchableCreate,
@@ -27,6 +28,8 @@ import InputPicker from '../../components/InputPicker';
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
 import PopUpNotification from '../../components/PopUpNotifications';
+
+const Analytics = RNFirebase.analytics();
 
 class BankAccount extends Component {
   constructor() {
@@ -99,6 +102,7 @@ class BankAccount extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('tarjetas_registradas');
     const {
       modalAccount,
       numberAccount,
@@ -161,6 +165,7 @@ class BankAccount extends Component {
             visible={modalAccount}
             onTouchOutside={() => this.setState({ modalAccount: false })}
           >
+            {Analytics.setCurrentScreen('datos_bancarios')}
             <MainWrapperDialog>
               <ContentDialog>
                 <TitleBlack>Datos bancarios</TitleBlack>

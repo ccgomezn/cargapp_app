@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ActivityIndicator, Alert } from 'react-native';
+import RNFirebase from 'react-native-firebase';
 import EmptyDialog from '../../components/EmptyDialog';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
@@ -21,6 +22,8 @@ import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import PasswordActions from '../../redux/reducers/PasswordRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
+
+const Analytics = RNFirebase.analytics();
 
 class Profile extends Component {
   constructor() {
@@ -82,6 +85,7 @@ class Profile extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('mi_perfil');
     const {
       modalPassword,
       name,
@@ -179,6 +183,7 @@ class Profile extends Component {
           <EmptyDialog
             visible={modalPassword}
           >
+            {Analytics.setCurrentScreen('mi_perfil_cambiar_contraseña')}
             <MainWrapperDialog>
               <TitleBlack>Cambiar tu contraseña</TitleBlack>
               <TextGray>

@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import RNFirebase from 'react-native-firebase';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
   WrapperButtonsBottom, WrapperButtonGradient,
@@ -15,6 +16,8 @@ import ButtonGradient from '../../components/ButtonGradient';
 import CardVehicle from '../../components/CardVehicle';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
+
+const Analytics = RNFirebase.analytics();
 
 class ListVehicles extends Component {
   constructor() {
@@ -33,7 +36,7 @@ class ListVehicles extends Component {
     getVehiclesType();
     const selectID = navigation.getParam('selectID');
     const offer = navigation.getParam('offer');
-    this.setState({ selectID: selectID, offer: offer });
+    this.setState({ selectID, offer });
   }
 
   onViewDetail(data) {
@@ -57,7 +60,7 @@ class ListVehicles extends Component {
       this.setState({ modalVeh: true });
       // navigate('DetailVehicle');
     } else {
-      navigate('DetailVehicle', { selectID: selectID, dataOffer: offer });
+      navigate('DetailVehicle', { selectID, dataOffer: offer });
     }
   }
 
@@ -66,6 +69,7 @@ class ListVehicles extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('mis_vehiculos');
     const { vehicles } = this.props;
     const { modalVeh } = this.state;
     const itemsType = {};
