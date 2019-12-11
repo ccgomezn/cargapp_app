@@ -58,3 +58,10 @@ export const WrapperModal = styled.View`
   border-radius: 30px;
   padding: 7%;
 `;
+
+export const CustomImage = styled.Image`
+  width: 50px;
+  height: 50px;
+  resize-mode: stretch;
+  z-index: 1000;
+`;

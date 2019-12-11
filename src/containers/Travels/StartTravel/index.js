@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Platform, ActivityIndicator, Linking, PermissionsAndroid,
+  Platform, ActivityIndicator, Linking,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
-
 import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
@@ -24,11 +22,13 @@ import {
   WrapperTopCard,
   BlueText,
   WrapperModal,
+  CustomImage,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import TopCardTravel from '../../../components/TopCardTravel';
 import EmptyDialog from '../../../components/EmptyDialog';
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
+import images from '../../../icons';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -381,7 +381,9 @@ class StartTravel extends Component {
                   latitude: Number(commerce.latitude),
                   longitude: Number(commerce.longitude),
                 }}
-              />
+              >
+                <CustomImage source={images.markersPin} />
+              </MapView.Marker>
             ))}
 
             <MapView.Polyline coordinates={waypoints} strokeWidth={4} strokeColor="#007aff" />
@@ -393,7 +395,9 @@ class StartTravel extends Component {
               tracksViewChanges={false}
               pinColor="#007aff"
               title="Origen carga"
-            />
+            >
+              <CustomImage source={images.originPin} />
+            </MapView.Marker>
           </MapView>
           {companies.data.map((CompanyInfo) => {
             if (offerSpecific.company_id === CompanyInfo.id) {
