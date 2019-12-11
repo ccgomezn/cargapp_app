@@ -54,7 +54,7 @@ export const TextError = styled.Text`
 
 export const TextLoad = styled.View`
   display: flex;
-  height: 38px;
+  height: auto;
   align-items: center;
   align-self: center;
   text-align: center;

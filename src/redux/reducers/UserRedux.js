@@ -39,6 +39,8 @@ export const { Types, Creators } = createActions({
   getUserinfoRequest: ['params'],
   getUserinfoSuccess: ['data'],
   getUserinfoFailure: null,
+  // save acount
+  saveAcountSuccess: ['data'],
 });
 
 export const UserTypes = Types;
@@ -55,7 +57,8 @@ export const INITIAL_STATE = Immutable({
   session: null, // respuesta login
   roles: null,
   fullPhone: null,
-  step: 0, // step [1:registrado - 2:PinOK - 3: OKlogin ]
+  step: 0, // step [1:registerOk - 2:PinOK - 3:OKlogin ]
+  acount: null, // acount initial
 });
 
 /* ----------------- Selectors ---------------- */
@@ -81,6 +84,14 @@ export const onUserLogout = (state) => {
     isLogged: false,
     error: false,
     info: null,
+  };
+};
+
+/* ------------- Acount initial ------ */
+export const saveAcountSuccess = (state, { data }) => {
+  return {
+    ...state,
+    acount: data,
   };
 };
 
@@ -137,6 +148,7 @@ export const postValidateFailure = (state) => {
     ...state,
     fetching: false,
     error: true,
+    unprocess: false,
   };
 };
 
@@ -146,6 +158,7 @@ export const postValidateRequest = (state) => {
     fetching: true,
     error: false,
     status: null,
+    unprocess: false,
   };
 };
 
@@ -218,6 +231,7 @@ export const postLoginSuccess = (state, { data }) => {
     session: data,
     isLogged: true,
     unprocess: false,
+    step: 3,
   };
 };
 
@@ -363,4 +377,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_USERINFO_REQUEST]: getUserinfoRequest,
   [Types.GET_USERINFO_SUCCESS]: getUserinfoSuccess,
   [Types.GET_USERINFO_FAILURE]: getUserinfoFailure,
+  // save acount
+  [Types.SAVE_ACOUNT_SUCCESS]: saveAcountSuccess,
 });

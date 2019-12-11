@@ -73,12 +73,12 @@ class Registration extends Component {
       loadingRegister: false,
       error: {},
       datapin: '',
-      modalPin: false, // test
+      modalPin: false,
       loadingPin: false,
       loadingResendPin: false,
       pinErrorCheck: false,
       pinValueCheck: false,
-      loadingLogin: false,
+      loadingLogin: false, // test loading
       msgApi: '',
       datarol: 11,
       pressState: false,
@@ -93,13 +93,13 @@ class Registration extends Component {
       codeCountrie: '57',
       msgError: '',
       invalidpassconf: false,
-      step: null,
+      step: 0,
     };
   }
 
   componentDidMount() {
     const { navigation } = this.props;
-    const { countriesActive } = this.props;
+    const { countriesActive, user } = this.props;
     // get countries
     countriesActive();
     const dtphone = navigation.getParam('phone', '');
@@ -107,10 +107,17 @@ class Registration extends Component {
       this.setState({ dataphone: dtphone });
     }
     // get pin validate
-    const pinVal = navigation.getParam('pin', null);
-    console.log(pinVal);
-    if (pinVal === 1) {
-      this.setState({ modalPin: true, step: pinVal });
+    const stepUser = navigation.getParam('stepUser', null);
+    console.log(stepUser);
+    if (stepUser !== null) {
+      // verify step
+      if (stepUser === 1) {
+        this.setState({ modalPin: true, step: stepUser });
+      } else if (stepUser === 2) {
+        // login
+        this.setState({ step: stepUser, loadingLogin: true });
+        this.onLogin();
+      }
     }
   }
 
@@ -125,28 +132,40 @@ class Registration extends Component {
   }
 
   async onLogin() {
-    const { dataphone, dataemail, datapassword } = this.state;
-    const { loginUser } = this.props;
+    const { dataemail, datapassword, step } = this.state;
+    const { loginUser, user } = this.props;
     const clave = datapassword;
-    // validate info
-    if (dataphone != null && dataphone !== '' && dataemail != null && dataemail !== '') {
+    // validate step
+    if (step !== null || step !== 0) {
+      const dataLog = {
+        user: {
+          email: user.acount.email,
+          password: user.acount.password,
+        },
+      };
+      console.log(dataLog);
+      await loginUser(dataLog);
+      this.setState({ loadingLogin: true });
+    }
+    if (dataemail != null && dataemail !== '') {
       const data = {
         user: {
           email: dataemail,
           password: clave,
         },
       };
-      // console.log(data);
+      console.log(data);
       await loginUser(data);
+      this.setState({ loadingLogin: true });
     }
-    this.setState({ loadingLogin: true });
+    // const toast = Toast.showLoading('Cargando...');
   }
 
   async onRegisterPress() {
     const {
       dataphone, dataemail, datapassword, datarol, codeCountrie, datadocument,
     } = this.state;
-    const { registerUser } = this.props;
+    const { registerUser, saveAcount } = this.props;
     // validate info
     if (dataphone != null && dataphone !== ''
       && dataemail != null && dataemail !== ''
@@ -165,8 +184,14 @@ class Registration extends Component {
         },
       };
 
-      // console.log(data);
+      const acount = {
+        email: dataemail,
+        password: datapassword,
+      };
+
+      console.log(acount);
       await registerUser(data);
+      await saveAcount(acount);
       this.setState({ loadingRegister: true });
     } else {
       // campos incompletos
@@ -183,7 +208,6 @@ class Registration extends Component {
     if (datapin != null) {
       let fullPhone = codeCountrie.concat(dataphone);
       if (step === 1) {
-        console.log(user.fullPhone);
         fullPhone = user.fullPhone;
       }
       const data = {
@@ -192,7 +216,6 @@ class Registration extends Component {
           mobile_code: datapin,
         },
       };
-      console.log(data);
       await validatePin(data);
     }
     this.setState({ loadingPin: true });
@@ -200,12 +223,11 @@ class Registration extends Component {
 
   async onResendPin() {
     const { dataphone, codeCountrie, step } = this.state;
-    const { resendPin } = this.props;
+    const { resendPin, user } = this.props;
 
     if (dataphone != null) {
       let fullPhone = codeCountrie.concat(dataphone);
       if (step === 1) {
-        console.log(user.fullPhone);
         fullPhone = user.fullPhone;
       }
       const data = {
@@ -290,7 +312,13 @@ class Registration extends Component {
   }
 
   init() {
-    this.onValidatePin();
+    const { datapin } = this.state;
+    this.setState({ pinErrorCheck: false });
+    if (datapin.length < 4 || datapin === '') {
+      this.setState({ pinErrorCheck: true });
+    } else {
+      this.onValidatePin();
+    }
   }
 
   OnHideModal() {
@@ -359,7 +387,7 @@ class Registration extends Component {
         visibleError: false,
         errorApi: false,
         msgError: '',
-      }), 5000); // hide toast after 5s
+      }), 6000); // hide toast after 5s
     }
 
     // validate form
@@ -425,10 +453,10 @@ class Registration extends Component {
       if (user.status && !user.fetching) {
         if (user.status.phone_number) {
           // send code ok
-          alert('code resend');
-          this.setState({ loadingResendPin: false });
+          // alert('code resend');
+          this.setState({ loadingResendPin: false, msgError: 'Pin enviado' });
         } else if (loadingResendPin) {
-          this.setState({ loadingResendPin: false, msgError: `pin ${user.status.message}` });
+          this.setState({ loadingResendPin: false, msgError: `Pin ${user.status.message}` });
         }
       }
     }
@@ -439,7 +467,7 @@ class Registration extends Component {
         this.setState({ loadingLogin: false, errorApi: true });
       }
       if (user.status && !user.fetching) {
-        // console.log(user);
+        console.log(user);
         if (user.session) {
           setTimeout(() => {
             this.setState({ loadingLogin: false });
@@ -612,7 +640,7 @@ class Registration extends Component {
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <TextLoad>
-            { loadingRegister ? (
+            { loadingRegister /* || loadingLogin */ ? (
               <ActivityIndicator
                 style={{ alignSelf: 'center', height: 'auto' }}
                 size="large"
@@ -721,6 +749,15 @@ class Registration extends Component {
           >
             {msgError}
           </Toast>
+          <Toast
+            visible={loadingLogin}
+            position={0}
+            loading
+            shadow
+            animation
+          >
+            Cargando
+          </Toast>
         </MainWrapper>
       );
     } else {
@@ -749,6 +786,7 @@ const mapDispatchToProps = dispatch => ({
   validatePin: params => dispatch(UserActions.postValidateRequest(params)),
   resendPin: params => dispatch(UserActions.postResendRequest(params)),
   countriesActive: params => dispatch(CountrieActions.postCountriesRequest(params)),
+  saveAcount: params => dispatch(UserActions.saveAcountSuccess(params)),
 });
 
 export default connect(
