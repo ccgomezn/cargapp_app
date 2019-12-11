@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import RNFirebase from 'react-native-firebase';
 import {
   MainWrapper, AddressesWrapper, WrapperModal, BlueText,
 } from './style';
@@ -18,6 +19,8 @@ import OffersActions from '../../../redux/reducers/OffersRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import EmptyDialog from '../../../components/EmptyDialog';
 import ButtonGradient from '../../../components/ButtonGradient';
+
+const Analytics = RNFirebase.analytics();
 
 class ApplyOffer extends Component {
   constructor() {
@@ -108,6 +111,7 @@ class ApplyOffer extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('mis_viajes_detalle');
     const { offers, navigation, companies } = this.props;
     console.log(this.props);
     const {

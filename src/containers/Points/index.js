@@ -29,6 +29,8 @@ import ButtonWhite from '../../components/ButtonWhite';
 
 import ChallengeActions from '../../redux/reducers/ChallengeRedux';
 import PrizesActions from '../../redux/reducers/PrizesRedux';
+import RNFirebase from 'react-native-firebase';
+let Analytics = RNFirebase.analytics();
 
 class Points extends Component {
   constructor() {
@@ -77,6 +79,7 @@ class Points extends Component {
   };
 
   render() {
+    Analytics.setCurrentScreen('retos');
     const {
       selectedIndex, reload, modalChallenge, activeChallenge,
       modalPrizes, activePrize,

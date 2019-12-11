@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { ActivityIndicator, Share } from 'react-native';
+import RNFirebase from 'react-native-firebase';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, TouchFilter, TextFilter, ContentOffer,
@@ -18,6 +19,8 @@ import InputPicker from '../../components/InputPicker';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import StatusActions from '../../redux/reducers/StatusRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
+
+const Analytics = RNFirebase.analytics();
 
 const itemsTipo = [
   {
@@ -137,6 +140,7 @@ class MyTravels extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('mis_viajes');
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const {
       offers, vehicles, status, navigation,
@@ -149,8 +153,10 @@ class MyTravels extends Component {
         }
       });
     }
-    console.log(offers.services);
-    if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
+    if (offers.services !== null
+      && offers.data !== null
+      && status.data !== null
+      && vehicles.data !== null) {
       const services_ids = [];
       const service_map = {};
       offers.services.forEach((service) => {

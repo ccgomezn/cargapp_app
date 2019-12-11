@@ -19,6 +19,8 @@ import ButtonGradient from '../../components/ButtonGradient';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
 import ButtonWhite from '../../components/ButtonWhite';
+import RNFirebase from 'react-native-firebase';
+let Analytics = RNFirebase.analytics();
 
 import ParametersActions from '../../redux/reducers/ParametersRedux';
 
@@ -228,6 +230,7 @@ class Vehicle extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('datos_vehiculo');
     const { vehicles, parameters } = this.props;
     const { navigate } = this.props.navigation;
     const {

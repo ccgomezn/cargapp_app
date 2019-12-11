@@ -11,6 +11,8 @@ import CardInfoStad from '../../components/CardInfoStad';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import images from '../../icons';
+import RNFirebase from 'react-native-firebase';
+let Analytics = RNFirebase.analytics();
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -105,6 +107,7 @@ class Home extends Component {
   }
 
   render() {
+    Analytics.setCurrentScreen('home_cargapp');
     const { navigation } = this.props;
     const { location } = this.state;
     console.log(this.props);
