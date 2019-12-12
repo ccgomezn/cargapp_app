@@ -100,6 +100,7 @@ class Registration extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     const { countriesActive, user } = this.props;
+    const { datarol } = this.state;
     // get countries
     countriesActive();
     const dtphone = navigation.getParam('phone', '');
@@ -117,6 +118,18 @@ class Registration extends Component {
         // login
         this.setState({ step: stepUser, loadingLogin: true });
         this.onLogin();
+      } else if (stepUser === 3) {
+        // documents ó data personal
+        const rol = user.acount.rol;
+        alert(`${datarol}--${ rol}`);
+        console.log(user.info);
+        if (datarol === 11) {
+          // validar Document Active
+          navigation.navigate('Documents', { userdata: user.info });
+        } else {
+          // datarol: Generatod
+          // navigate('Personal', { idrol: datarol });
+        }
       }
     }
   }
@@ -187,6 +200,7 @@ class Registration extends Component {
       const acount = {
         email: dataemail,
         password: datapassword,
+        rol: datarol,
       };
 
       console.log(acount);
@@ -640,13 +654,13 @@ class Registration extends Component {
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <TextLoad>
-            { loadingRegister /* || loadingLogin */ ? (
+            {/* { loadingRegister || loadingLogin  ? (
               <ActivityIndicator
                 style={{ alignSelf: 'center', height: 'auto' }}
                 size="large"
                 color="#0068ff"
               />
-            ) : null }
+            ) : null } */}
           </TextLoad>
           <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
           <Dialog
@@ -654,7 +668,6 @@ class Registration extends Component {
             opacity={0.5}
             animation="top"
             styleWrapper={{ width: '85%' }}
-            // onTouchOutside={() => this.OnHideModal()}
           >
             <MainWrapperDialog>
               <ScrollDialog>
@@ -750,7 +763,7 @@ class Registration extends Component {
             {msgError}
           </Toast>
           <Toast
-            visible={loadingLogin}
+            visible={loadingLogin || loadingRegister}
             position={0}
             loading
             shadow
