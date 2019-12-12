@@ -93,8 +93,8 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     alert(user.step);
-    if (user.step === 1 || user.step === 2) {
-      // register - 1:Pin no validate, 2:errorLogin, 3: no dataPersonal
+    if (user.step === 1 || user.step === 2 || user.step === 3) {
+      // register - 1:Pin no validate, 2:errorLogin, 3:No dataPersonal
       navigate('Register', { stepUser: user.step });
     } else {
       if (user.isLogged) {
