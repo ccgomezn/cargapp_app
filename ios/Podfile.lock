@@ -170,7 +170,10 @@ PODS:
   - CocoaLumberjack (3.5.3):
     - CocoaLumberjack/Core (= 3.5.3)
   - CocoaLumberjack/Core (3.5.3)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
   - DoubleConversion (1.1.6)
+  - Fabric (1.9.0)
   - Firebase/Auth (6.13.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.4.0)
@@ -407,6 +410,12 @@ PODS:
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
+  - RNFBCrashlytics (6.2.0):
+    - Crashlytics (~> 3.12.0)
+    - Fabric (~> 1.9.0)
+    - Firebase/Core (~> 6.13.0)
+    - React
+    - RNFBApp
   - RNFBFirestore (6.1.0):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Firestore (~> 6.13.0)
@@ -457,6 +466,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
+  - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -469,6 +479,8 @@ SPEC REPOS:
     - boost-for-react-native
     - BoringSSL-GRPC
     - CocoaLumberjack
+    - Crashlytics
+    - Fabric
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -560,6 +572,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
+  RNFBCrashlytics:
+    :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBMessaging:
@@ -577,7 +591,9 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
@@ -631,6 +647,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
   RNFBApp: edeadb99669dd39f9d7f8f7f68d420fda4d8b7d8
   RNFBAuth: ed3f9103bada30d38bf7e3a7e1431e69eca0e314
+  RNFBCrashlytics: 0469cb96b00904e0c9604b9636d8eeab31115b08
   RNFBFirestore: bd3644bd512cc6f78e13d34ea13e7e642ac3c1b2
   RNFBMessaging: 5cbfa023eae7e4f16ce285eb9d3ed17fb85ff5b3
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
