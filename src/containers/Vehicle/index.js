@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-root-toast';
 
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm, TextLoad,
   WrapperInputs, WrapperButtonsBottom, WrapperButtonGradient, WrapperError, TextError,
@@ -19,9 +20,6 @@ import ButtonGradient from '../../components/ButtonGradient';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
 import ButtonWhite from '../../components/ButtonWhite';
-import RNFirebase from 'react-native-firebase';
-let Analytics = RNFirebase.analytics();
-
 import ParametersActions from '../../redux/reducers/ParametersRedux';
 
 class Vehicle extends Component {
@@ -61,6 +59,7 @@ class Vehicle extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('datos_vehiculo');
     const {
       getVehiclesType,
       user,
@@ -77,7 +76,7 @@ class Vehicle extends Component {
     const dtveh = navigation.getParam('dataVehicle', '');
     const selectID = navigation.getParam('selectID');
     const offer = navigation.getParam('dataOffer');
-    this.setState({ selectID: selectID, dataOffer: offer });
+    this.setState({ selectID, dataOffer: offer });
     if (dtveh !== '') {
       this.setState({
         edit: false,
@@ -160,6 +159,7 @@ class Vehicle extends Component {
   }
 
   validateForm() {
+    analytics().logEvent('boton_confirmar_datos_vehiculo');
     const {
       dataplate,
       datavehicletype,
@@ -230,7 +230,6 @@ class Vehicle extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('datos_vehiculo');
     const { vehicles, parameters } = this.props;
     const { navigate } = this.props.navigation;
     const {

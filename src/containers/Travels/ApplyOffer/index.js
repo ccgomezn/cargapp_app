@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import RNFirebase from 'react-native-firebase';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, AddressesWrapper, WrapperModal, BlueText,
 } from './style';
@@ -19,8 +19,6 @@ import OffersActions from '../../../redux/reducers/OffersRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import EmptyDialog from '../../../components/EmptyDialog';
 import ButtonGradient from '../../../components/ButtonGradient';
-
-const Analytics = RNFirebase.analytics();
 
 class ApplyOffer extends Component {
   constructor() {
@@ -39,6 +37,7 @@ class ApplyOffer extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mis_viajes_detalle');
     const {
       navigation, getCompanies, getServices, offers,
     } = this.props;
@@ -63,7 +62,18 @@ class ApplyOffer extends Component {
     getServices();
   }
 
+  onPressCancel() {
+    analytics().logEvent('boton_cancelar_oferta');
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
+
+  onPressQualification() {
+    analytics().logEvent('boton_ver_calificacion');
+  }
+
   vehicleType(value, id) {
+    analytics().logEvent('boton_aplicar_a_oferta');
     const { navigation } = this.props;
     const { showTravel } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
@@ -111,7 +121,6 @@ class ApplyOffer extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('mis_viajes_detalle');
     const { offers, navigation, companies } = this.props;
     console.log(this.props);
     const {
@@ -199,10 +208,11 @@ class ApplyOffer extends Component {
                   normalText={company.address}
                   amount={offer.price}
                   onPressBG={() => this.vehicleType(offer, selectID)}
-                  onPressBW={() => navigation.goBack()}
+                  onPressBW={() => this.onPressCancel()}
                   delivery="5 días"
                   company={company.name}
                   mainButton={this.nameButton()}
+                  onPressQA={() => this.onPressQualification()}
                 />
               );
             }

@@ -9,7 +9,7 @@ import { View } from 'native-base';
 import { ScrollView, ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
-import RNFirebase from 'react-native-firebase';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -43,8 +43,6 @@ import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
 import DestinationsActions from '../../redux/reducers/DestinationsRedux';
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
-
-const Analytics = RNFirebase.analytics();
 
 const itemList = [
   {
@@ -81,8 +79,8 @@ class HomeOffers extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('home_offers_cargapp');
     const {
-
       profileDriver,
       getsOffers,
       getVehicles,
@@ -187,6 +185,12 @@ class HomeOffers extends Component {
     return selected;
   }
 
+  onPressTravel(services) {
+    const { navigation } = this.props;
+    navigation.navigate('ApplyTravels', { dataOffer: services });
+    analytics().logEvent('boton_ver_mas');
+  }
+
   getMineOffers() {
     const {
       getMyOffersPostulation, profile,
@@ -254,7 +258,6 @@ class HomeOffers extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('home_offers_cargapp');
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,
@@ -385,8 +388,8 @@ class HomeOffers extends Component {
                       vehicle={vehicle_data[services.vehicle_type_id]}
                       pay={services.price}
                       date="Hoy"
-                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
-                      btnPrimary="Aplicar"
+                      actionbtnPrimary={() => this.onPressTravel(services)}
+                      btnPrimary="Ver detalles"
                       actionbtnSecondary={() => this.onClickShare(services)}
                     />
                   );

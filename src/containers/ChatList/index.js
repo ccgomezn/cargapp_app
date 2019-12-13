@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
-import RNFirebase from 'react-native-firebase';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
 } from './style';
@@ -13,8 +13,6 @@ import {
 import ChatActions from '../../redux/reducers/ChatRedux';
 import OfferActions from '../../redux/reducers/OffersRedux';
 import CardChat from '../../components/CardChat';
-
-const Analytics = RNFirebase.analytics();
 
 class ListChat extends Component {
   constructor() {
@@ -24,6 +22,7 @@ class ListChat extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('chat');
     const { getMineChats, getActiveChats, getOffers } = this.props;
     getMineChats();
     getActiveChats();
@@ -45,7 +44,6 @@ class ListChat extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('chat');
     const { chat, offers } = this.props;
 
     if (!chat.fetching && chat.myRooms !== null
