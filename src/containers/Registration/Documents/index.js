@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable no-lonely-if */
 /* eslint-disable global-require */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable camelcase */
@@ -7,6 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
+import { ActivityIndicator } from 'react-native';
 
 import Card from '../../../components/ComponentCard';
 import ArrowBack from '../../../components/ArrowBack';
@@ -29,6 +32,7 @@ import ButtonGradient from '../../../components/ButtonGradient';
 
 // action - reducers
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
+import ParametersActions from '../../../redux/reducers/ParametersRedux';
 
 class Registration extends Component {
   constructor() {
@@ -49,10 +53,46 @@ class Registration extends Component {
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, getparameters } = this.props;
     const dtuser = navigation.getParam('userdata', '');
+    // get documents
+    getparameters('DOCUMENTS_LOGIN');
     if (dtuser !== '') {
       this.setState({ user_id: dtuser.user.id });
+    }
+  }
+
+  onValidateStep() {
+    const { user, navigation, parameters } = this.props;
+    const { navigate } = this.props.navigation;
+    // get step process
+    const stepUser = navigation.getParam('stepUser', null);
+    console.log(user);
+    const { rol } = user.acount;
+    console.log(stepUser);
+    if (stepUser !== null) {
+      if (stepUser === 3) {
+        // documents ó data personal
+        console.log(parameters);
+        const docVisible = parameters.data.parameters[0].code;
+        alert(`--${rol}----${docVisible}`);
+        console.log(docVisible);
+        if (docVisible === 'false') {
+          navigate('Personal', { idrol: rol });
+        }
+        if (rol === 11 || rol === '') {
+          // validar Document Active
+        } else {
+          // datarol: Generator
+          // navigate('Personal', { idrol: datarol });
+        }
+      }
+    } else {
+      // validar Document Active
+      const docVisible = parameters.data.parameters[0].code;
+      if (!docVisible === 'true') {
+        navigate('Personal', { idrol: rol });
+      }
     }
   }
 
@@ -148,7 +188,7 @@ class Registration extends Component {
 
   render() {
     // eslint-disable-next-line react/prop-types
-    const { document } = this.props;
+    const { document, parameters } = this.props;
     const { goBack } = this.props.navigation;
     const {
       listStatus, loadingRegister, document_load, error, visible_error,
@@ -188,116 +228,129 @@ class Registration extends Component {
       }
     }
 
-    return (
-      <MainWrapper>
-        <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
-          <ArrowBack url={() => goBack()} />
-          <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
-        </WrapperButtons>
-        <TextBlack>
-          Documentos para
-          <TextBlue>
-            {' '}
-            vinculación
-          </TextBlue>
-        </TextBlack>
-        <TextGray>
-          Este es el último paso, para terminar su registro necesitamos...
-        </TextGray>
-        <WrapperDocument>
-          <RowDocument>
-            <Card
-              logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
-              background="white"
-              mainText="Licencia de conducción"
-              subText="(Cara frontal)"
-              icon
-              status={listStatus[0].status}
-              colorText="black"
-              borderColorProp="#ecf0f1"
-              press={() => this.onPressButtonDoc(0)}
-            />
-          </RowDocument>
-          <RowDocument>
-            <Card
-              logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
-              background="white"
-              mainText="Licencia de conducción"
-              subText="(Cara trasera)"
-              icon
-              status={listStatus[1].status}
-              colorText="black"
-              borderColorProp="#ecf0f1"
-              press={() => this.onPressButtonDoc(1)}
-            />
-          </RowDocument>
-          <RowDocument>
-            <Card
-              logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
-              background="white"
-              mainText="Cédula de ciudadania"
-              subText="(Cara frontal)"
-              icon
-              status={listStatus[2].status}
-              colorText="black"
-              borderColorProp="#ecf0f1"
-              press={() => this.onPressButtonDoc(2)}
-            />
-          </RowDocument>
-          <RowDocument>
-            <Card
-              logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
-              background="white"
-              mainText="Cédula de ciudadania"
-              subText="(Cara trasera)"
-              icon
-              status={listStatus[3].status}
-              colorText="black"
-              borderColorProp="#ecf0f1"
-              press={() => this.onPressButtonDoc(3)}
-            />
-          </RowDocument>
-        </WrapperDocument>
-        <WrapperError>
-          { error ? (
-            <TextError>
-              {error}
-            </TextError>
-          ) : null }
-        </WrapperError>
-        <WrapperButtonsBottom>
-          <WrapperButtonGradient>
-            <ButtonGradient content="Continuar" press={() => this.onValidateForm()} />
-          </WrapperButtonGradient>
-        </WrapperButtonsBottom>
-        <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-        <Toast
-          visible={visible_error}
-          position={-50}
-          duration={Toast.duration.LONG}
-          shadow
-          animation
-        >
-          Error, no se pudo procesar la solicitud
-        </Toast>
-      </MainWrapper>
-    );
+    if (parameters.data !== null && !parameters.fetching) {
+      console.log(parameters);
+      this.onValidateStep();
+      return (
+        <MainWrapper>
+          <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
+            <ArrowBack url={() => goBack()} />
+            <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
+          </WrapperButtons>
+          <TextBlack>
+            Documentos para
+            <TextBlue>
+              {' '}
+              vinculación
+            </TextBlue>
+          </TextBlack>
+          <TextGray>
+            Este es el último paso, para terminar su registro necesitamos...
+          </TextGray>
+          <WrapperDocument>
+            <RowDocument>
+              <Card
+                logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
+                background="white"
+                mainText="Licencia de conducción"
+                subText="(Cara frontal)"
+                icon
+                status={listStatus[0].status}
+                colorText="black"
+                borderColorProp="#ecf0f1"
+                press={() => this.onPressButtonDoc(0)}
+              />
+            </RowDocument>
+            <RowDocument>
+              <Card
+                logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
+                background="white"
+                mainText="Licencia de conducción"
+                subText="(Cara trasera)"
+                icon
+                status={listStatus[1].status}
+                colorText="black"
+                borderColorProp="#ecf0f1"
+                press={() => this.onPressButtonDoc(1)}
+              />
+            </RowDocument>
+            <RowDocument>
+              <Card
+                logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
+                background="white"
+                mainText="Cédula de ciudadania"
+                subText="(Cara frontal)"
+                icon
+                status={listStatus[2].status}
+                colorText="black"
+                borderColorProp="#ecf0f1"
+                press={() => this.onPressButtonDoc(2)}
+              />
+            </RowDocument>
+            <RowDocument>
+              <Card
+                logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
+                background="white"
+                mainText="Cédula de ciudadania"
+                subText="(Cara trasera)"
+                icon
+                status={listStatus[3].status}
+                colorText="black"
+                borderColorProp="#ecf0f1"
+                press={() => this.onPressButtonDoc(3)}
+              />
+            </RowDocument>
+          </WrapperDocument>
+          <WrapperError>
+            { error ? (
+              <TextError>
+                {error}
+              </TextError>
+            ) : null }
+          </WrapperError>
+          <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              <ButtonGradient content="Continuar" press={() => this.onValidateForm()} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
+          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <Toast
+            visible={visible_error}
+            position={-50}
+            duration={Toast.duration.LONG}
+            shadow
+            animation
+          >
+            Error, no se pudo procesar la solicitud
+          </Toast>
+        </MainWrapper>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={{ alignSelf: 'center', height: '100%' }}
+          size="large"
+          color="#0000ff"
+        />
+      );
+    }
   }
 }
 
 // export default Registration;
-
 const mapStateToProps = (state) => {
-  const { user, document } = state;
+  const { user, document, parameters } = state;
   return {
     user,
     document,
+    parameters,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   // registerUser: params => dispatch(UserActions.postRegisterRequest(params)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocRequest(params)),
+  getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
 });
 
 export default connect(
