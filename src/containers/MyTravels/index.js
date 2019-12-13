@@ -17,6 +17,7 @@ import InputSlider from '../../components/InputSlider';
 import InputPicker from '../../components/InputPicker';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import StatusActions from '../../redux/reducers/StatusRedux';
+import VehicleActions from '../../redux/reducers/VehicleRedux';
 
 const itemsTipo = [
   {
@@ -57,7 +58,7 @@ class MyTravels extends Component {
 
   componentDidMount() {
     const {
-      getMyOffers, getStatus, profile, getsOffers,
+      getMyOffers, getStatus, profile, getsOffers, getVehicleRequest,
     } = this.props;
 
     const that = this;
@@ -83,6 +84,7 @@ class MyTravels extends Component {
     getMyOffers(profile.data[0].user.id);
     getsOffers();
     getStatus();
+    getVehicleRequest();
   }
 
   onPressButton(value) {
@@ -130,7 +132,6 @@ class MyTravels extends Component {
       });
     }
 
-    console.log(offers.services);
     if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
       const services_ids = [];
       const service_map = {};
@@ -254,8 +255,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   getMyOffers: id => dispatch(OffersActions.getServicesRequest(id)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
-  getStatus: () => dispatch(StatusActions.getStatusRequest()),
+  getStatus: params => dispatch(StatusActions.getStatusRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
+  getVehicleRequest: params => dispatch(VehicleActions.getVehicleRequest(params)),
 });
 
 export default connect(

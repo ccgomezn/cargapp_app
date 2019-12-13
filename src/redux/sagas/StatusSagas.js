@@ -7,10 +7,12 @@ export function* getStatus(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.status.getStatus, params);
-  console.log(response)
+  console.log('status response', response);
   if (response.ok) {
+    console.log('ok');
     yield put(StatusActions.getStatusSuccess(response.data));
   } else {
+    console.log('error');
     yield put(StatusActions.statusFailure());
   }
 }
