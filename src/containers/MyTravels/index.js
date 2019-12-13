@@ -58,7 +58,7 @@ class MyTravels extends Component {
 
   componentDidMount() {
     const {
-      getMyOffers, getStatus, profile, getsOffers, getVehicleRequest,
+      getMyOffers, getStatus, profile, getsOffers, getVehicleRequest, getMyOffersRequest,
     } = this.props;
 
     const that = this;
@@ -81,10 +81,12 @@ class MyTravels extends Component {
         },
       );
     }
-    getMyOffers(profile.data[0].user.id);
     getsOffers();
     getStatus();
     getVehicleRequest();
+    getMyOffersRequest(profile.data[0].user.id);
+    getMyOffers(profile.data[0].user.id);
+
   }
 
   onPressButton(value) {
@@ -126,7 +128,9 @@ class MyTravels extends Component {
     if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id === 9) {
+        console.log('yes offer');
+        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+          console.log(offer);
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
