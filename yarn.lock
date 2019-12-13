@@ -1025,6 +1025,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-2.0.2.tgz#ba8b40f560ead8d014740d1cdea970b33f19312e"
   integrity sha512-tTNXRCgnhJBu79mulQwzabXRpDqfh/uaDqfHVpvF0nX4NTpolpy6mvTRiFg7eWFPGRArsnZz1EYp6rHfJWGgEA==
 
+"@react-native-firebase/analytics@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-6.1.0.tgz#bfddbbed50430d927c7d65bc74d4a5d7da557b53"
+  integrity sha512-De56IftEF9nhDTCU6nRctPt2xnFfa6jXfdF3mSah60Lzj/0PChBmDtFXEOvWlP5ePX0HGmQzXFc04wV2invF7A==
+
 "@react-native-firebase/app-types@6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.1.0.tgz#b7a2cd678e7c54f0b17d1e2faa7b8131333facdb"

@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
-import RNFirebase from 'react-native-firebase';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
   WrapperButtonsBottom, WrapperButtonGradient,
@@ -16,8 +16,6 @@ import ButtonGradient from '../../components/ButtonGradient';
 import CardVehicle from '../../components/CardVehicle';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
-
-const Analytics = RNFirebase.analytics();
 
 class ListVehicles extends Component {
   constructor() {
@@ -30,6 +28,7 @@ class ListVehicles extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mis_vehiculos');
     const { getListVehicles, getVehiclesType, navigation } = this.props;
     getListVehicles();
     // get getTypes
@@ -51,6 +50,7 @@ class ListVehicles extends Component {
   }
 
   onValidate() {
+    analytics().logEvent('boton_añadir_vehiculo');
     const { navigate } = this.props.navigation;
     const { selectID, offer } = this.state;
     const { vehicles } = this.props;
@@ -69,7 +69,6 @@ class ListVehicles extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('mis_vehiculos');
     const { vehicles } = this.props;
     const { modalVeh } = this.state;
     const itemsType = {};

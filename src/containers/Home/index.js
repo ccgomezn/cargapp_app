@@ -3,6 +3,7 @@ import { Linking, Dimensions, ActivityIndicator } from 'react-native';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, NormalText, WrapperSwipeable, WrapperContent, CustomImage,
 } from './style';
@@ -11,8 +12,6 @@ import CardInfoStad from '../../components/CardInfoStad';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import images from '../../icons';
-import RNFirebase from 'react-native-firebase';
-let Analytics = RNFirebase.analytics();
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -33,6 +32,7 @@ class Home extends Component {
 
 
   componentDidMount() {
+    analytics().setCurrentScreen('home_cargapp');
     const { getProfile, getsOffers } = this.props;
     getsOffers();
     getProfile();
@@ -107,7 +107,6 @@ class Home extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('home_cargapp');
     const { navigation } = this.props;
     const { location } = this.state;
     console.log(this.props);

@@ -10,7 +10,7 @@ import Polyline from '@mapbox/polyline';
 import StarRating from 'react-native-star-rating';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-import RNFirebase from 'react-native-firebase';
+import analytics from '@react-native-firebase/analytics';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import RateTypes from '../../../redux/reducers/RateServiceRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
@@ -30,8 +30,6 @@ import TopCardTravel from '../../../components/TopCardTravel';
 import EmptyDialog from '../../../components/EmptyDialog';
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
 import images from '../../../icons';
-
-const Analytics = RNFirebase.analytics();
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -83,6 +81,7 @@ class StartTravel extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
       navigation, offers, getMarkers, getDocsServiceRequest,
     } = this.props;
@@ -346,7 +345,6 @@ class StartTravel extends Component {
   }
 
   render() {
-    Analytics.setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, finished, unload,
       modalRating, starCount, load, unLoad, inTravel, manifestSet, manifest,
