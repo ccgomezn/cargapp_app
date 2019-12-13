@@ -99,15 +99,14 @@ class Registration extends Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    const { countriesActive, user } = this.props;
-    const { datarol } = this.state;
+    const { countriesActive } = this.props;
     // get countries
     countriesActive();
     const dtphone = navigation.getParam('phone', '');
     if (dtphone !== '') {
       this.setState({ dataphone: dtphone });
     }
-    // get pin validate
+    // get step process
     const stepUser = navigation.getParam('stepUser', null);
     console.log(stepUser);
     if (stepUser !== null) {
@@ -118,18 +117,6 @@ class Registration extends Component {
         // login
         this.setState({ step: stepUser, loadingLogin: true });
         this.onLogin();
-      } else if (stepUser === 3) {
-        // documents ó data personal
-        const rol = user.acount.rol;
-        alert(`${datarol}--${ rol}`);
-        console.log(user.info);
-        if (datarol === 11) {
-          // validar Document Active
-          navigation.navigate('Documents', { userdata: user.info });
-        } else {
-          // datarol: Generatod
-          // navigate('Personal', { idrol: datarol });
-        }
       }
     }
   }

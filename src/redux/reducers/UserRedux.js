@@ -41,6 +41,8 @@ export const { Types, Creators } = createActions({
   getUserinfoFailure: null,
   // save acount
   saveAcountSuccess: ['data'],
+  // update Step register
+  updateStep: ['stepUser'],
 });
 
 export const UserTypes = Types;
@@ -92,6 +94,14 @@ export const saveAcountSuccess = (state, { data }) => {
   return {
     ...state,
     acount: data,
+  };
+};
+
+/* ------------- Update Step ---------- */
+export const updateStep = (state, { stepUser }) => {
+  return {
+    ...state,
+    step: stepUser,
   };
 };
 
@@ -379,4 +389,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_USERINFO_FAILURE]: getUserinfoFailure,
   // save acount
   [Types.SAVE_ACOUNT_SUCCESS]: saveAcountSuccess,
+  // update step
+  [Types.UPDATE_STEP]: updateStep,
 });
