@@ -22,6 +22,7 @@
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-firebase/app": "^6.1.0",
+    "@react-native-firebase/crashlytics": "6.1.0",
     "@react-native-firebase/firestore": "^6.1.0",
     "@react-native-firebase/messaging": "^6.1.0",
     "apisauce": "^1.1.0",
