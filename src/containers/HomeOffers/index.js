@@ -90,6 +90,8 @@ class HomeOffers extends Component {
       getPermission,
       getDestinations,
       navigation,
+      getMyOffers,
+      profile
     } = this.props;
     const data = {
       driver: {
@@ -124,6 +126,8 @@ class HomeOffers extends Component {
     getProfile();
     getPermission();
     getDestinations();
+    getMyOffers(profile.data[0].user.id);
+
   }
 
   componentWillUnmount() {
@@ -253,6 +257,19 @@ class HomeOffers extends Component {
       this.getMineOffers();
       this.setState({ callMine: true });
     }
+
+    if (offers.myOffers) {
+      console.log('yes');
+      offers.myOffers.forEach((offer) => {
+        // eslint-disable-next-line max-len
+        console.log(offer);
+        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+          navigation.navigate('StartTravel', { Offer: offer });
+        }
+      });
+    }
+
+
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
       let perm = 0;
@@ -546,6 +563,8 @@ const mapDispatchToProps = dispatch => ({
   getMyOffersPostulation: params => dispatch(OffersActions.getServicesRequest(params)),
   getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
   getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
+  getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
+
 });
 
 export default connect(
