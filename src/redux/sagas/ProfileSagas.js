@@ -7,6 +7,7 @@
 import { call, put, select } from 'redux-saga/effects';
 import ProfileActions from '../reducers/ProfileRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
+import UserActions from '../reducers/UserRedux';
 
 export function* getProfile(api, action) {
   const { params } = action;
@@ -27,9 +28,11 @@ export function* editProfile(api, action) {
   api.setAuthToken(token);
   api.setContent('application/json');
   const response = yield call(api.profile.editProfile, id, data);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     yield put(ProfileActions.editProfileSuccess(response.data));
+    // update step
+    yield put(UserActions.updateStep(5));
   } else {
     yield put(ProfileActions.getProfileFailure());
   }

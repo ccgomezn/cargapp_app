@@ -13,7 +13,7 @@ export function* registerDocument(api, action) {
   api.setAuthToken(token);
   api.setContent('multipart/form-data');
   const response = yield call(api.document.registerDocument, params);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     // save response ok
     yield put(DocumentActions.postRegisterDocSuccess(response.data));
