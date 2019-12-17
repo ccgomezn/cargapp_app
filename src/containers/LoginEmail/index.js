@@ -57,11 +57,6 @@ class Registration extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     this.isSession();
-    const dtphone = navigation.getParam('phone', '');
-    // validate session
-    if (dtphone !== '') {
-      // this.setState({ dataphone: dtphone });
-    }
   }
 
   async onLogin() {
@@ -93,17 +88,24 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     alert(user.step);
-    // register - 1:Pin no validate, 2:errorLogin, 3:No document, 4:no personalData
+    /* register step
+    - 1:Pin no validate
+    - 2:errorLogin
+    - 3:No document
+    - 4:No personalData
+    - 5:OK sessión
+    */
     if (user.step === 1 || user.step === 2) {
       navigate('Register', { stepUser: user.step });
     } else if (user.step === 3) {
-      navigate('Documents', { userdata: user.info, stepUser: user.step });
+      navigate('Documents');
     } else if (user.step === 4) {
-      // navigate('')
+      navigate('Personal');
     } else {
       if (user.isLogged) {
         this.setState({ loadinitial: true });
-        this.onRol();
+        navigate('Documents');
+        // this.onRol();
       }
     }
   }

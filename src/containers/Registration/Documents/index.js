@@ -33,6 +33,7 @@ import ButtonGradient from '../../../components/ButtonGradient';
 // action - reducers
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
 import ParametersActions from '../../../redux/reducers/ParametersRedux';
+import UserActions from '../../../redux/reducers/UserRedux';
 
 class Registration extends Component {
   constructor() {
@@ -49,49 +50,50 @@ class Registration extends Component {
         { id: '8', status: '' },
       ],
       document_load: '',
+      init: false,
     };
   }
 
   componentDidMount() {
-    const { navigation, getparameters } = this.props;
-    const dtuser = navigation.getParam('userdata', '');
+    const { user, getparameters } = this.props;
     // get documents
     getparameters('DOCUMENTS_LOGIN');
-    if (dtuser !== '') {
-      this.setState({ user_id: dtuser.user.id });
+    if (user.info !== '') {
+      this.setState({ user_id: user.info.user.id });
     }
   }
 
   onValidateStep() {
-    const { user, navigation, parameters } = this.props;
+    const { user, parameters } = this.props;
     const { navigate } = this.props.navigation;
+    const { user_id } = this.state;
     // get step process
-    const stepUser = navigation.getParam('stepUser', null);
-    console.log(user);
+    const stepUser = user.step;
     const { rol } = user.acount;
-    console.log(stepUser);
+    console.log(`step : ${stepUser} userId: ${user_id}`);
+    this.setState({ init: true });
     if (stepUser !== null) {
       if (stepUser === 3) {
         // documents ó data personal
         console.log(parameters);
         const docVisible = parameters.data.parameters[0].code;
-        alert(`--${rol}----${docVisible}`);
-        console.log(docVisible);
-        if (docVisible === 'false') {
-          navigate('Personal', { idrol: rol });
-        }
-        if (rol === 11 || rol === '') {
+        // alert(`${rol}----${docVisible}`);
+        console.log(`rol: ${rol}`);
+        if (rol === 11) {
           // validar Document Active
+          if (docVisible === 'false') {
+            // navigate('Personal');
+          }
         } else {
           // datarol: Generator
-          // navigate('Personal', { idrol: datarol });
+          navigate('Personal');
         }
       }
     } else {
       // validar Document Active
       const docVisible = parameters.data.parameters[0].code;
-      if (!docVisible === 'true') {
-        navigate('Personal', { idrol: rol });
+      if (docVisible === 'false') {
+        navigate('Personal');
       }
     }
   }
@@ -169,6 +171,9 @@ class Registration extends Component {
   onValidateForm() {
     const { listStatus } = this.state;
     const { navigate } = this.props.navigation;
+    const { updateStep, user } = this.props;
+    const { rol } = user.acount;
+    console.log(user);
     let countok = 0;
     let countfail = listStatus.length;
     this.setState({ error: null });
@@ -180,6 +185,8 @@ class Registration extends Component {
       }
     });
     if (countok === 4) {
+      // update step
+      updateStep(4);
       navigate('Personal');
     } else {
       this.setState({ error: `Faltan (${countfail}) documentos por subir` });
@@ -191,7 +198,7 @@ class Registration extends Component {
     const { document, parameters } = this.props;
     const { goBack } = this.props.navigation;
     const {
-      listStatus, loadingRegister, document_load, error, visible_error,
+      listStatus, loadingRegister, document_load, error, visible_error, init,
     } = this.state;
 
     const oldList = listStatus;
@@ -229,12 +236,14 @@ class Registration extends Component {
     }
 
     if (parameters.data !== null && !parameters.fetching) {
-      console.log(parameters);
-      this.onValidateStep();
+      if (!init) {
+        console.log(parameters);
+        this.onValidateStep();
+      }
       return (
         <MainWrapper>
           <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
-            <ArrowBack url={() => goBack()} />
+            {/* <ArrowBack url={() => goBack()} /> */}
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
           <TextBlack>
@@ -337,7 +346,6 @@ class Registration extends Component {
   }
 }
 
-// export default Registration;
 const mapStateToProps = (state) => {
   const { user, document, parameters } = state;
   return {
@@ -351,6 +359,7 @@ const mapDispatchToProps = dispatch => ({
   // registerUser: params => dispatch(UserActions.postRegisterRequest(params)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocRequest(params)),
   getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
+  updateStep: params => dispatch(UserActions.updateStep(params)),
 });
 
 export default connect(

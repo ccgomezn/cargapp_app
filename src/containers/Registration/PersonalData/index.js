@@ -52,11 +52,13 @@ class Registration extends Component {
   }
 
   componentDidMount() {
-    const { getProfile, navigation } = this.props;
+    const { getProfile, user } = this.props;
     getProfile();
-    const dtrol = navigation.getParam('idrol', '');
-    if (dtrol !== '') {
-      this.setState({ datarol: dtrol });
+    const stepUser = user.step;
+    const { rol } = user.acount;
+    alert(`step : ${stepUser}-- rol: ${rol}`);
+    if (rol !== '') {
+      this.setState({ datarol: rol });
     }
   }
 
@@ -171,7 +173,7 @@ class Registration extends Component {
       return (
         <MainWrapper>
           <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
-            <ArrowBack url={() => goBack()} />
+            {/* <ArrowBack url={() => goBack()} /> */}
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
           <TextBlack>

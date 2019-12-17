@@ -102,10 +102,6 @@ class Registration extends Component {
     const { countriesActive } = this.props;
     // get countries
     countriesActive();
-    const dtphone = navigation.getParam('phone', '');
-    if (dtphone !== '') {
-      this.setState({ dataphone: dtphone });
-    }
     // get step process
     const stepUser = navigation.getParam('stepUser', null);
     console.log(stepUser);
@@ -132,9 +128,9 @@ class Registration extends Component {
   }
 
   async onLogin() {
-    const { dataemail, datapassword, step } = this.state;
+    const { dataemail, dataphone, step } = this.state;
     const { loginUser, user } = this.props;
-    const clave = datapassword;
+    const clave = dataphone;
     // validate step
     if (step !== null || step !== 0) {
       const dataLog = {
@@ -158,7 +154,6 @@ class Registration extends Component {
       await loginUser(data);
       this.setState({ loadingLogin: true });
     }
-    // const toast = Toast.showLoading('Cargando...');
   }
 
   async onRegisterPress() {
@@ -169,15 +164,15 @@ class Registration extends Component {
     // validate info
     if (dataphone != null && dataphone !== ''
       && dataemail != null && dataemail !== ''
-      && datapassword != null && datapassword !== ''
-      && datadocument != null && datadocument !== ''
+    /* && datapassword != null && datapassword !== ''
+      && datadocument != null && datadocument !== '' */
     ) {
       const fullPhone = codeCountrie.concat(dataphone);
       const data = {
         user: {
           email: dataemail,
-          password: datapassword,
-          password_confirmation: datapassword,
+          password: dataphone,
+          password_confirmation: dataphone,
           phone_number: parseInt(fullPhone, 10),
           identification: parseInt(datadocument),
           role_id: datarol,
@@ -186,7 +181,7 @@ class Registration extends Component {
 
       const acount = {
         email: dataemail,
-        password: datapassword,
+        password: dataphone,
         rol: datarol,
       };
 
@@ -266,10 +261,10 @@ class Registration extends Component {
       errormsg.email = 'Correo incorrecto: formato inválido';
       this.setState({ invalidemail: true });
     }
-    if (datapassword.length < 6 || datapassword === '') {
+    /* if (datapassword.length < 6 || datapassword === '') {
       errormsg.pass = 'Contraseña incorrecta: minímo 6 caracteres';
       this.setState({ invalidpass: true });
-    }
+    } */
     if (dataphone.length < 10 || dataphone === '') {
       errormsg.phone = 'Teléfono incorrecto: minímo 10 caracteres';
       this.setState({ invalidphone: true });
@@ -278,7 +273,7 @@ class Registration extends Component {
       errormsg.doc = 'Cedula incorrecta: minímo 6 caracteres';
       this.setState({ invaliddoc: true });
     }
-    if (datapassconf === '' || datapassconf.length < 5) {
+    /* if (datapassconf === '' || datapassconf.length < 5) {
       errormsg.pass = 'Contraseña incorrecta: minímo 6 caracteres';
       this.setState({ invalidpass: true });
     }
@@ -287,7 +282,7 @@ class Registration extends Component {
         errormsg.valpass = 'Contraseñas erroneas';
         this.setState({ invalidpassconf: true });
       }
-    }
+    } */
 
     this.setState({ error: errormsg });
 
@@ -454,7 +449,6 @@ class Registration extends Component {
       if (user.status && !user.fetching) {
         if (user.status.phone_number) {
           // send code ok
-          // alert('code resend');
           this.setState({ loadingResendPin: false, msgError: 'Pin enviado' });
         } else if (loadingResendPin) {
           this.setState({ loadingResendPin: false, msgError: `Pin ${user.status.message}` });
@@ -473,7 +467,7 @@ class Registration extends Component {
           setTimeout(() => {
             this.setState({ loadingLogin: false });
             if (datarol === 11) {
-              navigate('Documents', { userdata: user.info });
+              navigate('Documents');
             } else {
               // navigate('RegCompany', { userdata: user.info });
               navigate('Personal', { idrol: datarol });
@@ -580,7 +574,7 @@ class Registration extends Component {
               value={dataemail.toLowerCase()}
               onChangeText={value => this.setState({ dataemail: value.toLowerCase() })}
             />
-            <Input
+            {/* <Input
               title="Contraseña"
               holder="Ingrese contraseña min.(6)"
               isPassword
@@ -597,7 +591,7 @@ class Registration extends Component {
               maxLength={20}
               isPassword
               errorText={invalidpassconf}
-            />
+            /> */}
           </WrapperInputs>
           <WrapperError>
             { error.phone ? (
@@ -640,15 +634,6 @@ class Registration extends Component {
               />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
-          <TextLoad>
-            {/* { loadingRegister || loadingLogin  ? (
-              <ActivityIndicator
-                style={{ alignSelf: 'center', height: 'auto' }}
-                size="large"
-                color="#0068ff"
-              />
-            ) : null } */}
-          </TextLoad>
           <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
           <Dialog
             visible={modalPin}
