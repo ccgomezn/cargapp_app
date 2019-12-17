@@ -5,43 +5,44 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* CargappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CargappTests.m */; };
 		01EAC2C9045843629B6C98EC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C31F1C072E146FB907E6611 /* EvilIcons.ttf */; };
+		0491D0F323A866D000108AFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0491D0F223A866D000108AFC /* GoogleService-Info.plist */; };
 		07C424D251744C168A107F75 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDEFDC6CD0C54520B45F5F44 /* Roboto-Medium.ttf */; };
-		0CF50C3BDEFC916EA58900FF /* Pods_CargappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C006522C83B72807CC0DC3 /* Pods_CargappTests.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1AF5F714E54343508E518FDB /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF9C516CA6094BF580684BE3 /* FontAwesome5_Solid.ttf */; };
 		1B1C48DB2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B1C48DA2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m */; };
-		1BF36EA52399A5200066F0F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BF36EA42399A5200066F0F7 /* GoogleService-Info.plist */; };
 		23EDC8B551C5470EBA473A32 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1B3A3224C7649AEB3C03F46 /* Roboto_medium.ttf */; };
 		244CE734E32945E0B8638448 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28F0F797068549E4A9F04FD4 /* FontAwesome5_Regular.ttf */; };
 		25FDB955B7A14E139A3FB1A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3A780DCFFE44ABFB8E2929D /* Roboto-BoldItalic.ttf */; };
+		267746B28FDA6D8A4CA0FC72 /* libPods-Cargapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28043A444D5D2F411DE329BB /* libPods-Cargapp-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* CargappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CargappTests.m */; };
-		3C12F54CD20068DF9A595AAD /* Pods_Cargapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38E48559800CF56276DAAC2 /* Pods_Cargapp.framework */; };
 		461B49E108FE40B8B4A71A76 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54EB3A3B684A480B86795447 /* Roboto-BlackItalic.ttf */; };
 		499CE1E7B9EB4BB9AEA23295 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42305B5645FC48D2AE20C31C /* Roboto-Bold.ttf */; };
 		68E4922F3595451696E6139F /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8FE210520A6438A9E2ECDE8 /* rubicon-icon-font.ttf */; };
 		6DDF537F55ED48B0BCFF4447 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEF35BF76F1B4E0FA417FB9A /* Roboto.ttf */; };
 		6F94ABFE992E423A93C727DB /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83B6E1229848489EB5B00F0F /* Roboto-Light.ttf */; };
 		7088C7E7101A4119866DC49E /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FE0B5C358C4845538382135A /* Fontisto.ttf */; };
+		71D85E763E1B0169D79DD67C /* libPods-Cargapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3416E9BBADC08E5FB87EE57A /* libPods-Cargapp-tvOSTests.a */; };
 		78B81F8FE6EB49ED9D5FA482 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB7003AF4D8E476792B8C241 /* AntDesign.ttf */; };
 		82C9198D345043D1B50AD0CF /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EDED6EFBE6C4D3FA2390A9D /* Roboto-ThinItalic.ttf */; };
 		82CB04194C1B457594B6C534 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEE23E7841734F8C9ACE175E /* Entypo.ttf */; };
+		8DA9B13F7B8230234B3AA044 /* libPods-Cargapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E7BB38F550556BB76F6B23 /* libPods-Cargapp.a */; };
 		94ED83179534427D8B1A289B /* Roboto-RegularItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C82F5FBCE38463792DAEE90 /* Roboto-RegularItalic.ttf */; };
-		A0DA4E8250EC2E3E4E656EB2 /* Pods_Cargapp_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E7E3C46638601B80E4397A /* Pods_Cargapp_tvOS.framework */; };
 		A6E60CBCE81B4C28879D012D /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0373109C94444E45B7AE6515 /* Feather.ttf */; };
-		ABC365FAF20F526034F0CCA2 /* Pods_Cargapp_tvOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD1B58849969187BD29FA5CD /* Pods_Cargapp_tvOSTests.framework */; };
 		ADC92F6944284BF5BCE1B5AF /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C81DB91710047EBA17DECA2 /* MaterialCommunityIcons.ttf */; };
 		B3B68856CCFE4D2FAC11EA8F /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9E5EF91B4264AE4B2DFD11B /* Roboto-LightItalic.ttf */; };
 		C7E1C6C5DE6E4C29A09DABCE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C6AFA39122246BEA614022A /* MaterialIcons.ttf */; };
 		CB9C5C8415104DB79A2CA247 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F053FF3835847E6848655FA /* Roboto-MediumItalic.ttf */; };
+		CD7FA052B058D9050481B5C8 /* libPods-CargappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39C1BD695EE9988428CD7075 /* libPods-CargappTests.a */; };
 		CDAB3B4EBE0C47D7A35A5742 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A53F1BB301754FB4824F9711 /* Roboto-Regular.ttf */; };
 		D298F736E0B44C5583146A9E /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E808C919B6641289B55E1E4 /* FontAwesome5_Brands.ttf */; };
 		D320312ECE0A40D0B2E1BA7D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0234E2348CFD4590A8642E58 /* SimpleLineIcons.ttf */; };
@@ -86,6 +87,7 @@
 		0234E2348CFD4590A8642E58 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		0373109C94444E45B7AE6515 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		040EB56D2350C8E4006945C0 /* ReactNativeCameraKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeCameraKit.xcodeproj; path = ../ReactNativeCameraKit.xcodeproj; sourceTree = "<group>"; };
+		0491D0F223A866D000108AFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0F053FF3835847E6848655FA /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Cargapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cargapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Cargapp/AppDelegate.h; sourceTree = "<group>"; };
@@ -95,38 +97,39 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Cargapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Cargapp/main.m; sourceTree = "<group>"; };
 		1B1C48DA2389D9C0000D86DC /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
-		1BF36EA42399A5200066F0F7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1C0BE0970AD7437C809CDAF6 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		24579A52E44CAF97BF3C847D /* Pods-Cargapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOSTests/Pods-Cargapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		28043A444D5D2F411DE329BB /* libPods-Cargapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Cargapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F0F797068549E4A9F04FD4 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Cargapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cargapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Cargapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Cargapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3416E9BBADC08E5FB87EE57A /* libPods-Cargapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Cargapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		359039576B80773AE8F7D453 /* Pods-CargappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CargappTests.release.xcconfig"; path = "Target Support Files/Pods-CargappTests/Pods-CargappTests.release.xcconfig"; sourceTree = "<group>"; };
+		39C1BD695EE9988428CD7075 /* libPods-CargappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CargappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3A086AAFC1BAB4EC673CDB /* Pods-Cargapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOSTests/Pods-Cargapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		42305B5645FC48D2AE20C31C /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4B5BE2C93C2E5AC4460C64D5 /* Pods-Cargapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp.release.xcconfig"; path = "Target Support Files/Pods-Cargapp/Pods-Cargapp.release.xcconfig"; sourceTree = "<group>"; };
 		4E4A1A8953814D42A8511493 /* RangeSlider.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RangeSlider.xcodeproj; path = "../node_modules/react-native-range-slider/ios/RangeSlider.xcodeproj"; sourceTree = "<group>"; };
 		4E808C919B6641289B55E1E4 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		54EB3A3B684A480B86795447 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BlackItalic.ttf"; path = "../assets/fonts/Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
+		55E7BB38F550556BB76F6B23 /* libPods-Cargapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Cargapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C31F1C072E146FB907E6611 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		5C82F5FBCE38463792DAEE90 /* Roboto-RegularItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-RegularItalic.ttf"; path = "../assets/fonts/Roboto-RegularItalic.ttf"; sourceTree = "<group>"; };
-		62E7E3C46638601B80E4397A /* Pods_Cargapp_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cargapp_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EDED6EFBE6C4D3FA2390A9D /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		76BCA5F65BB85E28FA1F4F61 /* Pods-CargappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CargappTests.debug.xcconfig"; path = "Target Support Files/Pods-CargappTests/Pods-CargappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7C6AFA39122246BEA614022A /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		827933E8EBF94292903C6B90 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		83B6E1229848489EB5B00F0F /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
-		85C55DA51CFFFA36A91747AB /* Pods-Cargapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOS/Pods-Cargapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		977C4C6174FEDE7779C86090 /* Pods-Cargapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp.debug.xcconfig"; path = "Target Support Files/Pods-Cargapp/Pods-Cargapp.debug.xcconfig"; sourceTree = "<group>"; };
 		9C0F80EF969548C0AC662D46 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		9C81DB91710047EBA17DECA2 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		A53F1BB301754FB4824F9711 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		A5ED71E5690DC03DB8B0C328 /* Pods-Cargapp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOS/Pods-Cargapp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A8FE210520A6438A9E2ECDE8 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
-		AD1B58849969187BD29FA5CD /* Pods_Cargapp_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cargapp_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1B3A3224C7649AEB3C03F46 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
+		B1E40F11D9356E68988CE13E /* Pods-Cargapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOS/Pods-Cargapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		BEE23E7841734F8C9ACE175E /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		BFB22EF8F9944B80B778A10D /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		C8179970B454EEA13FE0B9C3 /* Pods-Cargapp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cargapp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Cargapp-tvOS/Pods-Cargapp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C93F2F7ED914473BA33859DA /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		DA6506250B3C462A92FDF927 /* libRangeSlider.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRangeSlider.a; sourceTree = "<group>"; };
 		DEF35BF76F1B4E0FA417FB9A /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
@@ -136,8 +139,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDEFDC6CD0C54520B45F5F44 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
-		F0C006522C83B72807CC0DC3 /* Pods_CargappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CargappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F38E48559800CF56276DAAC2 /* Pods_Cargapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cargapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3A780DCFFE44ABFB8E2929D /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BoldItalic.ttf"; path = "../assets/fonts/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		F9E5EF91B4264AE4B2DFD11B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-LightItalic.ttf"; path = "../assets/fonts/Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		FD090F7BC46C44359514C3EB /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
@@ -149,7 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CF50C3BDEFC916EA58900FF /* Pods_CargappTests.framework in Frameworks */,
+				CD7FA052B058D9050481B5C8 /* libPods-CargappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C12F54CD20068DF9A595AAD /* Pods_Cargapp.framework in Frameworks */,
+				8DA9B13F7B8230234B3AA044 /* libPods-Cargapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,7 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0DA4E8250EC2E3E4E656EB2 /* Pods_Cargapp_tvOS.framework in Frameworks */,
+				267746B28FDA6D8A4CA0FC72 /* libPods-Cargapp-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,7 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABC365FAF20F526034F0CCA2 /* Pods_Cargapp_tvOSTests.framework in Frameworks */,
+				71D85E763E1B0169D79DD67C /* libPods-Cargapp-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,12 +186,12 @@
 			children = (
 				977C4C6174FEDE7779C86090 /* Pods-Cargapp.debug.xcconfig */,
 				4B5BE2C93C2E5AC4460C64D5 /* Pods-Cargapp.release.xcconfig */,
-				C8179970B454EEA13FE0B9C3 /* Pods-Cargapp-tvOS.debug.xcconfig */,
-				85C55DA51CFFFA36A91747AB /* Pods-Cargapp-tvOS.release.xcconfig */,
 				24579A52E44CAF97BF3C847D /* Pods-Cargapp-tvOSTests.debug.xcconfig */,
 				3B3A086AAFC1BAB4EC673CDB /* Pods-Cargapp-tvOSTests.release.xcconfig */,
 				76BCA5F65BB85E28FA1F4F61 /* Pods-CargappTests.debug.xcconfig */,
 				359039576B80773AE8F7D453 /* Pods-CargappTests.release.xcconfig */,
+				A5ED71E5690DC03DB8B0C328 /* Pods-Cargapp-tvOS.debug.xcconfig */,
+				B1E40F11D9356E68988CE13E /* Pods-Cargapp-tvOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -231,7 +232,7 @@
 		13B07FAE1A68108700A75B9A /* Cargapp */ = {
 			isa = PBXGroup;
 			children = (
-				1BF36EA42399A5200066F0F7 /* GoogleService-Info.plist */,
+				0491D0F223A866D000108AFC /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -287,10 +288,10 @@
 				040EB56D2350C8E4006945C0 /* ReactNativeCameraKit.xcodeproj */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				F38E48559800CF56276DAAC2 /* Pods_Cargapp.framework */,
-				62E7E3C46638601B80E4397A /* Pods_Cargapp_tvOS.framework */,
-				AD1B58849969187BD29FA5CD /* Pods_Cargapp_tvOSTests.framework */,
-				F0C006522C83B72807CC0DC3 /* Pods_CargappTests.framework */,
+				55E7BB38F550556BB76F6B23 /* libPods-Cargapp.a */,
+				28043A444D5D2F411DE329BB /* libPods-Cargapp-tvOS.a */,
+				3416E9BBADC08E5FB87EE57A /* libPods-Cargapp-tvOSTests.a */,
+				39C1BD695EE9988428CD7075 /* libPods-CargappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -364,6 +365,10 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				1B22081423A2BFD300F7C8F8 /* ShellScript */,
+				FBD3E91B4A3A11F425A7802A /* [CP] Copy Pods Resources */,
+				68BD27DE8C1A3D8F9423604C /* [CP-User] [RNFB] Core Configuration */,
+				34CB0E4219C27884925B3CAC /* [CP-User] [RNFB] Crashlytics Configuration */,
 			);
 			buildRules = (
 			);
@@ -378,7 +383,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Cargapp-tvOS" */;
 			buildPhases = (
-				F814F95E421BB50803F77EAB /* [CP] Check Pods Manifest.lock */,
+				44616091A56DF2728786CF18 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -519,7 +524,7 @@
 				E59ACE96F31848B6944CD8F3 /* Octicons.ttf in Resources */,
 				23EDC8B551C5470EBA473A32 /* Roboto_medium.ttf in Resources */,
 				6DDF537F55ED48B0BCFF4447 /* Roboto.ttf in Resources */,
-				1BF36EA52399A5200066F0F7 /* GoogleService-Info.plist in Resources */,
+				0491D0F323A866D000108AFC /* GoogleService-Info.plist in Resources */,
 				68E4922F3595451696E6139F /* rubicon-icon-font.ttf in Resources */,
 				D320312ECE0A40D0B2E1BA7D /* SimpleLineIcons.ttf in Resources */,
 				D50360E89C1F4292A241BDA4 /* Zocial.ttf in Resources */,
@@ -559,6 +564,23 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
+		1B22081423A2BFD300F7C8F8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -572,6 +594,16 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		34CB0E4219C27884925B3CAC /* [CP-User] [RNFB] Crashlytics Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [RNFB] Crashlytics Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\nif [[ ${PODS_ROOT} ]]; then\n  echo \"info: Exec Fabric Run from Pods\"\n  ${PODS_ROOT}/Fabric/run\nelse\n  echo \"info: Exec Fabric Run from framework\"\n  ${PROJECT_DIR}/Fabric.framework/run\nfi\n";
 		};
 		3CF861EEC01A318C10F9E46D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -589,6 +621,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Cargapp-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		44616091A56DF2728786CF18 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Cargapp-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -617,6 +671,16 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		68BD27DE8C1A3D8F9423604C /* [CP-User] [RNFB] Core Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [RNFB] Core Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\n_MAX_LOOKUPS=2;\n_SEARCH_RESULT=''\n_RN_ROOT_EXISTS=''\n_CURRENT_LOOKUPS=1\n_JSON_ROOT=\"'react-native'\"\n_JSON_FILE_NAME='firebase.json'\n_JSON_OUTPUT_BASE64='e30=' # { }\n_CURRENT_SEARCH_DIR=${PROJECT_DIR}\n_PLIST_BUDDY=/usr/libexec/PlistBuddy\n_TARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n_DSYM_PLIST=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"\n\n# plist arrays\n_PLIST_ENTRY_KEYS=()\n_PLIST_ENTRY_TYPES=()\n_PLIST_ENTRY_VALUES=()\n\nfunction setPlistValue {\n  echo \"info:      setting plist entry '$1' of type '$2' in file '$4'\"\n  ${_PLIST_BUDDY} -c \"Add :$1 $2 '$3'\" $4 || echo \"info:      '$1' already exists\"\n}\n\nfunction getFirebaseJsonKeyValue () {\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    ruby -e \"require 'rubygems';require 'json'; output=JSON.parse('$1'); puts output[$_JSON_ROOT]['$2']\"\n  else\n    echo \"\"\n  fi;\n}\n\nfunction jsonBoolToYesNo () {\n  if [[ $1 == \"false\" ]]; then\n    echo \"NO\"\n  elif [[ $1 == \"true\" ]]; then\n    echo \"YES\"\n  else echo \"NO\"\n  fi\n}\n\necho \"info: -> RNFB build script started\"\necho \"info: 1) Locating ${_JSON_FILE_NAME} file:\"\n\nif [[ -z ${_CURRENT_SEARCH_DIR} ]]; then\n  _CURRENT_SEARCH_DIR=$(pwd)\nfi;\n\nwhile true; do\n  _CURRENT_SEARCH_DIR=$(dirname \"$_CURRENT_SEARCH_DIR\")\n  if [[ \"$_CURRENT_SEARCH_DIR\" == \"/\" ]] || [[ ${_CURRENT_LOOKUPS} -gt ${_MAX_LOOKUPS} ]]; then break; fi;\n  echo \"info:      ($_CURRENT_LOOKUPS of $_MAX_LOOKUPS) Searching in '$_CURRENT_SEARCH_DIR' for a ${_JSON_FILE_NAME} file.\"\n  _SEARCH_RESULT=$(find \"$_CURRENT_SEARCH_DIR\" -maxdepth 2 -name ${_JSON_FILE_NAME} -print | head -n 1)\n  if [[ ${_SEARCH_RESULT} ]]; then\n    echo \"info:      ${_JSON_FILE_NAME} found at $_SEARCH_RESULT\"\n    break;\n  fi;\n  _CURRENT_LOOKUPS=$((_CURRENT_LOOKUPS+1))\ndone\n\nif [[ ${_SEARCH_RESULT} ]]; then\n  _JSON_OUTPUT_RAW=$(cat \"${_SEARCH_RESULT}\")\n  _RN_ROOT_EXISTS=$(ruby -e \"require 'rubygems';require 'json'; output=JSON.parse('$_JSON_OUTPUT_RAW'); puts output[$_JSON_ROOT]\" || echo '')\n\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    _JSON_OUTPUT_BASE64=$(python -c 'import json,sys,base64;print(base64.b64encode(json.dumps(json.loads(open('\"'${_SEARCH_RESULT}'\"').read())['${_JSON_ROOT}'])))' || echo \"e30=\")\n  fi\n\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n\n  # config.messaging_auto_init_enabled\n  _MESSAGING_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"messaging_auto_init_enabled\")\n  if [[ $_MESSAGING_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseMessagingAutoInitEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_MESSAGING_AUTO_INIT\")\")\n  fi\n\n  # config.crashlytics_disable_auto_disabler - undocumented for now - mainly for debugging, document if becomes usful\n  _CRASHLYTICS_AUTO_DISABLE_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"crashlytics_disable_auto_disabler\")\n  if [[ $_CRASHLYTICS_AUTO_DISABLE_ENABLED == \"true\" ]]; then\n    echo \"Disabled Crashlytics auto disabler.\" # do nothing\n  else\n    _PLIST_ENTRY_KEYS+=(\"firebase_crashlytics_collection_enabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"NO\")\n  fi\n\n  # config.admob_delay_app_measurement_init\n  _ADMOB_DELAY_APP_MEASUREMENT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"admob_delay_app_measurement_init\")\n  if [[ $_ADMOB_DELAY_APP_MEASUREMENT == \"true\" ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GADDelayAppMeasurementInit\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"YES\")\n  fi\n\n  # config.admob_ios_app_id\n  _ADMOB_IOS_APP_ID=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"admob_ios_app_id\")\n  if [[ $_ADMOB_IOS_APP_ID ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GADApplicationIdentifier\")\n    _PLIST_ENTRY_TYPES+=(\"string\")\n    _PLIST_ENTRY_VALUES+=(\"$_ADMOB_IOS_APP_ID\")\n  fi\nelse\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n  echo \"warning:   A firebase.json file was not found, whilst this file is optional it is recommended to include it to configure firebase services in React Native Firebase.\"\nfi;\n\necho \"info: 2) Injecting Info.plist entries: \"\n\n# Log out the keys we're adding\nfor i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n  echo \"    ->  $i) ${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\"\ndone\n\nfor plist in ${_TARGET_PLIST} ${_DSYM_PLIST} ; do\n  if [[ -f ${plist} ]]; then\n    for i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n      setPlistValue \"${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\" \"${plist}\"\n    done\n  else\n    echo \"warning:   A Info.plist build output file was not found (${plist})\"\n  fi\ndone\n\necho \"info: <- RNFB build script finished\"\n\n\n\n";
+		};
 		BB9CC5F5F0CF1A6CD3CF6269 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -639,26 +703,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F814F95E421BB50803F77EAB /* [CP] Check Pods Manifest.lock */ = {
+		FBD3E91B4A3A11F425A7802A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-Cargapp/Pods-Cargapp-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Cargapp-tvOS-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Cargapp/Pods-Cargapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -876,7 +936,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8179970B454EEA13FE0B9C3 /* Pods-Cargapp-tvOS.debug.xcconfig */;
+			baseConfigurationReference = A5ED71E5690DC03DB8B0C328 /* Pods-Cargapp-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -912,7 +972,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 85C55DA51CFFFA36A91747AB /* Pods-Cargapp-tvOS.release.xcconfig */;
+			baseConfigurationReference = B1E40F11D9356E68988CE13E /* Pods-Cargapp-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

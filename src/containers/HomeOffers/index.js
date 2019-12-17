@@ -81,13 +81,13 @@ class HomeOffers extends Component {
   componentDidMount() {
     analytics().setCurrentScreen('home_offers_cargapp');
     const {
-      profileDriver,
       getsOffers,
       getVehicles,
       getProfile,
       getPermission,
       getDestinations,
-      navigation,
+      getMyOffers,
+      profile,
     } = this.props;
     const data = {
       driver: {
@@ -122,6 +122,8 @@ class HomeOffers extends Component {
     getProfile();
     getPermission();
     getDestinations();
+    getMyOffers(profile.data[0].user.id);
+
   }
 
   componentWillUnmount() {
@@ -270,11 +272,21 @@ class HomeOffers extends Component {
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    console.log(callMine);
     if (offers.data && !callMine && profile.data) {
       this.getMineOffers();
       this.setState({ callMine: true });
     }
+
+    if (offers.myOffers) {
+      offers.myOffers.forEach((offer) => {
+        // eslint-disable-next-line max-len
+        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+          navigation.navigate('StartTravel', { Offer: offer });
+        }
+      });
+    }
+
+
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
       let perm = 0;
@@ -290,6 +302,7 @@ class HomeOffers extends Component {
       }
       this.setState({ fetch: true });
     }
+    console.log(this.props);
     if (
       offers.data
       && offers.services
@@ -327,35 +340,6 @@ class HomeOffers extends Component {
       return (
         <MainView>
           <MainWrapper>
-            <ContentView>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                  text="Premios"
-                  press={() => this.setState({ modalPermission: true })}
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
-                  text="Lubricantes"
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                  text="Combustible"
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
-                  text="SOAT"
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                  text="Otros"
-                />
-              </ScrollView>
-            </ContentView>
-
             <ContentView>
               { driver.me != null ? (
                 <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
@@ -569,6 +553,8 @@ const mapDispatchToProps = dispatch => ({
   getMyOffersPostulation: params => dispatch(OffersActions.getServicesRequest(params)),
   getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
   getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
+  getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
+
 });
 
 export default connect(

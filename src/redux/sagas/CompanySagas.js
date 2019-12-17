@@ -13,6 +13,7 @@ export function* getCompanies(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.company.getCompanies, params);
+  console.log(response)
   if (response.ok) {
     yield put(CompanyActions.getCompaniesSuccess(response.data));
   } else {

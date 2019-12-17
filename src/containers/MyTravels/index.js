@@ -60,7 +60,7 @@ class MyTravels extends Component {
   componentDidMount() {
     analytics().setCurrentScreen('mis_viajes');
     const {
-      getMyOffers, getStatus, profile, getsOffers, getVehicles,
+      getMyOffers, getStatus, profile, getsOffers, getVehicles, getMyOffersRequest,
     } = this.props;
 
     const that = this;
@@ -83,10 +83,11 @@ class MyTravels extends Component {
         },
       );
     }
-    getMyOffers(profile.data[0].user.id);
     getsOffers();
     getStatus();
     getVehicles();
+    getMyOffersRequest(profile.data[0].user.id);
+    getMyOffers(profile.data[0].user.id);
   }
 
   onPressButton(value) {
@@ -146,22 +147,21 @@ class MyTravels extends Component {
     if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7 || offer.statu_id === 8 || offer.statu_id === 9) {
+        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+          console.log(offer);
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
     }
-    if (offers.services !== null
-      && offers.data !== null
-      && status.data !== null
-      && vehicles.data !== null) {
+    console.log(this.props)
+    console.log(offers)
+    if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
       const services_ids = [];
       const service_map = {};
       offers.services.forEach((service) => {
         services_ids.push(service.service_id);
         service_map[service.service_id] = service.approved;
       });
-      console.log(services_ids);
       return (
         <MainView>
           <MainWrapper>
@@ -278,8 +278,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   getMyOffers: id => dispatch(OffersActions.getServicesRequest(id)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
-  getStatus: () => dispatch(StatusActions.getStatusRequest()),
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
+  getStatus: params => dispatch(StatusActions.getStatusRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
 });
 

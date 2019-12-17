@@ -38,7 +38,7 @@ export const getPermissionSuccess = (state, { data }) => ({
   ...state,
   data,
   fetching: false,
-  error: true,
+  error: false,
 });
 
 /* ----------------------- Reducers to Actions -------------- */

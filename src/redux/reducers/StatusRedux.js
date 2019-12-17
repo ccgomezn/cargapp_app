@@ -16,7 +16,7 @@ export default Creators;
 export const INITIAL_STATE = Immutable({
   data: null,
   fetching: false,
-  error: true,
+  error: false,
 });
 
 /* REDUCERS */
@@ -35,7 +35,7 @@ export const getStatusSuccess = (state, { data }) => ({
 export const statusFailure = state => ({
   ...state,
   fetching: false,
-  error: false,
+  error: true,
 });
 
 /* Actions to types */

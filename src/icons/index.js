@@ -9,6 +9,8 @@ const images = {
   originPin: require('./originPin.png'),
   markersPin: require('./markerTravelPin.png'),
   truck: require('./truck.png'),
+  moneyOffer: require('./iconCardOffer.png'),
+  locationOffer: require('./location.png'),
 };
 
 export default images;

@@ -30,6 +30,8 @@ import TopCardTravel from '../../../components/TopCardTravel';
 import EmptyDialog from '../../../components/EmptyDialog';
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
 import images from '../../../icons';
+import ButtonGradient from '../../../components/ButtonGradient';
+import CompanyActions from '../../../redux/reducers/CompanyRedux';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -49,41 +51,58 @@ class StartTravel extends Component {
       inTravel: false,
       unLoad: false,
       finished: false,
-      manifestSet: false,
+      manifestSet: true,
     };
   }
 
   actionMan() {
-    console.log(this.props.user.session.access_token);
-    console.log(this.state.manifest);
-    console.log(this.state.manifest);
-    const { android } = RNFetchBlob;
-    const { dirs } = RNFetchBlob.fs;
+    const { getDocsServiceRequest, navigation } = this.props;
+    const offer = navigation.getParam('Offer');
+    getDocsServiceRequest(offer.id);
+    this.setState({ manifestSet: false });
+  }
 
-    RNFetchBlob
-      .config({
-        fileCache: false,
-        appendExt: 'pdf',
-        addAndroidDownloads: {
-          useDownloadManager: true,
-          notification: true,
-          mime: 'application/pdf',
-          mediaScannable: true,
-          title: 'manifest.pdf',
-          path: `${dirs.DownloadDir}/manifest.pdf`,
-        },
-      })
-      .fetch('GET', this.state.manifest)
-      .then((resp) => {
-        if (Platform.OS == 'ios') RNFetchBlob.ios.openDocument(resp.path());
-        if (Platform.OS == 'android') android.actionViewIntent(resp.path(), 'application/pdf');
-      });
+
+  downloadMan() {
+    const { document } = this.props;
+    let man = '';
+    document.serviceDocuments.forEach((document_data) => {
+      if (document_data.document_type === 'manifiesto') {
+        man = encodeURI(document_data.document);
+      }
+    });
+
+    this.setState({ manifestSet: true });
+    if (man === '') {
+      this.setState({ nonManifest: true });
+    } else {
+      const { android } = RNFetchBlob;
+      const { dirs } = RNFetchBlob.fs;
+      RNFetchBlob
+        .config({
+          fileCache: false,
+          appendExt: 'pdf',
+          addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            mime: 'application/pdf',
+            mediaScannable: true,
+            title: 'manifest.pdf',
+            path: `${dirs.DownloadDir}/manifest.pdf`,
+          },
+        })
+        .fetch('GET', man)
+        .then((resp) => {
+          if (Platform.OS === 'ios') RNFetchBlob.ios.openDocument(resp.path());
+          if (Platform.OS === 'android') android.actionViewIntent(resp.path(), 'application/pdf');
+        });
+    }
   }
 
   componentDidMount() {
     analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
-      navigation, offers, getMarkers, getDocsServiceRequest,
+      navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
     } = this.props;
     const offer = navigation.getParam('Offer');
     offers.data.map((newOffer) => {
@@ -99,18 +118,10 @@ class StartTravel extends Component {
     } else if (offer.statu_id === 8 || offer.statu_id === 6) {
       this.setState({ inTravel: true });
     }
+    getCompanies();
     getMarkers();
   }
 
-
-  setManifest() {
-    const { document } = this.props;
-    document.serviceDocuments.forEach((document_data) => {
-      if (document_data.document_type === 'manifiesto') {
-        this.setState({ manifest: encodeURI(document_data.document) });
-      }
-    });
-  }
 
   async getDirections(startLoc, destinationLoc) {
     const { offerSpecific, status } = this.state;
@@ -122,9 +133,7 @@ class StartTravel extends Component {
     }
 
     const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
-    console.log(resp);
     const respJson = await resp.json();
-    console.log(respJson);
     const points = respJson.routes[0].legs[0].steps;
 
     const coords = [];
@@ -138,7 +147,7 @@ class StartTravel extends Component {
       });
     });
     this.setState({ coords });
-    console.log(coords);
+
     return coords;
   }
 
@@ -344,17 +353,24 @@ class StartTravel extends Component {
       .catch(err => console.error('An error occurred', err));
   }
 
+  modalBack() {
+    this.setState({nonManifest: false});
+  }
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, finished, unload,
       modalRating, starCount, load, unLoad, inTravel, manifestSet, manifest,
+      nonManifest,
     } = this.state;
     const { companies, markers, document } = this.props;
-    if (document.serviceDocuments && !manifestSet) {
-      this.setManifest();
+    if (document.serviceDocuments && !document.fetching && !manifestSet) {
+      this.downloadMan();
       this.setState({ manifestSet: true });
     }
-    if (offerSpecific !== null && waypoints !== undefined && markers.data !== null) {
+    console.log(offerSpecific)
+    console.log(waypoints)
+    console.log(companies)
+    if (offerSpecific !== null && waypoints !== undefined && markers.data !== null && companies.data !== null) {
       markers.data.map(commerce => (
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
@@ -364,6 +380,12 @@ class StartTravel extends Component {
       }
       return (
         <MainWrapper>
+          <EmptyDialog visible={nonManifest}>
+            <WrapperModal>
+              <BlueText>No existe manifiesto</BlueText>
+              <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
+            </WrapperModal>
+          </EmptyDialog>
           <MapView
             initialRegion={{
               latitude: lastLat,
@@ -496,6 +518,7 @@ const mapDispatchToProps = dispatch => ({
   postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
   getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
+  getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
 });
 
 export default connect(

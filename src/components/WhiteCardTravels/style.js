@@ -102,3 +102,16 @@ export const WrapperButtons = styled.View`
     margin: 3px;
     justify-content: flex-end;
     `;
+
+export const WrapperTextIcon = styled.View`
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
+    `;
+
+export const Icon = styled.Image`
+    background-color: #f3f3f3;
+    width: 15px;
+    height: 20px;
+    resize-mode: stretch;
+    `;
