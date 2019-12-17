@@ -25,6 +25,7 @@ class General extends Component {
 
     console.log(newCompanies);
     if (companies.data !== null && coupons.data !== null) {
+      console.log('cupones', coupons.data);
       coupons.data.map(couponsData => companies.data.map((companiesData) => {
         if (companiesData.id === couponsData.company_id) {
           newCompanies.add(companiesData);

@@ -21,7 +21,7 @@ function CardCoupons({
         </WrapperText>
         {button ? (
           <Button onPress={press}>
-            <BlueText>Obtener</BlueText>
+            <BlueText>Ver todos</BlueText>
           </Button>
         ) : null}
       </SubContainer>
