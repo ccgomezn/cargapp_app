@@ -72,7 +72,7 @@ export const IconBottomNav = styled.Image`
   width: 30px;
   height: 25px;
   align-self: center;
-  resize-mode: stretch;
+  resize-mode: contain;
 `;
 
 export const HeaderStyle = {
