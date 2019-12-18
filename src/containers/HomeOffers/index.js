@@ -6,7 +6,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { View } from 'native-base';
-import { ScrollView, ActivityIndicator, Share } from 'react-native';
+import { ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
 import analytics from '@react-native-firebase/analytics';
@@ -123,7 +123,6 @@ class HomeOffers extends Component {
     getPermission();
     getDestinations();
     getMyOffers(profile.data[0].user.id);
-
   }
 
   componentWillUnmount() {
@@ -277,14 +276,14 @@ class HomeOffers extends Component {
       this.setState({ callMine: true });
     }
 
-    if (offers.myOffers) {
+    /* if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
         if (offer.statu_id === 6 || offer.statu_id === 7 ) {
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
-    }
+    } */
 
 
     if (permissions.data && !permissions.fetching && !fetch) {
@@ -336,7 +335,7 @@ class HomeOffers extends Component {
       if (filter && modalFromHome) {
         this.onPressFilter();
       }
-
+      console.log(this.props);
       return (
         <MainView>
           <MainWrapper>
@@ -364,6 +363,7 @@ class HomeOffers extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((services) => {
+                console.log(mine_offers.includes(services.id));
                 if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
                   return (
                     <WhiteCardTravels

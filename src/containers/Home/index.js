@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import analytics from '@react-native-firebase/analytics';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {
   MainWrapper, NormalText, WrapperSwipeable, WrapperContent, CustomImage,
 } from './style';
@@ -32,6 +33,7 @@ class Home extends Component {
 
 
   componentDidMount() {
+    crashlytics().log('test');
     analytics().setCurrentScreen('home_cargapp');
     const { getProfile, getsOffers } = this.props;
     getsOffers();

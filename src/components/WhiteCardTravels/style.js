@@ -105,13 +105,13 @@ export const WrapperButtons = styled.View`
 
 export const WrapperTextIcon = styled.View`
     flex-direction: row; 
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     `;
 
 export const Icon = styled.Image`
-    background-color: #f3f3f3;
-    width: 15px;
+    width: 20px;
     height: 20px;
-    resize-mode: stretch;
+    resize-mode: contain;
+    margin-right: 5px;
     `;

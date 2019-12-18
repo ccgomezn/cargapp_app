@@ -22,11 +22,11 @@ export const ContentView = styled.View`
 `;
 
 export const ContentOffer = styled.ScrollView`
-width: 100%;
-flex-direction: column;
-height: 100%;
-margin-bottom: 15px;
-padding: ${props => (props.subcontent ? '8px 10px' : '0px')};
+  width: 100%;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 15px;
+  padding: ${props => (props.subcontent ? '8px 10px' : '0px')};
 `;
 
 export const ContentBlock = styled.View`
