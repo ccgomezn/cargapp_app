@@ -12,7 +12,7 @@ import Toast from 'react-native-tiny-toast';
 import { ActivityIndicator } from 'react-native';
 
 import Card from '../../../components/ComponentCard';
-import ArrowBack from '../../../components/ArrowBack';
+// import ArrowBack from '../../../components/ArrowBack';
 import {
   MainWrapper,
   TextBlack,
@@ -77,12 +77,11 @@ class Registration extends Component {
         // documents ó data personal
         console.log(parameters);
         const docVisible = parameters.data.parameters[0].code;
-        // alert(`${rol}----${docVisible}`);
         console.log(`rol: ${rol}`);
         if (rol === 11) {
           // validar Document Active
           if (docVisible === 'false') {
-            // navigate('Personal');
+            navigate('Personal');
           }
         } else {
           // datarol: Generator
@@ -171,9 +170,7 @@ class Registration extends Component {
   onValidateForm() {
     const { listStatus } = this.state;
     const { navigate } = this.props.navigation;
-    const { updateStep, user } = this.props;
-    const { rol } = user.acount;
-    console.log(user);
+    const { updateStep } = this.props;
     let countok = 0;
     let countfail = listStatus.length;
     this.setState({ error: null });

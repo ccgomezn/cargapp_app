@@ -128,9 +128,9 @@ class Registration extends Component {
   }
 
   async onLogin() {
-    const { dataemail, dataphone, step } = this.state;
+    const { dataemail, datadocument, step } = this.state;
     const { loginUser, user } = this.props;
-    const clave = dataphone;
+    const clave = datadocument;
     // validate step
     if (step !== null || step !== 0) {
       const dataLog = {
@@ -171,8 +171,8 @@ class Registration extends Component {
       const data = {
         user: {
           email: dataemail,
-          password: dataphone,
-          password_confirmation: dataphone,
+          password: datadocument,
+          password_confirmation: datadocument,
           phone_number: parseInt(fullPhone, 10),
           identification: parseInt(datadocument),
           role_id: datarol,
@@ -181,8 +181,9 @@ class Registration extends Component {
 
       const acount = {
         email: dataemail,
-        password: dataphone,
+        password: datadocument,
         rol: datarol,
+        phone: fullPhone,
       };
 
       console.log(acount);
@@ -204,7 +205,7 @@ class Registration extends Component {
     if (datapin != null) {
       let fullPhone = codeCountrie.concat(dataphone);
       if (step === 1) {
-        fullPhone = user.fullPhone;
+        fullPhone = user.fullPhone == null ? user.acount.phone : user.fullPhone;
       }
       const data = {
         user: {
@@ -224,7 +225,7 @@ class Registration extends Component {
     if (dataphone != null) {
       let fullPhone = codeCountrie.concat(dataphone);
       if (step === 1) {
-        fullPhone = user.fullPhone;
+        fullPhone = user.fullPhone == null ? user.acount.phone : user.fullPhone;
       }
       const data = {
         user: {
@@ -406,6 +407,9 @@ class Registration extends Component {
           this.setState({ loadingRegister: false });
           // validare Pin
           this.setState({ modalPin: true });
+        } else if (user.status.message === 'error twillio') {
+          // data incorrect
+          this.setState({ loadingRegister: false, modalPin: true, msgError: 'Error al enviar código' });
         } else if (loadingRegister && user.unprocess) {
           // data incorrect
           this.setState({ loadingRegister: false, visibleError: true });
@@ -727,7 +731,7 @@ class Registration extends Component {
           </Toast>
           <Toast
             visible={msgError !== ''}
-            position={-80}
+            position={10}
             duration={Toast.duration.LONG}
             shadow
             animation

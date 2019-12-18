@@ -12,7 +12,7 @@ import { ActivityIndicator } from 'react-native';
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
 // import ButtonWhite from '../../../components/ButtonWhite';
-import ArrowBack from '../../../components/ArrowBack';
+// import ArrowBack from '../../../components/ArrowBack';
 
 // action - reducers
 import ProfileActions from '../../../redux/reducers/ProfileRedux';
@@ -54,9 +54,7 @@ class Registration extends Component {
   componentDidMount() {
     const { getProfile, user } = this.props;
     getProfile();
-    const stepUser = user.step;
     const { rol } = user.acount;
-    alert(`step : ${stepUser}-- rol: ${rol}`);
     if (rol !== '') {
       this.setState({ datarol: rol });
     }
@@ -126,7 +124,7 @@ class Registration extends Component {
   render() {
     // eslint-disable-next-line react/prop-types
     const { profile } = this.props;
-    const { goBack } = this.props.navigation;
+    // const { goBack } = this.props.navigation;
     const {
       dataname,
       datalastname,

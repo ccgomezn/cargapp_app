@@ -84,8 +84,16 @@ export const onUserLogout = (state) => {
   return {
     ...state,
     isLogged: false,
-    error: false,
     info: null,
+    error: null,
+    fetching: false,
+    status: null,
+    unprocess: false,
+    session: null,
+    roles: null,
+    fullPhone: null,
+    step: 0,
+    acount: null,
   };
 };
 

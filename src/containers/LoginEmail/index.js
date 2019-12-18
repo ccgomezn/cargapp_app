@@ -104,8 +104,8 @@ class Registration extends Component {
     } else {
       if (user.isLogged) {
         this.setState({ loadinitial: true });
-        navigate('Documents');
-        // this.onRol();
+        // navigate('Documents');
+        this.onRol();
       }
     }
   }
