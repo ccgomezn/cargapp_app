@@ -1,4 +1,5 @@
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { AuthSelectors } from '../reducers/UserRedux';
 import ParametersActions from '../reducers/ParametersRedux';
 
@@ -12,6 +13,7 @@ export function* getParameters(api, action) {
   if (response.ok) {
     yield put(ParametersActions.parametersSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetParameters');
     yield put(ParametersActions.parametersFailure(response.data));
   }
 }
@@ -25,7 +27,7 @@ export function* getSecondParameters(api, action) {
   if (response.ok) {
     yield put(ParametersActions.parametersSecondSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetSecondParameters');
     yield put(ParametersActions.parametersFailure(response.data));
   }
 }
-

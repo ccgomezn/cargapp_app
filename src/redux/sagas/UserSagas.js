@@ -5,6 +5,7 @@
 */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import UserActions, { AuthSelectors } from '../reducers/UserRedux';
 
 export function* verifyPhone(api, action) {
@@ -18,6 +19,7 @@ export function* verifyPhone(api, action) {
     yield put(UserActions.postVerifySuccess(response.data));
   } else {
     // status error
+    crashlytics().log('Failure Service: VerifyPhone');
     yield put(UserActions.postUserFailure());
   }
 }
@@ -34,6 +36,7 @@ export function* validatePin(api, action) {
     yield put(UserActions.postValidateSuccess(response.data));
   } else {
     // status error
+    crashlytics().log('Failure Service: ValidatePin');
     yield put(UserActions.postValidateFailure(response.data));
   }
 }
@@ -50,6 +53,7 @@ export function* registerUser(api, action) {
     yield put(UserActions.postRegisterUnprocess(null));
   } else {
     // status error
+    crashlytics().log('Failure Service: RegisterUser');
     yield put(UserActions.postRegisterFailure(response.data));
   }
 }
@@ -65,6 +69,7 @@ export function* resendPin(api, action) {
     yield put(UserActions.postValidateSuccess(response.data));
   } else {
     // save error
+    crashlytics().log('Failure Service: ResendPin');
     yield put(UserActions.postValidateFailure(response.data));
   }
 }
@@ -81,6 +86,7 @@ export function* loginUser(api, action) {
     yield put(UserActions.postLoginUnprocess(response.data));
   } else {
     // save error
+    crashlytics().log('Failure Service: LoginUser');
     yield put(UserActions.postLoginFailure(response.data));
   }
 }
@@ -97,6 +103,7 @@ export function* forgotPass(api, action) {
     yield put(UserActions.postPasswordUnprocess(response.data));
   } else {
     // error
+    crashlytics().log('Failure Service: ForgotPass');
     yield put(UserActions.postPasswordFailure());
   }
 }
@@ -113,6 +120,7 @@ export function* resetPass(api, action) {
     yield put(UserActions.postPasswordUnprocess(response.data));
   } else {
     // error
+    crashlytics().log('Failure Service: ResetPass');
     yield put(UserActions.postPasswordFailure());
   }
 }
@@ -128,6 +136,7 @@ export function* getInfoUser(api, action) {
     yield put(UserActions.getUserinfoSuccess(response.data));
   } else {
     // error
+    crashlytics().log('Failure Service: GetInfoUse');
     yield put(UserActions.getUserinfoFailure());
   }
 }

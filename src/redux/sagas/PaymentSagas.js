@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/no-named-as-default-member */
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import PaymentActions from '../reducers/PaymentRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -19,6 +20,7 @@ export function* registerPayment(api, action) {
     yield put(PaymentActions.postRegPaymentUnprocess(response.data));
   } else {
     // error api
+    crashlytics().log('Failure Service: RegisterPayment');
     yield put(PaymentActions.postRegPaymentFailure(null));
   }
 }
@@ -33,6 +35,7 @@ export function* getPaymentMethod(api, action) {
   if (response.ok) {
     yield put(PaymentActions.getPaymentMethodSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetPaymentMethod');
     yield put(PaymentActions.getPaymentMethodFailure());
   }
 }
