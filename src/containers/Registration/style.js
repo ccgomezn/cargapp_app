@@ -34,9 +34,9 @@ export const TextGray = styled.Text`
 `;
 
 export const WrapperError = styled.View`
+  width: 100%;
   font-size: 14px;
   letter-spacing: -0.4px;
-  margin-bottom: 1%;
 `;
 
 export const TextError = styled.Text`
@@ -197,10 +197,8 @@ export const RowDocument = styled.View`
 
 // estilos Modal
 export const MainWrapperDialog = styled.View`
-  width: 90%;
-  height: 55%;
+  width: 100%;
   padding: 5%;
-  padding-bottom: 0px;
   border-radius: 10px;
   align-self: center
   align-items: center;
@@ -220,13 +218,12 @@ export const ContentDialog = styled.View`
 export const WrapperText = styled.View`
   align-items: center;
   justify-content: center;
-  padding-top: 20%;
+  padding-top: 2%;
 `;
 
 export const TitleBlack = styled.Text`
-  font-family: Roboto;
+  font-family: Roboto-Bold;
   font-size: 16px;
-  font-weight: bold;
   color: #010935;
   padding-bottom: 3%;
 `;
@@ -247,7 +244,7 @@ export const TouchModal = styled.TouchableOpacity`
   align-self: flex-end;
   bottom: 0;
   border-radius: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `;
 
 export const TextWhite = styled.Text`
@@ -275,7 +272,7 @@ export const IconModal = styled.View`
   justify-content: center;
   align-self: center;
   position: absolute;
-  top: 24%;
+  top: 0%;
   z-index: 10;
   padding: 5px;
 `;

@@ -9,14 +9,13 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import DocumentActions, { AuthSelectors } from '../reducers/DocumentRedux';
 import OffersActions from '../reducers/OffersRedux';
 
-
 export function* registerDocument(api, action) {
   const { params } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   api.setContent('multipart/form-data');
   const response = yield call(api.document.registerDocument, params);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     // save response ok
     yield put(DocumentActions.postRegisterDocSuccess(response.data));

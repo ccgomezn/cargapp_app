@@ -14,6 +14,7 @@ export const { Types, Creators } = createActions({
   postValidateSuccess: ['data'],
   postValidateFailure: ['params'],
   postValidateRequest: ['params'],
+  postValidateUnprocess: ['data'],
   // register User
   postRegisterSuccess: ['data'],
   postRegisterFailure: ['params'],
@@ -21,6 +22,7 @@ export const { Types, Creators } = createActions({
   postRegisterUnprocess: ['params'],
   // resend pin
   postResendRequest: ['params'],
+  postResendSuccess: ['data'],
   // login User
   postLoginSuccess: ['data'],
   postLoginFailure: ['params'],
@@ -37,6 +39,10 @@ export const { Types, Creators } = createActions({
   getUserinfoRequest: ['params'],
   getUserinfoSuccess: ['data'],
   getUserinfoFailure: null,
+  // save acount
+  saveAcountSuccess: ['data'],
+  // update Step register
+  updateStep: ['stepUser'],
 });
 
 export const UserTypes = Types;
@@ -52,6 +58,9 @@ export const INITIAL_STATE = Immutable({
   unprocess: false,
   session: null, // respuesta login
   roles: null,
+  fullPhone: null,
+  step: 0, // step [1:registerOk - 2:PinOK - 3:OKlogin ]
+  acount: null, // acount initial
 });
 
 /* ----------------- Selectors ---------------- */
@@ -75,8 +84,32 @@ export const onUserLogout = (state) => {
   return {
     ...state,
     isLogged: false,
-    error: false,
     info: null,
+    error: null,
+    fetching: false,
+    status: null,
+    unprocess: false,
+    session: null,
+    roles: null,
+    fullPhone: null,
+    step: 0,
+    acount: null,
+  };
+};
+
+/* ------------- Acount initial ------ */
+export const saveAcountSuccess = (state, { data }) => {
+  return {
+    ...state,
+    acount: data,
+  };
+};
+
+/* ------------- Update Step ---------- */
+export const updateStep = (state, { stepUser }) => {
+  return {
+    ...state,
+    step: stepUser,
   };
 };
 
@@ -114,6 +147,17 @@ export const postValidateSuccess = (state, { data }) => {
     error: false,
     status: data,
     info: data,
+    step: 2,
+  };
+};
+
+export const postValidateUnprocess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    unprocess: true,
+    status: data,
   };
 };
 
@@ -122,6 +166,7 @@ export const postValidateFailure = (state) => {
     ...state,
     fetching: false,
     error: true,
+    unprocess: false,
   };
 };
 
@@ -131,6 +176,7 @@ export const postValidateRequest = (state) => {
     fetching: true,
     error: false,
     status: null,
+    unprocess: false,
   };
 };
 
@@ -141,6 +187,8 @@ export const postRegisterSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    step: 1,
+    fullPhone: data.phone_number,
   };
 };
 
@@ -182,6 +230,15 @@ export const postResendRequest = (state) => {
   };
 };
 
+export const postResendSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    status: data,
+  };
+};
+
 /* ----------------- login ----------------------- */
 export const postLoginSuccess = (state, { data }) => {
   return {
@@ -192,6 +249,7 @@ export const postLoginSuccess = (state, { data }) => {
     session: data,
     isLogged: true,
     unprocess: false,
+    step: 3,
   };
 };
 
@@ -312,6 +370,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_VALIDATE_SUCCESS]: postValidateSuccess,
   [Types.POST_VALIDATE_FAILURE]: postValidateFailure,
   [Types.POST_VALIDATE_REQUEST]: postValidateRequest,
+  [Types.POST_VALIDATE_UNPROCESS]: postValidateUnprocess,
   // register user
   [Types.POST_REGISTER_SUCCESS]: postRegisterSuccess,
   [Types.POST_REGISTER_FAILURE]: postRegisterFailure,
@@ -319,6 +378,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.POST_REGISTER_UNPROCESS]: postRegisterUnprocess,
   // resend code
   [Types.POST_RESEND_REQUEST]: postResendRequest,
+  [Types.POST_RESEND_SUCCESS]: postResendSuccess,
   // login user
   [Types.POST_LOGIN_SUCCESS]: postLoginSuccess,
   [Types.POST_LOGIN_FAILURE]: postLoginFailure,
@@ -335,4 +395,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_USERINFO_REQUEST]: getUserinfoRequest,
   [Types.GET_USERINFO_SUCCESS]: getUserinfoSuccess,
   [Types.GET_USERINFO_FAILURE]: getUserinfoFailure,
+  // save acount
+  [Types.SAVE_ACOUNT_SUCCESS]: saveAcountSuccess,
+  // update step
+  [Types.UPDATE_STEP]: updateStep,
 });

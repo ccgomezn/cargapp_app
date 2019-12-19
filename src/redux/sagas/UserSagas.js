@@ -27,13 +27,13 @@ export function* verifyPhone(api, action) {
 export function* validatePin(api, action) {
   const { params } = action;
   const response = yield call(api.user.validatePin, params);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     // save OK response
     yield put(UserActions.postValidateSuccess(response.data));
   } else if (response.status === 302) {
     // save response
-    yield put(UserActions.postValidateSuccess(response.data));
+    yield put(UserActions.postValidateUnprocess(response.data));
   } else {
     // status error
     crashlytics().log('Failure Service: ValidatePin');
@@ -61,12 +61,13 @@ export function* registerUser(api, action) {
 export function* resendPin(api, action) {
   const { params } = action;
   const response = yield call(api.user.resendPin, params);
+  console.log(response);
   if (response.ok) {
     // save response ok
-    yield put(UserActions.postValidateSuccess(response.data));
+    yield put(UserActions.postResendSuccess(response.data));
   } else if (response.status === 302 /* || response.status === 422 */) {
     // save response(302, 422)
-    yield put(UserActions.postValidateSuccess(response.data));
+    yield put(UserActions.postResendSuccess(response.data));
   } else {
     // save error
     crashlytics().log('Failure Service: ResendPin');
