@@ -147,15 +147,18 @@ class MyTravels extends Component {
     if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+        if (offer.statu_id === 6 || offer.statu_id === 7) {
           console.log(offer);
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
     }
-    console.log(this.props)
-    console.log(offers)
-    if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
+    if (
+      offers.services !== null
+      && offers.data !== null
+      && status.data !== null
+      && vehicles.data !== null
+    ) {
       const services_ids = [];
       const service_map = {};
       offers.services.forEach((service) => {

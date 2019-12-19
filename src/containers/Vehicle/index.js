@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
-import Toast from 'react-native-root-toast';
+import Toast from 'react-native-tiny-toast';
 
 import analytics from '@react-native-firebase/analytics';
 import {
@@ -80,7 +80,7 @@ class Vehicle extends Component {
     if (dtveh !== '') {
       this.setState({
         edit: false,
-        userid: user.status.user.id,
+        userid: user.info.user.id,
         dataplate: dtveh.plate,
         databrand: dtveh.brand,
         datavehicletype: dtveh.vehicle_type_id,
@@ -93,9 +93,9 @@ class Vehicle extends Component {
       });
     } else {
       this.setState({
-        userid: user.status.user.id,
+        userid: user.info.user.id,
         edit: true,
-        dataownerdoc: user.status.user ? user.status.user.identification : '',
+        dataownerdoc: user.info.user ? user.info.user.identification : '',
         dataownername: profile.data ? profile.data[0].profile.firt_name : '',
       });
     }
@@ -461,8 +461,7 @@ class Vehicle extends Component {
           <Toast
             visible={errorApi}
             position={-50}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >
