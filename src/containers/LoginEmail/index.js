@@ -87,7 +87,6 @@ class Registration extends Component {
   isSession() {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
-    alert(user.step);
     /* register step
     - 1:Pin no validate
     - 2:errorLogin
@@ -104,7 +103,6 @@ class Registration extends Component {
     } else {
       if (user.isLogged) {
         this.setState({ loadinitial: true });
-        // navigate('Documents');
         this.onRol();
       }
     }
