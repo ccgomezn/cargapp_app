@@ -35,12 +35,6 @@ import {
   WrapperButtonsBottom,
   TextError,
   TextLoad,
-  IconModal,
-  SvgModal,
-  SvgUriModal,
-  TouchCloseModal,
-  WrapperCloseX,
-  TextModal,
   MainWrapperDialog,
   ScrollDialog,
   ContentDialog,
@@ -93,6 +87,7 @@ class Registration extends Component {
       codeCountrie: '57',
       msgError: '',
       invalidpassconf: false,
+      pinInvalid: false,
       step: 0,
     };
   }
@@ -104,7 +99,6 @@ class Registration extends Component {
     countriesActive();
     // get step process
     const stepUser = navigation.getParam('stepUser', null);
-    console.log(stepUser);
     if (stepUser !== null) {
       // verify step
       if (stepUser === 1) {
@@ -139,7 +133,6 @@ class Registration extends Component {
           password: user.acount.password,
         },
       };
-      console.log(dataLog);
       await loginUser(dataLog);
       this.setState({ loadingLogin: true });
     }
@@ -150,7 +143,6 @@ class Registration extends Component {
           password: clave,
         },
       };
-      console.log(data);
       await loginUser(data);
       this.setState({ loadingLogin: true });
     }
@@ -186,7 +178,6 @@ class Registration extends Component {
         phone: fullPhone,
       };
 
-      console.log(acount);
       await registerUser(data);
       await saveAcount(acount);
       this.setState({ loadingRegister: true });
@@ -232,7 +223,6 @@ class Registration extends Component {
           phone_number: parseInt(fullPhone, 10),
         },
       };
-      // console.log(data);
       await resendPin(data);
     }
     this.setState({ loadingResendPin: true });
@@ -374,9 +364,8 @@ class Registration extends Component {
       msgError,
       datarol,
       invalidpassconf,
+      pinInvalid,
     } = this.state;
-
-    console.log(user);
 
     // hide Toast
     if (visibleError || errorApi || msgError) {
@@ -440,7 +429,11 @@ class Registration extends Component {
           this.onLogin();
           this.setState({ loadingPin: false });
         } else if (loadingPin && user.unprocess) {
-          this.setState({ loadingPin: false, msgError: `pin ${user.status.message}` });
+          this.setState({
+            loadingPin: false,
+            msgError: 'El Pin no es válido',
+            pinInvalid: true,
+          });
         }
       }
     }
@@ -455,7 +448,10 @@ class Registration extends Component {
           // send code ok
           this.setState({ loadingResendPin: false, msgError: 'Pin enviado' });
         } else if (loadingResendPin) {
-          this.setState({ loadingResendPin: false, msgError: `Pin ${user.status.message}` });
+          this.setState({
+            loadingResendPin: false,
+            msgError: `Pin ${user.status.message}`,
+          });
         }
       }
     }
@@ -466,7 +462,6 @@ class Registration extends Component {
         this.setState({ loadingLogin: false, errorApi: true });
       }
       if (user.status && !user.fetching) {
-        console.log(user);
         if (user.session) {
           setTimeout(() => {
             this.setState({ loadingLogin: false });
@@ -641,7 +636,7 @@ class Registration extends Component {
           <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
           <Dialog
             visible={modalPin}
-            opacity={0.5}
+            opacity={0.3}
             animation="top"
             styleWrapper={{ width: '85%' }}
           >
@@ -685,6 +680,11 @@ class Registration extends Component {
                         Campo incompleto o erroneo
                       </TextError>
                     ) : null }
+                    { pinInvalid ? (
+                      <TextError>
+                        PIN incorrecto
+                      </TextError>
+                    ) : null }
                   </WrapperError>
                   <TouchModal>
                     <ButtonGradient
@@ -709,6 +709,15 @@ class Registration extends Component {
                   </TextLoad>
                 </ContentDialog>
               </ScrollDialog>
+              <Toast
+                visible={msgError !== ''}
+                position={80}
+                duration={Toast.duration.LONG}
+                shadow
+                animation
+              >
+                {msgError}
+              </Toast>
             </MainWrapperDialog>
           </Dialog>
           <Toast
@@ -728,15 +737,6 @@ class Registration extends Component {
             animation
           >
             Los datos son erroneos y/o ya están registrados.
-          </Toast>
-          <Toast
-            visible={msgError !== ''}
-            position={10}
-            duration={Toast.duration.LONG}
-            shadow
-            animation
-          >
-            {msgError}
           </Toast>
           <Toast
             visible={loadingLogin || loadingRegister}

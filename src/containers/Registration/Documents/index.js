@@ -66,18 +66,14 @@ class Registration extends Component {
   onValidateStep() {
     const { user, parameters } = this.props;
     const { navigate } = this.props.navigation;
-    const { user_id } = this.state;
     // get step process
     const stepUser = user.step;
     const { rol } = user.acount;
-    console.log(`step : ${stepUser} userId: ${user_id}`);
     this.setState({ init: true });
     if (stepUser !== null) {
       if (stepUser === 3) {
         // documents ó data personal
-        console.log(parameters);
         const docVisible = parameters.data.parameters[0].code;
-        console.log(`rol: ${rol}`);
         if (rol === 11) {
           // validar Document Active
           if (docVisible === 'false') {
@@ -193,7 +189,6 @@ class Registration extends Component {
   render() {
     // eslint-disable-next-line react/prop-types
     const { document, parameters } = this.props;
-    const { goBack } = this.props.navigation;
     const {
       listStatus, loadingRegister, document_load, error, visible_error, init,
     } = this.state;
@@ -234,7 +229,6 @@ class Registration extends Component {
 
     if (parameters.data !== null && !parameters.fetching) {
       if (!init) {
-        console.log(parameters);
         this.onValidateStep();
       }
       return (
