@@ -5,6 +5,7 @@
 
 */
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import CompanyActions from '../reducers/CompanyRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -13,10 +14,11 @@ export function* getCompanies(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.company.getCompanies, params);
-  console.log(response)
+  console.log(response);
   if (response.ok) {
     yield put(CompanyActions.getCompaniesSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetCompanies');
     yield put(CompanyActions.getCompaniesFailure());
   }
 }
@@ -35,6 +37,7 @@ export function* registerCompanies(api, action) {
     yield put(CompanyActions.postRegCompaniesUnprocess(response.data));
   } else {
     // error api
+    crashlytics().log('Failure Service: RegisterCompanies');
     yield put(CompanyActions.postRegCompaniesFailure(null));
   }
 }

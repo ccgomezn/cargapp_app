@@ -12,6 +12,7 @@
  ************************************************************ */
 
 import { call, put } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import DriverActions from '../reducers/DriverRedux';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -21,6 +22,7 @@ export function* profileDriver(api, action) {
   if (response.ok) {
     yield put(DriverActions.postDriverMeSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: ProfileDriver');
     yield put(DriverActions.postDriverFailure());
   }
 }

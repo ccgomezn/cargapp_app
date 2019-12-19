@@ -1,5 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import ChallengeActions from '../reducers/ChallengeRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -13,6 +14,7 @@ export function* getActiveChallenge(api, action) {
   if (response.ok) {
     yield put(ChallengeActions.getActiveChallengeSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetActiveChallenge');
     yield put(ChallengeActions.getActiveChallengeFailure());
   }
 }

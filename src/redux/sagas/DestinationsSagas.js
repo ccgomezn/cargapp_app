@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import DestinationsActions from '../reducers/DestinationsRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -14,6 +15,7 @@ export function* getDestinations(api, action) {
   if (response.ok) {
     yield put(DestinationsActions.getDestinationsSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetDestinations');
     yield put(DestinationsActions.getDestinationsFailure(response.data));
   }
 }
