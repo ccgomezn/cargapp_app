@@ -50,7 +50,7 @@ class ListVehicles extends Component {
   }
 
   onValidate() {
-    analytics().logEvent('boton_añadir_vehiculo');
+    analytics().logEvent('boton_agregar_vehiculo');
     const { navigate } = this.props.navigation;
     const { selectID, offer } = this.state;
     const { vehicles } = this.props;

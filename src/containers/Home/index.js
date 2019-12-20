@@ -20,14 +20,13 @@ class Home extends Component {
   constructor() {
     super();
     this.state = {
-      unmount: false,
       location: {
         latitude: 4.624335,
         longitude: -74.063644,
         latitudeDelta: 0.5,
         longitudeDelta: 0.5 * (screenWidth / screenHeight),
-        name: null
       },
+      name: '',
     };
   }
 
@@ -111,8 +110,8 @@ class Home extends Component {
     const { navigation, profile } = this.props;
     const { location, name } = this.state;
     if (location.latitudeDelta !== 0.5 && profile.data !== null) {
-      profile.data.map(data => {
-        if (name === null) {
+      profile.data.map((data) => {
+        if (name === '') {
           this.setState({ name: data.profile.firt_name });
         }
       });
@@ -144,7 +143,7 @@ class Home extends Component {
               textKm="Kms recorridos"
               valueKm="12000"
               textPoint="1222"
-              title={'¡Hola' + name ? + ' ' + name + '!' : '!' }
+              title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
             />
             <NormalText>Buscar viajes disponibles</NormalText>
             <WrapperSwipeable>

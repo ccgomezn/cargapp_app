@@ -6,11 +6,11 @@ export const MainWrapper = styled.View`
 `;
 
 export const AddressesWrapper = styled.View`
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    position: absolute;
-    bottom: 50%;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  position: absolute;
+  bottom: 50%;
 `;
 
 export const WrapperModal = styled.View`
@@ -26,5 +26,5 @@ export const BlueText = styled.Text`
   font-size: 18px;
   align-self: center;
   text-align: center;
-  padding-bottom: 5%;
+  padding-bottom: 18%;
 `;
