@@ -67,7 +67,7 @@ class Registration extends Component {
       loadingRegister: false,
       error: {},
       datapin: '',
-      modalPin: false,
+      modalPin: false, // test quitar
       loadingPin: false,
       loadingResendPin: false,
       pinErrorCheck: false,
@@ -124,6 +124,7 @@ class Registration extends Component {
   async onLogin() {
     const { dataemail, datadocument, step } = this.state;
     const { loginUser, user } = this.props;
+    const { updateStep } = this.props;
     const clave = datadocument;
     // validate step
     if (step !== null || step !== 0) {
@@ -134,6 +135,7 @@ class Registration extends Component {
         },
       };
       await loginUser(dataLog);
+      updateStep(3);
       this.setState({ loadingLogin: true });
     }
     if (dataemail != null && dataemail !== '') {
@@ -144,6 +146,7 @@ class Registration extends Component {
         },
       };
       await loginUser(data);
+      updateStep(3);
       this.setState({ loadingLogin: true });
     }
   }
@@ -486,7 +489,7 @@ class Registration extends Component {
             <ArrowBack url={() => goBack()} />
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
-          <TextBlack>
+          <TextBlack style={{ textAlign: 'center' }}>
             Registrate
             <TextBlue>
               {' '}
@@ -494,7 +497,9 @@ class Registration extends Component {
             </TextBlue>
           </TextBlack>
           <TextGray>
-            Este es el primer paso, para iniciar su registro necesitamos...
+            Esto solo debes hacerlo una vez y tomará un par de minutos.
+            {/* {'\n'}
+            Datos personales */}
           </TextGray>
           <WrapperButtons>
             <WrapperButton
@@ -515,7 +520,7 @@ class Registration extends Component {
               </ButtonSubText>
             </WrapperButton>
             <WrapperButton
-              onPress={handlePressButton}
+              // onPress={handlePressButton}
               style={pressState ? containerPress : null}
             >
               {pressState && <Check source={require('../../../Images/Check.png')} />}
@@ -644,9 +649,9 @@ class Registration extends Component {
               <ScrollDialog>
                 <ContentDialog>
                   <WrapperText>
-                    <TitleBlack>Ingresa el pin</TitleBlack>
+                    <TitleBlack>Ingresa el código</TitleBlack>
                     <SubtGray>
-                      Debes ingresar el pin que te acaba de llegar a tu celular para validar.
+                      Ingresa el código de verificación que llegó a tu celular por mensaje de texto
                     </SubtGray>
                   </WrapperText>
                   <InputCode
@@ -694,7 +699,7 @@ class Registration extends Component {
                   </TouchModal>
                   <TouchModal>
                     <ButtonWhite
-                      content="Reenviar pin"
+                      content="Solicitar nuevo código"
                       press={() => this.onPressResendPin()}
                     />
                   </TouchModal>
@@ -776,6 +781,7 @@ const mapDispatchToProps = dispatch => ({
   resendPin: params => dispatch(UserActions.postResendRequest(params)),
   countriesActive: params => dispatch(CountrieActions.postCountriesRequest(params)),
   saveAcount: params => dispatch(UserActions.saveAcountSuccess(params)),
+  updateStep: params => dispatch(UserActions.updateStep(params)),
 });
 
 export default connect(

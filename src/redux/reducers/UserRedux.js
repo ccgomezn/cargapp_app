@@ -249,7 +249,6 @@ export const postLoginSuccess = (state, { data }) => {
     session: data,
     isLogged: true,
     unprocess: false,
-    step: 3,
   };
 };
 
