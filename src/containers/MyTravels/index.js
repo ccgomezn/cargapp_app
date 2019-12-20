@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Share } from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, TouchFilter, TextFilter, ContentOffer,
@@ -17,7 +18,7 @@ import InputSlider from '../../components/InputSlider';
 import InputPicker from '../../components/InputPicker';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import StatusActions from '../../redux/reducers/StatusRedux';
-import VehicleActions from '../../redux/reducers/VehicleRedux';
+import VehiclesActions from '../../redux/reducers/VehicleRedux';
 
 const itemsTipo = [
   {
@@ -57,8 +58,9 @@ class MyTravels extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mis_viajes');
     const {
-      getMyOffers, getStatus, profile, getsOffers, getVehicleRequest, getMyOffersRequest,
+      getMyOffers, getStatus, profile, getsOffers, getVehicles, getMyOffersRequest,
     } = this.props;
 
     const that = this;
@@ -83,10 +85,9 @@ class MyTravels extends Component {
     }
     getsOffers();
     getStatus();
-    getVehicleRequest();
+    getVehicles();
     getMyOffersRequest(profile.data[0].user.id);
     getMyOffers(profile.data[0].user.id);
-
   }
 
   onPressButton(value) {
@@ -120,6 +121,24 @@ class MyTravels extends Component {
     getMyOffersRequest(profile.data[0].user.id);
   }
 
+  onClickShare(offers) {
+    Share.share(
+      {
+        message:
+          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+            offers.id}`,
+        url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
+        title: 'Oferta Cargapp',
+      },
+      {
+        // Android only:
+        dialogTitle: 'Compartir Oferta',
+        // iOS only:
+        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+      },
+    );
+  }
+
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const {
@@ -128,22 +147,24 @@ class MyTravels extends Component {
     if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        console.log('yes offer');
-        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+        if (offer.statu_id === 6 || offer.statu_id === 7) {
           console.log(offer);
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
     }
-
-    if (offers.services !== null && offers.data !== null && status.data !== null && vehicles.data !== null) {
+    if (
+      offers.services !== null
+      && offers.data !== null
+      && status.data !== null
+      && vehicles.data !== null
+    ) {
       const services_ids = [];
       const service_map = {};
       offers.services.forEach((service) => {
         services_ids.push(service.service_id);
         service_map[service.service_id] = service.approved;
       });
-      console.log(services_ids);
       return (
         <MainView>
           <MainWrapper>
@@ -170,6 +191,7 @@ class MyTravels extends Component {
                               status={service_map[allOffers.id] === false ? 'Rechazado' : allOffers.statu_id === statusOffer.id && statusOffer.name}
                               actionbtnPrimary={() => this.onPressButton(allOffers)}
                               btnPrimary={service_map[allOffers.id] === null || service_map[allOffers.id] ? 'Ver detalle' : null}
+                              actionbtnSecondary={() => this.onClickShare(allOffers)}
                             />
                           );
                         }
@@ -259,9 +281,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   getMyOffers: id => dispatch(OffersActions.getServicesRequest(id)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
+  getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getStatus: params => dispatch(StatusActions.getStatusRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
-  getVehicleRequest: params => dispatch(VehicleActions.getVehicleRequest(params)),
 });
 
 export default connect(

@@ -68,6 +68,13 @@ export const ImagenArrow = styled.Image`
   resize-mode: contain;
 `;
 
+export const IconBottomNav = styled.Image`
+  width: 30px;
+  height: 25px;
+  align-self: center;
+  resize-mode: contain;
+`;
+
 export const HeaderStyle = {
   backgroundColor: '#FFF', // '#010935',
   height: Platform.OS === 'ios' ? 45 : 45,

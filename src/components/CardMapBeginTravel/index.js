@@ -21,7 +21,7 @@ import ButtonWhite from '../ButtonWhite';
 import ButtonGradient from '../ButtonGradient';
 
 function CardMapBeginTravel({
-  company, normalText, amount, delivery, extra, onPressBW, onPressBG, mainButton,
+  company, normalText, amount, delivery, extra, onPressBW, onPressBG, mainButton, onPressQA,
 }) {
   return (
     <MainWrapper>
@@ -33,7 +33,7 @@ function CardMapBeginTravel({
           <BoldText>{company}</BoldText>
           <NormalText>{normalText}</NormalText>
         </WrapperInfo>
-        <TouchableQualification>
+        <TouchableQualification onPress={onPressQA}>
           <BlueText>
                         Ver calificación
           </BlueText>
@@ -77,6 +77,7 @@ CardMapBeginTravel.propTypes = {
   extra: PropTypes.string.isRequired,
   onPressBW: PropTypes.func.isRequired,
   onPressBG: PropTypes.func.isRequired,
+  onPressQA: PropTypes.func.isRequired,
   mainButton: PropTypes.func.isRequired,
 };
 

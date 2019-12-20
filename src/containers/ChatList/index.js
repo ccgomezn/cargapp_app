@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
 } from './style';
@@ -21,6 +22,7 @@ class ListChat extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('chat');
     const { getMineChats, getActiveChats, getOffers } = this.props;
     getMineChats();
     getActiveChats();
@@ -33,28 +35,29 @@ class ListChat extends Component {
     navigate('InnerChat', { data });
   }
 
-  transformInputData(data, key){
-    let real_data = {};
-    data.forEach(data => {
+  transformInputData(data, key) {
+    const real_data = {};
+    data.forEach((data) => {
       real_data[data[key]] = data;
     });
     return real_data;
   }
+
   render() {
     const { chat, offers } = this.props;
 
     if (!chat.fetching && chat.myRooms !== null
     && chat.activeRooms !== null
     && !offers.fetching && offers.data !== null) {
-      let real_offers = this.transformInputData(offers.data ,'id');
-      let chatsId = [];
-      chat.myRooms.forEach(chat => {
+      const real_offers = this.transformInputData(offers.data, 'id');
+      const chatsId = [];
+      chat.myRooms.forEach((chat) => {
         chatsId.push(chat.room_id);
       });
-      let realChats = [];
+      const realChats = [];
 
-      chat.activeRooms.forEach(chat => {
-        if(chatsId.includes(chat.id)) {
+      chat.activeRooms.forEach((chat) => {
+        if (chatsId.includes(chat.id)) {
           chat.service = real_offers[chat.service_id];
           realChats.push(chat);
         }

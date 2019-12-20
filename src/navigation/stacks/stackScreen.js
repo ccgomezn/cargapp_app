@@ -265,6 +265,7 @@ export const ProfileStackNavigator = createStackNavigator({
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });

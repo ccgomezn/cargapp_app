@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator, Alert } from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper,
   TouchableCreate,
@@ -44,6 +45,7 @@ class BankAccount extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('tarjetas_registradas');
     const { getBankAccount, getParameters, getSecondParameters } = this.props;
     getBankAccount();
     getParameters('BANK');
@@ -51,6 +53,7 @@ class BankAccount extends Component {
   }
 
   onPressButtonAccount() {
+    analytics().logEvent('boton_confirmar_datos_bancarios');
     const { postBankAccount, putBankAccount, profile } = this.props;
     const {
       numberAccount, accountType, bankType, modify, id,
@@ -83,10 +86,12 @@ class BankAccount extends Component {
         id: '',
         modalData: null,
       });
+      analytics().logEvent('registro_cuenta_exitoso');
     } else Alert.alert('Advertencia...', 'Revisa todos los campos');
   }
 
   OnHideModal() {
+    analytics().logEvent('boton_cancelar_datos_bancarios');
     this.setState({
       modalAccount: false,
       accountType: '',
@@ -96,6 +101,12 @@ class BankAccount extends Component {
       id: '',
       modalData: null,
     });
+  }
+
+  openModal() {
+    analytics().setCurrentScreen('datos_bancarios');
+    analytics().logEvent('boton_agregar_cuenta');
+    this.setState({ modalAccount: true });
   }
 
   render() {
@@ -144,7 +155,7 @@ class BankAccount extends Component {
               </WrapperCardAccount>
             </MainWrapperScroll>
           ) : (
-            <TouchableCreate onPress={() => this.setState({ modalAccount: true })}>
+            <TouchableCreate onPress={() => this.openModal()}>
               <MainTextOpacity>No tienes cuentas bancarias por el momento</MainTextOpacity>
               <MainText>¿Deseas agregar una?</MainText>
             </TouchableCreate>
@@ -198,7 +209,7 @@ class BankAccount extends Component {
               </ContentDialog>
             </MainWrapperDialog>
           </EmptyDialog>
-          <TouchableCreateNewAccount onPress={() => this.setState({ modalAccount: true })}>
+          <TouchableCreateNewAccount onPress={() => this.openModal()}>
             <MainText>¿Deseas agregar una nueva cuenta?</MainText>
           </TouchableCreateNewAccount>
         </MainWrapper>

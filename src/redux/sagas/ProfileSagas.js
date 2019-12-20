@@ -5,8 +5,10 @@
 */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import ProfileActions from '../reducers/ProfileRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
+import UserActions from '../reducers/UserRedux';
 
 export function* getProfile(api, action) {
   const { params } = action;
@@ -17,6 +19,7 @@ export function* getProfile(api, action) {
   if (response.ok) {
     yield put(ProfileActions.getProfileSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetProfile');
     yield put(ProfileActions.getProfileFailure());
   }
 }
@@ -27,10 +30,13 @@ export function* editProfile(api, action) {
   api.setAuthToken(token);
   api.setContent('application/json');
   const response = yield call(api.profile.editProfile, id, data);
-  // console.log(response);
+  console.log(response);
   if (response.ok) {
     yield put(ProfileActions.editProfileSuccess(response.data));
+    // update step
+    yield put(UserActions.updateStep(5));
   } else {
+    crashlytics().log('Failure Service: EditProfile');
     yield put(ProfileActions.getProfileFailure());
   }
 }

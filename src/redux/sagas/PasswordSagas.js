@@ -5,9 +5,10 @@
 */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
+import { Alert } from 'react-native';
 import { AuthSelectors } from '../reducers/UserRedux';
 import PasswordActions from '../reducers/PasswordRedux';
-import { Alert } from 'react-native';
 
 
 export function* putPassword(api, action) {
@@ -18,7 +19,8 @@ export function* putPassword(api, action) {
   if (response.ok) {
     yield put(PasswordActions.putPasswordSuccess(response.data));
   } else if (response.status === 304) {
-    Alert.alert('Error','Los datos son incorrectos');
+    Alert.alert('Error', 'Los datos son incorrectos');
+    crashlytics().log('Failure Service: PutPassword');
     yield put(PasswordActions.passwordFailure());
   }
 }

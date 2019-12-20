@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ActivityIndicator, Alert } from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 import EmptyDialog from '../../components/EmptyDialog';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
@@ -38,11 +39,13 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mi_perfil');
     const { getProfile } = this.props;
     getProfile();
   }
 
   onPressButtonPassword() {
+    analytics().setCurrentScreen('mi_perfil_cambiar_contraseña');
     this.setState({ modalPassword: true });
   }
 

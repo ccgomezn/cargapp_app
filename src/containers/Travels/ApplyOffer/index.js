@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, AddressesWrapper, WrapperModal, BlueText,
 } from './style';
@@ -36,10 +37,24 @@ class ApplyOffer extends Component {
   }
 
   componentDidMount() {
-    const { navigation, getCompanies, getServices } = this.props;
+    analytics().setCurrentScreen('mis_viajes_detalle');
+    const {
+      navigation, getCompanies, getServices, offers,
+    } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     const booked = navigation.getParam('booked');
-    this.setState({ offer: dataOffer });
+    const share = navigation.getParam('share');
+    const idShare = navigation.getParam('idShare');
+    if (share) {
+      offers.data.map((services) => {
+        if (services.id === idShare) {
+          this.setState({ offer: services });
+        }
+      });
+    }
+    if (dataOffer) {
+      this.setState({ offer: dataOffer });
+    }
     if (dataOffer.statu_id === 11 || (dataOffer.statu_id === 10 && booked)) {
       this.setState({ modalFinish: true });
     }
@@ -47,7 +62,18 @@ class ApplyOffer extends Component {
     getServices();
   }
 
+  onPressCancel() {
+    analytics().logEvent('boton_cancelar_oferta');
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
+
+  onPressQualification() {
+    analytics().logEvent('boton_ver_calificacion');
+  }
+
   vehicleType(value, id) {
+    analytics().logEvent('boton_aplicar_a_oferta');
     const { navigation } = this.props;
     const { showTravel } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
@@ -123,7 +149,7 @@ class ApplyOffer extends Component {
           )}
           <EmptyDialog visible={modalFinish}>
             <WrapperModal>
-              <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10  && 'Estamos esperando que acepten el viaje'}</BlueText>
+              <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
               <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
             </WrapperModal>
           </EmptyDialog>
@@ -182,10 +208,11 @@ class ApplyOffer extends Component {
                   normalText={company.address}
                   amount={offer.price}
                   onPressBG={() => this.vehicleType(offer, selectID)}
-                  onPressBW={() => navigation.goBack()}
+                  onPressBW={() => this.onPressCancel()}
                   delivery="5 días"
                   company={company.name}
                   mainButton={this.nameButton()}
+                  onPressQA={() => this.onPressQualification()}
                 />
               );
             }

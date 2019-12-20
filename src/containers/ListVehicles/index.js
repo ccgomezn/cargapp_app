@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
   WrapperButtonsBottom, WrapperButtonGradient,
@@ -27,13 +28,14 @@ class ListVehicles extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mis_vehiculos');
     const { getListVehicles, getVehiclesType, navigation } = this.props;
     getListVehicles();
     // get getTypes
     getVehiclesType();
     const selectID = navigation.getParam('selectID');
     const offer = navigation.getParam('offer');
-    this.setState({ selectID: selectID, offer: offer });
+    this.setState({ selectID, offer });
   }
 
   onViewDetail(data) {
@@ -48,6 +50,7 @@ class ListVehicles extends Component {
   }
 
   onValidate() {
+    analytics().logEvent('boton_añadir_vehiculo');
     const { navigate } = this.props.navigation;
     const { selectID, offer } = this.state;
     const { vehicles } = this.props;
@@ -57,7 +60,7 @@ class ListVehicles extends Component {
       this.setState({ modalVeh: true });
       // navigate('DetailVehicle');
     } else {
-      navigate('DetailVehicle', { selectID: selectID, dataOffer: offer });
+      navigate('DetailVehicle', { selectID, dataOffer: offer });
     }
   }
 

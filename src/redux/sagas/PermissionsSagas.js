@@ -2,6 +2,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import PermissionsActions from '../reducers/PermissionsRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -14,6 +15,7 @@ export function* getPermission(api, action) {
   if (response.ok) {
     yield put(PermissionsActions.getPermissionSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetPermission');
     yield put(PermissionsActions.getPermissionFailure());
   }
 }
