@@ -6,13 +6,13 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Toast from 'react-native-root-toast';
+import Toast from 'react-native-tiny-toast';
 import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
 import ButtonGradient from '../../../components/ButtonGradient';
 // import ButtonWhite from '../../../components/ButtonWhite';
-import ArrowBack from '../../../components/ArrowBack';
+// import ArrowBack from '../../../components/ArrowBack';
 
 // action - reducers
 import ProfileActions from '../../../redux/reducers/ProfileRedux';
@@ -52,11 +52,11 @@ class Registration extends Component {
   }
 
   componentDidMount() {
-    const { getProfile, navigation } = this.props;
+    const { getProfile, user } = this.props;
     getProfile();
-    const dtrol = navigation.getParam('idrol', '');
-    if (dtrol !== '') {
-      this.setState({ datarol: dtrol });
+    const { rol } = user.acount;
+    if (rol !== '') {
+      this.setState({ datarol: rol });
     }
   }
 
@@ -124,7 +124,7 @@ class Registration extends Component {
   render() {
     // eslint-disable-next-line react/prop-types
     const { profile } = this.props;
-    const { goBack } = this.props.navigation;
+    // const { goBack } = this.props.navigation;
     const {
       dataname,
       datalastname,
@@ -171,7 +171,7 @@ class Registration extends Component {
       return (
         <MainWrapper>
           <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
-            <ArrowBack url={() => goBack()} />
+            {/* <ArrowBack url={() => goBack()} /> */}
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
           <TextBlack>
@@ -244,8 +244,7 @@ class Registration extends Component {
           <Toast
             visible={errorApi}
             position={-50}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >

@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import {
-  Platform, ActivityIndicator, Linking, PermissionsAndroid,
+  Platform, ActivityIndicator, Linking,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
-
 import Geolocation from '@react-native-community/geolocation';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import StarRating from 'react-native-star-rating';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import analytics from '@react-native-firebase/analytics';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import RateTypes from '../../../redux/reducers/RateServiceRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
@@ -24,12 +23,15 @@ import {
   WrapperTopCard,
   BlueText,
   WrapperModal,
+  CustomImage,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import TopCardTravel from '../../../components/TopCardTravel';
 import EmptyDialog from '../../../components/EmptyDialog';
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
+import images from '../../../icons';
 import ButtonGradient from '../../../components/ButtonGradient';
+import CompanyActions from '../../../redux/reducers/CompanyRedux';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -98,8 +100,9 @@ class StartTravel extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
-      navigation, offers, getMarkers, getDocsServiceRequest,
+      navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
     } = this.props;
     const offer = navigation.getParam('Offer');
     offers.data.map((newOffer) => {
@@ -115,6 +118,7 @@ class StartTravel extends Component {
     } else if (offer.statu_id === 8 || offer.statu_id === 6) {
       this.setState({ inTravel: true });
     }
+    getCompanies();
     getMarkers();
   }
 
@@ -363,7 +367,10 @@ class StartTravel extends Component {
       this.downloadMan();
       this.setState({ manifestSet: true });
     }
-    if (offerSpecific !== null && waypoints !== undefined && markers.data !== null) {
+    console.log(offerSpecific)
+    console.log(waypoints)
+    console.log(companies)
+    if (offerSpecific !== null && waypoints !== undefined && markers.data !== null && companies.data !== null) {
       markers.data.map(commerce => (
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
@@ -386,19 +393,27 @@ class StartTravel extends Component {
               latitudeDelta: 0.10,
               longitudeDelta: 0.10,
             }}
-            showsUserLocation
             followsUserLocation
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
-
+            <MapView.Marker
+              coordinate={{
+                latitude: lastLat,
+                longitude: lastLong,
+              }}
+            >
+              <CustomImage source={images.truck} />
+            </MapView.Marker>
             {markers.data.map(commerce => (
               <MapView.Marker
                 coordinate={{
                   latitude: Number(commerce.latitude),
                   longitude: Number(commerce.longitude),
                 }}
-              />
+              >
+                <CustomImage source={images.markersPin} />
+              </MapView.Marker>
             ))}
 
             <MapView.Polyline coordinates={waypoints} strokeWidth={4} strokeColor="#007aff" />
@@ -410,7 +425,9 @@ class StartTravel extends Component {
               tracksViewChanges={false}
               pinColor="#007aff"
               title="Origen carga"
-            />
+            >
+              <CustomImage source={images.originPin} />
+            </MapView.Marker>
           </MapView>
           {companies.data.map((CompanyInfo) => {
             if (offerSpecific.company_id === CompanyInfo.id) {
@@ -501,6 +518,7 @@ const mapDispatchToProps = dispatch => ({
   postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
   getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
+  getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
 });
 
 export default connect(

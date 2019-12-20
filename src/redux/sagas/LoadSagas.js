@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import LoadActions from '../reducers/LoadRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -14,6 +15,7 @@ export function* getLoadsType(api, action) {
   if (response.ok) {
     yield put(LoadActions.getLoadstypeSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetLoadsType');
     yield put(LoadActions.getLoadstypeFailure(response.data));
   }
 }

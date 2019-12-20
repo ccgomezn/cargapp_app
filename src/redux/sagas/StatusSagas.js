@@ -1,4 +1,5 @@
 import { put, select, call } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import StatusActions from '../reducers/StatusRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -9,10 +10,9 @@ export function* getStatus(api, action) {
   const response = yield call(api.status.getStatus, params);
   console.log('status response', response);
   if (response.ok) {
-    console.log('ok');
     yield put(StatusActions.getStatusSuccess(response.data));
   } else {
-    console.log('error');
+    crashlytics().log('Failure Service: GetStatus');
     yield put(StatusActions.statusFailure());
   }
 }

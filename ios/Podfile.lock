@@ -402,26 +402,30 @@ PODS:
     - React
   - RNCAsyncStorage (1.6.1):
     - React
-  - RNFBApp (6.1.0):
+  - RNFBAnalytics (6.2.0):
     - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBAuth (6.1.0):
+    - RNFBApp
+  - RNFBApp (6.2.0):
+    - Firebase/Core (~> 6.13.0)
+    - React
+  - RNFBAuth (6.2.0):
     - Firebase/Auth (~> 6.13.0)
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBCrashlytics (6.1.0):
+  - RNFBCrashlytics (6.2.0):
     - Crashlytics (~> 3.12.0)
     - Fabric (~> 1.9.0)
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBFirestore (6.1.0):
+  - RNFBFirestore (6.2.0):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Firestore (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBMessaging (6.1.0):
+  - RNFBMessaging (6.2.0):
     - Firebase/Messaging (~> 6.13.0)
     - React
     - RNFBApp
@@ -464,6 +468,7 @@ DEPENDENCIES:
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
@@ -568,6 +573,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-geolocation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNFBAnalytics:
+    :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -645,15 +652,16 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: 8d8d66b47eafcb9e772b2eb95057939038b3ef95
   RNBackgroundGeolocation: 9a7b62b67e56cb64f3426f83db6bc324c0c86d6d
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
-  RNFBApp: edeadb99669dd39f9d7f8f7f68d420fda4d8b7d8
-  RNFBAuth: ed3f9103bada30d38bf7e3a7e1431e69eca0e314
-  RNFBCrashlytics: ba2007fd3e5c526ea3687d1035b17a06b290b7ce
-  RNFBFirestore: bd3644bd512cc6f78e13d34ea13e7e642ac3c1b2
-  RNFBMessaging: 5cbfa023eae7e4f16ce285eb9d3ed17fb85ff5b3
+  RNFBAnalytics: 57dc0bfad4e40f68779757653676699072651218
+  RNFBApp: 5b215aacc09105a1761de31b9a0eb2abcce06253
+  RNFBAuth: 61673c0d38ce225c315e7be13a1b494904baedd2
+  RNFBCrashlytics: 0469cb96b00904e0c9604b9636d8eeab31115b08
+  RNFBFirestore: 5de4ae898df51a3ecc16a45db15019836c5cec87
+  RNFBMessaging: be0b936394416ec5503add603f2c0a641c353063
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   RNSVG: 435cda60cd9e1ea6188eb0e21c12fc0f85def8e8
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
-PODFILE CHECKSUM: a1c2789d1b89a686f830d5979d877e8f468998b0
+PODFILE CHECKSUM: e9f2f09a18e33e57a23a3d8b625efa0f2fead5be
 
 COCOAPODS: 1.8.4

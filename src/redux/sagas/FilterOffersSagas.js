@@ -1,4 +1,5 @@
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { AuthSelectors } from '../reducers/UserRedux';
 import FilterOffersActions from '../reducers/FilterOffersRedux';
 
@@ -11,6 +12,7 @@ export function* getFilterOffers(api, action) {
   if (response.ok) {
     yield put(FilterOffersActions.getOffersByFilterSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetFilterOffers');
     yield put(FilterOffersActions.getOffersByFilterFailure());
   }
 }

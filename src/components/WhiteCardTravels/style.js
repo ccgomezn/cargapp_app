@@ -77,6 +77,9 @@ export const TouchableDetails = styled.TouchableOpacity`
     margin-horizontal: 20px;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    bottom: -45px;
+    right: 30%;
     `;
 
 export const TextBlue = styled.Text`
@@ -98,4 +101,17 @@ export const WrapperButtons = styled.View`
     flex-direction: row;
     margin: 3px;
     justify-content: flex-end;
+    `;
+
+export const WrapperTextIcon = styled.View`
+    flex-direction: row; 
+    justify-content: flex-start;
+    align-items: center;
+    `;
+
+export const Icon = styled.Image`
+    width: 20px;
+    height: 20px;
+    resize-mode: contain;
+    margin-right: 5px;
     `;

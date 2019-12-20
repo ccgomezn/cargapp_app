@@ -12,6 +12,7 @@
  ************************************************************ */
 
 import { call, put } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import GeolocationActions from '../reducers/GeolocationRedux';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -21,6 +22,7 @@ export function* sendLocation(api, action) {
   if (response.ok) {
     yield put(GeolocationActions.postLocationSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: SendLocation');
     yield put(GeolocationActions.postLocationFailure());
   }
 }
@@ -32,6 +34,7 @@ export function* getLocationTarget(api, action) {
   if (response.ok) {
     yield put(GeolocationActions.getLocationTargetSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetLocationTarget');
     yield put(GeolocationActions.getLocationTargetFailure());
   }
 }

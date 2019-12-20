@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import MarkersActions from '../reducers/MarkersRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -14,6 +15,7 @@ export function* getMarkers(api, action) {
   if (response.ok) {
     yield put(MarkersActions.getMarkersSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetFilterOffers');
     yield put(MarkersActions.getMarkersFailure(response.data));
   }
 }

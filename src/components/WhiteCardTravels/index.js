@@ -14,25 +14,34 @@ import {
   WrapperButton,
   WrapperButtons,
   Line,
+  WrapperTextIcon,
+  Icon,
 } from './style';
 import ButtonGradient from '../ButtonGradient';
+import images from '../../icons';
 
 function WhiteCardTravels({
   from, to, vehicle, pay, date,
   actionbtnPrimary, btnPrimary,
-  actionbtnSecondary, btnSecondary,
+  actionbtnSecondary,
   status, statusColor,
 }) {
   return (
     <MainWrapper onPress={btnPrimary !== null ? actionbtnPrimary : null}>
       <WrapperColumn>
         <WrapperDataLeft>
-          <TextBold>{from}</TextBold>
+          <WrapperTextIcon>
+            <Icon source={images.locationOffer} />
+            <TextBold>{from}</TextBold>
+          </WrapperTextIcon>
           <NormalText>Origen</NormalText>
         </WrapperDataLeft>
         { vehicle != null ? (
           <WrapperData>
-            <TextBold>{to}</TextBold>
+            <WrapperTextIcon>
+              <Icon source={images.originPin} />
+              <TextBold>{to}</TextBold>
+            </WrapperTextIcon>
             <NormalText>Destino</NormalText>
           </WrapperData>
         ) : null }
@@ -41,14 +50,20 @@ function WhiteCardTravels({
       <WrapperColumn>
         <WrapperDataLeft>
           <TextBold>Tipo de vehículo</TextBold>
-          <NormalText>{vehicle}</NormalText>
+          <WrapperTextIcon>
+            <Icon source={images.offers} />
+            <NormalText>{vehicle}</NormalText>
+          </WrapperTextIcon>
         </WrapperDataLeft>
         <WrapperData>
           <TextBold>
             $
             {pay}
           </TextBold>
-          <NormalText>Flete</NormalText>
+          <WrapperTextIcon>
+            <Icon source={images.moneyOffer} />
+            <NormalText>Flete</NormalText>
+          </WrapperTextIcon>
         </WrapperData>
       </WrapperColumn>
 
@@ -60,15 +75,15 @@ function WhiteCardTravels({
       }
 
       <WrapperButtons>
-        { btnSecondary != null ? (
-          <TouchableDetails onPress={actionbtnSecondary}>
-            <TextBlue>Ver más</TextBlue>
-          </TouchableDetails>
-        ) : null }
         { btnPrimary != null ? (
-          <WrapperButton>
-            <ButtonGradient press={actionbtnPrimary} content={btnPrimary} />
-          </WrapperButton>
+          <>
+            <TouchableDetails onPress={actionbtnSecondary}>
+              <TextBlue>Compartir</TextBlue>
+            </TouchableDetails>
+            <WrapperButton>
+              <ButtonGradient press={actionbtnPrimary} content={btnPrimary} />
+            </WrapperButton>
+          </>
         ) : null }
       </WrapperButtons>
     </MainWrapper>
@@ -84,7 +99,6 @@ WhiteCardTravels.propTypes = {
   // add
   actionbtnPrimary: PropTypes.func.isRequired,
   btnPrimary: PropTypes.string.isRequired,
-  btnSecondary: PropTypes.string.isRequired,
   actionbtnSecondary: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
   statusColor: PropTypes.string.isRequired,

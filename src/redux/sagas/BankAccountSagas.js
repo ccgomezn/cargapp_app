@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import BankAccountActions from '../reducers/BankAccountRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -14,6 +15,7 @@ export function* getBankAccount(api, action) {
   if (response.ok) {
     yield put(BankAccountActions.getBankAccountSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetBankAccount');
     yield put(BankAccountActions.postBankAccountFailure(response.data));
   }
 }
@@ -28,6 +30,7 @@ export function* postBankAccount(api, action) {
   if (response.ok) {
     yield put(BankAccountActions.postBankAccountSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: PostBankAccount');
     yield put(BankAccountActions.postBankAccountFailure(response.data));
   }
 }
@@ -41,6 +44,7 @@ export function* putBankAccount(api, action) {
   if (response.ok) {
     yield put(BankAccountActions.putBankAccountSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: PutBankAccount');
     yield put(BankAccountActions.postBankAccountFailure(response.data));
   }
 }

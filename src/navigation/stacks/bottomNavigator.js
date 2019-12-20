@@ -1,10 +1,10 @@
 import React from 'react';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-import { Text } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation';
+import images from '../../icons';
 import ScreenHome from '../../containers/HomeOffers';
 import { homeStackNavigator, myTravelsStackNavigator, travelsStackNavigator } from './stackScreen';
 import ButtonGradient from '../components/ButtonGradient';
-import { NormalText } from '../style';
+import { NormalText, IconBottomNav } from '../style';
 
 const AppStack = createBottomTabNavigator({
   First: { screen: homeStackNavigator },
@@ -18,22 +18,42 @@ const AppStack = createBottomTabNavigator({
       if (routeName === 'First') {
         return focused
           ? <ButtonGradient press={null} content="Inicio" disabled={false} />
-          : <NormalText>Inicio</NormalText>;
+          : (
+            <>
+              <IconBottomNav source={images.home} />
+              <NormalText>Inicio</NormalText>
+            </>
+          );
       }
       if (routeName === 'HomeOffers') {
         return focused
           ? <ButtonGradient press={null} content="Ofertas" disabled={false} />
-          : <NormalText>Ofertas</NormalText>;
+          : (
+            <>
+              <IconBottomNav source={images.offers} />
+              <NormalText>Ofertas</NormalText>
+            </>
+          );
       }
       if (routeName === 'Services') {
         return focused
           ? <ButtonGradient press={null} content="Servicios" disabled={false} />
-          : <NormalText>Servicios</NormalText>;
+          : (
+            <>
+              <IconBottomNav source={images.services} />
+              <NormalText>Servicios</NormalText>
+            </>
+          );
       }
       if (routeName === 'MyTravels') {
         return focused
           ? <ButtonGradient press={null} content="Mis viajes" disabled={false} />
-          : <NormalText>Mis viajes</NormalText>;
+          : (
+            <>
+              <IconBottomNav source={images.myTravels} />
+              <NormalText>Mis viajes</NormalText>
+            </>
+          );
       }
     },
   }),

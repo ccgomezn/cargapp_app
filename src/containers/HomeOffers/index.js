@@ -6,9 +6,10 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { View } from 'native-base';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
+import analytics from '@react-native-firebase/analytics';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -41,10 +42,7 @@ import ProfileActions from '../../redux/reducers/ProfileRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import FilterOffers from '../../redux/reducers/FilterOffersRedux';
 import DestinationsActions from '../../redux/reducers/DestinationsRedux';
-
 import PermissionsActions from '../../redux/reducers/PermissionsRedux';
-import DriverActions from '../../redux/reducers/DriverRedux';
-
 
 const itemList = [
   {
@@ -75,23 +73,21 @@ class HomeOffers extends Component {
       modalPermission: false,
       fetch: false,
       listview: ['profiles', 'vehicles', 'bank_accounts'],
-      unmount: false,
       modalFromHome: true,
+      share: false,
     };
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('home_offers_cargapp');
     const {
-
-      profileDriver,
       getsOffers,
       getVehicles,
       getProfile,
       getPermission,
       getDestinations,
-      navigation,
       getMyOffers,
-      profile
+      profile,
     } = this.props;
     const data = {
       driver: {
@@ -103,21 +99,21 @@ class HomeOffers extends Component {
     const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
-          'didFocus',
-          () => {
-            if (that.state.unmount) {
-              this.setState({ unmount: false });
-              this.componentDidMount();
-            }
-          },
+        'didFocus',
+        () => {
+          if (that.state.unmount) {
+            this.setState({ unmount: false });
+            this.componentDidMount();
+          }
+        },
       );
     }
     if (!this.didBlurListener) {
       this.didBlurListener = this.props.navigation.addListener(
-          'didBlur',
-          () => {
-            that.setState({ unmount: true });
-          },
+        'didBlur',
+        () => {
+          that.setState({ unmount: true });
+        },
       );
     }
     this.setState({ callMine: false });
@@ -127,7 +123,6 @@ class HomeOffers extends Component {
     getPermission();
     getDestinations();
     getMyOffers(profile.data[0].user.id);
-
   }
 
   componentWillUnmount() {
@@ -136,6 +131,24 @@ class HomeOffers extends Component {
 
   onPressFilter() {
     this.setState({ modalSearch: true, modalFromHome: false });
+  }
+
+  onClickShare(offers) {
+    Share.share(
+      {
+        message:
+          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+            offers.id}`,
+        url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
+        title: 'Oferta Cargapp',
+      },
+      {
+        // Android only:
+        dialogTitle: 'Compartir Oferta',
+        // iOS only:
+        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+      },
+    );
   }
 
   onNavigate(nameView) {
@@ -171,6 +184,12 @@ class HomeOffers extends Component {
       }
     }
     return selected;
+  }
+
+  onPressTravel(services) {
+    const { navigation } = this.props;
+    navigation.navigate('ApplyTravels', { dataOffer: services });
+    analytics().logEvent('boton_ver_mas');
   }
 
   getMineOffers() {
@@ -252,22 +271,19 @@ class HomeOffers extends Component {
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
     const dataPickVehi = [{ Name: '* Cualquier Vehículo' }];
-    console.log(callMine);
     if (offers.data && !callMine && profile.data) {
       this.getMineOffers();
       this.setState({ callMine: true });
     }
 
-    if (offers.myOffers) {
-      console.log('yes');
+    /* if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        console.log(offer);
         if (offer.statu_id === 6 || offer.statu_id === 7 ) {
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
-    }
+    } */
 
 
     if (permissions.data && !permissions.fetching && !fetch) {
@@ -285,6 +301,7 @@ class HomeOffers extends Component {
       }
       this.setState({ fetch: true });
     }
+    console.log(this.props);
     if (
       offers.data
       && offers.services
@@ -318,39 +335,10 @@ class HomeOffers extends Component {
       if (filter && modalFromHome) {
         this.onPressFilter();
       }
-
+      console.log(this.props);
       return (
         <MainView>
           <MainWrapper>
-            <ContentView>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                  text="Premios"
-                  press={() => this.setState({ modalPermission: true })}
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
-                  text="Lubricantes"
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                  text="Combustible"
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
-                  text="SOAT"
-                />
-                <IconService
-                  icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-                  text="Otros"
-                />
-              </ScrollView>
-            </ContentView>
-
             <ContentView>
               { driver.me != null ? (
                 <View style={{ width: '100%', height: 110, backgroundColor: '#0068ff' }}>
@@ -375,6 +363,7 @@ class HomeOffers extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((services) => {
+                console.log(mine_offers.includes(services.id));
                 if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
                   return (
                     <WhiteCardTravels
@@ -383,8 +372,9 @@ class HomeOffers extends Component {
                       vehicle={vehicle_data[services.vehicle_type_id]}
                       pay={services.price}
                       date="Hoy"
-                      actionbtnPrimary={() => navigation.navigate('ApplyTravels', { dataOffer: services })}
-                      btnPrimary="Aplicar"
+                      actionbtnPrimary={() => this.onPressTravel(services)}
+                      btnPrimary="Ver detalles"
+                      actionbtnSecondary={() => this.onClickShare(services)}
                     />
                   );
                 }

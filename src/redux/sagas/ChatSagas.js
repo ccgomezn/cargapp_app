@@ -12,6 +12,7 @@
  ************************************************************ */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import ChatActions from '../reducers/ChatRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -24,6 +25,7 @@ export function* getMineChats(api, action) {
   if (response.ok) {
     yield put(ChatActions.getMeChatsSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetMineChats');
     yield put(ChatActions.getMeChatsFailure());
   }
 }
@@ -36,6 +38,7 @@ export function* getActiveChats(api, action) {
   if (response.ok) {
     yield put(ChatActions.getActiveChatsSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetActiveChats');
     yield put(ChatActions.getActiveChatsFailure());
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 /* eslint-disable no-else-return */
 /* eslint-disable arrow-parens */
 /* eslint-disable react/destructuring-assignment */
@@ -6,7 +7,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
-import Toast from 'react-native-root-toast';
+import Toast from 'react-native-tiny-toast';
 
 import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
@@ -56,11 +57,6 @@ class Registration extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     this.isSession();
-    const dtphone = navigation.getParam('phone', '');
-    // validate session
-    if (dtphone !== '') {
-      // this.setState({ dataphone: dtphone });
-    }
   }
 
   async onLogin() {
@@ -90,9 +86,25 @@ class Registration extends Component {
 
   isSession() {
     const { user } = this.props;
-    if (user.isLogged) {
-      this.setState({ loadinitial: true });
-      this.onRol();
+    const { navigate } = this.props.navigation;
+    /* register step
+    - 1:Pin no validate
+    - 2:errorLogin
+    - 3:No document
+    - 4:No personalData
+    - 5:OK sessión
+    */
+    if (user.step === 1 || user.step === 2) {
+      navigate('Register', { stepUser: user.step });
+    } else if (user.step === 3) {
+      navigate('Documents');
+    } else if (user.step === 4) {
+      navigate('Personal');
+    } else {
+      if (user.isLogged) {
+        this.setState({ loadinitial: true });
+        this.onRol();
+      }
     }
   }
 
@@ -295,7 +307,11 @@ class Registration extends Component {
               />
             </WrapperButtonGradient>
             <WrapperButtonGradient>
-              <ButtonGradient press={() => this.validateForm()} content="Ingresar" disabled={!inputValueCheck} />
+              <ButtonGradient
+                press={() => this.validateForm()}
+                content="Ingresar"
+                disabled={!inputValueCheck}
+              />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <TextLoad>
@@ -311,8 +327,7 @@ class Registration extends Component {
           <Toast
             visible={errorApi}
             position={-50}
-            duration={Toast.durations.LONG}
-            opacity={0.8}
+            duration={Toast.duration.LONG}
             shadow
             animation
           >

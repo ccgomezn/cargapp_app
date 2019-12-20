@@ -5,6 +5,7 @@
 
 */
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import VehiclesActions from '../reducers/VehicleRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -16,6 +17,7 @@ export function* getVehicles(api, action) {
   if (response.ok) {
     yield put(VehiclesActions.getVehicleSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: GetVehicles');
     yield put(VehiclesActions.getVehicleFailure());
   }
 }
@@ -31,6 +33,7 @@ export function* getMeVehicles(api, action) {
     yield put(VehiclesActions.getMeVehiclesSuccess(response.data));
   } else {
     // error
+    crashlytics().log('Failure Service: GetMeVehicles');
     yield put(VehiclesActions.getMeVehiclesFailure());
   }
 }
@@ -49,6 +52,7 @@ export function* registerVehicle(api, action) {
     yield put(VehiclesActions.postRegVehicleUnprocess(response.data));
   } else {
     // error
+    crashlytics().log('Failure Service: RegisterVehicle');
     yield put(VehiclesActions.postRegVehicleFailure());
   }
 }

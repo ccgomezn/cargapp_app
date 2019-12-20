@@ -1,31 +1,43 @@
 import React, { Component } from 'react';
-
+import { Linking, Dimensions, ActivityIndicator } from 'react-native';
 import MapView from 'react-native-maps';
+import { connect } from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
+import analytics from '@react-native-firebase/analytics';
 import {
-  MainWrapper, NormalText, WrapperSwipeable, WrapperContent,
+  MainWrapper, NormalText, WrapperSwipeable, WrapperContent, CustomImage,
 } from './style';
 import SwipeableHome from '../../components/SwipeableHome';
 import CardInfoStad from '../../components/CardInfoStad';
+import ProfileActions from '../../redux/reducers/ProfileRedux';
+import OffersActions from '../../redux/reducers/OffersRedux';
+import images from '../../icons';
 
-import {connect} from "react-redux";
-import DriverActions from '../../redux/reducers/DriverRedux';
-import ProfileActions from "../../redux/reducers/ProfileRedux";
-
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 class Home extends Component {
   constructor() {
     super();
     this.state = {
       unmount: false,
+      location: {
+        latitude: 4.624335,
+        longitude: -74.063644,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5 * (screenWidth / screenHeight),
+        name: null
+      },
     };
   }
 
 
   componentDidMount() {
-    const { getProfile } = this.props;
-
+    analytics().setCurrentScreen('home_cargapp');
+    const { getProfile, getsOffers } = this.props;
+    getsOffers();
     getProfile();
-
+    this.geolocation();
     const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
@@ -46,6 +58,10 @@ class Home extends Component {
         },
       );
     }
+    Linking.getInitialURL().then((url) => {
+      this.navigate(url);
+    });
+    Linking.addEventListener('url', this.handleOpenURL);
   }
 
   getActiveRouteName(navigationState) {
@@ -60,50 +76,114 @@ class Home extends Component {
     return route.routeName;
   }
 
-  render() {
+  geolocation() {
+    Geolocation.watchPosition((position) => {
+      const region = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: 0.00922 * 1.5,
+        longitudeDelta: 0.00421 * 1.5,
+      };
+      this.setState({ location: region });
+    });
+  }
+
+  handleOpenURL(event) {
+    this.navigate(event.url);
+  }
+
+  navigate(url) {
     const { navigation } = this.props;
-    return (
-      <MainWrapper>
-        <MapView
-          initialRegion={{
-            latitude: 4.624335,
-            longitude: -74.063644,
-            latitudeDelta: 0.10,
-            longitudeDelta: 0.10,
-          }}
-          showsUserLocation
-          followsUserLocation
-          showsIndoorLevelPicker
-          style={{ height: '100%', width: '100%' }}
-        />
-        <WrapperContent>
-          <CardInfoStad valuePoint="12000" textKm="Kms recorridos" valueKm="12000" textPoint="1222" title="¡Hola Ernesto!" />
-          <NormalText>Buscar viajes disponibles</NormalText>
-          <WrapperSwipeable>
-            <SwipeableHome text="Todos" press={() => navigation.navigate('Second')} />
-            <SwipeableHome text="Filtros específicos" press={() => navigation.navigate('Second', { filter: true })} />
-          </WrapperSwipeable>
-        </WrapperContent>
-      </MainWrapper>
+    if (
+      url !== 'cargapplite://'
+      && url !== 'exp://yx-zvg.cargapp.cargapp-lite.exp.direct:80'
+    ) {
+      let idItem = url.replace(/.*?:\/\/cargapp.app.link\/psicLa1y7Y/g, '');
+      idItem = idItem.replace(/\?offer=/g, '');
+      console.log(idItem);
+      if (idItem !== '') {
+        navigation.navigate('ApplyTravels', { idShare: idItem, share: true });
+      }
+    }
+  }
+
+  render() {
+    const { navigation, profile } = this.props;
+    const { location, name } = this.state;
+    if (location.latitudeDelta !== 0.5 && profile.data !== null) {
+      profile.data.map(data => {
+        if (name === null) {
+          this.setState({ name: data.profile.firt_name });
+        }
+      });
+      return (
+        <MainWrapper>
+          <MapView
+            initialRegion={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: location.latitudeDelta,
+              longitudeDelta: location.longitudeDelta,
+            }}
+            followsUserLocation
+            showsIndoorLevelPicker
+            style={{ height: '100%', width: '100%' }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+            >
+              <CustomImage source={images.truck} />
+            </MapView.Marker>
+          </MapView>
+          <WrapperContent>
+            <CardInfoStad
+              valuePoint="12000"
+              textKm="Kms recorridos"
+              valueKm="12000"
+              textPoint="1222"
+              title={'¡Hola' + name ? + ' ' + name + '!' : '!' }
+            />
+            <NormalText>Buscar viajes disponibles</NormalText>
+            <WrapperSwipeable>
+              <SwipeableHome text="Todos" press={() => navigation.navigate('Second')} />
+              <SwipeableHome text="Filtros específicos" press={() => navigation.navigate('Second', { filter: true })} />
+            </WrapperSwipeable>
+          </WrapperContent>
+        </MainWrapper>
+      );
+    } return (
+      <ActivityIndicator
+        style={{ alignSelf: 'center', height: '100%' }}
+        size="large"
+        color="#0000ff"
+      />
     );
   }
 }
 
 
-
 const mapStateToProps = (state) => {
   const {
-
+    offers,
+    profile,
+    geolocation,
   } = state;
   return {
+    offers,
+    profile,
+    geolocation,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
+  getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Home);

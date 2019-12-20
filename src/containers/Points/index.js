@@ -29,6 +29,7 @@ import ButtonWhite from '../../components/ButtonWhite';
 
 import ChallengeActions from '../../redux/reducers/ChallengeRedux';
 import PrizesActions from '../../redux/reducers/PrizesRedux';
+import analytics from '@react-native-firebase/analytics';
 
 class Points extends Component {
   constructor() {
@@ -44,6 +45,7 @@ class Points extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('retos');
     const { getActivePrizes } = this.props;
     // get data
     getActivePrizes();

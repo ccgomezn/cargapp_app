@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import { call, put, select } from 'redux-saga/effects';
+import crashlytics from '@react-native-firebase/crashlytics';
 import RateActions from '../reducers/RateServiceRedux';
 import { AuthSelectors } from '../reducers/UserRedux';
 
@@ -14,6 +15,7 @@ export function* postRateServices(api, action) {
   if (response.ok) {
     yield put(RateActions.postRateServiceSuccess(response.data));
   } else {
+    crashlytics().log('Failure Service: PostRateServices');
     yield put(RateActions.postRateServiceFailure(response.data));
   }
 }
