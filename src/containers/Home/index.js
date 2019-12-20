@@ -26,6 +26,7 @@ class Home extends Component {
         longitude: -74.063644,
         latitudeDelta: 0.5,
         longitudeDelta: 0.5 * (screenWidth / screenHeight),
+        name: null
       },
     };
   }
@@ -107,10 +108,14 @@ class Home extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
-    const { location } = this.state;
-    console.log(this.props);
-    if (location.latitudeDelta !== 0.5) {
+    const { navigation, profile } = this.props;
+    const { location, name } = this.state;
+    if (location.latitudeDelta !== 0.5 && profile.data !== null) {
+      profile.data.map(data => {
+        if (name === null) {
+          this.setState({ name: data.profile.firt_name });
+        }
+      });
       return (
         <MainWrapper>
           <MapView
@@ -134,7 +139,13 @@ class Home extends Component {
             </MapView.Marker>
           </MapView>
           <WrapperContent>
-            <CardInfoStad valuePoint="12000" textKm="Kms recorridos" valueKm="12000" textPoint="1222" title="¡Hola Ernesto!" />
+            <CardInfoStad
+              valuePoint="12000"
+              textKm="Kms recorridos"
+              valueKm="12000"
+              textPoint="1222"
+              title={'¡Hola' + name ? + ' ' + name + '!' : '!' }
+            />
             <NormalText>Buscar viajes disponibles</NormalText>
             <WrapperSwipeable>
               <SwipeableHome text="Todos" press={() => navigation.navigate('Second')} />
