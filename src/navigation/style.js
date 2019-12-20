@@ -76,9 +76,9 @@ export const IconBottomNav = styled.Image`
 `;
 
 export const HeaderStyle = {
-  backgroundColor: '#FFF', // '#010935',
+  backgroundColor: '#FFF', /* '#010935', */
   height: Platform.OS === 'ios' ? 45 : 45,
-  marginTop: Platform.OS === 'ios' ? -38 : 0,
+  marginTop: Platform.OS === 'ios' ? -30 : 0,
 };
 
 export const NormalText = styled.Text``;

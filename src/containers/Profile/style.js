@@ -161,14 +161,17 @@ export const TitleBlack = styled.Text`
   font-weight: bold;
   color: #010935;
   padding-bottom: 5%;
+  margin-top: 5px;
 `;
 
 export const TextGray = styled.Text`
-  opacity: 0.5;
-  font-family: Roboto-Bold;
-  font-size: 14px; 
-  color: #010935;
-  padding-bottom: 10px;
+opacity: 0.5;
+font-family: Roboto;
+font-size: 14px;
+font-weight: normal;
+font-style: normal;
+letter-spacing: -0.3px;
+color: #010935;
 `;
 
 export const TouchModal = styled.TouchableOpacity`

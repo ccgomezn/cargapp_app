@@ -50,11 +50,11 @@ const itemList = [
     url: 'ScreenProfile',
   },
   {
-    label: 'Vehículos',
+    label: 'Mis Vehículos',
     url: 'ScreenVehicle',
   },
   {
-    label: 'Cuenta bancaria',
+    label: '¿Dónde te pagamos?',
     url: 'BankAccount',
   },
 ];
@@ -218,7 +218,7 @@ class HomeOffers extends Component {
         ))
         }
         <WrapperButtonsBottom style={{ marginTop: 10 }}>
-          <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
+          <ButtonGradient content="Hazlo después" press={() => this.OnHideModal()} />
         </WrapperButtonsBottom>
       </View>
     );
@@ -504,9 +504,10 @@ class HomeOffers extends Component {
             <MainWrapperDialog>
               <ContentDialog>
                 <TitleBlack>Datos Faltantes</TitleBlack>
-                <TextGray>Para aplicar a ofertas, primero debes completar tus datos.</TextGray>
+                <TextGray>
+                  Para que puedas aplicar a mejores ofertas, nos falta esta información:
+                </TextGray>
                 <ContentForm>
-                  <TextGray>Datos sin completar:</TextGray>
                   {this.missingViews(permissions.data)}
                 </ContentForm>
               </ContentDialog>
