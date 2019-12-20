@@ -43,6 +43,8 @@
 	<string>Cargapp requires access to your phone’s camera.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Location required in background</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location required in background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location required when app is in use</string>
 	<key>NSMainNibFile</key>

@@ -126,7 +126,7 @@ class Profile extends Component {
                   </WrapperImage>
                   <WrapperInfo>
                     <BoldText>{data.profile.firt_name}</BoldText>
-                    <NormalText>Conductor nivel 7</NormalText>
+                    <NormalText>Conductor</NormalText>
                   </WrapperInfo>
                   <ContentButton>
                     <ButtonGradient
