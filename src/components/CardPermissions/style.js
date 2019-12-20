@@ -8,7 +8,7 @@ export const TextBlack = styled.Text`
   color: #010935;
   flex: 3;
   text-align-vertical: center;
-  padding-vertical: 15;
+  padding-vertical: 12;
 `;
 
 export const WrapperCard = styled.View`

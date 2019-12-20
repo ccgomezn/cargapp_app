@@ -27,11 +27,11 @@ const AppStack = createBottomTabNavigator({
       }
       if (routeName === 'HomeOffers') {
         return focused
-          ? <ButtonGradient press={null} content="Ofertas" disabled={false} />
+          ? <ButtonGradient press={null} content="Viajes" disabled={false} />
           : (
             <>
               <IconBottomNav source={images.offers} />
-              <NormalText>Ofertas</NormalText>
+              <NormalText>Viajes</NormalText>
             </>
           );
       }

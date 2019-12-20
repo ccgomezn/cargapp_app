@@ -468,8 +468,8 @@ class Vehicle extends Component {
             Error, no se pudo procesar la solicitud
           </Toast>
           <PopUpDialog
-            textBlack="Vehículo registrado"
-            textGray="Tu vehículo ha sido registrado de manera correcta"
+            textBlack="¡Perfecto!"
+            textGray="Ahora tu vehículo está listo para viajar."
             visible={modalreg}
             textButton="Volver a mis Vehículos"
             pressButton={() => this.closeModal()}

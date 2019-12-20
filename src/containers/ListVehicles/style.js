@@ -19,12 +19,12 @@ export const ContentView = styled.View`
 
 export const ContentBlock = styled.View`
   width: 100%;
-  height: 20px;
-  flex-direction: row;
+  height: auto;
+  flex-direction: column;
 `;
 
 export const TextBlack = styled.Text`
-  width: 60%;
+  width: 100%;
   font-family: Roboto;
   font-size: 16px;
   font-weight: bold;
@@ -46,4 +46,14 @@ export const WrapperButtonGradient = styled.TouchableOpacity`
   width: 50%;
   height: 100%;
   margin-left: 3%;
+`;
+
+export const TextGray = styled.Text`
+  opacity: 0.5;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: -0.3px;
+  color: #010935;
 `;

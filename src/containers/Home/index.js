@@ -109,6 +109,7 @@ class Home extends Component {
   render() {
     const { navigation, profile } = this.props;
     const { location, name } = this.state;
+    console.log(this.props);
     if (location.latitudeDelta !== 0.5 && profile.data !== null) {
       profile.data.map((data) => {
         if (name === '') {
@@ -139,7 +140,7 @@ class Home extends Component {
           </MapView>
           <WrapperContent>
             <CardInfoStad
-              valuePoint="12000"
+              valuePoint="100"
               textKm="Kms recorridos"
               valueKm="12000"
               textPoint="1222"
