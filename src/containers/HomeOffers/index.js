@@ -363,7 +363,6 @@ class HomeOffers extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((services) => {
-                console.log(mine_offers.includes(services.id));
                 if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
                   return (
                     <WhiteCardTravels
@@ -379,7 +378,6 @@ class HomeOffers extends Component {
                   );
                 }
               })}
-
             </ContentOffer>
           </MainWrapper>
           <Swipeable

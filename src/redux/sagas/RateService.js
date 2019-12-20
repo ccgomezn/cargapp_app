@@ -19,3 +19,17 @@ export function* postRateServices(api, action) {
     yield put(RateActions.postRateServiceFailure(response.data));
   }
 }
+
+export function* getRateServices(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.rateService.getRateServices, params);
+  console.log(response)
+  if (response.ok) {
+    yield put(RateActions.getRateServiceSuccess(response.data));
+  } else {
+    crashlytics().log('Failure Service: GetRateServices');
+    yield put(RateActions.postRateServiceFailure(response.data));
+  }
+}

@@ -54,7 +54,7 @@ import { putPassword } from './PasswordSagas';
 import { getMarkers } from './MarkersSagas';
 import { postBankAccount, putBankAccount, getBankAccount } from './BankAccountSagas';
 import { getParameters, getSecondParameters } from './ParametersSagas';
-import { postRateServices } from './RateService';
+import { postRateServices, getRateServices } from './RateService';
 import { sendLocation, getLocationTarget } from './GeolocationSagas';
 import { getActiveChats, getMineChats } from './ChatSagas';
 import { getFilterOffers } from './FilterOffersSagas';
@@ -109,6 +109,7 @@ export default function* root() {
     takeLatest(BankAccountTypes.PUT_BANK_ACCOUNT_REQUEST, putBankAccount, api),
     takeLatest(BankAccountTypes.GET_BANK_ACCOUNT_REQUEST, getBankAccount, api),
     takeLatest(RateTypes.POST_RATE_SERVICE_REQUEST, postRateServices, api),
+    takeLatest(RateTypes.GET_RATE_SERVICE_REQUEST, getRateServices, api),
     takeLatest(ParametersTypes.PARAMETERS_REQUEST, getParameters, api),
     takeLatest(ParametersTypes.PARAMETERS_SECOND_REQUEST, getSecondParameters, api),
     takeLatest(UserTypes.GET_USERINFO_REQUEST, getInfoUser, api),

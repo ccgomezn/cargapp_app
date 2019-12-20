@@ -16,6 +16,7 @@ import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
 import OffersActions from '../../../redux/reducers/OffersRedux';
+import RateActions from '../../../redux/reducers/RateServiceRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import EmptyDialog from '../../../components/EmptyDialog';
 import ButtonGradient from '../../../components/ButtonGradient';
@@ -33,13 +34,14 @@ class ApplyOffer extends Component {
       valueApplyOffer: null,
       showTravel: false,
       modalFinish: false,
+      modalRate: false,
     };
   }
 
   componentDidMount() {
     analytics().setCurrentScreen('mis_viajes_detalle');
     const {
-      navigation, getCompanies, getServices, offers,
+      navigation, getCompanies, getServices, offers, getRateServices,
     } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     const booked = navigation.getParam('booked');
@@ -58,6 +60,7 @@ class ApplyOffer extends Component {
     if (dataOffer.statu_id === 11 || (dataOffer.statu_id === 10 && booked)) {
       this.setState({ modalFinish: true });
     }
+    getRateServices();
     getCompanies();
     getServices();
   }
@@ -70,6 +73,7 @@ class ApplyOffer extends Component {
 
   onPressQualification() {
     analytics().logEvent('boton_ver_calificacion');
+    this.setState({ modalRate: true });
   }
 
   vehicleType(value, id) {
@@ -116,15 +120,16 @@ class ApplyOffer extends Component {
     const { navigation } = this.props;
     this.setState({ modalFinish: false });
     setTimeout(() => {
-      navigation.navigate('First');
+      navigation.goBack();
     }, 100);
   }
 
   render() {
-    const { offers, navigation, companies } = this.props;
-    console.log(this.props);
     const {
-      offer, successNotification, errorFalse, fetch, fetchID, modalFinish,
+      offers, navigation, companies, rateService,
+    } = this.props;
+    const {
+      offer, successNotification, errorFalse, fetch, fetchID, modalFinish, modalRate,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -136,7 +141,14 @@ class ApplyOffer extends Component {
     if (selectID !== undefined && selectID !== null && fetchID === false) {
       this.setState({ fetchID: true });
     }
-    if (offer !== null && companies.data !== null) {
+    if (offer !== null && companies.data !== null && rateService.rate !== null) {
+      const rateCompany = [];
+      rateService.rate.map((rate) => {
+        if (offer.id === rate.service_id) {
+          rateCompany.push(rate.service_point);
+        }
+      });
+      const totalRate = rateCompany.reduce((a, b) => a + b, 0);
       return (
         <MainWrapper>
           {fetchID && (
@@ -151,6 +163,15 @@ class ApplyOffer extends Component {
             <WrapperModal>
               <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
               <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
+            </WrapperModal>
+          </EmptyDialog>
+          <EmptyDialog visible={modalRate}>
+            <WrapperModal>
+              <BlueText>
+                {totalRate === 0 ? 'Aún no tiene calificación el generador' : `El generador tiene ${totalRate} estrellas`}
+                {' '}
+              </BlueText>
+              <ButtonGradient press={() => this.setState({ modalRate: false })} content="cerrar" disabled={false} />
             </WrapperModal>
           </EmptyDialog>
           <MapView
@@ -232,7 +253,7 @@ class ApplyOffer extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    vehicles, companies, user, offers, profile,
+    vehicles, companies, user, offers, profile, rateService,
   } = state;
   return {
     vehicles,
@@ -240,6 +261,7 @@ const mapStateToProps = (state) => {
     user,
     offers,
     profile,
+    rateService,
   };
 };
 
@@ -247,6 +269,7 @@ const mapDispatchToProps = dispatch => ({
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
   getServices: (params = {}) => dispatch(OffersActions.getServicesRequest(params)),
+  getRateServices: (params = {}) => dispatch(RateActions.getRateServiceRequest(params)),
 });
 
 export default connect(
