@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import { Linking, Dimensions, ActivityIndicator } from 'react-native';
 import MapView from 'react-native-maps';
@@ -27,16 +29,17 @@ class Home extends Component {
         longitudeDelta: 0.5 * (screenWidth / screenHeight),
       },
       name: '',
+      geoID: null,
     };
   }
 
-
   componentDidMount() {
     analytics().setCurrentScreen('home_cargapp');
-    const { getProfile, getsOffers } = this.props;
+    const { getProfile, getsOffers, user } = this.props;
     getsOffers();
     getProfile();
     this.geolocation();
+    console.log(user);
     const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
@@ -54,6 +57,7 @@ class Home extends Component {
         'didBlur',
         () => {
           that.setState({ unmount: true });
+          this.componentWillUnmount();
         },
       );
     }
@@ -61,6 +65,11 @@ class Home extends Component {
       this.navigate(url);
     });
     Linking.addEventListener('url', this.handleOpenURL);
+  }
+
+  componentWillUnmount() {
+    const { geoID } = this.state;
+    Geolocation.clearWatch(geoID);
   }
 
   getActiveRouteName(navigationState) {
@@ -76,7 +85,9 @@ class Home extends Component {
   }
 
   geolocation() {
-    Geolocation.watchPosition((position) => {
+    console.log('geolocation');
+    // Geolocation.getCurrentPosition(info => console.log(info));
+    const geoId = Geolocation.watchPosition((position) => {
       const region = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -84,7 +95,9 @@ class Home extends Component {
         longitudeDelta: 0.00421 * 1.5,
       };
       this.setState({ location: region });
-    });
+    },
+    error => alert(JSON.stringify(error)));
+    this.setState({ geoID: geoId });
   }
 
   handleOpenURL(event) {
@@ -108,6 +121,7 @@ class Home extends Component {
 
   render() {
     const { navigation, profile } = this.props;
+    const { navigate } = navigation;
     const { location, name } = this.state;
     console.log(this.props);
     if (location.latitudeDelta !== 0.5 && profile.data !== null) {
@@ -142,14 +156,14 @@ class Home extends Component {
             <CardInfoStad
               valuePoint="100"
               textKm="Kms recorridos"
-              valueKm="12000"
-              textPoint="1222"
+              valueKm="12.000"
+              textPoint="Puntos Acumulados"
               title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
             />
             <NormalText>Buscar viajes disponibles</NormalText>
             <WrapperSwipeable>
-              <SwipeableHome text="Todos" press={() => navigation.navigate('Second')} />
-              <SwipeableHome text="Filtros específicos" press={() => navigation.navigate('Second', { filter: true })} />
+              <SwipeableHome text="Todos" press={() => navigate('Second')} />
+              <SwipeableHome text="Filtros específicos" press={() => navigate('Second', { filter: true })} />
             </WrapperSwipeable>
           </WrapperContent>
         </MainWrapper>
@@ -170,11 +184,13 @@ const mapStateToProps = (state) => {
     offers,
     profile,
     geolocation,
+    user,
   } = state;
   return {
     offers,
     profile,
     geolocation,
+    user,
   };
 };
 
