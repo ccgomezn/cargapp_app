@@ -345,6 +345,7 @@ export const getUserinfoSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    info: data,
     roles: data.roles,
   };
 };

@@ -95,7 +95,7 @@ class Vehicle extends Component {
       this.setState({
         userid: user.info.user.id,
         edit: true,
-        dataownerdoc: user.info.user ? user.info.user.identification : '',
+        dataownerdoc: user.info !== null ? user.info.user.identification : '',
         dataownername: profile.data ? profile.data[0].profile.firt_name : '',
       });
     }
