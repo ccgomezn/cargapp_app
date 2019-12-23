@@ -41,14 +41,18 @@ class Points extends Component {
       activeChallenge: null,
       modalPrizes: false,
       activePrize: null,
+      nameUser: '',
     };
   }
 
   componentDidMount() {
     analytics().setCurrentScreen('retos');
-    const { getActivePrizes } = this.props;
+    const { getActivePrizes, profile } = this.props;
     // get data
     getActivePrizes();
+    if (profile.data) {
+      this.setState({ nameUser: profile.data[0].profile.firt_name });
+    }
   }
 
   OnPressChallenge(data) {
@@ -81,7 +85,7 @@ class Points extends Component {
   render() {
     const {
       selectedIndex, reload, modalChallenge, activeChallenge,
-      modalPrizes, activePrize,
+      modalPrizes, activePrize, nameUser,
     } = this.state;
     const { challenge, prizes } = this.props;
 
@@ -95,6 +99,7 @@ class Points extends Component {
       <MainWrapper>
         <CardinfoStad
           title="¡Hola BJ!"
+          title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
           valueKm="15.999"
           textKm="Kms recorridos"
           valuePoint="120"
@@ -133,12 +138,6 @@ class Points extends Component {
                   press={() => this.OnPressPrizes(data)}
                 />
               ))}
-              {/* <CardAward
-                desc="Descripción del premio conductor 3"
-                point={350}
-                image="https://image.freepik.com/vector-gratis/concepto-carga-imagen-pagina-destino_52683-22225.jpg"
-                status
-              /> */}
             </ContentSection>
           ))}
 
@@ -338,10 +337,11 @@ class Points extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { challenge, prizes } = state;
+  const { challenge, prizes , profile } = state;
   return {
     challenge,
     prizes,
+    profile,
   };
 };
 
