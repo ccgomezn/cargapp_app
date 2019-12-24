@@ -113,6 +113,7 @@ class HomeOffers extends Component {
         'didBlur',
         () => {
           that.setState({ unmount: true });
+          this.componentWillUnmount();
         },
       );
     }
@@ -197,7 +198,6 @@ class HomeOffers extends Component {
       getMyOffersPostulation, profile,
     } = this.props;
 
-
     getMyOffersPostulation(profile.data[0].user.id);
   }
 
@@ -276,14 +276,15 @@ class HomeOffers extends Component {
       this.setState({ callMine: true });
     }
 
-    /* if (offers.myOffers) {
+    /* */
+    if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+        if (offer.statu_id === 6 || offer.statu_id === 7) {
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
-    } */
+    }
 
 
     if (permissions.data && !permissions.fetching && !fetch) {

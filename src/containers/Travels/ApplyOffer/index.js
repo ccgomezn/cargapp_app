@@ -212,8 +212,8 @@ class ApplyOffer extends Component {
               return (
                 <AddressesWrapper>
                   <AddressesCardMap
-                    nameCompany={company.name}
-                    firstAddress={company.address}
+                    nameCompany={offer.origin}
+                    firstAddress={offer.origin_address}
                     nameAddress={offer.destination}
                     secondAddress={offer.destination_address}
                   />

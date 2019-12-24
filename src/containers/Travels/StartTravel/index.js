@@ -52,6 +52,7 @@ class StartTravel extends Component {
       unLoad: false,
       finished: false,
       manifestSet: true,
+      geoID: null,
     };
   }
 
@@ -110,7 +111,9 @@ class StartTravel extends Component {
         this.setState({ offerSpecific: offer, status: offer.statu_id });
       }
     });
-    Geolocation.watchPosition(e => this.ads(e.coords));
+    const geoId = Geolocation.watchPosition(e => this.ads(e.coords));
+    // alert(geoId);
+    this.setState({ geoID: geoId });
     getDocsServiceRequest(offer.id);
     this.callLocation();
     if (offer.statu_id === 7) {
@@ -122,6 +125,10 @@ class StartTravel extends Component {
     getMarkers();
   }
 
+  componentWillUnmount() {
+    const { geoID } = this.state;
+    Geolocation.clearWatch(geoID);
+  }
 
   async getDirections(startLoc, destinationLoc) {
     const { offerSpecific, status } = this.state;

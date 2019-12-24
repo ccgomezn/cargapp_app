@@ -3,55 +3,55 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "ICONOS-IOS-APP_40X40.png",
+      "filename" : "apple-icon-40x40.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "ICONOS IOS APP_60X60.png",
+      "filename" : "apple-icon-60x60.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "ICONOS IOS APP_58X58.png",
+      "filename" : "apple-icon-58x58.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "ICONOS-IOS-APP_87X87.png",
+      "filename" : "apple-icon-87x87.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "ICONOS IOS APP_80X80.png",
+      "filename" : "apple-icon-80X80.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "ICONOS IOS APP_120X120-7.png",
+      "filename" : "apple-icon-120X120.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "ICONOS IOS APP_120X120-6.png",
+      "filename" : "apple-icon-120X120-1.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "ICONOS IOS APP_180X180.png",
+      "filename" : "apple-icon-180X180.png",
       "scale" : "3x"
     },
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "ICONOS-IOS-APP_1024X1024.png",
+      "filename" : "apple-icon-1024X1024.png",
       "scale" : "1x"
     }
   ],

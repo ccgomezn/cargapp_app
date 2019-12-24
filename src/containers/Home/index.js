@@ -38,7 +38,12 @@ class Home extends Component {
     const { getProfile, getsOffers, user } = this.props;
     getsOffers();
     getProfile();
-    this.geolocation();
+    try {
+      this.geolocation();
+    } catch (error) {
+      console.log(error);
+      Geolocation.requestAuthorization();
+    }
     console.log(user);
     const that = this;
     if (!this.didFocusListener) {
@@ -86,7 +91,6 @@ class Home extends Component {
 
   geolocation() {
     console.log('geolocation');
-    // Geolocation.getCurrentPosition(info => console.log(info));
     const geoId = Geolocation.watchPosition((position) => {
       const region = {
         latitude: position.coords.latitude,
@@ -96,7 +100,7 @@ class Home extends Component {
       };
       this.setState({ location: region });
     },
-    error => alert(JSON.stringify(error)));
+    error => console.log(error));
     this.setState({ geoID: geoId });
   }
 
