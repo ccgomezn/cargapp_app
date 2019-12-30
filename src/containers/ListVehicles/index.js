@@ -9,7 +9,7 @@ import { ActivityIndicator } from 'react-native';
 import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
-  WrapperButtonsBottom, WrapperButtonGradient,
+  WrapperButtonsBottom, WrapperButtonGradient, TextGray,
 } from './style';
 
 import ButtonGradient from '../../components/ButtonGradient';
@@ -50,7 +50,7 @@ class ListVehicles extends Component {
   }
 
   onValidate() {
-    analytics().logEvent('boton_añadir_vehiculo');
+    analytics().logEvent('boton_agregar_vehiculo');
     const { navigate } = this.props.navigation;
     const { selectID, offer } = this.state;
     const { vehicles } = this.props;
@@ -82,6 +82,7 @@ class ListVehicles extends Component {
           <ContentView>
             <ContentBlock>
               <TextBlack>Mis Vehículos</TextBlack>
+              <TextGray>Añade y edita los datos de tus vehículos.</TextGray>
             </ContentBlock>
           </ContentView>
 

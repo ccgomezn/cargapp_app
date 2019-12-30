@@ -50,11 +50,11 @@ const itemList = [
     url: 'ScreenProfile',
   },
   {
-    label: 'Vehículos',
+    label: 'Mis Vehículos',
     url: 'ScreenVehicle',
   },
   {
-    label: 'Cuenta bancaria',
+    label: '¿Dónde te pagamos?',
     url: 'BankAccount',
   },
 ];
@@ -113,6 +113,7 @@ class HomeOffers extends Component {
         'didBlur',
         () => {
           that.setState({ unmount: true });
+          this.componentWillUnmount();
         },
       );
     }
@@ -197,7 +198,6 @@ class HomeOffers extends Component {
       getMyOffersPostulation, profile,
     } = this.props;
 
-
     getMyOffersPostulation(profile.data[0].user.id);
   }
 
@@ -218,7 +218,7 @@ class HomeOffers extends Component {
         ))
         }
         <WrapperButtonsBottom style={{ marginTop: 10 }}>
-          <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
+          <ButtonGradient content="Hazlo después" press={() => this.OnHideModal()} />
         </WrapperButtonsBottom>
       </View>
     );
@@ -276,14 +276,15 @@ class HomeOffers extends Component {
       this.setState({ callMine: true });
     }
 
-    /* if (offers.myOffers) {
+    /* */
+    if (offers.myOffers) {
       offers.myOffers.forEach((offer) => {
         // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7 ) {
+        if (offer.statu_id === 6 || offer.statu_id === 7) {
           navigation.navigate('StartTravel', { Offer: offer });
         }
       });
-    } */
+    }
 
 
     if (permissions.data && !permissions.fetching && !fetch) {
@@ -363,7 +364,6 @@ class HomeOffers extends Component {
 
             <ContentOffer subcontent>
               {offers.data.map((services) => {
-                console.log(mine_offers.includes(services.id));
                 if (!mine_offers.includes(services.id) && services.statu_id.toString() === '10') {
                   return (
                     <WhiteCardTravels
@@ -379,7 +379,6 @@ class HomeOffers extends Component {
                   );
                 }
               })}
-
             </ContentOffer>
           </MainWrapper>
           <Swipeable
@@ -506,9 +505,10 @@ class HomeOffers extends Component {
             <MainWrapperDialog>
               <ContentDialog>
                 <TitleBlack>Datos Faltantes</TitleBlack>
-                <TextGray>Para aplicar a ofertas, primero debes completar tus datos.</TextGray>
+                <TextGray>
+                  Para que puedas aplicar a mejores ofertas, nos falta esta información:
+                </TextGray>
                 <ContentForm>
-                  <TextGray>Datos sin completar:</TextGray>
                   {this.missingViews(permissions.data)}
                 </ContentForm>
               </ContentDialog>

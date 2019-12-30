@@ -95,7 +95,7 @@ class Vehicle extends Component {
       this.setState({
         userid: user.info.user.id,
         edit: true,
-        dataownerdoc: user.info.user ? user.info.user.identification : '',
+        dataownerdoc: user.info !== null ? user.info.user.identification : '',
         dataownername: profile.data ? profile.data[0].profile.firt_name : '',
       });
     }
@@ -468,8 +468,8 @@ class Vehicle extends Component {
             Error, no se pudo procesar la solicitud
           </Toast>
           <PopUpDialog
-            textBlack="Vehículo registrado"
-            textGray="Tu vehículo ha sido registrado de manera correcta"
+            textBlack="¡Perfecto!"
+            textGray="Ahora tu vehículo está listo para viajar."
             visible={modalreg}
             textButton="Volver a mis Vehículos"
             pressButton={() => this.closeModal()}

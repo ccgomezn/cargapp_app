@@ -249,7 +249,6 @@ export const postLoginSuccess = (state, { data }) => {
     session: data,
     isLogged: true,
     unprocess: false,
-    step: 3,
   };
 };
 
@@ -346,6 +345,7 @@ export const getUserinfoSuccess = (state, { data }) => {
     fetching: false,
     error: false,
     status: data,
+    info: data,
     roles: data.roles,
   };
 };

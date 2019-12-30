@@ -58,7 +58,7 @@ class Registration extends Component {
     const { user, getparameters } = this.props;
     // get documents
     getparameters('DOCUMENTS_LOGIN');
-    if (user.info !== '') {
+    if (user.info !== null) {
       this.setState({ user_id: user.info.user.id });
     }
   }
@@ -68,13 +68,13 @@ class Registration extends Component {
     const { navigate } = this.props.navigation;
     // get step process
     const stepUser = user.step;
-    const { rol } = user.acount;
+    const rolUser = (user.acount != null ? user.acount.rol : 11);
     this.setState({ init: true });
     if (stepUser !== null) {
       if (stepUser === 3) {
         // documents ó data personal
         const docVisible = parameters.data.parameters[0].code;
-        if (rol === 11) {
+        if (rolUser === 11) {
           // validar Document Active
           if (docVisible === 'false') {
             navigate('Personal');

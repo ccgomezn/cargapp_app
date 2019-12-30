@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* CargappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CargappTests.m */; };
 		01EAC2C9045843629B6C98EC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C31F1C072E146FB907E6611 /* EvilIcons.ttf */; };
-		0491D0F323A866D000108AFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0491D0F223A866D000108AFC /* GoogleService-Info.plist */; };
+		0450AD6523AD8903005DC624 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0450AD6423AD8903005DC624 /* GoogleService-Info.plist */; };
 		07C424D251744C168A107F75 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDEFDC6CD0C54520B45F5F44 /* Roboto-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
@@ -86,8 +86,9 @@
 		00E356F21AD99517003FC87E /* CargappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CargappTests.m; sourceTree = "<group>"; };
 		0234E2348CFD4590A8642E58 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		0373109C94444E45B7AE6515 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		040AA5A023AC270200E33E9E /* Cargapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Cargapp.entitlements; path = Cargapp/Cargapp.entitlements; sourceTree = "<group>"; };
 		040EB56D2350C8E4006945C0 /* ReactNativeCameraKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeCameraKit.xcodeproj; path = ../ReactNativeCameraKit.xcodeproj; sourceTree = "<group>"; };
-		0491D0F223A866D000108AFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0450AD6423AD8903005DC624 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0F053FF3835847E6848655FA /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Cargapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cargapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Cargapp/AppDelegate.h; sourceTree = "<group>"; };
@@ -232,7 +233,8 @@
 		13B07FAE1A68108700A75B9A /* Cargapp */ = {
 			isa = PBXGroup;
 			children = (
-				0491D0F223A866D000108AFC /* GoogleService-Info.plist */,
+				0450AD6423AD8903005DC624 /* GoogleService-Info.plist */,
+				040AA5A023AC270200E33E9E /* Cargapp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -424,15 +426,19 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 940;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = L8XSXWQ43W;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 5T9HA8CM98;
+						DevelopmentTeam = L8XSXWQ43W;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -524,7 +530,7 @@
 				E59ACE96F31848B6944CD8F3 /* Octicons.ttf in Resources */,
 				23EDC8B551C5470EBA473A32 /* Roboto_medium.ttf in Resources */,
 				6DDF537F55ED48B0BCFF4447 /* Roboto.ttf in Resources */,
-				0491D0F323A866D000108AFC /* GoogleService-Info.plist in Resources */,
+				0450AD6523AD8903005DC624 /* GoogleService-Info.plist in Resources */,
 				68E4922F3595451696E6139F /* rubicon-icon-font.ttf in Resources */,
 				D320312ECE0A40D0B2E1BA7D /* SimpleLineIcons.ttf in Resources */,
 				D50360E89C1F4292A241BDA4 /* Zocial.ttf in Resources */,
@@ -830,6 +836,8 @@
 			baseConfigurationReference = 76BCA5F65BB85E28FA1F4F61 /* Pods-CargappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				DEVELOPMENT_TEAM = L8XSXWQ43W;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -861,7 +869,9 @@
 			baseConfigurationReference = 359039576B80773AE8F7D453 /* Pods-CargappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = L8XSXWQ43W;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-range-slider/ios/**",
@@ -889,9 +899,10 @@
 			baseConfigurationReference = 977C4C6174FEDE7779C86090 /* Pods-Cargapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Cargapp/Cargapp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 5T9HA8CM98;
+				DEVELOPMENT_TEAM = L8XSXWQ43W;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-range-slider/ios/**",
@@ -903,7 +914,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cargapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cargapp.app;
 				PRODUCT_NAME = Cargapp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -914,9 +925,10 @@
 			baseConfigurationReference = 4B5BE2C93C2E5AC4460C64D5 /* Pods-Cargapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Cargapp/Cargapp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 5T9HA8CM98;
+				DEVELOPMENT_TEAM = L8XSXWQ43W;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-range-slider/ios/**",
@@ -928,7 +940,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cargapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cargapp.app;
 				PRODUCT_NAME = Cargapp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

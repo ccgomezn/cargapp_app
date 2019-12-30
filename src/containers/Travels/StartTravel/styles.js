@@ -60,8 +60,7 @@ export const WrapperModal = styled.View`
 `;
 
 export const CustomImage = styled.Image`
-  width: 4
-  0px;
+  width: 40px;
   height: 50px;
   resize-mode: stretch;
   z-index: 1000;

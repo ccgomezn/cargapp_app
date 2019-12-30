@@ -174,7 +174,7 @@ class Registration extends Component {
             {/* <ArrowBack url={() => goBack()} /> */}
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
-          <TextBlack>
+          <TextBlack style={{ textAlign: 'center'}}>
             Datos
             <TextBlue>
               {' '}
@@ -182,7 +182,7 @@ class Registration extends Component {
             </TextBlue>
           </TextBlack>
           <TextGray>
-            Excelente!, ahora queremos conocer un poco más de usted.
+            ¡Excelente! Ahora queremos conocerte un poco más.
           </TextGray>
           <WrapperInputs style={{ marginTop: '6%' }}>
             <Input
@@ -228,7 +228,7 @@ class Registration extends Component {
               /> */}
             </WrapperButtonGradient>
             <WrapperButtonGradient>
-              <ButtonGradient content="Confirmar" press={() => this.validateForm()} />
+              <ButtonGradient content="¡Arranquemos!" press={() => this.validateForm()} />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <TextLoad>
@@ -240,7 +240,11 @@ class Registration extends Component {
               />
             ) : null }
           </TextLoad>
-          <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
+          <TextTerms style={{ textAlign: 'center' }}>
+            Te recordamos que tus datos están siendo protegidos
+            {'\n'}
+            bajo la Ley 1581 de 2012 y este es un sitio seguro.
+          </TextTerms>
           <Toast
             visible={errorApi}
             position={-50}

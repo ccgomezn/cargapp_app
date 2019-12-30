@@ -49,10 +49,10 @@ function WhiteCardTravels({
       <Line />
       <WrapperColumn>
         <WrapperDataLeft>
-          <TextBold>Tipo de vehículo</TextBold>
+          <TextBold>{vehicle}</TextBold>
           <WrapperTextIcon>
             <Icon source={images.offers} />
-            <NormalText>{vehicle}</NormalText>
+            <NormalText>Vehículo</NormalText>
           </WrapperTextIcon>
         </WrapperDataLeft>
         <WrapperData>
