@@ -60,7 +60,6 @@ class Registration extends Component {
     if (dtemail !== '') {
       this.setState({ dataemail: dtemail });
     }
-    this.setState({ dataemail: 'bje@cargapp.co' });
   }
 
   async onNewPass() {

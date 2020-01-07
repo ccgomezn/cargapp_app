@@ -1,6 +1,7 @@
+/* eslint-disable import/no-named-as-default-member */
 import React from 'react';
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { SafeAreaView, createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { StatusBar } from 'react-native';
 import BackgroundGeolocation from 'react-native-background-geolocation';
 import { connect } from 'react-redux';
 import { firebase } from '@react-native-firebase/firestore';
@@ -10,7 +11,6 @@ import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import AppStack from './stacks/bottomNavigator';
 
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
@@ -124,7 +124,7 @@ class Navigation extends React.Component {
 
   render() {
     return (
-      <SafeAreaView forceInset={{ top: 'always' }} style={{ flex: 1 }}>
+      <SafeAreaView forceInset={{ top: 'never', bottom: 'never' }} style={{ flex: 1 }}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <Navigator />
       </SafeAreaView>

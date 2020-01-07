@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import {
   Platform, ActivityIndicator, Linking,

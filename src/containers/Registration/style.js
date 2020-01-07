@@ -5,6 +5,7 @@ export const MainWrapper = styled.ScrollView`
   width: 100%;
   height: 100%;
   padding: 5%;
+  margin-top: 4%;
   background-color: white;
 `;
 

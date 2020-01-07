@@ -53,10 +53,11 @@ export const BlueText = styled.Text`
 
 export const WrapperModal = styled.View`
   width: 80%;
+  height: auto;
   background-color: white;
   align-self: center;
-  border-radius: 30px;
-  padding: 7%;
+  border-radius: 10px;
+  padding: 3%;
 `;
 
 export const CustomImage = styled.Image`
