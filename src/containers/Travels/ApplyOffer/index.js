@@ -57,7 +57,7 @@ class ApplyOffer extends Component {
     if (dataOffer) {
       this.setState({ offer: dataOffer });
     }
-    if (dataOffer.statu_id === 11 || (dataOffer.statu_id === 10 && booked)) {
+    if (dataOffer.statu_id === 10 && booked) {
       this.setState({ modalFinish: true });
     }
     getRateServices();
@@ -74,6 +74,13 @@ class ApplyOffer extends Component {
   onPressQualification() {
     analytics().logEvent('boton_ver_calificacion');
     this.setState({ modalRate: true });
+  }
+
+  onPressReturn() {
+    analytics().logEvent('boton_regresar_oferta');
+    const { navigation } = this.props;
+    // navigation.navigate('MyTravels');
+    navigation.goBack();
   }
 
   vehicleType(value, id) {
@@ -222,6 +229,7 @@ class ApplyOffer extends Component {
             }
           })}
           {companies.data.map((company) => {
+            console.log(companies.data);
             if (offer.company_id === company.id) {
               return (
                 <CardMapBeginTravel
@@ -229,11 +237,12 @@ class ApplyOffer extends Component {
                   normalText={company.address}
                   amount={offer.price}
                   onPressBG={() => this.vehicleType(offer, selectID)}
-                  onPressBW={() => this.onPressCancel()}
+                  onPressBW={() => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())}
                   delivery="5 días"
                   company={company.name}
                   mainButton={this.nameButton()}
                   onPressQA={() => this.onPressQualification()}
+                  status={offer.statu_id}
                 />
               );
             }
