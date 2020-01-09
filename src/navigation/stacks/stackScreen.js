@@ -38,6 +38,8 @@ import ScreenRegCompany from '../../containers/Registration/CompanyData';
 import ScreenRegPay from '../../containers/Registration/PayData';
 // CONFIG
 import ScreenConfig from '../../containers/Config';
+// SERVICES
+import ScreenService from '../../containers/Services';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -286,6 +288,19 @@ export const PointsStackNavigator = createStackNavigator({
 export const AnalyticsStackNavigator = createStackNavigator({
   Seventh: {
     screen: ScreenAnalytics,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const ServicesStackNavigator = createStackNavigator({
+  Services: {
+    screen: ScreenService,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,

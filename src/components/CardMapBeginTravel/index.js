@@ -42,7 +42,7 @@ function CardMapBeginTravel({
         </WrapperInfo>
         <TouchableQualification onPress={onPressQA}>
           <BlueText>
-                        Ver calificación
+            Ver calificación
           </BlueText>
         </TouchableQualification>
       </WrapperHeader>
@@ -54,7 +54,7 @@ function CardMapBeginTravel({
             <NormalText>{amount}</NormalText>
           </WrapperInfoBody>
           <WrapperInfoBody>
-            <BoldText>Entregar en</BoldText>
+            <BoldText>Descripción</BoldText>
             <NormalText>{delivery}</NormalText>
           </WrapperInfoBody>
         </WrapperColumn>

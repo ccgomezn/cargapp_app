@@ -2,9 +2,10 @@ import styled from 'styled-components/native';
 import SvgUriN from 'react-native-svg-uri';
 
 export const ContaintView = styled.View`
-  height: 78px;
-  width: 78px;
-  margin-right: 15px;
+  height: 100px;
+  width: 92px;
+  margin-right: 20px;
+  margin-bottom: 12px;
 `;
 
 export const ContaintIcon = styled.TouchableOpacity`
@@ -21,15 +22,15 @@ export const CicleIcon = styled.View`
   justify-content: center; 
   align-content: center;
   align-items: center;
-  background-color: #0068ff30;
-  border-radius: 50px;
-  margin: 2px 10px;
+  background-color: #fff;
+  border-radius: 28px;
+  margin: 2px 5px;
 `;
 
 export const TextIcon = styled.Text`
-  font-family: Roboto;
+  margin-top: 5px;
+  font-family: Roboto-Regular;
   font-size: 12px;
-  font-weight: bold;
 `;
 
 export const DrawIcon = styled(SvgUriN)`

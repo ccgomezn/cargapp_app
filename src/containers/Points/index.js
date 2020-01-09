@@ -223,7 +223,7 @@ class Points extends Component {
                     <ViewRow>
                       <ViewFlex>
                         <IconCircle
-                          source={require('../../icons/circlem2x.png')}
+                          source={require('../../icons/purpleCircle.png')}
                         />
                       </ViewFlex>
                       <ContentStad>
@@ -298,7 +298,7 @@ class Points extends Component {
                     <ViewRow>
                       <ViewFlex>
                         <IconCircle
-                          source={require('../../icons/circlem2x.png')}
+                          source={require('../../icons/purpleCircle.png')}
                         />
                       </ViewFlex>
                       <ContentStad>

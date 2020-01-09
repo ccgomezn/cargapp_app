@@ -229,16 +229,16 @@ class ApplyOffer extends Component {
             }
           })}
           {companies.data.map((company) => {
-            console.log(companies.data);
+            console.log(offer);
             if (offer.company_id === company.id) {
               return (
                 <CardMapBeginTravel
-                  extra={offer.description}
+                  extra={offer.note}
                   normalText={company.address}
                   amount={offer.price}
                   onPressBG={() => this.vehicleType(offer, selectID)}
                   onPressBW={() => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())}
-                  delivery="5 días"
+                  delivery={offer.description}
                   company={company.name}
                   mainButton={this.nameButton()}
                   onPressQA={() => this.onPressQualification()}

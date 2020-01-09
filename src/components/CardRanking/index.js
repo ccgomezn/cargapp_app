@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'native-base';
 
 import {
   WrapperCard, ContentCard, ContentText, TextTitle,
@@ -23,7 +22,7 @@ function CardRanking({
           <ContentSecond>
             <RowLeft>
               <IconCircle
-                source={require('../../icons/circle2x.png')}
+                source={require('../../icons/blueCircle.png')}
               />
               <SecondText>
                 {textKM}
@@ -31,7 +30,7 @@ function CardRanking({
             </RowLeft>
             <RowRight>
               <IconCircle
-                source={require('../../icons/circlem2x.png')}
+                source={require('../../icons/purpleCircle.png')}
               />
               <SecondText>
                 {textPoint}
