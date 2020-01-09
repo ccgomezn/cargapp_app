@@ -79,7 +79,7 @@ class HomeOffers extends Component {
   }
 
   componentDidMount() {
-    analytics().setCurrentScreen('home_offers_cargapp');
+    analytics().setCurrentScreen('viajes');
     const {
       getsOffers,
       getVehicles,
@@ -153,6 +153,7 @@ class HomeOffers extends Component {
   }
 
   onNavigate(nameView) {
+    analytics().logEvent('boton_diligenciar');
     const { navigate } = this.props.navigation;
     this.setState({ modalPermission: false });
     setTimeout(() => {
@@ -249,6 +250,7 @@ class HomeOffers extends Component {
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
+    analytics().logEvent('boton_entendido');
     this.setState({ modalSearch: false, modalPermission: false });
   }
 
@@ -298,6 +300,7 @@ class HomeOffers extends Component {
         }
       });
       if (perm >= 1) {
+        analytics().setCurrentScreen('datos_faltantes');
         this.setState({ modalPermission: true });
       }
       this.setState({ fetch: true });

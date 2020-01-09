@@ -48,7 +48,6 @@ export const BlueText = styled.Text`
   font-size: 18px;
   align-self: center;
   text-align: center;
-  padding-bottom: 5%;
 `;
 
 export const WrapperModal = styled.View`
@@ -56,7 +55,7 @@ export const WrapperModal = styled.View`
   background-color: white;
   align-self: center;
   border-radius: 30px;
-  padding: 7%;
+  padding: 4%;
 `;
 
 export const CustomImage = styled.Image`

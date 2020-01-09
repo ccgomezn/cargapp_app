@@ -45,12 +45,13 @@ class Profile extends Component {
   }
 
   onPressButtonPassword() {
-    analytics().setCurrentScreen('mi_perfil_cambiar_contraseña');
+    analytics().setCurrentScreen('mi_perfil_cambiar_contrasena');
     this.setState({ modalPassword: true });
   }
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
+    analytics().logEvent('boton_cancelar_cambio_contrasena');
     this.setState({ modalPassword: false });
   }
 
@@ -68,6 +69,7 @@ class Profile extends Component {
   }
 
   refreshPassword() {
+    analytics().logEvent('boton_confirmar_cambio_contrasena');
     const { previousPassword, newPassword, repeatPassword } = this.state;
     const { putPassword } = this.props;
     if (repeatPassword === newPassword) {

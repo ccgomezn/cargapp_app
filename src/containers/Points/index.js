@@ -68,6 +68,7 @@ class Points extends Component {
   }
 
   handleSingleIndexSelect = (index) => {
+    analytics().logEvent(`boton_retos_${index}`);
     const { getActiveChallenge, getActivePrizes } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));

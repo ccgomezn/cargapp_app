@@ -15,7 +15,6 @@ import {
   LineVerical,
   Icon,
 } from './style';
-import { PropsType } from 'react-native/ReactCommon/hermes/inspector/tools/msggen/src/Type';
 
 function TopCardTravel({
   company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk, actionMan, actionCall
@@ -92,6 +91,8 @@ TopCardTravel.propTypes = {
   isConfirmLoad: PropTypes.bool.isRequired,
   unLoad: PropTypes.bool.isRequired,
   actionBtnOk: PropTypes.func.isRequired,
+  actionMan: PropTypes.func.isRequired,
+  actionCall: PropTypes.func.isRequired,
 };
 
 export default TopCardTravel;

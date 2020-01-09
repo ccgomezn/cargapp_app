@@ -120,16 +120,6 @@ export const homeStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
-  Filter: {
-    screen: ScreenFilterOffers,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
-      headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu({ navigation }),
-    }),
-  },
 });
 
 export const CouponsStackNavigator = createStackNavigator({
@@ -192,6 +182,16 @@ export const travelsStackNavigator = createStackNavigator({
   },
   ApplyTravels: {
     screen: ScreenApplyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  Filter: {
+    screen: ScreenFilterOffers,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,

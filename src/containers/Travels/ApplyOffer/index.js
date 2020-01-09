@@ -35,6 +35,7 @@ class ApplyOffer extends Component {
       showTravel: false,
       modalFinish: false,
       modalRate: false,
+      modalApply: false,
     };
   }
 
@@ -65,8 +66,8 @@ class ApplyOffer extends Component {
     getServices();
   }
 
-  onPressCancel() {
-    analytics().logEvent('boton_cancelar_oferta');
+  onPressGoBack() {
+    analytics().logEvent('boton_volver_oferta');
     const { navigation } = this.props;
     navigation.goBack();
   }
@@ -91,6 +92,7 @@ class ApplyOffer extends Component {
   }
 
   applyOffer(value, valueApplyOffer) {
+    const { modalApply } = this.props;
     const { applyOffer, navigation, profile } = this.props;
     const data = {
       service_id: valueApplyOffer.id,
@@ -98,7 +100,7 @@ class ApplyOffer extends Component {
       active: true,
     };
     applyOffer(data);
-    navigation.navigate('First');
+    this.setState({ modalApply: true });
   }
 
   nameButton() {
@@ -129,7 +131,14 @@ class ApplyOffer extends Component {
       offers, navigation, companies, rateService,
     } = this.props;
     const {
-      offer, successNotification, errorFalse, fetch, fetchID, modalFinish, modalRate,
+      offer,
+      successNotification,
+      errorFalse,
+      fetch,
+      fetchID,
+      modalFinish,
+      modalRate,
+      modalApply,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -156,7 +165,13 @@ class ApplyOffer extends Component {
               subText="Ahora ya puedes postularte al viaje"
               mainText="Muy bien, seleccionaste tu vehículo!"
               onTouchOutside={() => this.setState({ fetchID: null })}
-              visible={fetchID}
+            />
+          )}
+          {modalApply && (
+            <PopUpNotification
+              subText="Ahora tendrás que esperar a que validen tus datos"
+              mainText="Te postulaste a esta oferta correctamente!"
+              onTouchOutside={() => this.setState({ modalApply: null })}
             />
           )}
           <EmptyDialog visible={modalFinish}>
@@ -229,7 +244,7 @@ class ApplyOffer extends Component {
                   normalText={company.address}
                   amount={offer.price}
                   onPressBG={() => this.vehicleType(offer, selectID)}
-                  onPressBW={() => this.onPressCancel()}
+                  onPressBW={() => this.onPressGoBack()}
                   delivery="5 días"
                   company={company.name}
                   mainButton={this.nameButton()}
