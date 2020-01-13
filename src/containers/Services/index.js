@@ -32,12 +32,12 @@ class Service extends Component {
       <MainWrapper>
         <ContentView>
           <ContentBlock>
-            <TextBlack>Servicios</TextBlack>
+            <TextBlack>Nuestros Servicios</TextBlack>
           </ContentBlock>
         </ContentView>
 
         <ContentView style={{ flexDirection: 'column' }}>
-          <View style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
+          <View style={{ justifyContent: 'space-between' , display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
             <IconService
               icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
               text="Combustible"

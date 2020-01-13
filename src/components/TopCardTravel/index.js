@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -15,7 +16,6 @@ import {
   LineVerical,
   Icon,
 } from './style';
-import { PropsType } from 'react-native/ReactCommon/hermes/inspector/tools/msggen/src/Type';
 
 function TopCardTravel({
   company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk, actionMan, actionCall
@@ -25,7 +25,9 @@ function TopCardTravel({
       <MainWrapper>
         <WrapperColumn>
           <WrapperImage>
-            <Image />
+            <Image
+              source={require('../../Images/compani.png')}
+            />
           </WrapperImage>
           <WrapperInfo>
             <BoldText>{company}</BoldText>
@@ -70,7 +72,9 @@ function TopCardTravel({
     <MainWrapper style={{ paddingTop: 10 }}>
       <WrapperColumn>
         <WrapperImage>
-          <Image />
+          <Image
+            source={require('../../Images/compani.png')}
+          />
         </WrapperImage>
         <WrapperInfo>
           <BoldText>{company}</BoldText>

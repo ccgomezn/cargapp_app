@@ -442,10 +442,10 @@ class StartTravel extends Component {
               return (
                 <WrapperTopCard>
                   <TopCardTravel
-                    travelsCount="20"
+                    travelsCount={CompanyInfo.company_type}
                     arrive={status !== 6 || status !== 11}
                     unLoad={!load}
-                    amount="20k"
+                    amount="0"
                     isConfirmLoad={inTravel}
                     company={CompanyInfo.name}
                     actionBtnOk={() => this.confirmTravel()}

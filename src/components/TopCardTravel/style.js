@@ -28,7 +28,6 @@ export const Image = styled.Image`
     height: 30px;
     width: 30px;
     resize-mode: contain;
-    background-color: #f3f3f3;
     `;
 
 export const WrapperInfo = styled.View`

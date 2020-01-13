@@ -98,7 +98,6 @@ class Points extends Component {
     return (
       <MainWrapper>
         <CardinfoStad
-          title="¡Hola BJ!"
           title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
           valueKm="15.999"
           textKm="Kms recorridos"
