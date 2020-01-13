@@ -10,6 +10,7 @@ import {
   NormalText,
   Icon,
 } from './style';
+import images from '../../icons';
 
 class PopUpNotification extends Component {
   constructor() {
@@ -55,7 +56,7 @@ class PopUpNotification extends Component {
             colors={['#ff2557', '#320d8e']}
           >
             <WrapperIcon>
-              <Icon />
+              <Icon source={images.clock} />
             </WrapperIcon>
             <WrapperInformation>
               <BoldText>{mainText}</BoldText>

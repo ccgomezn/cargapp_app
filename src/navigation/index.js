@@ -2,15 +2,20 @@
 import React from 'react';
 import { SafeAreaView, createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { StatusBar } from 'react-native';
+import { Wrapper, BoldText} from './style';
 import BackgroundGeolocation from 'react-native-background-geolocation';
 import { connect } from 'react-redux';
 import { firebase } from '@react-native-firebase/firestore';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import { measureConnectionSpeed } from 'react-native-network-bandwith-speed';
+import NetInfo from '@react-native-community/netinfo';
 import { ContainerDriver, ContainerGenerator } from './stacks/drawerScreen';
 
 import { SignUpStackNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
-import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import AppStack from './stacks/bottomNavigator';
+import EmptyDialog from '../components/EmptyDialog';
 
 const Navigator = createAppContainer(createSwitchNavigator({
   Splash: SplashScreen,
@@ -26,13 +31,27 @@ const Navigator = createAppContainer(createSwitchNavigator({
 class Navigation extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      netSpeed: 0,
+      modalVisible: false,
+    };
     this.onHeartBeat = this.onHeartBeat.bind(this);
+    const unsubscribe = NetInfo.addEventListener(state => {
+      this.getNetworkBandwidth();
+      if (!state.isConnected && this.state.netSpeed > 0.5) {
+        this.visibleNet();
+      } else {
+        this.setState({ modalVisible: false });
+      }
+    });
   }
 
+  componentDidMount() {
+    this.getNetworkBandwidth();
+  }
 
   componentWillMount() {
-    const {getLocationTargetRequest,} = this.props;
+    const { getLocationTargetRequest } = this.props;
     BackgroundGeolocation.onHeartbeat(this.onHeartBeat);
     getLocationTargetRequest();
 
@@ -68,6 +87,19 @@ class Navigation extends React.Component {
     BackgroundGeolocation.removeListeners();
   }
 
+  async getNetworkBandwidth() {
+    try {
+      const networkSpeed: NetworkBandwidthTestResults = await measureConnectionSpeed();
+      this.setState({ netSpeed: networkSpeed.speed });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  visibleNet() {
+    this.setState({ modalVisible: true });
+    return <StatusBar backgroundColor="red" barStyle="dark-content" />;
+  }
 
   onError(error) {
     console.warn('[location] ERROR -', error);
@@ -114,7 +146,7 @@ class Navigation extends React.Component {
         interval: 10000,
         fastInterval: 5000,
       })
-        .then(data => {
+        .then((data) => {
         }).catch((err) => {
         });
     });
@@ -123,9 +155,17 @@ class Navigation extends React.Component {
   }
 
   render() {
+    const { modalVisible } = this.state;
     return (
       <SafeAreaView forceInset={{ top: 'never', bottom: 'never' }} style={{ flex: 1 }}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <EmptyDialog onTouchOutside={() => {}} visible={modalVisible}>
+          <Wrapper>
+            <BoldText>
+              Ops! En este momento no tienes conexión a internet...
+            </BoldText>
+          </Wrapper>
+        </EmptyDialog>
         <Navigator />
       </SafeAreaView>
     );

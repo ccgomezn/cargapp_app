@@ -15,7 +15,7 @@ export function* getMarkers(api, action) {
   if (response.ok) {
     yield put(MarkersActions.getMarkersSuccess(response.data));
   } else {
-    crashlytics().log('Failure Service: GetFilterOffers');
+    crashlytics().log('Failure Service: GetMarkers');
     yield put(MarkersActions.getMarkersFailure(response.data));
   }
 }

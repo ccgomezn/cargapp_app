@@ -11,6 +11,7 @@ const images = {
   truck: require('./truck.png'),
   moneyOffer: require('./iconCardOffer.png'),
   locationOffer: require('./location.png'),
+  clock: require('./clock.png'),
 };
 
 export default images;

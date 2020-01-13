@@ -96,6 +96,8 @@ TopCardTravel.propTypes = {
   isConfirmLoad: PropTypes.bool.isRequired,
   unLoad: PropTypes.bool.isRequired,
   actionBtnOk: PropTypes.func.isRequired,
+  actionMan: PropTypes.func.isRequired,
+  actionCall: PropTypes.func.isRequired,
 };
 
 export default TopCardTravel;

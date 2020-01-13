@@ -33,6 +33,8 @@ import DocumentActions from '../../../redux/reducers/DocumentRedux';
 import images from '../../../icons';
 import ButtonGradient from '../../../components/ButtonGradient';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
+import PopUpNotification from '../../../components/PopUpNotifications';
+import Spinner from '../../../components/Spinner';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -41,7 +43,6 @@ class StartTravel extends Component {
     super();
     this.state = {
       offerSpecific: null,
-      mapRegion: null,
       lastLat: null,
       lastLong: null,
       status: null,
@@ -54,22 +55,102 @@ class StartTravel extends Component {
       finished: false,
       manifestSet: true,
       geoID: null,
+      feed: true,
+      feed1: false,
+      feed2: false,
+      feed3: false,
+      spinner: false,
+      errorModal: false,
     };
+  }
+
+  componentDidMount() {
+    analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
+    const {
+      navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
+    } = this.props;
+    const offer = navigation.getParam('Offer');
+    offers.data.map((newOffer) => {
+      if (newOffer.id === offer.id) {
+        this.setState({ offerSpecific: offer, status: offer.statu_id });
+      }
+    });
+    const geoId = Geolocation.watchPosition(e => this.ads(e.coords));
+    // alert(geoId);
+    this.setState({ geoID: geoId });
+    getDocsServiceRequest(offer.id);
+    this.callLocation();
+    if (offer.statu_id === 7) {
+      this.setState({ load: true, inTravel: false, feed1: true });
+    } else if (offer.statu_id === 8 || offer.statu_id === 6) {
+      this.setState({ inTravel: true });
+    }
+    getCompanies();
+    getMarkers();
+  }
+
+  componentWillUnmount() {
+    const { geoID } = this.state;
+    Geolocation.clearWatch(geoID);
+  }
+
+  onRegionChange(region, lLat, lLon) {
+    const { lastLat, lastLong } = this.state;
+    this.setState({
+      mapRegion: region,
+      lastLat: lLat || lastLat,
+      lastLong: lLon || lastLong,
+    });
+  }
+
+  async getDirections(startLoc, destinationLoc) {
+    const { offerSpecific, status } = this.state;
+    let lat_des = offerSpecific.origin_latitude;
+    let lng_des = offerSpecific.origin_longitude;
+    if (status === 8) {
+      lat_des = offerSpecific.destination_latitude;
+      lng_des = offerSpecific.destination_longitude;
+    }
+    console.log(startLoc);
+    console.log(destinationLoc);
+    console.log(lat_des);
+    console.log(lng_des);
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const respJson = await resp.json();
+    console.log(respJson);
+    const points = respJson.routes[0].legs[0].steps;
+
+    const coords = [];
+    points.forEach((point) => {
+      const decodedPoints = Polyline.decode(point.polyline.points);
+      decodedPoints.forEach((dec) => {
+        coords.push({
+          latitude: dec[0],
+          longitude: dec[1],
+        });
+      });
+    });
+    this.setState({ coords });
+
+    return coords;
   }
 
   actionMan() {
     const { getDocsServiceRequest, navigation } = this.props;
     const offer = navigation.getParam('Offer');
     getDocsServiceRequest(offer.id);
-    this.setState({ manifestSet: false });
+    this.setState({ manifestSet: false, spinner: true });
+    setTimeout(() => {
+      this.setState({ spinner: false });
+    }, 10000);
   }
-
 
   downloadMan() {
     const { document } = this.props;
     let man = '';
     document.serviceDocuments.forEach((document_data) => {
       if (document_data.document_type === 'manifiesto') {
+        analytics().logEvent('boton_viaje_iniciado_ver_manifiesto');
         man = encodeURI(document_data.document);
       }
     });
@@ -97,66 +178,10 @@ class StartTravel extends Component {
         .then((resp) => {
           if (Platform.OS === 'ios') RNFetchBlob.ios.openDocument(resp.path());
           if (Platform.OS === 'android') android.actionViewIntent(resp.path(), 'application/pdf');
+        }).catch((e) => {
+          console.log(e);
         });
     }
-  }
-
-  componentDidMount() {
-    analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
-    const {
-      navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
-    } = this.props;
-    const offer = navigation.getParam('Offer');
-    offers.data.map((newOffer) => {
-      if (newOffer.id === offer.id) {
-        this.setState({ offerSpecific: offer, status: offer.statu_id });
-      }
-    });
-    const geoId = Geolocation.watchPosition(e => this.ads(e.coords));
-    // alert(geoId);
-    this.setState({ geoID: geoId });
-    getDocsServiceRequest(offer.id);
-    this.callLocation();
-    if (offer.statu_id === 7) {
-      this.setState({ load: true, inTravel: false });
-    } else if (offer.statu_id === 8 || offer.statu_id === 6) {
-      this.setState({ inTravel: true });
-    }
-    getCompanies();
-    getMarkers();
-  }
-
-  componentWillUnmount() {
-    const { geoID } = this.state;
-    Geolocation.clearWatch(geoID);
-  }
-
-  async getDirections(startLoc, destinationLoc) {
-    const { offerSpecific, status } = this.state;
-    let lat_des = offerSpecific.origin_latitude;
-    let lng_des = offerSpecific.origin_longitude;
-    if (status === 8) {
-      lat_des = offerSpecific.destination_latitude;
-      lng_des = offerSpecific.destination_longitude;
-    }
-
-    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
-    const respJson = await resp.json();
-    const points = respJson.routes[0].legs[0].steps;
-
-    const coords = [];
-    points.forEach((point) => {
-      const decodedPoints = Polyline.decode(point.polyline.points);
-      decodedPoints.forEach((dec) => {
-        coords.push({
-          latitude: dec[0],
-          longitude: dec[1],
-        });
-      });
-    });
-    this.setState({ coords });
-
-    return coords;
   }
 
   callLocation() {
@@ -175,15 +200,6 @@ class StartTravel extends Component {
         .catch((err) => {
           console.log(err);
         });
-    });
-  }
-
-  onRegionChange(region, lLat, lLon) {
-    const { lastLat, lastLong } = this.state;
-    this.setState({
-      mapRegion: region,
-      lastLat: lLat || lastLat,
-      lastLong: lLon || lastLong,
     });
   }
 
@@ -227,7 +243,9 @@ class StartTravel extends Component {
         };
         setTimeout(() => {
           putStateOriginTravel(offerSpecific.id, data);
-          this.setState({ status: 9, load: false, inTravel: false });
+          this.setState({
+            status: 9, load: false, inTravel: false, feed2: true,
+          });
           // this.componentDidMount();
         }, 1000);
       }
@@ -302,8 +320,10 @@ class StartTravel extends Component {
   async confirmTravel() {
     const { offerSpecific, status } = this.state;
     if (status === 7 || offerSpecific.statu_id === 7) {
+      analytics().logEvent('boton_confirmar_cargue');
       await this.load(8, 'Confirmacion de cargue');
     } else if (status === 9 || offerSpecific.statu_id === 9) {
+      analytics().logEvent('boton_confirmar_descargue');
       await this.load(11, 'Confirmacion de descargue');
     }
   }
@@ -362,32 +382,77 @@ class StartTravel extends Component {
   }
 
   modalBack() {
-    this.setState({nonManifest: false});
+    this.setState({ nonManifest: false });
   }
+
+  onLinking(event, type) {
+    analytics().logEvent(`boton_${type}`);
+    Linking.openURL(event);
+  }
+
   render() {
     const {
-      offerSpecific, lastLat, lastLong, waypoints, status, finished, unload,
-      modalRating, starCount, load, unLoad, inTravel, manifestSet, manifest,
-      nonManifest,
+      offerSpecific, lastLat, lastLong, waypoints, status, finished,
+      modalRating, starCount, load, inTravel, manifestSet,
+      nonManifest, feed, feed1, feed2, feed3, spinner,
     } = this.state;
     const { companies, markers, document } = this.props;
     if (document.serviceDocuments && !document.fetching && !manifestSet) {
       this.downloadMan();
       this.setState({ manifestSet: true });
     }
-    console.log(offerSpecific)
-    console.log(waypoints)
-    console.log(companies)
-    if (offerSpecific !== null && waypoints !== undefined && markers.data !== null && companies.data !== null) {
+    if (document.error && !spinner) {
+      this.setState({ nonManifest: true });
+    }
+    console.log(offerSpecific);
+    console.log(waypoints);
+    console.log(companies);
+    if (offerSpecific !== null
+      && waypoints !== undefined
+      && markers.data !== null
+      && companies.data !== null
+    ) {
       markers.data.map(commerce => (
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
       ));
       if ((offerSpecific.statu_id === 11 || status === 11) && !modalRating && !finished) {
-        this.setState({ modalRating: true });
+        this.setState({ feed3: true });
+        if (!feed3) {
+          this.setState({ modalRating: true });
+        }
       }
       return (
         <MainWrapper>
+          <Spinner view={spinner} />
+          {feed && (
+            <PopUpNotification
+              onTouchOutside={() => this.setState({ feed: false })}
+              mainText="¡Atención!"
+              subText="Acabas de iniciar el viaje ahora debes llegar al origen del viaje y cargar"
+            />
+          )}
+          {feed1 && (
+            <PopUpNotification
+              onTouchOutside={() => this.setState({ feed1: false })}
+              mainText="¡Atención!"
+              subText="Acabas de llegar al origen del viaje ahora debes cargar y confirmar el cargue"
+            />
+          )}
+          {feed2 && (
+            <PopUpNotification
+              onTouchOutside={() => this.setState({ feed2: false })}
+              mainText="¡Atención!"
+              subText="Acabas de confirmar que cargaste ahora debes dirigirte al destino y confirmar el descargue"
+            />
+          )}
+          {feed3 && (
+            <PopUpNotification
+              onTouchOutside={() => this.setState({ feed3: false })}
+              mainText="¡Atención!"
+              subText="Acabas de confirmar que descargaste ahora debes tomar fotos de evidencia y calificar el generador de carga"
+            />
+          )}
           <EmptyDialog visible={nonManifest}>
             <WrapperModal>
               <BlueText>No existe manifiesto</BlueText>
@@ -419,8 +484,9 @@ class StartTravel extends Component {
                   latitude: Number(commerce.latitude),
                   longitude: Number(commerce.longitude),
                 }}
+                title="Aliado Cargapp"
               >
-                <CustomImage source={images.markersPin} />
+                <CustomImage source={images.originPin} />
               </MapView.Marker>
             ))}
 
@@ -434,7 +500,7 @@ class StartTravel extends Component {
               pinColor="#007aff"
               title="Origen carga"
             >
-              <CustomImage source={images.originPin} />
+              <CustomImage source={images.markersPin} />
             </MapView.Marker>
           </MapView>
           {companies.data.map((CompanyInfo) => {
@@ -458,14 +524,14 @@ class StartTravel extends Component {
           })}
           <AbsoluteWrapper>
             <TouchableNavigationButtons
-              onPress={() => Linking.openURL(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`)}
+              onPress={() => this.onLinking(`https://www.waze.com/ul?ll=${offerSpecific.destination_latitude}%2C${offerSpecific.destination_longitude}&navigate=yes`, 'waze')}
             >
               <WrapperImage
                 source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }}
               />
             </TouchableNavigationButtons>
             <TouchableNavigationButtons
-              onPress={() => Linking.openURL(`https://www.google.com/maps/place/${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}`)}
+              onPress={() => this.onLinking(`https://www.google.com/maps/place/${offerSpecific.destination_latitude},${offerSpecific.destination_longitude}`, 'google_maps')}
             >
               <WrapperImage
                 source={{ uri: 'https://lh3.googleusercontent.com/xmZuOCh0e0NeVpgsKn99K5Amo4PA2r5y078RIrvXY24zLAEwSLSwYvVcwT7zWSv512n4=w300' }}
@@ -482,6 +548,7 @@ class StartTravel extends Component {
           </WrapperAdresses>
           <EmptyDialog visible={modalRating && !finished}>
             <WrapperModal>
+              <BlueText style={{ paddingTop: '5%' }}>Acabas de finalizar el viaje exitosamente</BlueText>
               <BlueText>¿Que tal estuvo tu viaje?</BlueText>
               <StarRating
                 disabled={false}
