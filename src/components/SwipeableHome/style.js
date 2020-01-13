@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const WrapperButton = styled.TouchableOpacity`
+  flex: 1;
   border: 1px solid #0088f1;
   background-color: white;
   margin-right: 10px;
@@ -12,6 +13,5 @@ export const WrapperButton = styled.TouchableOpacity`
 export const TextBlue = styled.Text`
   color: #0088f1;
   font-size: 12px;
-  padding-vertical: 2%;
-  padding-horizontal: 4%;
+  padding-vertical: 8%;
 `;

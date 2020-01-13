@@ -180,7 +180,8 @@ class Home extends Component {
             <NormalText>Buscar viajes disponibles</NormalText>
             <WrapperSwipeable>
               <SwipeableHome text="Todos" press={() => this.onNavigate('Second')} />
-              <SwipeableHome text="Filtros específicos" press={() => this.onNavigate('Second', { filter: true })} />
+              <SwipeableHome text="Buscar viajes" press={() => this.onNavigate('Second', { filter: true })} />
+              <SwipeableHome text="Cerca a tí" press={() => this.onNavigate('')} />
             </WrapperSwipeable>
           </WrapperContent>
         </MainWrapper>

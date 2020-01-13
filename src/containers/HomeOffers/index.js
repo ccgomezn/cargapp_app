@@ -238,8 +238,8 @@ class HomeOffers extends Component {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
       vehicle: idVehicle,
-      origin: labelOrigin,
-      destination: labelDestination,
+      origin: labelOrigin.split(' '),
+      destination: labelDestination.split(' '),
     };
     getFilterOffers(data);
     this.setState({ modalSearch: false });
@@ -317,9 +317,6 @@ class HomeOffers extends Component {
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
-      });
-      offers.data.map((originData) => {
-        dataPickOrigin.push({ Name: originData.origin });
       });
       destinations.data.destinations.map((destinationData) => {
         dataPickDesti.push({ Name: destinationData.name });

@@ -33,6 +33,7 @@ import images from '../../../icons';
 import ButtonGradient from '../../../components/ButtonGradient';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
+import Spinner from '../../../components/Spinner';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -57,6 +58,8 @@ class StartTravel extends Component {
       feed1: false,
       feed2: false,
       feed3: false,
+      spinner: false,
+      errorModal: false,
     };
   }
 
@@ -90,6 +93,15 @@ class StartTravel extends Component {
     Geolocation.clearWatch(geoID);
   }
 
+  onRegionChange(region, lLat, lLon) {
+    const { lastLat, lastLong } = this.state;
+    this.setState({
+      mapRegion: region,
+      lastLat: lLat || lastLat,
+      lastLong: lLon || lastLong,
+    });
+  }
+
   async getDirections(startLoc, destinationLoc) {
     const { offerSpecific, status } = this.state;
     let lat_des = offerSpecific.origin_latitude;
@@ -100,11 +112,11 @@ class StartTravel extends Component {
     }
     console.log(startLoc);
     console.log(destinationLoc);
-    console.log(lat_des)
-    console.log(lng_des)
+    console.log(lat_des);
+    console.log(lng_des);
     const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc},${destinationLoc}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
     const respJson = await resp.json();
-    console.log(respJson)
+    console.log(respJson);
     const points = respJson.routes[0].legs[0].steps;
 
     const coords = [];
@@ -126,7 +138,10 @@ class StartTravel extends Component {
     const { getDocsServiceRequest, navigation } = this.props;
     const offer = navigation.getParam('Offer');
     getDocsServiceRequest(offer.id);
-    this.setState({ manifestSet: false });
+    this.setState({ manifestSet: false, spinner: true });
+    setTimeout(() => {
+      this.setState({ spinner: false });
+    }, 10000);
   }
 
   downloadMan() {
@@ -162,6 +177,8 @@ class StartTravel extends Component {
         .then((resp) => {
           if (Platform.OS === 'ios') RNFetchBlob.ios.openDocument(resp.path());
           if (Platform.OS === 'android') android.actionViewIntent(resp.path(), 'application/pdf');
+        }).catch((e) => {
+          console.log(e);
         });
     }
   }
@@ -182,15 +199,6 @@ class StartTravel extends Component {
         .catch((err) => {
           console.log(err);
         });
-    });
-  }
-
-  onRegionChange(region, lLat, lLon) {
-    const { lastLat, lastLong } = this.state;
-    this.setState({
-      mapRegion: region,
-      lastLat: lLat || lastLat,
-      lastLong: lLon || lastLong,
     });
   }
 
@@ -385,12 +393,15 @@ class StartTravel extends Component {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, finished,
       modalRating, starCount, load, inTravel, manifestSet,
-      nonManifest, feed, feed1, feed2, feed3,
+      nonManifest, feed, feed1, feed2, feed3, spinner,
     } = this.state;
     const { companies, markers, document } = this.props;
     if (document.serviceDocuments && !document.fetching && !manifestSet) {
       this.downloadMan();
       this.setState({ manifestSet: true });
+    }
+    if (document.error && !spinner) {
+      this.setState({ nonManifest: true });
     }
     console.log(offerSpecific);
     console.log(waypoints);
@@ -412,6 +423,7 @@ class StartTravel extends Component {
       }
       return (
         <MainWrapper>
+          <Spinner view={spinner} />
           {feed && (
             <PopUpNotification
               onTouchOutside={() => this.setState({ feed: false })}
@@ -473,7 +485,7 @@ class StartTravel extends Component {
                 }}
                 title="Aliado Cargapp"
               >
-                <CustomImage source={images.markersPin} />
+                <CustomImage source={images.originPin} />
               </MapView.Marker>
             ))}
 
@@ -487,7 +499,7 @@ class StartTravel extends Component {
               pinColor="#007aff"
               title="Origen carga"
             >
-              <CustomImage source={images.originPin} />
+              <CustomImage source={images.markersPin} />
             </MapView.Marker>
           </MapView>
           {companies.data.map((CompanyInfo) => {
