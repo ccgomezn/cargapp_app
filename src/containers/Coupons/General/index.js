@@ -31,7 +31,7 @@ class General extends Component {
           newCompanies.add(companiesData);
         }
       }));
-      const newCompaniesArray = Array.from(newCompanies)
+      const newCompaniesArray = Array.from(newCompanies);
       if (newCompaniesArray) {
         return (
           <MainWrapper>

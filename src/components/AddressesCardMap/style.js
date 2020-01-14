@@ -20,10 +20,9 @@ export const WrapperIcon = styled.View`
     `;
 
 export const Icon = styled.Image`
-    width: 30px;
-    height: 30px;
-    background-color: gray;
-    `;
+  width: 30px;
+  height: 30px;
+`;
 
 export const WrapperInfo = styled.View`
     flex: 8;

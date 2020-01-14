@@ -48,20 +48,20 @@ export const BlueText = styled.Text`
   font-size: 18px;
   align-self: center;
   text-align: center;
-  padding-bottom: 5%;
 `;
 
 export const WrapperModal = styled.View`
   width: 80%;
+  height: auto;
   background-color: white;
   align-self: center;
-  border-radius: 30px;
-  padding: 7%;
+  border-radius: 10px;
+  padding: 4%;
 `;
 
 export const CustomImage = styled.Image`
-  width: 40px;
+  width: 50px;
   height: 50px;
-  resize-mode: stretch;
+  resize-mode: contain;
   z-index: 1000;
 `;

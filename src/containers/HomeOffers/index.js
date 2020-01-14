@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-const-assign */
 /* eslint-disable array-callback-return */
@@ -28,6 +29,7 @@ import InputSlider from '../../components/InputSlider';
 
 import EmptyDialog from '../../components/EmptyDialog';
 import CardPermissions from '../../components/CardPermissions';
+import ParametersActions from '../../redux/reducers/ParametersRedux';
 
 import {
   ContentDialog,
@@ -79,7 +81,7 @@ class HomeOffers extends Component {
   }
 
   componentDidMount() {
-    analytics().setCurrentScreen('home_offers_cargapp');
+    analytics().setCurrentScreen('viajes');
     const {
       getsOffers,
       getVehicles,
@@ -88,6 +90,7 @@ class HomeOffers extends Component {
       getDestinations,
       getMyOffers,
       profile,
+      getparameters,
     } = this.props;
     const data = {
       driver: {
@@ -124,6 +127,7 @@ class HomeOffers extends Component {
     getPermission();
     getDestinations();
     getMyOffers(profile.data[0].user.id);
+    getparameters('STATUS_TRAVEL');
   }
 
   componentWillUnmount() {
@@ -153,6 +157,7 @@ class HomeOffers extends Component {
   }
 
   onNavigate(nameView) {
+    analytics().logEvent('boton_diligenciar');
     const { navigate } = this.props.navigation;
     this.setState({ modalPermission: false });
     setTimeout(() => {
@@ -237,8 +242,8 @@ class HomeOffers extends Component {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
       vehicle: idVehicle,
-      origin: labelOrigin,
-      destination: labelDestination,
+      origin: labelOrigin.split(' '),
+      destination: labelDestination.split(' '),
     };
     getFilterOffers(data);
     this.setState({ modalSearch: false });
@@ -249,6 +254,7 @@ class HomeOffers extends Component {
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
+    analytics().logEvent('boton_entendido');
     this.setState({ modalSearch: false, modalPermission: false });
   }
 
@@ -265,8 +271,8 @@ class HomeOffers extends Component {
       listview, fetch, modalFromHome,
     } = this.state;
     const {
-      driver, offers, vehicles, navigation, profile, permissions, destinations,
-
+      driver, offers, vehicles, navigation,
+      profile, permissions, destinations, parameters,
     } = this.props;
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];
@@ -275,17 +281,6 @@ class HomeOffers extends Component {
       this.getMineOffers();
       this.setState({ callMine: true });
     }
-
-    /* */
-    if (offers.myOffers) {
-      offers.myOffers.forEach((offer) => {
-        // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7) {
-          navigation.navigate('StartTravel', { Offer: offer });
-        }
-      });
-    }
-
 
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
@@ -298,6 +293,7 @@ class HomeOffers extends Component {
         }
       });
       if (perm >= 1) {
+        analytics().setCurrentScreen('datos_faltantes');
         this.setState({ modalPermission: true });
       }
       this.setState({ fetch: true });
@@ -311,12 +307,11 @@ class HomeOffers extends Component {
       && !offers.fetching
       && permissions.data !== null
       && !permissions.fetching
+      && parameters.data !== null
+      && !parameters.fetching
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
-      });
-      offers.data.map((originData) => {
-        dataPickOrigin.push({ Name: originData.origin });
       });
       destinations.data.destinations.map((destinationData) => {
         dataPickDesti.push({ Name: destinationData.name });
@@ -336,7 +331,25 @@ class HomeOffers extends Component {
       if (filter && modalFromHome) {
         this.onPressFilter();
       }
-      console.log(this.props);
+      const status_travel = [];
+      parameters.data.parameters.map((status_t) => {
+        status_travel.push(parseInt(status_t.code, 10));
+      });
+      console.log(status_travel);
+
+      /* estados de viajes() */
+      if (offers.myOffers) {
+        offers.myOffers.forEach((offer) => {
+          // eslint-disable-next-line max-len
+          console.log(offer.statu_id);
+          if (status_travel.includes(offer.statu_id)) {
+            navigation.navigate('StartTravel', { Offer: offer });
+          } else {
+            console.log(`${offer.statu_id} no include`);
+          }
+        });
+      }
+
       return (
         <MainView>
           <MainWrapper>
@@ -530,7 +543,7 @@ class HomeOffers extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations,
+    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations,parameters,
 
   } = state;
   return {
@@ -542,6 +555,7 @@ const mapStateToProps = (state) => {
     filterOffers,
     permissions,
     destinations,
+    parameters,
   };
 };
 
@@ -554,7 +568,7 @@ const mapDispatchToProps = dispatch => ({
   getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
   getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
   getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
-
+  getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
 });
 
 export default connect(

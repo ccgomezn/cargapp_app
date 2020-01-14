@@ -68,6 +68,7 @@ class Points extends Component {
   }
 
   handleSingleIndexSelect = (index) => {
+    analytics().logEvent(`boton_retos_${index}`);
     const { getActiveChallenge, getActivePrizes } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));
@@ -98,7 +99,6 @@ class Points extends Component {
     return (
       <MainWrapper>
         <CardinfoStad
-          title="¡Hola BJ!"
           title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
           valueKm="15.999"
           textKm="Kms recorridos"
@@ -223,7 +223,7 @@ class Points extends Component {
                     <ViewRow>
                       <ViewFlex>
                         <IconCircle
-                          source={require('../../icons/circlem2x.png')}
+                          source={require('../../icons/purpleCircle.png')}
                         />
                       </ViewFlex>
                       <ContentStad>
@@ -298,7 +298,7 @@ class Points extends Component {
                     <ViewRow>
                       <ViewFlex>
                         <IconCircle
-                          source={require('../../icons/circlem2x.png')}
+                          source={require('../../icons/purpleCircle.png')}
                         />
                       </ViewFlex>
                       <ContentStad>

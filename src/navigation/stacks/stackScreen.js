@@ -1,10 +1,11 @@
+/* eslint-disable global-require */
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
 // MENU SCREENS
 import ScreenHomeOffers from '../../containers/HomeOffers';
 import ScreenHome from '../../containers/Home';
-import ScreenTravels from '../../containers/Travels';
+// import ScreenTravels from '../../containers/Travels';
 import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
 import ScreenMyTravels from '../../containers/MyTravels';
 import ScreenStartTravel from '../../containers/Travels/StartTravel';
@@ -35,6 +36,10 @@ import ScreenReset from '../../containers/Registration/ResetPass';
 // REGISTER GENERATOR
 import ScreenRegCompany from '../../containers/Registration/CompanyData';
 import ScreenRegPay from '../../containers/Registration/PayData';
+// CONFIG
+import ScreenConfig from '../../containers/Config';
+// SERVICES
+import ScreenService from '../../containers/Services';
 
 import {
   IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
@@ -79,13 +84,12 @@ function rightIconMenu({ navigation }) {
           colors={['#ff2557', '#320d8e']}
         >
           <ImagenPerfil
-            source={{ uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' }}
+            source={require('../../Images/profile.jpg')}
           />
         </CircleBorder>
       </BoxPerfil>
       <BoxPerfil style={{ width: '30%' }}>
         <ImagenArrow
-                    // eslint-disable-next-line global-require
           source={require('../../Images/arrow-down.png')}
         />
       </BoxPerfil>
@@ -120,16 +124,6 @@ export const homeStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
-  Filter: {
-    screen: ScreenFilterOffers,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
-      headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu({ navigation }),
-    }),
-  },
 });
 
 export const CouponsStackNavigator = createStackNavigator({
@@ -146,7 +140,7 @@ export const CouponsStackNavigator = createStackNavigator({
   CommerceCoupons: {
     screen: ScreenCommerceCoupons,
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
+      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -155,7 +149,7 @@ export const CouponsStackNavigator = createStackNavigator({
   DetailsCoupons: {
     screen: ScreenDetailsCoupons,
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
+      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
@@ -193,6 +187,16 @@ export const travelsStackNavigator = createStackNavigator({
   ApplyTravels: {
     screen: ScreenApplyTravels,
     navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  Filter: {
+    screen: ScreenFilterOffers,
+    navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
@@ -216,7 +220,7 @@ export const myTravelsStackNavigator = createStackNavigator({
   StartTravel: {
     screen: ScreenStartTravel,
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
+      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
@@ -239,10 +243,9 @@ export const myVehicleStackNavigator = createStackNavigator({
   DetailVehicle: {
     screen: ScreenMyVehicle,
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
+      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
-      headerRight: rightIconMenu({ navigation }),
     }),
   },
 });
@@ -261,11 +264,10 @@ export const ProfileStackNavigator = createStackNavigator({
   BankAccount: {
     screen: ScreenBankAccount,
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
+      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu({ navigation }),
+      headerTruncatedBackTitle: 'Atras',
     }),
   },
 });
@@ -281,14 +283,24 @@ export const PointsStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
-},
-{
-  // headerMode: 'none',
 });
 
 export const AnalyticsStackNavigator = createStackNavigator({
   Seventh: {
     screen: ScreenAnalytics,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#CCC',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const ServicesStackNavigator = createStackNavigator({
+  Services: {
+    screen: ScreenService,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
       headerStyle: HeaderStyle,
@@ -313,9 +325,22 @@ export const chatStackNavigator = createStackNavigator({
   InnerChat: {
     screen: ScreenInnerChat,
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#CCC',
+      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+});
+
+export const ConfigStackNavigator = createStackNavigator({
+  Config: {
+    screen: ScreenConfig,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },

@@ -77,8 +77,25 @@ export const IconBottomNav = styled.Image`
 
 export const HeaderStyle = {
   backgroundColor: '#FFF', /* '#010935', */
-  height: Platform.OS === 'ios' ? 45 : 45,
-  marginTop: Platform.OS === 'ios' ? -30 : 0,
+  // height: Platform.OS === 'ios' ? 45 : 45,
+  // marginTop: Platform.OS === 'ios' ? -30 : 0,
 };
 
 export const NormalText = styled.Text``;
+
+export const BoldText = styled.Text`
+  font-weight: bold;
+  text-align: center;
+  align-self: center;
+  font-size: 18px;
+  color: #0168ff;
+`;
+
+export const Wrapper = styled.View`
+  padding: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: white;
+  margin-horizontal: 40px;
+`;

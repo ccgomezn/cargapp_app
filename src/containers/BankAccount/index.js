@@ -54,7 +54,7 @@ class BankAccount extends Component {
 
   onPressButtonAccount() {
     analytics().logEvent('boton_confirmar_datos_bancarios');
-    const { postBankAccount, putBankAccount, profile } = this.props;
+    const { postBankAccount, putBankAccount, profile, getBankAccount } = this.props;
     const {
       numberAccount, accountType, bankType, modify, id,
     } = this.state;
@@ -71,10 +71,16 @@ class BankAccount extends Component {
       };
       if (modify) {
         putBankAccount(id, data);
-        this.componentDidMount();
+        getBankAccount();
+        setTimeout(() => {
+          this.componentDidMount();
+        }, 1200);
       } else {
         postBankAccount(data);
-        this.componentDidMount();
+        getBankAccount();
+        setTimeout(() => {
+          this.componentDidMount();
+        }, 1200);
       }
       this.setState({
         modalAccount: false,

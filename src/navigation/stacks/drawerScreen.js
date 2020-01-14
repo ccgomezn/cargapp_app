@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
 import { Dimensions } from 'react-native';
@@ -13,6 +14,7 @@ import {
   homeStackNavigator, travelsStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
   ProfileStackNavigator, CouponsStackNavigator, chatStackNavigator,
+  ConfigStackNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');
@@ -35,14 +37,25 @@ const CustomDrawerContentComponent = props => (
   </Container>
 );
 
-function DrawerIcon({ urlicon, tint }) {
-  return (
-    <DrawIconMenu
-      style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
-      fillAll
-      source={{ uri: urlicon }}
-    />
-  );
+function DrawerIcon({ urlicon, tint, v }) {
+  if (v === 'chat') {
+    return (
+      <DrawIconMenu
+        style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
+        fillAll
+        source={urlicon}
+      />
+    );
+  // eslint-disable-next-line no-else-return
+  } else {
+    return (
+      <DrawIconMenu
+        style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
+        fillAll
+        source={{ uri: urlicon }}
+      />
+    );
+  }
 }
 
 const DrawerGenerator = createDrawerNavigator(
@@ -139,7 +152,8 @@ const DrawerDriver = createDrawerNavigator(
       screen: CouponsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Cupones',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
+        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-cupon.svg'), tint: tintColor, v: 'chat' }),
       },
     },
     ScreenVehicle: {
@@ -159,19 +173,21 @@ const DrawerDriver = createDrawerNavigator(
     ScreenStats: {
       screen: AnalyticsStackNavigator,
       navigationOptions: {
-        drawerLabel: 'Analíticas',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
+        drawerLabel: 'Estadísticas',
+        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-stad.svg'), tint: tintColor, v: 'chat' }),
       },
     },
     ScreenChat: {
       screen: chatStackNavigator,
       navigationOptions: {
         drawerLabel: 'Chat',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-chat.svg'), tint: tintColor, v: 'chat' }),
       },
     },
     ScreenConfig: {
-      screen: travelsStackNavigator,
+      screen: ConfigStackNavigator,
       navigationOptions: {
         drawerLabel: 'Configuraciones',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-settings.svg', tint: tintColor }),
@@ -187,7 +203,7 @@ const DrawerDriver = createDrawerNavigator(
     contentOptions: {
       activeTintColor: '#fff',
       inactiveTintColor: '#ffffff61',
-      activeBackgroundColor: '',
+      activeBackgroundColor: '#00152952',
       labelStyle: {
         fontFamily: 'Roboto',
         fontSize: 17,

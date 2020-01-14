@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -20,7 +21,9 @@ function AddressesCardMap(
     <MainWrapper>
       <WrapperCard>
         <WrapperIcon>
-          <Icon />
+          <Icon
+            source={require('../../icons/icon_origin.png')}
+          />
         </WrapperIcon>
         <WrapperInfo>
           <BoldText>{nameCompany}</BoldText>
@@ -30,7 +33,9 @@ function AddressesCardMap(
       <Line />
       <WrapperCard>
         <WrapperIcon>
-          <Icon />
+          <Icon
+            source={require('../../icons/icon_destination.png')}
+          />
         </WrapperIcon>
         <WrapperInfo>
           <BoldText>{nameAddress}</BoldText>
