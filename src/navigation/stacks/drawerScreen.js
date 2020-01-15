@@ -1,12 +1,13 @@
 import React from 'react';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
-import { Dimensions } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Dimensions, ImageBackground } from 'react-native';
+import { Container, Content, View } from 'native-base';
 import PropTypes from 'prop-types';
 
 import LinearGradient from 'react-native-linear-gradient';
 import AppStack from './bottomNavigator';
 import { DrawIconMenu } from '../style';
+import AvatarProfile from '../components/AvatarProfile';
 
 // StackMenu
 import {
@@ -19,29 +20,41 @@ const { width } = Dimensions.get('screen');
 
 const CustomDrawerContentComponent = props => (
   <Container>
-    <Content contentContainerStyle={{ height: '100%' }}>
-      <LinearGradient
-        style={{ flex: 1 }}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 3, y: 1 }}
-        // colors={['#3f79eb', '#3f79eb', '#00ff77']}
-        colors={['#007aff', '#007aff', '#00ff77']}
-      >
+    <Content contentContainerStyle={{ height: '100%'}}>
+      <ImageBackground 
+        source={require('../../Images/MenuCargapp.png')}
+        style={{width: '115%', height: '100%'}}>
+        <AvatarProfile 
+          avatar={require('../../icons/camion_1.png')}
+          press={() => props.navigation.navigate('ScreenProfile')}
+          text="Nombre de perfil"
+        />
         <DrawerItems
           {...props}
         />
-      </LinearGradient>
+      </ImageBackground>
     </Content>
   </Container>
 );
 
 function DrawerIcon({ urlicon, tint }) {
   return (
-    <DrawIconMenu
-      style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
-      fillAll
-      source={{ uri: urlicon }}
-    />
+    <View 
+      style={{
+        height: 50,
+        width: '300%',
+        display: 'flex',
+        justifyContent: 'center',
+        borderLeftWidth: 3.5, 
+        borderLeftColor: tint === '#fff' ? 'rgb(0, 255, 119)' : 'rgba(255, 255, 255, 0)',
+      }}>
+      <DrawIconMenu
+        style={{ opacity: tint === '#fff' ? 1 : 0.6, marginLeft: '30%'}}
+        fill={tint === '#fff' ? 'rgb(0, 255, 119)' : '#fff'}
+        source={{ uri: urlicon }}
+      />
+    </View>
+    
   );
 }
 
@@ -180,26 +193,27 @@ const DrawerDriver = createDrawerNavigator(
   }, {
     initialRouteName: 'ScreenHome',
     drawerPosition: 'left',
-    drawerBackgroundColor: '',
+    drawerBackgroundColor: '#fff',
     drawerWidth: width * 0.7,
     contentComponent: CustomDrawerContentComponent,
     unmountInactiveRoutes: true,
     contentOptions: {
       activeTintColor: '#fff',
-      inactiveTintColor: '#ffffff61',
-      activeBackgroundColor: '',
+      inactiveTintColor: 'rgba(255, 255, 255, 0.7)',
+      activeBackgroundColor: 'rgba(0, 122, 255, 0.6)',
       labelStyle: {
         fontFamily: 'Roboto',
         fontSize: 17,
         fontWeight: '300',
         marginLeft: 0,
       },
-      itemsContainerStyle: {
-        marginVertical: 32,
-      },
       iconContainerStyle: {
         opacity: 1,
         marginLeft: 25,
+      },
+      itemStyle: {
+        height: 50,
+        marginVertical: 0,
       },
     },
     drawerOpenRoute: 'DrawerOpen',
