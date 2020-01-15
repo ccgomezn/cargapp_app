@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
   WrapperCard, ContentCard, ContentText, TextTitle,
   ContentSecond, RowLeft, RowRight, IconCircle,
-  SecondText, Position, TextPosition, ImageContent,
+  SecondText, Position, TextPosition, ImageContent, ImageUser,
 } from './style';
 
 function CardRanking({
@@ -14,7 +14,11 @@ function CardRanking({
   return (
     <WrapperCard>
       <ContentCard>
-        <ImageContent />
+        <ImageContent>
+          <ImageUser
+            source={require('../../Images/profile.jpg')}
+          />
+        </ImageContent>
         <ContentText>
           <TextTitle>
             {title}
@@ -26,6 +30,7 @@ function CardRanking({
               />
               <SecondText>
                 {textKM}
+                {' KM'}
               </SecondText>
             </RowLeft>
             <RowRight>

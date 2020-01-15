@@ -12,7 +12,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   timeout: null,
-  blacklist: ['profile', 'offers', 'password', 'chat', 'bank', 'vehicles', 'coupons', 'status'],
+  blacklist: ['profile', 'offers', 'password', 'chat', 'bank', 'vehicles', 'coupons', 'status', 'top'],
 };
 
 // Middleware: Redux Saga

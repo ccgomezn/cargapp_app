@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { put, select, call } from 'redux-saga/effects';
 import crashlytics from '@react-native-firebase/crashlytics';
 import StatusActions from '../reducers/StatusRedux';

@@ -26,6 +26,7 @@ import { PermissionTypes } from '../reducers/PermissionsRedux';
 import { DestinationsTypes } from '../reducers/DestinationsRedux';
 import { ChallengeTypes } from '../reducers/ChallengeRedux';
 import { PrizesTypes } from '../reducers/PrizesRedux';
+import { TopTypes } from '../reducers/TopUsersRedux';
 /* ---------- Sagas ----------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -62,6 +63,7 @@ import { getPermission } from './PermissionsSagas';
 import { getDestinations } from './DestinationsSagas';
 import { getActiveChallenge } from './ChallengeSagas';
 import { getActivePrizes } from './PrizesSagas';
+import { getTopUsers } from './TopUsersSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -120,5 +122,6 @@ export default function* root() {
     takeLatest(DestinationsTypes.GET_DESTINATIONS_REQUEST, getDestinations, api),
     takeLatest(ChallengeTypes.GET_ACTIVE_CHALLENGE_REQUEST, getActiveChallenge, api),
     takeLatest(PrizesTypes.GET_ACTIVE_PRIZES_REQUEST, getActivePrizes, api),
+    takeLatest(TopTypes.GET_TOP_USERS_REQUEST, getTopUsers, api),
   ]);
 }

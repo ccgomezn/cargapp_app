@@ -29,6 +29,7 @@ import ButtonWhite from '../../components/ButtonWhite';
 
 import ChallengeActions from '../../redux/reducers/ChallengeRedux';
 import PrizesActions from '../../redux/reducers/PrizesRedux';
+import TopActions from '../../redux/reducers/TopUsersRedux';
 import analytics from '@react-native-firebase/analytics';
 
 class Points extends Component {
@@ -69,7 +70,7 @@ class Points extends Component {
 
   handleSingleIndexSelect = (index) => {
     analytics().logEvent(`boton_retos_${index}`);
-    const { getActiveChallenge, getActivePrizes } = this.props;
+    const { getActiveChallenge, getActivePrizes, getTopRanking } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));
     console.log(index);
@@ -81,6 +82,10 @@ class Points extends Component {
       // get challenge
       getActiveChallenge();
     }
+    if (index == 2) {
+      // get topRanking
+      getTopRanking();
+    }
   };
 
   render() {
@@ -88,7 +93,7 @@ class Points extends Component {
       selectedIndex, reload, modalChallenge, activeChallenge,
       modalPrizes, activePrize, nameUser,
     } = this.state;
-    const { challenge, prizes } = this.props;
+    const { challenge, prizes, top } = this.props;
 
     if (reload) {
       setTimeout(() => this.setState({
@@ -165,8 +170,9 @@ class Points extends Component {
             </CardItems>
           ))}
 
+        {console.log(top)}
         {selectedIndex === 2 && (
-          reload ? (
+          top.toplist === null ? (
             <ContentView>
               <ActivityIndicator
                 style={{ alignSelf: 'center', height: 'auto' }}
@@ -176,24 +182,20 @@ class Points extends Component {
             </ContentView>
           ) : (
             <View>
-              <CardRanking
-                title="Conductor 1"
-                textKM={20.00}
-                textPoint={14.000}
-                position={1}
-              />
-              <CardRanking
-                title="Conductor 2"
-                textKM={20.00}
-                textPoint={14.000}
-                position={2}
-              />
-              <CardRanking
-                title="Conductor 3"
-                textKM={20.00}
-                textPoint={140}
-                position={3}
-              />
+              { top.toplist.map(data => (
+                <CardRanking
+                  title={'Conductor '+data.user_id}
+                  textKM={data.position}
+                  textPoint={data.points}
+                  position={data.position}
+                />
+              ))}
+                <CardRanking
+                  title={'Conductor 2'}
+                  textKM="123123"
+                  textPoint="321321"
+                  position="12"
+                />
             </View>
           ))}
 
@@ -245,7 +247,6 @@ class Points extends Component {
                     resizeMode="contain"
                     source={{
                       uri: activePrize.image
-                      // activePrize.image
                     }}
                   />
                 </WrapperImage>
@@ -337,17 +338,19 @@ class Points extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { challenge, prizes , profile } = state;
+  const { challenge, prizes , profile, top } = state;
   return {
     challenge,
     prizes,
     profile,
+    top,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getActiveChallenge: params => dispatch(ChallengeActions.getActiveChallengeRequest(params)),
   getActivePrizes: params => dispatch(PrizesActions.getActivePrizesRequest(params)),
+  getTopRanking: params => dispatch(TopActions.getTopUsersRequest(params)),
 });
 
 export default connect(
