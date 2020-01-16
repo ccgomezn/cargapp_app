@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const WrapperCard = styled.TouchableOpacity`
   width: 100%;
@@ -85,9 +86,15 @@ export const ImageContent = styled.View`
   margin-right: 15px;
 `;
 
+export const CircleBorder = styled(LinearGradient)`
+  border-radius: 50px;
+  text-align:center;
+  overflow: hidden;
+`;
+
 export const ImageUser = styled.Image`
-  height: 35px;
-  width: 35px;
+  height: 34px;
+  width: 34px;
   border-radius: 50px;
   resize-mode: contain;
   background-color: #f3f3f3;

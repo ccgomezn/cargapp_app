@@ -20,7 +20,7 @@ import {
 } from '../../components/CardInfoStad/style';
 
 import EmptyDialog from '../../components/EmptyDialog';
-import CardinfoStad from '../../components/CardInfoStad';
+import CardInfoStad from '../../components/CardInfoStad';
 import CardChallenge from '../../components/CardChallenge';
 import CardRanking from '../../components/CardRanking';
 import CardAward from '../../components/CardAward';
@@ -48,7 +48,9 @@ class Points extends Component {
 
   componentDidMount() {
     analytics().setCurrentScreen('retos');
-    const { getActivePrizes, profile } = this.props;
+    const { getActivePrizes, getTopRanking, profile } = this.props;
+    // get topRanking
+    getTopRanking();
     // get data
     getActivePrizes();
     if (profile.data) {
@@ -93,7 +95,8 @@ class Points extends Component {
       selectedIndex, reload, modalChallenge, activeChallenge,
       modalPrizes, activePrize, nameUser,
     } = this.state;
-    const { challenge, prizes, top } = this.props;
+    const { navigation } = this.props;
+    const { challenge, prizes, ranking } = this.props;
 
     if (reload) {
       setTimeout(() => this.setState({
@@ -103,13 +106,25 @@ class Points extends Component {
 
     return (
       <MainWrapper>
-        <CardinfoStad
-          title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
-          valueKm="15.999"
-          textKm="Kms recorridos"
-          valuePoint="120"
-          textPoint="Puntos Acumulados"
-        />
+        {console.log(ranking)}
+        {ranking.topme !== null ? (
+          <CardInfoStad
+            title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
+            valueKm="-"
+            textKm="Kms recorridos"
+            valuePoint={ranking.topme.my_points}
+            textPoint="Puntos Acumulados"
+            press={() => navigation.navigate('ScreenStats')}
+          />
+        ) : (
+          <CardInfoStad
+            title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
+            valueKm="-"
+            textKm="Kms recorridos"
+            valuePoint="-"
+            textPoint="Puntos Acumulados"
+          />
+        )}
 
         <SegmentedControlTab
           values={['Premios', 'Mis Retos', 'Ranking']}
@@ -170,9 +185,8 @@ class Points extends Component {
             </CardItems>
           ))}
 
-        {console.log(top)}
         {selectedIndex === 2 && (
-          top.toplist === null ? (
+          ranking.toplist === null ? (
             <ContentView>
               <ActivityIndicator
                 style={{ alignSelf: 'center', height: 'auto' }}
@@ -182,7 +196,16 @@ class Points extends Component {
             </ContentView>
           ) : (
             <View>
-              { top.toplist.map(data => (
+              { ranking.topme !== null ? (
+                <CardRanking
+                  isMe
+                  title={'Mi Posición'}
+                  textKM="-"
+                  textPoint={ranking.topme.my_points}
+                  position={ranking.topme.position}
+                />
+              ) : null }
+              { ranking.toplist.map(data => (
                 <CardRanking
                   title={'Conductor '+data.user_id}
                   textKM={data.position}
@@ -190,12 +213,7 @@ class Points extends Component {
                   position={data.position}
                 />
               ))}
-                <CardRanking
-                  title={'Conductor 2'}
-                  textKM="123123"
-                  textPoint="321321"
-                  position="12"
-                />
+                
             </View>
           ))}
 
@@ -338,12 +356,12 @@ class Points extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { challenge, prizes , profile, top } = state;
+  const { challenge, prizes , profile, ranking } = state;
   return {
     challenge,
     prizes,
     profile,
-    top,
+    ranking,
   };
 };
 

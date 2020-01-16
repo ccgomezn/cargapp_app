@@ -19,6 +19,7 @@ import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 import ScreenChat from '../../containers/ChatList';
 import ScreenBankAccount from '../../containers/BankAccount';
+import ScreenDocumentsAccount from '../../containers/DocumentAccount';
 // VEHICLES
 import ScreenListVehicle from '../../containers/ListVehicles';
 
@@ -263,6 +264,15 @@ export const ProfileStackNavigator = createStackNavigator({
   },
   BankAccount: {
     screen: ScreenBankAccount,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerTruncatedBackTitle: 'Atras',
+    }),
+  },
+  DocumentsAccount: {
+    screen: ScreenDocumentsAccount,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
