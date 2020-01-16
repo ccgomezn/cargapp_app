@@ -1,43 +1,50 @@
+/* eslint-disable global-require */
 import React from 'react';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
 import { Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View } from 'native-base';
 import PropTypes from 'prop-types';
 
-import LinearGradient from 'react-native-linear-gradient';
 import AppStack from './bottomNavigator';
 import { DrawIconMenu } from '../style';
 import AvatarProfile from '../components/AvatarProfile';
+import { store } from '../../redux/store';
 
 // StackMenu
 import {
   homeStackNavigator, travelsStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
   ProfileStackNavigator, CouponsStackNavigator, chatStackNavigator,
+  ConfigStackNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');
 
-const CustomDrawerContentComponent = props => (
-  <Container>
-    <Content contentContainerStyle={{ height: '100%'}}>
-      <ImageBackground 
-        source={require('../../Images/MenuCargapp.png')}
-        style={{width: '115%', height: '100%'}}>
-        <AvatarProfile 
-          avatar={require('../../icons/camion_1.png')}
-          press={() => props.navigation.navigate('ScreenProfile')}
-          text="Nombre de perfil"
-        />
-        <DrawerItems
-          {...props}
-        />
-      </ImageBackground>
-    </Content>
-  </Container>
-);
+function CustomDrawerContentComponent(props) {
+  let profile = store.getState().profile.data;
+  let first_name = profile ? profile[0].profile.firt_name : "";
+  let last_name = profile ? profile[0].profile.last_name : "";
+  return (
+    <Container>
+      <Content contentContainerStyle={{ height: '100%'}}>
+        <ImageBackground 
+          source={require('../../Images/MenuCargapp.png')}
+          style={{width: '115%', height: '100%'}}>
+          <AvatarProfile 
+            avatar={require('../../icons/camion_1.png')}
+            press={() => console.log(props)}//() => props.navigation.navigate('ScreenProfile')}
+            text={`${first_name} ${last_name}`}
+          />
+          <DrawerItems
+            {...props}
+          />
+        </ImageBackground>
+      </Content>
+    </Container>
+  );
+}
 
-function DrawerIcon({ urlicon, tint }) {
+function DrawerIcon({ urlicon, tint, v }) {
   return (
     <View 
       style={{
@@ -49,12 +56,11 @@ function DrawerIcon({ urlicon, tint }) {
         borderLeftColor: tint === '#fff' ? 'rgb(0, 255, 119)' : 'rgba(255, 255, 255, 0)',
       }}>
       <DrawIconMenu
-        style={{ opacity: tint === '#fff' ? 1 : 0.6, marginLeft: '30%'}}
+        style={{ opacity: tint === '#fff' ? 1 : 0.7}}
         fill={tint === '#fff' ? 'rgb(0, 255, 119)' : '#fff'}
         source={{ uri: urlicon }}
       />
     </View>
-    
   );
 }
 
@@ -152,7 +158,8 @@ const DrawerDriver = createDrawerNavigator(
       screen: CouponsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Cupones',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
+        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-cupon.svg'), tint: tintColor, v: 'chat' }),
       },
     },
     ScreenVehicle: {
@@ -172,19 +179,21 @@ const DrawerDriver = createDrawerNavigator(
     ScreenStats: {
       screen: AnalyticsStackNavigator,
       navigationOptions: {
-        drawerLabel: 'Analíticas',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
+        drawerLabel: 'Estadísticas',
+        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-stad.svg'), tint: tintColor, v: 'chat' }),
       },
     },
     ScreenChat: {
       screen: chatStackNavigator,
       navigationOptions: {
         drawerLabel: 'Chat',
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-chat.svg'), tint: tintColor, v: 'chat' }),
       },
     },
     ScreenConfig: {
-      screen: travelsStackNavigator,
+      screen: ConfigStackNavigator,
       navigationOptions: {
         drawerLabel: 'Configuraciones',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-settings.svg', tint: tintColor }),

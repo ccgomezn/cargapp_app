@@ -172,6 +172,7 @@ font-weight: normal;
 font-style: normal;
 letter-spacing: -0.3px;
 color: #010935;
+margin-bottom: 5%;
 `;
 
 export const TouchModal = styled.TouchableOpacity`

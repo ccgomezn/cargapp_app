@@ -29,7 +29,7 @@ export const Avatar = styled.Image`
 `;
 
 export const AvatarText = styled.Text`  
-  margin-left: 5%;
+  margin-left: 10%;
   text-align:center;
   font-size:18;
   color: #fff;

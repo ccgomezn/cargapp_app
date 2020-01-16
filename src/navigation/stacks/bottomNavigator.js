@@ -1,15 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import images from '../../icons';
-import ScreenHome from '../../containers/HomeOffers';
-import { homeStackNavigator, myTravelsStackNavigator, travelsStackNavigator } from './stackScreen';
+import { homeStackNavigator, myTravelsStackNavigator, travelsStackNavigator, ServicesStackNavigator } from './stackScreen';
 import ButtonGradient from '../components/ButtonGradient';
 import { NormalText, IconBottomNav } from '../style';
 
 const AppStack = createBottomTabNavigator({
   First: { screen: homeStackNavigator },
   HomeOffers: { screen: travelsStackNavigator },
-  Services: { screen: ScreenHome },
+  Services: { screen: ServicesStackNavigator },
   MyTravels: { screen: myTravelsStackNavigator },
 }, {
   defaultNavigationOptions: ({ navigation }) => ({

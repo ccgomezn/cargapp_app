@@ -77,6 +77,16 @@ class Home extends Component {
     Geolocation.clearWatch(geoID);
   }
 
+  onNavigate(screen, obj) {
+    const { navigation } = this.props;
+    navigation.navigate(screen, obj);
+    if (obj) {
+      analytics().logEvent('boton_filtrar');
+    } else {
+      analytics().logEvent('boton_todos');
+    }
+  }
+
   getActiveRouteName(navigationState) {
     if (!navigationState) {
       return null;
@@ -124,10 +134,8 @@ class Home extends Component {
   }
 
   render() {
-    const { navigation, profile } = this.props;
-    const { navigate } = navigation;
+    const { profile } = this.props;
     const { location, name } = this.state;
-    console.log(this.props);
     if (location.latitudeDelta !== 0.5 && profile.data !== null) {
       profile.data.map((data) => {
         if (name === '') {
@@ -145,6 +153,10 @@ class Home extends Component {
             }}
             followsUserLocation
             showsIndoorLevelPicker
+            toolbarEnabled
+            showsMyLocationButton
+            showsTraffic
+            showsCompass
             style={{ height: '100%', width: '100%' }}
           >
             <MapView.Marker
@@ -166,8 +178,9 @@ class Home extends Component {
             />
             <NormalText>Buscar viajes disponibles</NormalText>
             <WrapperSwipeable>
-              <SwipeableHome text="Todos" press={() => navigate('Second')} />
-              <SwipeableHome text="Filtros específicos" press={() => navigate('Second', { filter: true })} />
+              <SwipeableHome text="Todos" press={() => this.onNavigate('Second')} />
+              <SwipeableHome text="Buscar viajes" press={() => this.onNavigate('Second', { filter: true })} />
+              <SwipeableHome text="Cerca a tí" press={() => this.onNavigate('')} />
             </WrapperSwipeable>
           </WrapperContent>
         </MainWrapper>

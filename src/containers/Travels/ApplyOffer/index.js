@@ -35,6 +35,7 @@ class ApplyOffer extends Component {
       showTravel: false,
       modalFinish: false,
       modalRate: false,
+      modalApply: false,
     };
   }
 
@@ -57,7 +58,7 @@ class ApplyOffer extends Component {
     if (dataOffer) {
       this.setState({ offer: dataOffer });
     }
-    if (dataOffer.statu_id === 11 || (dataOffer.statu_id === 10 && booked)) {
+    if (dataOffer.statu_id === 10 && booked) {
       this.setState({ modalFinish: true });
     }
     getRateServices();
@@ -76,6 +77,13 @@ class ApplyOffer extends Component {
     this.setState({ modalRate: true });
   }
 
+  onPressReturn() {
+    analytics().logEvent('boton_regresar_oferta');
+    const { navigation } = this.props;
+    // navigation.navigate('MyTravels');
+    navigation.goBack();
+  }
+
   vehicleType(value, id) {
     analytics().logEvent('boton_aplicar_a_oferta');
     const { navigation } = this.props;
@@ -91,6 +99,7 @@ class ApplyOffer extends Component {
   }
 
   applyOffer(value, valueApplyOffer) {
+    const { modalApply } = this.props;
     const { applyOffer, navigation, profile } = this.props;
     const data = {
       service_id: valueApplyOffer.id,
@@ -98,7 +107,7 @@ class ApplyOffer extends Component {
       active: true,
     };
     applyOffer(data);
-    navigation.navigate('First');
+    this.setState({ modalApply: true });
   }
 
   nameButton() {
@@ -129,7 +138,14 @@ class ApplyOffer extends Component {
       offers, navigation, companies, rateService,
     } = this.props;
     const {
-      offer, successNotification, errorFalse, fetch, fetchID, modalFinish, modalRate,
+      offer,
+      successNotification,
+      errorFalse,
+      fetch,
+      fetchID,
+      modalFinish,
+      modalRate,
+      modalApply,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -156,7 +172,13 @@ class ApplyOffer extends Component {
               subText="Ahora ya puedes postularte al viaje"
               mainText="Muy bien, seleccionaste tu vehículo!"
               onTouchOutside={() => this.setState({ fetchID: null })}
-              visible={fetchID}
+            />
+          )}
+          {modalApply && (
+            <PopUpNotification
+              subText="Ahora tendrás que esperar a que validen tus datos"
+              mainText="Te postulaste a esta oferta correctamente!"
+              onTouchOutside={() => this.setState({ modalApply: null })}
             />
           )}
           <EmptyDialog visible={modalFinish}>
@@ -222,18 +244,20 @@ class ApplyOffer extends Component {
             }
           })}
           {companies.data.map((company) => {
+            console.log(offer);
             if (offer.company_id === company.id) {
               return (
                 <CardMapBeginTravel
-                  extra={offer.description}
+                  extra={offer.note}
                   normalText={company.address}
                   amount={offer.price}
                   onPressBG={() => this.vehicleType(offer, selectID)}
-                  onPressBW={() => this.onPressCancel()}
-                  delivery="5 días"
+                  onPressBW={() => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())}
+                  delivery={offer.description}
                   company={company.name}
                   mainButton={this.nameButton()}
                   onPressQA={() => this.onPressQualification()}
+                  status={offer.statu_id}
                 />
               );
             }

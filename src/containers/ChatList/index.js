@@ -31,6 +31,7 @@ class ListChat extends Component {
 
 
   onViewDetail(data) {
+    analytics().logEvent('boton_chat');
     const { navigate } = this.props.navigation;
     navigate('InnerChat', { data });
   }

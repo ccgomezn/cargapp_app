@@ -15,44 +15,42 @@ export const WrapperHeader = styled.View`
     width: 100%;
     height: auto;
     flex-direction: row;
-    padding: 10px;
-    justify-content: space-between;
+    padding-vertical: 10px;
     align-items: center;
-    `;
+`;
 
 export const WrapperBody = styled.View`
-    width: 100%;
-    height: auto;
-    padding-top: 10px;
-    `;
+  width: 100%;
+  height: auto;
+  padding-top: 5px;
+`;
 
 export const WrapperFooter = styled.View`
-    width: 100%;
-    flex-direction: row;
-    height: auto;
-    justify-content: flex-end;
-    align-self: flex-end;
-    `;
+  width: 100%;
+  flex-direction: row;
+  height: auto;
+  justify-content: flex-end;
+  align-self: flex-end;
+`;
 
 export const WrapperIcon = styled.View`
-    width: auto;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    `;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 10px 10px 8px;
+`;
 
 export const Icon = styled.Image`
-    height: 30px;
-    width: 30px;
-    background-color: #f3f3f3;
-    `;
+  height: 30px;
+  width: 30px;
+`;
 
 export const WrapperInfo = styled.View`
-    width: auto;
+    flex: 5;
     align-items: flex-start;
     height: auto;
     justify-content: space-between;
-    padding-right: 8%;
+    padding-right: 4%;
     `;
 
 export const BoldText = styled.Text`
@@ -70,7 +68,7 @@ export const NormalText = styled.Text`
     `;
 
 export const TouchableQualification = styled.TouchableOpacity`
-    width: auto;
+    flex: 3;
     justify-content: center;
     align-items: center;
     height: auto;
@@ -86,7 +84,7 @@ export const BlueText = styled.Text`
 export const WrapperColumn = styled.View`
     width: 100%;
     flex-direction: row;
-    padding-top: 10px;
+    padding-top: 0px;
     `;
 
 export const WrapperInfoBody = styled.View`

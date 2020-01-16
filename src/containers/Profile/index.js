@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable array-callback-return */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/prop-types */
@@ -45,12 +46,13 @@ class Profile extends Component {
   }
 
   onPressButtonPassword() {
-    analytics().setCurrentScreen('mi_perfil_cambiar_contraseña');
+    analytics().setCurrentScreen('mi_perfil_cambiar_contrasena');
     this.setState({ modalPassword: true });
   }
 
   // eslint-disable-next-line react/sort-comp
   OnHideModal() {
+    analytics().logEvent('boton_cancelar_cambio_contrasena');
     this.setState({ modalPassword: false });
   }
 
@@ -68,6 +70,7 @@ class Profile extends Component {
   }
 
   refreshPassword() {
+    analytics().logEvent('boton_confirmar_cambio_contrasena');
     const { previousPassword, newPassword, repeatPassword } = this.state;
     const { putPassword } = this.props;
     if (repeatPassword === newPassword) {
@@ -122,7 +125,9 @@ class Profile extends Component {
               <ContentInitial>
                 <WrapperColumn>
                   <WrapperImage>
-                    <Image />
+                    <Image
+                      source={require('../../Images/profile.jpg')}
+                    />
                   </WrapperImage>
                   <WrapperInfo>
                     <BoldText>{data.profile.firt_name}</BoldText>
@@ -156,11 +161,35 @@ class Profile extends Component {
 
                 <ContentForm>
                   <WrapperInputs>
-                    <Input title="Correo electrónico" type="email-address" value={data.user.email} editable={false} />
-                    <Input title="Nombre" value={name} onChangeText={text => this.setState({ name: text })} />
-                    <Input title="Apellido" value={lastName} onChangeText={text => this.setState({ lastName: text })} />
-                    <Input title="Cedula" holder="Ingrese número de documento" type="numeric" value={data.user.identification} editable={false} />
-                    <Input title="Celular" holder="Ingrese número de documento" value={data.profile.phone ? data.profile.phone.slice(2, 12) : data.profile.phone} editable={false} />
+                    <Input
+                      title="Correo electrónico"
+                      type="email-address"
+                      value={data.user.email}
+                      editable={false}
+                    />
+                    <Input
+                      title="Nombre"
+                      value={name}
+                      onChangeText={text => this.setState({ name: text })}
+                    />
+                    <Input
+                      title="Apellido"
+                      value={lastName}
+                      onChangeText={text => this.setState({ lastName: text })}
+                    />
+                    <Input
+                      title="Cédula"
+                      holder="Ingrese número de documento"
+                      type="numeric"
+                      value={data.user.identification}
+                      editable={false}
+                    />
+                    <Input
+                      title="Celular"
+                      holder="Ingrese número de documento"
+                      value={data.profile.phone ? data.profile.phone.slice(2, 12) : data.profile.phone}
+                      editable={false}
+                    />
                   </WrapperInputs>
                 </ContentForm>
                 <WrapperButtonsBottom>

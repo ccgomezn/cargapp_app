@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -21,21 +22,27 @@ import ButtonWhite from '../ButtonWhite';
 import ButtonGradient from '../ButtonGradient';
 
 function CardMapBeginTravel({
-  company, normalText, amount, delivery, extra, onPressBW, onPressBG, mainButton, onPressQA,
+  company, normalText, amount, delivery, extra,
+  onPressBW, onPressBG, mainButton, onPressQA,
+  status,
 }) {
   return (
     <MainWrapper>
       <WrapperHeader>
         <WrapperIcon>
-          <Icon />
+          <Icon
+            source={require('../../Images/compani.png')}
+          />
         </WrapperIcon>
         <WrapperInfo>
           <BoldText>{company}</BoldText>
-          <NormalText>{normalText}</NormalText>
+          <NormalText>
+            {normalText}
+          </NormalText>
         </WrapperInfo>
         <TouchableQualification onPress={onPressQA}>
           <BlueText>
-                        Ver calificación
+            Ver calificación
           </BlueText>
         </TouchableQualification>
       </WrapperHeader>
@@ -47,7 +54,7 @@ function CardMapBeginTravel({
             <NormalText>{amount}</NormalText>
           </WrapperInfoBody>
           <WrapperInfoBody>
-            <BoldText>Entregar en</BoldText>
+            <BoldText>Descripción</BoldText>
             <NormalText>{delivery}</NormalText>
           </WrapperInfoBody>
         </WrapperColumn>
@@ -58,14 +65,16 @@ function CardMapBeginTravel({
           </WrapperInfoBody>
         </WrapperColumn>
       </WrapperBody>
-      <WrapperFooter>
-        <WrapperButton>
-          <ButtonWhite press={onPressBW} content="Cancelar" />
-        </WrapperButton>
-        <WrapperButton>
-          <ButtonGradient press={onPressBG} content={mainButton} />
-        </WrapperButton>
-      </WrapperFooter>
+      { status !== 11 ? (
+        <WrapperFooter>
+          <WrapperButton>
+            <ButtonWhite press={onPressBW} content="Volver" />
+          </WrapperButton>
+          <WrapperButton>
+            <ButtonGradient press={onPressBG} content={mainButton} />
+          </WrapperButton>
+        </WrapperFooter>
+      ) : <WrapperFooter><WrapperButton><ButtonWhite press={onPressBW} content="Volver" /></WrapperButton></WrapperFooter>}
     </MainWrapper>
   );
 }
@@ -79,6 +88,7 @@ CardMapBeginTravel.propTypes = {
   onPressBG: PropTypes.func.isRequired,
   onPressQA: PropTypes.func.isRequired,
   mainButton: PropTypes.func.isRequired,
+  status: PropTypes.number.isRequired,
 };
 
 export default CardMapBeginTravel;

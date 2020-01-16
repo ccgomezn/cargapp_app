@@ -10,7 +10,7 @@ export const AddressesWrapper = styled.View`
   height: auto;
   padding: 20px;
   position: absolute;
-  bottom: 50%;
+  bottom: 46%;
 `;
 
 export const WrapperModal = styled.View`
