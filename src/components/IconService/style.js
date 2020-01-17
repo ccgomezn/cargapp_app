@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import SvgUriN from 'react-native-svg-uri';
 
 export const ContaintView = styled.View`
-  height: 115px;
+  height: 110px;
   width: 100px;
   margin-bottom: 10px;
 `;
@@ -30,10 +30,10 @@ export const TextIcon = styled.Text`
   margin-top: 3px;
   font-family: Roboto-Regular;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   color: #010738;
 `;
 
-export const DrawIcon = styled(SvgUriN)`
+export const DrawIcon = styled.Image`
   resize-mode: contain;
 `;

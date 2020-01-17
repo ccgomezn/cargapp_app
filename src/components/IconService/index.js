@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -20,9 +21,10 @@ function IconService(
     <ContaintView>
       <ContaintIcon onPress={press}>
         <CicleIcon>
-          { icon != null ? (
+          { icon !== null ? (
             <DrawIcon
-              source={{ uri: icon }}
+              // source={{ uri: icon }}
+              source={icon}
             />
           ) : null }
         </CicleIcon>

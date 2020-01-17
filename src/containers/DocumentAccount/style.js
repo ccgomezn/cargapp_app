@@ -55,4 +55,35 @@ export const TextGray = styled.Text`
   font-style: normal;
   letter-spacing: -0.3px;
   color: #010935;
+  margin-top: 4px;
+`;
+
+export const WrapperDocument = styled.View`
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+`;
+
+export const RowDocument = styled.View`
+  width: 100%;
+  margin-top: 10px;
+`;
+
+export const WrapperError = styled.View`
+  width: 100%;
+  font-size: 14px;
+  letter-spacing: -0.4px;
+`;
+
+export const TextError = styled.Text`
+  opacity: 0.95;
+  font-family: Roboto;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: -0.5px;
+  background-color: #ff2557; //#d3e5ff;
+  padding: 10px 6px;
+  color: #fff;
+  border-radius: 6px;
+  margin-bottom: 2px;
 `;

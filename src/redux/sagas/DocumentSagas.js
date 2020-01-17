@@ -65,12 +65,30 @@ export function* registerDocumentService(api, action) {
 }
 
 
-export function* validateDocument(api, action) {
+export function* getDocumentTypes(api, action) {
   const { params } = action;
-  const response = yield call(api.document.registerDocument, params);
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.document.getDocumentsTypes, params);
+  console.log('types', response);
   if (response.ok) {
     // save response ok
+    yield put(DocumentActions.getDocsTypesSuccess(response.data));
   } else {
     // error
+    yield put(DocumentActions.getDocsTypesFailure(null));
+  }
+}
+
+export function* getDocumentsMe(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.document.getDocumentsMe, params);
+  console.log('doc_me', response);
+  if (response.ok) {
+    yield put(DocumentActions.getDocsMeSuccess(response.data));
+  } else {
+    yield put(DocumentActions.getDocsMeFailure(null));
   }
 }

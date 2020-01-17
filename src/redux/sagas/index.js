@@ -40,7 +40,10 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { registerDocument, registerDocumentService, getDocsServiceRequest } from './DocumentSagas';
+import {
+  registerDocument, registerDocumentService, getDocsServiceRequest, getDocumentTypes,
+  getDocumentsMe,
+} from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -123,5 +126,7 @@ export default function* root() {
     takeLatest(ChallengeTypes.GET_ACTIVE_CHALLENGE_REQUEST, getActiveChallenge, api),
     takeLatest(PrizesTypes.GET_ACTIVE_PRIZES_REQUEST, getActivePrizes, api),
     takeLatest(TopTypes.GET_TOP_USERS_REQUEST, getTopUsers, api),
+    takeLatest(DocumentTypes.GET_DOCS_TYPES_REQUEST, getDocumentTypes, api),
+    takeLatest(DocumentTypes.GET_DOCS_ME_REQUEST, getDocumentsMe, api),
   ]);
 }

@@ -16,6 +16,12 @@ export const { Types, Creators } = createActions({
   getDocsServiceSuccess: ['serviceDocuments'],
   getDocsServiceFailure: ['params'],
   getDocsServiceRequest: ['id'],
+  getDocsTypesRequest: ['params'],
+  getDocsTypesSuccess: ['data'],
+  getDocsTypesFailure: null,
+  getDocsMeRequest: ['params'],
+  getDocsMeSuccess: ['data'],
+  getDocsMeFailure: null,
 });
 
 export const DocumentTypes = Types;
@@ -28,6 +34,9 @@ export const INITIAL_STATE = Immutable({
   status: null, // respuesta success
   unprocess: false,
   serviceDocuments: null,
+  fetchingTypes: false,
+  listTypes: null,
+  listDocuments: null,
 });
 
 /* ----------------- Selectors ---------------- */
@@ -109,12 +118,12 @@ export const postRegisterDocServiceRequest = (state) => {
 };
 
 
-export const getDocsServiceSuccess = (state, {serviceDocuments}) => {
+export const getDocsServiceSuccess = (state, { serviceDocuments }) => {
   return {
     ...state,
     fetching: false,
     error: false,
-    serviceDocuments
+    serviceDocuments,
   };
 };
 
@@ -135,6 +144,62 @@ export const getDocsServiceRequest = (state) => {
   };
 };
 
+/* ---------------- GET list Deocuments Me -------------- */
+export const getDocsMeSuccess = (state, {data}) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    listDocuments: data,
+  };
+};
+
+export const getDocsMeFailure = (state) => {
+  return {
+    ...state,
+    fetching: false,
+    error: true,
+    listDocuments: null,
+  };
+};
+
+export const getDocsMeRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+    listDocuments: null,
+  };
+};
+
+/* ----------------- GET Documents Types ---------------- */
+export const getDocsTypesSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetchingTypes: false,
+    error: false,
+    listTypes: data,
+  };
+};
+
+export const getDocsTypesFailure = (state) => {
+  return {
+    ...state,
+    fetchingTypes: false,
+    error: true,
+    listTypes: null,
+  };
+};
+
+export const getDocsTypesRequest = (state) => {
+  return {
+    ...state,
+    fetchingTypes: true,
+    error: false,
+    listTypes: null,
+  };
+};
+
 /* --------------- Reducers ----------- */
 export const reducer = createReducer(INITIAL_STATE, {
   // register document
@@ -149,4 +214,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_DOCS_SERVICE_SUCCESS]: getDocsServiceSuccess,
   [Types.GET_DOCS_SERVICE_FAILURE]: getDocsServiceFailure,
   [Types.GET_DOCS_SERVICE_REQUEST]: getDocsServiceRequest,
+  [Types.GET_DOCS_TYPES_SUCCESS]: getDocsTypesSuccess,
+  [Types.GET_DOCS_TYPES_REQUEST]: getDocsTypesRequest,
+  [Types.GET_DOCS_TYPES_FAILURE]: getDocsTypesFailure,
+  [Types.GET_DOCS_ME_SUCCESS]: getDocsMeSuccess,
+  [Types.GET_DOCS_ME_REQUEST]: getDocsMeRequest,
+  [Types.GET_DOCS_ME_FAILURE]: getDocsMeFailure,
 });

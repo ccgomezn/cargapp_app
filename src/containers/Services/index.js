@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable no-else-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
@@ -7,11 +8,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import {
-  MainWrapper, ContentView, TextBlack, ContentBlock,
+  MainWrapper, ContentView, TextBlack, ContentBlock, ContentServices,
 } from './style';
 import IconService from '../../components/IconService';
 
-import ButtonGradient from '../../components/ButtonGradient';
 import UserActions from '../../redux/reducers/UserRedux';
 
 class Service extends Component {
@@ -37,32 +37,38 @@ class Service extends Component {
         </ContentView>
 
         <ContentView style={{ flexDirection: 'column' }}>
-          <View style={{ justifyContent: 'space-between' , display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
+          <ContentServices>
             <IconService
-              icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+              // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+              icon={require('../../icons/IconService_Combustibles.png')}
               text="Combustible"
             />
             <IconService
-              icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
+              // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
+              icon={require('../../icons/IconService_Lubricantes.png')}
               text="Lubricantes"
             />
             <IconService
-              icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
+              // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
+              icon={require('../../icons/IconService_Soat.png')}
               text="SOAT"
             />
             <IconService
-              icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+              // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+              icon={require('../../icons/IconService_Asistencia.png')}
               text="Asistencia"
             />
             <IconService
-              icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
+              // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
+              icon={require('../../icons/IconService_Hospedaje.png')}
               text="Hospedaje"
             />
             <IconService
-              icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
-              text="Sugerencias"
+              // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
+              icon={require('../../icons/IconService_Alimentacion.png')}
+              text="Alimentación"
             />
-          </View>
+          </ContentServices>
         </ContentView>
       </MainWrapper>
     );
