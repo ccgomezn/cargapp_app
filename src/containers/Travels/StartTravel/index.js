@@ -404,9 +404,6 @@ class StartTravel extends Component {
     if (document.error && !spinner) {
       this.setState({ nonManifest: true });
     }
-    console.log(offerSpecific);
-    console.log(waypoints);
-    console.log(companies);
     if (offerSpecific !== null
       && waypoints !== undefined
       && markers.data !== null

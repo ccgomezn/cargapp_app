@@ -70,7 +70,7 @@ class ListVehicles extends Component {
 
   render() {
     const { vehicles } = this.props;
-    const { modalVeh } = this.state;
+    const { modalVeh, offer } = this.state;
     const itemsType = {};
 
     if (vehicles.status && !vehicles.fetching && vehicles.data !== null) {
@@ -87,13 +87,25 @@ class ListVehicles extends Component {
           </ContentView>
 
           <ContentView style={{ flexDirection: 'column' }}>
-            { vehicles.list.map(data => (
-              <CardVehicle
-                data={data}
-                types={itemsType}
-                press={() => this.onViewDetail(data)}
-              />
-            ))}
+            { vehicles.list.map((data) => {
+              if (offer && offer.vehicle_type_id === data.vehicle_type_id) {
+                return (
+                  <CardVehicle
+                    data={data}
+                    types={itemsType}
+                    press={() => this.onViewDetail(data)}
+                  />
+                );
+              } else if (!offer) {
+                return (
+                  <CardVehicle
+                    data={data}
+                    types={itemsType}
+                    press={() => this.onViewDetail(data)}
+                  />
+                );
+              }
+            })}
           </ContentView>
 
           <WrapperButtonsBottom>

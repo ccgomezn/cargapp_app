@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-tiny-toast';
+import analytics from '@react-native-firebase/analytics';
 
 import Input from '../../components/GeneralInput';
 import ButtonGradient from '../../components/ButtonGradient';
@@ -56,6 +57,7 @@ class Registration extends Component {
 
   componentDidMount() {
     const { navigation } = this.props;
+    analytics().setCurrentScreen('bienvenido_cargapp');
     this.isSession();
   }
 
@@ -133,11 +135,17 @@ class Registration extends Component {
 
   changeView(view) {
     const { navigate } = this.props.navigation;
+    if(view === 'Register') {
+      analytics().logEvent('boton_registrarse');
+    } else {
+      analytics().logEvent('boton_recuperar_contraseña');
+    }
     this.setState({ dataemail: '', datapass: '' });
     navigate(view);
   }
 
   validateForm() {
+    analytics().logEvent('boton_ingresar');
     const {
       dataemail,
       datapass,

@@ -242,8 +242,8 @@ class HomeOffers extends Component {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
       vehicle: idVehicle,
-      origin: labelOrigin.split(' '),
-      destination: labelDestination.split(' '),
+      origin: labelOrigin.length > 2 ? labelOrigin : null,
+      destination: labelDestination.length > 2 ? labelDestination : null,
     };
     getFilterOffers(data);
     this.setState({ modalSearch: false });
