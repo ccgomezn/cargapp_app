@@ -42,31 +42,37 @@ class Service extends Component {
               // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
               icon={require('../../icons/IconService_Combustibles.png')}
               text="Combustible"
+              press={() => navigate('CommerceCoupons', { idCategory: 'Combustible' })}
             />
             <IconService
               // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-lubricant.svg"
               icon={require('../../icons/IconService_Lubricantes.png')}
               text="Lubricantes"
+              press={() => navigate('CommerceCoupons', { idCategory: 'Lubricantes' })}
             />
             <IconService
               // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
               icon={require('../../icons/IconService_Soat.png')}
               text="SOAT"
+              press={() => navigate('CommerceCoupons', { idCategory: 'Soat' })}
             />
             <IconService
               // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
               icon={require('../../icons/IconService_Asistencia.png')}
               text="Asistencia"
+              press={() => navigate('CommerceCoupons', { idCategory: 'Asistencia' })}
             />
             <IconService
               // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-soat.svg"
               icon={require('../../icons/IconService_Hospedaje.png')}
               text="Hospedaje"
+              press={() => navigate('CommerceCoupons', { idCategory: 'Hospedaje' })}
             />
             <IconService
               // icon="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-premios.svg"
               icon={require('../../icons/IconService_Alimentacion.png')}
               text="Alimentación"
+              press={() => navigate('CommerceCoupons', { idCategory: 'Alimentación' })}
             />
           </ContentServices>
         </ContentView>

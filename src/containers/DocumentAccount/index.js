@@ -14,9 +14,12 @@ import Toast from 'react-native-tiny-toast';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, TextGray,
   WrapperDocument, RowDocument, WrapperError, TextError,
+  MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail,
+  WrapperTitle, TitleDesc,
 } from './style';
 
 import Card from '../../components/ComponentCard';
+import EmptyDialog from '../../components/EmptyDialog';
 // import ButtonGradient from '../../components/ButtonGradient';
 
 import DocumentActions from '../../redux/reducers/DocumentRedux';
@@ -31,6 +34,8 @@ class DocumentAccount extends Component {
       listStatus: [],
       document_load: '',
       init: false,
+      modalEdit: false,
+      activeEdit: null,
     };
   }
 
@@ -75,6 +80,12 @@ class DocumentAccount extends Component {
     this.setState({ listStatus: oldList, document_load: id_type });
   }
 
+  onPressEdit(item) {
+    const { listStatus } = this.state;
+    console.log(listStatus[item].dataEdit.id);
+    this.setState({ modalEdit: true, activeEdit: item });
+  }
+
   onPressButtonDoc(item) {
     const { listStatus } = this.state;
     const oldList = listStatus;
@@ -106,7 +117,7 @@ class DocumentAccount extends Component {
         // image ok
         const idDoc = oldList[item].id;
         oldList[item].status = 'loading';
-        this.onRegisterDoc(item, idDoc, response);
+        // this.onRegisterDoc(item, idDoc, response);
       }
 
       // end process
@@ -118,11 +129,12 @@ class DocumentAccount extends Component {
     const { document, user } = this.props;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
+      modalEdit, activeEdit,
     } = this.state;
     const initStatus = [];
     const oldList = listStatus;
 
-    console.log(user);
+    // console.log(user);
     console.log(listStatus);
 
     // hide Toast
@@ -159,14 +171,28 @@ class DocumentAccount extends Component {
 
     if (document.listTypes !== null && !document.fetchingTypes && document.listDocuments !== null) {
       if (!init) {
-        { document.listTypes.map((data, index) => (
-          initStatus[index] = { id: data.id, status: '' }
+        { document.listTypes.map(data => (
+          initStatus[data.id] = {
+            id: data.id,
+            status: '',
+            edit: false,
+            dataEdit: null,
+            title: data.name,
+          }
         )); }
-        this.setState({ init: true, listStatus: initStatus });
+        const titleData = initStatus;
         // docs me
-        { document.listDocuments.map((datalist, index) => (
-          console.log(datalist)
+        { document.listDocuments.map(datalist => (
+          initStatus[datalist.document_type_id] = {
+            id: datalist.document_type_id,
+            status: 'correct',
+            edit: true,
+            dataEdit: datalist,
+            title: titleData[datalist.document_type_id].title,
+          }
         )); }
+        console.log(initStatus);
+        this.setState({ init: true, listStatus: initStatus });
       }
 
       return (
@@ -181,18 +207,21 @@ class DocumentAccount extends Component {
           </ContentView>
 
           <WrapperDocument>
-            { document.listTypes.map((data, index) => (
+            { document.listTypes.map(data => (
               <RowDocument>
                 <Card
+                  key={data.id}
                   logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
                   background="white"
                   mainText={data.name}
                   subText={data.description}
                   icon
-                  status={listStatus.length === 0 ? '' : listStatus[index].status}
+                  status={listStatus.length === 0 ? '' : listStatus[data.id].status}
                   colorText="black"
                   borderColorProp="#ecf0f1"
-                  press={() => this.onPressButtonDoc(index)}
+                  press={() => this.onPressButtonDoc(data.id)}
+                  edit={listStatus.length === 0 ? false : listStatus[data.id].edit}
+                  pressEdit={() => this.onPressEdit(data.id)}
                 />
               </RowDocument>
             ))}
@@ -224,6 +253,30 @@ class DocumentAccount extends Component {
             Subiendo Foto...
           </Toast>
 
+          <EmptyDialog
+            visible={modalEdit}
+            opacity={0.5}
+            onTouchOutside={() => this.OnHideModal()}
+          >
+            <MainWrapperDialog>
+              { modalEdit ? (
+                <ContentDialog>
+                  <WrapperTitle>
+                    <TitleDesc>
+                      {listStatus[activeEdit].title}
+                    </TitleDesc>
+                  </WrapperTitle>
+                  <WrapperImage>
+                    <ImageDetail
+                      loadingIndicatorSource
+                      resizeMode="contain"
+                      source={{ uri: listStatus[activeEdit].dataEdit.file }}
+                    />
+                  </WrapperImage>
+                </ContentDialog>
+              ) : null }
+            </MainWrapperDialog>
+          </EmptyDialog>
         </MainWrapper>
       );
     } return (

@@ -36,3 +36,11 @@ export const TextTerms = styled.Text`
     flex-direction: column;
     text-align: center;
 `;
+
+export const BlueText = styled.Text`
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    align-self: center;
+    color: #0068ff;
+`;

@@ -87,3 +87,52 @@ export const TextError = styled.Text`
   border-radius: 6px;
   margin-bottom: 2px;
 `;
+
+// estilos Modal
+export const MainWrapperDialog = styled.View`
+  width: 90%;
+  padding: 2%;
+  padding-bottom: 0px;
+  border-radius: 10px;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+`;
+
+export const ContentDialog = styled.View`
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  font-family: Roboto;
+  padding-top: 0px;
+`;
+
+export const WrapperImage = styled.View`
+  width: 100%;
+  margin-top: 10px;
+  marginBottom: 10px;
+`;
+
+export const ImageDetail = styled.Image`
+  width: 100%;
+  height: 250;
+`;
+
+export const WrapperTitle = styled.View`
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+`;
+
+export const TitleDesc = styled.Text`
+  font-family: Roboto-Regular;
+  font-size: 15px;
+  font-weight: 500;
+  letterSpacing: 0;
+  text-align: center;
+  width: 100%;
+  color: #010935;
+`;
