@@ -105,9 +105,9 @@ class Commerce extends Component {
               </WrapperButton>
             </View>
           ) : <BlueText>No hay cupones en estos momentos</BlueText> }
-          <WrapperText>
+          {/* <WrapperText>
             <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-          </WrapperText>
+          </WrapperText> */}
         </MainWrapper>
       );
     } return (

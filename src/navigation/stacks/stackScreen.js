@@ -319,6 +319,24 @@ export const ServicesStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  CommerceCoupons: {
+    screen: ScreenCommerceCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  DetailsCoupons: {
+    screen: ScreenDetailsCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const chatStackNavigator = createStackNavigator({

@@ -27,7 +27,7 @@ export const WrapperText = styled.View`
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 40px;
+    bottom: 30px;
 `;
 
 export const TextTerms = styled.Text`
