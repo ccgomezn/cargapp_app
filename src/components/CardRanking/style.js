@@ -30,6 +30,7 @@ export const TextTitle = styled.Text`
   color: #8a8c9f;
   fontWeight: 600;
   letterSpacing: 0;
+  textTransform: capitalize;
 `;
 
 export const ContentSecond = styled.View`

@@ -176,7 +176,7 @@ class Home extends Component {
               <CardInfoStad
                 press={() => this.onNavigate('ScreenStats')}
                 title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
-                valueKm="-"
+                valueKm={ranking.topme.kilometres}
                 textKm="Kms recorridos"
                 valuePoint={ranking.topme.my_points}
                 textPoint="Puntos Acumulados"

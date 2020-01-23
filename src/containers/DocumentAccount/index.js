@@ -15,12 +15,13 @@ import {
   MainWrapper, ContentView, TextBlack, ContentBlock, TextGray,
   WrapperDocument, RowDocument, WrapperError, TextError,
   MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail,
-  WrapperTitle, TitleDesc,
+  WrapperTitle, TitleDesc, WrapperButtonsBottom,
 } from './style';
 
 import Card from '../../components/ComponentCard';
 import EmptyDialog from '../../components/EmptyDialog';
-// import ButtonGradient from '../../components/ButtonGradient';
+import ButtonGradient from '../../components/ButtonGradient';
+import ButtonWhite from '../../components/ButtonWhite';
 
 import DocumentActions from '../../redux/reducers/DocumentRedux';
 
@@ -81,19 +82,17 @@ class DocumentAccount extends Component {
   }
 
   onPressEdit(item) {
-    const { listStatus } = this.state;
-    console.log(listStatus[item].dataEdit.id);
     this.setState({ modalEdit: true, activeEdit: item });
   }
 
   onPressButtonDoc(item) {
-    const { listStatus } = this.state;
+    const { listStatus, activeEdit } = this.state;
     const oldList = listStatus;
     this.setState({ error: null });
     console.log(oldList);
 
     const options = {
-      title: 'Vincular Documento',
+      title: activeEdit === null ? 'Vincular Documento' : 'Actualizar Documento',
       cancelButtonTitle: 'Cancelar',
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
@@ -117,12 +116,25 @@ class DocumentAccount extends Component {
         // image ok
         const idDoc = oldList[item].id;
         oldList[item].status = 'loading';
-        // this.onRegisterDoc(item, idDoc, response);
+        this.onRegisterDoc(item, idDoc, response);
       }
 
       // end process
       this.setState({ listStatus: oldList });
     });
+  }
+
+  onRemoveDoc() {
+    const { activeEdit } = this.state;
+    const { listStatus } = this.state;
+    this.setState({ error: null });
+    const idItem = listStatus[activeEdit].dataEdit.id;
+    // alert(idItem);
+    this.onPressButtonDoc(activeEdit);
+  }
+
+  OnHideModal() {
+    this.setState({ modalEdit: false, activeEdit: null, error: null });
   }
 
   render() {
@@ -136,6 +148,7 @@ class DocumentAccount extends Component {
 
     // console.log(user);
     console.log(listStatus);
+    console.log(`activoDoc ${activeEdit}`);
 
     // hide Toast
     if (visible_error) {
@@ -273,6 +286,19 @@ class DocumentAccount extends Component {
                       source={{ uri: listStatus[activeEdit].dataEdit.file }}
                     />
                   </WrapperImage>
+                  <WrapperButtonsBottom style={{ marginTop: 10 }}>
+                    <ButtonGradient
+                      content="Actualizar"
+                      press={() => this.onRemoveDoc()}
+                    />
+                  </WrapperButtonsBottom>
+                  <WrapperButtonsBottom style={{ marginTop: 0 }}>
+                    <ButtonWhite
+                      content="Cerrar"
+                      border={{ }}
+                      press={() => this.OnHideModal()}
+                    />
+                  </WrapperButtonsBottom>
                 </ContentDialog>
               ) : null }
             </MainWrapperDialog>

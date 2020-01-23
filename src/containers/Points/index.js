@@ -11,7 +11,7 @@ import {
   WrapperTab, SegmentTab, TitleTab, ActiveTitleText,
   ActiveButtonTab, FirstTab, LastTab,
   MainWrapperDialog, ContentDialog, WrapperImage,
-  WrapperButtonsBottom, TextDesc, TitleDesc, ImageDetail
+  WrapperButtonsBottom, TextDesc, TitleDesc, ImageDetail, TextTop,
 } from './style';
 
 import {
@@ -110,7 +110,7 @@ class Points extends Component {
         {ranking.topme !== null ? (
           <CardInfoStad
             title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
-            valueKm="-"
+            valueKm={ranking.topme.kilometres}
             textKm="Kms recorridos"
             valuePoint={ranking.topme.my_points}
             textPoint="Puntos Acumulados"
@@ -200,15 +200,16 @@ class Points extends Component {
                 <CardRanking
                   isMe
                   title={'Mi Posición'}
-                  textKM="-"
+                  textKM={ranking.topme.kilometres}
                   textPoint={ranking.topme.my_points}
                   position={ranking.topme.position}
                 />
               ) : null }
+              <TextTop>--- Top ---</TextTop>
               { ranking.toplist.map(data => (
                 <CardRanking
-                  title={'Conductor '+data.user_id}
-                  textKM={data.position}
+                  title={data.name}
+                  textKM={data.kilometres}
                   textPoint={data.points}
                   position={data.position}
                 />

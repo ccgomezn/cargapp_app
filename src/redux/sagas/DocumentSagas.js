@@ -92,3 +92,16 @@ export function* getDocumentsMe(api, action) {
     yield put(DocumentActions.getDocsMeFailure(null));
   }
 }
+
+export function* deleteDocument(api, action) {
+  const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.document.deleteDocument, params);
+  console.log('del doc', response);
+  if (response.ok) {
+    // delete confirm
+  } else {
+    // error service
+  }
+}

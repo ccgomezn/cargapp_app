@@ -12,7 +12,7 @@ function CardRanking({
   press, title, textKM, textPoint, position, icon, isMe,
 }) {
   return (
-    <WrapperCard style={isMe ? { backgroundColor: '#0088f1' } : null}>
+    <WrapperCard style={isMe ? { backgroundColor: '#0088f1', marginBottom: '2%' } : null}>
       <ContentCard>
         <ImageContent>
           <CircleBorder

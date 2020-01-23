@@ -33,14 +33,14 @@ export const TextBlack = styled.Text`
   color: #010935;
 `;
 
-export const WrapperButtonsBottom = styled.View`
+/* export const WrapperButtonsBottom = styled.View`
   width: 100%;
   flex-direction: row;
   height: auto;
   justify-content: flex-end;
   padding-bottom: 10px;
   margin-bottom: 10px;
-`;
+`; */
 
 export const WrapperButtonGradient = styled.TouchableOpacity`
   width: 100%;
@@ -135,4 +135,12 @@ export const TitleDesc = styled.Text`
   text-align: center;
   width: 100%;
   color: #010935;
+`;
+
+export const WrapperButtonsBottom = styled.View`
+  width: 100%;
+  flex-direction: row;
+  height: auto;
+  justify-content: flex-end;
+  padding-bottom: 10px;
 `;

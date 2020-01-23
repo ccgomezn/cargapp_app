@@ -8,5 +8,6 @@ export default function (api) {
     getDocumentsOfService: id => api.get(`/service_documents/find_service/${id}`),
     getDocumentsTypes: params => api.get('/document_types/active/', params),
     getDocumentsMe: params => api.get('/documents/me/', params),
+    deleteDocument: id => api.delete(`/documents/${id}`),
   };
 }

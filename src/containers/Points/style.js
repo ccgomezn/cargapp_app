@@ -164,3 +164,12 @@ export const ImageDetail = styled.Image`
   width: 100%;
   height: 140;
 `;
+
+export const TextTop = styled.Text`
+  font-family: Roboto-Regular;
+  font-size: 16px;
+  letter-spacing: 0px;
+  color: #8a8c9d;
+  text-align: center;
+  margin-bottom: 10px;
+`;

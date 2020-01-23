@@ -52,6 +52,10 @@ const itemList = [
     url: 'ScreenProfile',
   },
   {
+    label: 'Documentos',
+    url: 'ScreenProfile',
+  },
+  {
     label: 'Mis Vehículos',
     url: 'ScreenVehicle',
   },
@@ -74,7 +78,7 @@ class HomeOffers extends Component {
       callMine: false,
       modalPermission: false,
       fetch: false,
-      listview: ['profiles', 'vehicles', 'bank_accounts'],
+      listview: ['profiles', 'documents','vehicles', 'bank_accounts'],
       modalFromHome: true,
       share: false,
     };
@@ -285,6 +289,7 @@ class HomeOffers extends Component {
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
       let perm = 0;
+      console.log(permissions);
       permissions.data.map((pem) => {
         if (listview.includes(pem.name)) {
           if (!pem.permission) {
