@@ -32,6 +32,7 @@ class DocumentAccount extends Component {
       error: null,
       visible_error: false,
       loadingRegister: false,
+      loadingUpdate: false,
       listStatus: [],
       document_load: '',
       init: false,
@@ -50,8 +51,8 @@ class DocumentAccount extends Component {
     const { listStatus } = this.state;
     const { user, registerDocument } = this.props;
     const oldList = listStatus;
-    console.log(user.info.user);
     const userId = user.info.user.id;
+
     if (userId !== '') {
       let photoName = source.fileName;
       if (source.fileName === '' || source.fileName === null) {
@@ -70,9 +71,8 @@ class DocumentAccount extends Component {
       data.append('document[approved]', false);
       data.append('document[active]', 1);
 
-      console.log(data);
       await registerDocument(data);
-      this.setState({ loadingRegister: true });
+      this.setState({ loadingUpdate: false, loadingRegister: true });
       oldList[id_type].status = 'loading';
     } else {
       this.setState({ visible_error: true });
@@ -86,10 +86,10 @@ class DocumentAccount extends Component {
   }
 
   onPressButtonDoc(item) {
+    const { deleteDocument } = this.props;
     const { listStatus, activeEdit } = this.state;
     const oldList = listStatus;
-    this.setState({ error: null });
-    console.log(oldList);
+    this.setState({ error: null, modalEdit: false });
 
     const options = {
       title: activeEdit === null ? 'Vincular Documento' : 'Actualizar Documento',
@@ -106,8 +106,10 @@ class DocumentAccount extends Component {
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
         // user cancelled image picker
-        oldList[item].status = 'fail';
-        this.setState({ error: 'Tienes 1 o más documentos invalidos' });
+        if (activeEdit === null) {
+          oldList[item].status = 'fail';
+          this.setState({ error: 'Tienes 1 o más documentos invalidos' });
+        }
       } else if (response.error) {
         // Error imagePicker
         oldList[item].status = 'fail';
@@ -116,6 +118,11 @@ class DocumentAccount extends Component {
         // image ok
         const idDoc = oldList[item].id;
         oldList[item].status = 'loading';
+        if (activeEdit !== null) {
+          const idItem = listStatus[activeEdit].dataEdit.id;
+          this.setState({ loadingUpdate: true });
+          deleteDocument(idItem);
+        }
         this.onRegisterDoc(item, idDoc, response);
       }
 
@@ -126,10 +133,7 @@ class DocumentAccount extends Component {
 
   onRemoveDoc() {
     const { activeEdit } = this.state;
-    const { listStatus } = this.state;
     this.setState({ error: null });
-    const idItem = listStatus[activeEdit].dataEdit.id;
-    // alert(idItem);
     this.onPressButtonDoc(activeEdit);
   }
 
@@ -138,17 +142,13 @@ class DocumentAccount extends Component {
   }
 
   render() {
-    const { document, user } = this.props;
+    const { document, getDocumentsMe } = this.props;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
-      modalEdit, activeEdit,
+      modalEdit, activeEdit, loadingUpdate,
     } = this.state;
     const initStatus = [];
     const oldList = listStatus;
-
-    // console.log(user);
-    console.log(listStatus);
-    console.log(`activoDoc ${activeEdit}`);
 
     // hide Toast
     if (visible_error) {
@@ -173,7 +173,8 @@ class DocumentAccount extends Component {
         if (document.status && !document.unprocess) {
           // register ok
           oldList[document_load].status = 'correct';
-          this.setState({ listStatus: oldList, loadingRegister: false });
+          this.setState({ listStatus: oldList, loadingRegister: false, init: false });
+          getDocumentsMe();
         } else if (loadingRegister && document.unprocess) {
           oldList[document_load].status = 'fail';
           this.setState({ listStatus: oldList, loadingRegister: false, error: 'Tienes 1 o más documentos no validos.' });
@@ -204,7 +205,6 @@ class DocumentAccount extends Component {
             title: titleData[datalist.document_type_id].title,
           }
         )); }
-        console.log(initStatus);
         this.setState({ init: true, listStatus: initStatus });
       }
 
@@ -264,6 +264,15 @@ class DocumentAccount extends Component {
             animation
           >
             Subiendo Foto...
+          </Toast>
+          <Toast
+            visible={loadingUpdate}
+            position={0}
+            loading
+            shadow
+            animation
+          >
+            Eliminado Foto...
           </Toast>
 
           <EmptyDialog
@@ -327,6 +336,7 @@ const mapDispatchToProps = dispatch => ({
   registerDocument: params => dispatch(DocumentActions.postRegisterDocRequest(params)),
   getDocumentsTypes: params => dispatch(DocumentActions.getDocsTypesRequest(params)),
   getDocumentsMe: params => dispatch(DocumentActions.getDocsMeRequest(params)),
+  deleteDocument: id => dispatch(DocumentActions.removeDocRequest(id)),
 });
 
 export default connect(

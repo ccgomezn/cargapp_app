@@ -27,4 +27,5 @@ export default combineReducers({
   challenge: require('./ChallengeRedux').reducer,
   prizes: require('./PrizesRedux').reducer,
   ranking: require('./TopUsersRedux').reducer,
+  statiscs: require('./StaticsRedux').reducer,
 });

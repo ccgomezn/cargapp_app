@@ -94,10 +94,10 @@ export function* getDocumentsMe(api, action) {
 }
 
 export function* deleteDocument(api, action) {
-  const { params } = action;
+  const { id } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.document.deleteDocument, params);
+  const response = yield call(api.document.deleteDocument, id);
   console.log('del doc', response);
   if (response.ok) {
     // delete confirm

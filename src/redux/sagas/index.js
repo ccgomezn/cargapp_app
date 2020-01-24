@@ -27,7 +27,8 @@ import { DestinationsTypes } from '../reducers/DestinationsRedux';
 import { ChallengeTypes } from '../reducers/ChallengeRedux';
 import { PrizesTypes } from '../reducers/PrizesRedux';
 import { TopTypes } from '../reducers/TopUsersRedux';
-/* ---------- Sagas ----------- */
+import { StaticsTypes } from '../reducers/StaticsRedux';
+/* --------------- Sagas ----------------- */
 import { profileDriver } from './DriverSagas';
 import {
   verifyPhone,
@@ -42,7 +43,7 @@ import {
 import { countriesActive } from './CountrieSagas';
 import {
   registerDocument, registerDocumentService, getDocsServiceRequest, getDocumentTypes,
-  getDocumentsMe,
+  getDocumentsMe, deleteDocument,
 } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
@@ -67,6 +68,7 @@ import { getDestinations } from './DestinationsSagas';
 import { getActiveChallenge } from './ChallengeSagas';
 import { getActivePrizes } from './PrizesSagas';
 import { getTopUsers } from './TopUsersSagas';
+import { getMeStatics } from './StaticsSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -128,5 +130,7 @@ export default function* root() {
     takeLatest(TopTypes.GET_TOP_USERS_REQUEST, getTopUsers, api),
     takeLatest(DocumentTypes.GET_DOCS_TYPES_REQUEST, getDocumentTypes, api),
     takeLatest(DocumentTypes.GET_DOCS_ME_REQUEST, getDocumentsMe, api),
+    takeLatest(DocumentTypes.REMOVE_DOC_REQUEST, deleteDocument, api),
+    takeLatest(StaticsTypes.GET_STATICS_ME_REQUEST, getMeStatics, api),
   ]);
 }

@@ -75,7 +75,6 @@ class Points extends Component {
     const { getActiveChallenge, getActivePrizes, getTopRanking } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));
-    console.log(index);
     if (index == 0) {
       // get prozes
       getActivePrizes();
@@ -106,7 +105,6 @@ class Points extends Component {
 
     return (
       <MainWrapper>
-        {console.log(ranking)}
         {ranking.topme !== null ? (
           <CardInfoStad
             title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}

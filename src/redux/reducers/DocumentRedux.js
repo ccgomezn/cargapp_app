@@ -22,6 +22,7 @@ export const { Types, Creators } = createActions({
   getDocsMeRequest: ['params'],
   getDocsMeSuccess: ['data'],
   getDocsMeFailure: null,
+  removeDocRequest: ['id'],
 });
 
 export const DocumentTypes = Types;
@@ -144,8 +145,18 @@ export const getDocsServiceRequest = (state) => {
   };
 };
 
-/* ---------------- GET list Deocuments Me -------------- */
-export const getDocsMeSuccess = (state, {data}) => {
+/* --------------- REMOVE DOC ---------------- */
+export const removeDocRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: null,
+    status: null,
+  };
+};
+
+/* ---------------- GET list Documents Me -------------- */
+export const getDocsMeSuccess = (state, { data }) => {
   return {
     ...state,
     fetching: false,
@@ -220,4 +231,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_DOCS_ME_SUCCESS]: getDocsMeSuccess,
   [Types.GET_DOCS_ME_REQUEST]: getDocsMeRequest,
   [Types.GET_DOCS_ME_FAILURE]: getDocsMeFailure,
+  [Types.REMOVE_DOC_REQUEST]: removeDocRequest,
 });
