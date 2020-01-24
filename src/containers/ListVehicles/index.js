@@ -9,13 +9,14 @@ import { ActivityIndicator } from 'react-native';
 import analytics from '@react-native-firebase/analytics';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock,
-  WrapperButtonsBottom, WrapperButtonGradient, TextGray,
+  WrapperButtonsBottom, WrapperButtonGradient, TextGray, BlueText,
 } from './style';
 
 import ButtonGradient from '../../components/ButtonGradient';
 import CardVehicle from '../../components/CardVehicle';
 import VehicleActions from '../../redux/reducers/VehicleRedux';
 import PopUpDialog from '../../components/PopUpDialog';
+import ButtonWhite from '../../components/ButtonWhite';
 
 class ListVehicles extends Component {
   constructor() {
@@ -24,6 +25,7 @@ class ListVehicles extends Component {
       modalVeh: false,
       selectID: null,
       offer: null,
+      isVehicle: false,
     };
   }
 
@@ -69,8 +71,10 @@ class ListVehicles extends Component {
   }
 
   render() {
-    const { vehicles } = this.props;
-    const { modalVeh, offer } = this.state;
+    const { vehicles, navigation } = this.props;
+    const {
+      modalVeh, offer, isVehicle,
+    } = this.state;
     const itemsType = {};
 
     if (vehicles.status && !vehicles.fetching && vehicles.data !== null) {
@@ -89,6 +93,9 @@ class ListVehicles extends Component {
           <ContentView style={{ flexDirection: 'column' }}>
             { vehicles.list.map((data) => {
               if (offer && offer.vehicle_type_id === data.vehicle_type_id) {
+                if (!isVehicle) {
+                  this.setState({ isVehicle: 'now' });
+                }
                 return (
                   <CardVehicle
                     data={data}
@@ -96,7 +103,18 @@ class ListVehicles extends Component {
                     press={() => this.onViewDetail(data)}
                   />
                 );
-              } else if (!offer) {
+              } else if (isVehicle === false) {
+                this.setState({ isVehicle: null });
+              }
+            })}
+            {offer && isVehicle === null ? (
+              <BlueText>
+                No tienes vehículos agregados con las
+                caracteristicas que necesita el generador
+              </BlueText>
+            ) : null}
+            {vehicles.list.map((data) => {
+              if (!offer) {
                 return (
                   <CardVehicle
                     data={data}
@@ -109,6 +127,11 @@ class ListVehicles extends Component {
           </ContentView>
 
           <WrapperButtonsBottom>
+            <WrapperButtonGradient>
+              {offer && (isVehicle === null || isVehicle === 'now') && (
+              <ButtonWhite press={() => navigation.navigate('HomeOffers')} content="Cancelar" border />
+              )}
+            </WrapperButtonGradient>
             <WrapperButtonGradient>
               <ButtonGradient
                 content="Añadir Vehículo"

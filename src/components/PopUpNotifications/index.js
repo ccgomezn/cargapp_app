@@ -44,7 +44,7 @@ class PopUpNotification extends Component {
     });
     return (
       <Animated.View style={{
-        opacity, height: '100%', width: '100%', position: 'absolute', zIndex: 1000,
+        opacity, height: '100%', width: '100%', position: 'absolute', zIndex: 1800,
       }}
       >
         <Dialog

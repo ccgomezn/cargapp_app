@@ -336,7 +336,6 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
-
       /* estados de viajes() */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
@@ -349,7 +348,6 @@ class HomeOffers extends Component {
           }
         });
       }
-
       return (
         <MainView>
           <MainWrapper>

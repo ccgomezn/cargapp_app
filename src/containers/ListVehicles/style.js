@@ -33,6 +33,16 @@ export const TextBlack = styled.Text`
   color: #010935;
 `;
 
+export const BlueText = styled.Text`
+  margin-vertical: 75%;
+  padding-horizontal: 11%; 
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: bold;
+  color: #0068ff;
+  text-align: center;
+`;
+
 export const WrapperButtonsBottom = styled.View`
   width: 100%;
   flex-direction: row;
@@ -43,7 +53,7 @@ export const WrapperButtonsBottom = styled.View`
 `;
 
 export const WrapperButtonGradient = styled.TouchableOpacity`
-  width: 50%;
+  width: 48%;
   height: 100%;
   margin-left: 3%;
 `;

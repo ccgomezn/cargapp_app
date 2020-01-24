@@ -422,7 +422,7 @@ class StartTravel extends Component {
       return (
         <MainWrapper>
           <Spinner view={spinner} />
-          {feed && (
+          {feed && !feed1 && !feed2 && !feed3 && (
             <PopUpNotification
               onTouchOutside={() => this.setState({ feed: false })}
               mainText="¡Atención!"
@@ -502,6 +502,8 @@ class StartTravel extends Component {
           </MapView>
           {companies.data.map((CompanyInfo) => {
             if (offerSpecific.company_id === CompanyInfo.id) {
+              console.log(status)
+              console.log(status !== 6 || status !== 11)
               return (
                 <WrapperTopCard>
                   <TopCardTravel
