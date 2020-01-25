@@ -13,6 +13,7 @@ import SwipeableHome from '../../components/SwipeableHome';
 import CardInfoStad from '../../components/CardInfoStad';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
+import TopActions from '../../redux/reducers/TopUsersRedux';
 import images from '../../icons';
 
 const screenWidth = Dimensions.get('window').width;
@@ -35,9 +36,10 @@ class Home extends Component {
 
   componentDidMount() {
     analytics().setCurrentScreen('home_cargapp');
-    const { getProfile, getsOffers, user } = this.props;
+    const { getProfile, getsOffers, getTopRanking, user } = this.props;
     getsOffers();
     getProfile();
+    getTopRanking();
     try {
       this.geolocation();
     } catch (error) {
@@ -134,7 +136,7 @@ class Home extends Component {
   }
 
   render() {
-    const { profile } = this.props;
+    const { profile, ranking } = this.props;
     const { location, name } = this.state;
     console.log(this.props);
     if (location.latitudeDelta !== 0.5 && profile.data !== null) {
@@ -170,13 +172,24 @@ class Home extends Component {
             </MapView.Marker>
           </MapView>
           <WrapperContent>
-            <CardInfoStad
-              valuePoint="100"
-              textKm="Kms recorridos"
-              valueKm="12.000"
-              textPoint="Puntos Acumulados"
-              title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
-            />
+            {ranking.topme !== null ? (
+              <CardInfoStad
+                press={() => this.onNavigate('ScreenStats')}
+                title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
+                valueKm={ranking.topme.kilometres}
+                textKm="Kms recorridos"
+                valuePoint={ranking.topme.my_points}
+                textPoint="Puntos Acumulados"
+              />
+            ) : (
+              <CardInfoStad
+                title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
+                valueKm="-"
+                textKm="Kms recorridos"
+                valuePoint="-"
+                textPoint="Puntos Acumulados"
+              />
+            )}
             <NormalText>Buscar viajes disponibles</NormalText>
             <WrapperSwipeable>
               <SwipeableHome text="Todos" press={() => this.onNavigate('Second')} />
@@ -203,18 +216,21 @@ const mapStateToProps = (state) => {
     profile,
     geolocation,
     user,
+    ranking,
   } = state;
   return {
     offers,
     profile,
     geolocation,
     user,
+    ranking,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getProfile: params => dispatch(ProfileActions.getProfileRequest(params)),
   getsOffers: params => dispatch(OffersActions.getOffersRequest(params)),
+  getTopRanking: params => dispatch(TopActions.getTopUsersRequest(params)),
 });
 
 export default connect(

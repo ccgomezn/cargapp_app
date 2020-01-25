@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable';
 export const { Types, Creators } = createActions({
   getTopUsersRequest: ['params'],
   getTopUsersSuccess: ['data'],
-  getTopUsersFailure: ['params'],
+  getTopUsersFailure: null,
 });
 
 export const TopTypes = Types;
@@ -40,4 +40,11 @@ export const getTopUsersFailure = state => ({
   ...state,
   fetching: false,
   error: true,
+});
+
+/* Actions to types */
+export const reducer = createReducer(INITIAL_STATE, {
+  [Types.GET_TOP_USERS_REQUEST]: getTopUsersRequest,
+  [Types.GET_TOP_USERS_SUCCESS]: getTopUsersSuccess,
+  [Types.GET_TOP_USERS_FAILURE]: getTopUsersFailure,
 });

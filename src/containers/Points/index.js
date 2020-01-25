@@ -11,7 +11,7 @@ import {
   WrapperTab, SegmentTab, TitleTab, ActiveTitleText,
   ActiveButtonTab, FirstTab, LastTab,
   MainWrapperDialog, ContentDialog, WrapperImage,
-  WrapperButtonsBottom, TextDesc, TitleDesc, ImageDetail
+  WrapperButtonsBottom, TextDesc, TitleDesc, ImageDetail, TextTop,
 } from './style';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from '../../components/CardInfoStad/style';
 
 import EmptyDialog from '../../components/EmptyDialog';
-import CardinfoStad from '../../components/CardInfoStad';
+import CardInfoStad from '../../components/CardInfoStad';
 import CardChallenge from '../../components/CardChallenge';
 import CardRanking from '../../components/CardRanking';
 import CardAward from '../../components/CardAward';
@@ -29,6 +29,7 @@ import ButtonWhite from '../../components/ButtonWhite';
 
 import ChallengeActions from '../../redux/reducers/ChallengeRedux';
 import PrizesActions from '../../redux/reducers/PrizesRedux';
+import TopActions from '../../redux/reducers/TopUsersRedux';
 import analytics from '@react-native-firebase/analytics';
 
 class Points extends Component {
@@ -47,7 +48,9 @@ class Points extends Component {
 
   componentDidMount() {
     analytics().setCurrentScreen('retos');
-    const { getActivePrizes, profile } = this.props;
+    const { getActivePrizes, getTopRanking, profile } = this.props;
+    // get topRanking
+    getTopRanking();
     // get data
     getActivePrizes();
     if (profile.data) {
@@ -69,10 +72,9 @@ class Points extends Component {
 
   handleSingleIndexSelect = (index) => {
     analytics().logEvent(`boton_retos_${index}`);
-    const { getActiveChallenge, getActivePrizes } = this.props;
+    const { getActiveChallenge, getActivePrizes, getTopRanking } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));
-    console.log(index);
     if (index == 0) {
       // get prozes
       getActivePrizes();
@@ -81,6 +83,10 @@ class Points extends Component {
       // get challenge
       getActiveChallenge();
     }
+    if (index == 2) {
+      // get topRanking
+      getTopRanking();
+    }
   };
 
   render() {
@@ -88,7 +94,8 @@ class Points extends Component {
       selectedIndex, reload, modalChallenge, activeChallenge,
       modalPrizes, activePrize, nameUser,
     } = this.state;
-    const { challenge, prizes } = this.props;
+    const { navigation } = this.props;
+    const { challenge, prizes, ranking } = this.props;
 
     if (reload) {
       setTimeout(() => this.setState({
@@ -98,13 +105,24 @@ class Points extends Component {
 
     return (
       <MainWrapper>
-        <CardinfoStad
-          title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
-          valueKm="15.999"
-          textKm="Kms recorridos"
-          valuePoint="120"
-          textPoint="Puntos Acumulados"
-        />
+        {ranking.topme !== null ? (
+          <CardInfoStad
+            title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
+            valueKm={ranking.topme.kilometres}
+            textKm="Kms recorridos"
+            valuePoint={ranking.topme.my_points}
+            textPoint="Puntos Acumulados"
+            press={() => navigation.navigate('ScreenStats')}
+          />
+        ) : (
+          <CardInfoStad
+            title={nameUser !== '' ? `¡Hola ${nameUser}!` : '¡Hola!'}
+            valueKm="-"
+            textKm="Kms recorridos"
+            valuePoint="-"
+            textPoint="Puntos Acumulados"
+          />
+        )}
 
         <SegmentedControlTab
           values={['Premios', 'Mis Retos', 'Ranking']}
@@ -166,7 +184,7 @@ class Points extends Component {
           ))}
 
         {selectedIndex === 2 && (
-          reload ? (
+          ranking.toplist === null ? (
             <ContentView>
               <ActivityIndicator
                 style={{ alignSelf: 'center', height: 'auto' }}
@@ -176,24 +194,25 @@ class Points extends Component {
             </ContentView>
           ) : (
             <View>
-              <CardRanking
-                title="Conductor 1"
-                textKM={20.00}
-                textPoint={14.000}
-                position={1}
-              />
-              <CardRanking
-                title="Conductor 2"
-                textKM={20.00}
-                textPoint={14.000}
-                position={2}
-              />
-              <CardRanking
-                title="Conductor 3"
-                textKM={20.00}
-                textPoint={140}
-                position={3}
-              />
+              { ranking.topme !== null ? (
+                <CardRanking
+                  isMe
+                  title={'Mi Posición'}
+                  textKM={ranking.topme.kilometres}
+                  textPoint={ranking.topme.my_points}
+                  position={ranking.topme.position}
+                />
+              ) : null }
+              <TextTop>--- Top ---</TextTop>
+              { ranking.toplist.map(data => (
+                <CardRanking
+                  title={data.name}
+                  textKM={data.kilometres}
+                  textPoint={data.points}
+                  position={data.position}
+                />
+              ))}
+                
             </View>
           ))}
 
@@ -245,7 +264,6 @@ class Points extends Component {
                     resizeMode="contain"
                     source={{
                       uri: activePrize.image
-                      // activePrize.image
                     }}
                   />
                 </WrapperImage>
@@ -337,17 +355,19 @@ class Points extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { challenge, prizes , profile } = state;
+  const { challenge, prizes , profile, ranking } = state;
   return {
     challenge,
     prizes,
     profile,
+    ranking,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getActiveChallenge: params => dispatch(ChallengeActions.getActiveChallengeRequest(params)),
   getActivePrizes: params => dispatch(PrizesActions.getActivePrizesRequest(params)),
+  getTopRanking: params => dispatch(TopActions.getTopUsersRequest(params)),
 });
 
 export default connect(

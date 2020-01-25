@@ -19,6 +19,7 @@ import ScreenCommerceCoupons from '../../containers/Coupons/Commerce';
 import ScreenDetailsCoupons from '../../containers/Coupons/Detail';
 import ScreenChat from '../../containers/ChatList';
 import ScreenBankAccount from '../../containers/BankAccount';
+import ScreenDocumentsAccount from '../../containers/DocumentAccount';
 // VEHICLES
 import ScreenListVehicle from '../../containers/ListVehicles';
 
@@ -49,17 +50,20 @@ import {
 import ScreenFilterOffers from '../../containers/FilterOffers';
 
 // eslint-disable-next-line react/prop-types
-function leftIconMenu({ navigation }) {
+function leftIconMenu({ navigation, goBack }) {
   return (
     <TouchLeftMenu
-      onPress={() => {
+      onPress={() => (!goBack
         // eslint-disable-next-line react/prop-types
-        navigation.toggleDrawer();
+        ? navigation.toggleDrawer()
+        : navigation.navigate('ScreenHome'))
       }
-            }
     >
       <IconImg
-        source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png' }}
+        source={{
+          uri: !goBack ? 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png'
+            : 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/home.svg',
+        }}
       />
     </TouchLeftMenu>
   );
@@ -173,6 +177,18 @@ export const SignUpStackNavigator = createStackNavigator({
   headerMode: 'none',
 });
 
+export const stackStartTravelNavigator = createStackNavigator({
+  StartTravel: {
+    screen: ScreenStartTravel,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation, goBack: true }),
+    }),
+  },
+});
+
 export const travelsStackNavigator = createStackNavigator({
   Second: {
     screen: ScreenHomeOffers,
@@ -211,16 +227,6 @@ export const myTravelsStackNavigator = createStackNavigator({
     screen: ScreenMyTravels,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
-      headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
-      headerRight: rightIconMenu({ navigation }),
-    }),
-  },
-  StartTravel: {
-    screen: ScreenStartTravel,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
@@ -270,6 +276,15 @@ export const ProfileStackNavigator = createStackNavigator({
       headerTruncatedBackTitle: 'Atras',
     }),
   },
+  DocumentsAccount: {
+    screen: ScreenDocumentsAccount,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerTruncatedBackTitle: 'Atras',
+    }),
+  },
 });
 
 export const PointsStackNavigator = createStackNavigator({
@@ -306,6 +321,24 @@ export const ServicesStackNavigator = createStackNavigator({
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
       headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  CommerceCoupons: {
+    screen: ScreenCommerceCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  DetailsCoupons: {
+    screen: ScreenDetailsCoupons,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },

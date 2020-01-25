@@ -26,7 +26,9 @@ import { PermissionTypes } from '../reducers/PermissionsRedux';
 import { DestinationsTypes } from '../reducers/DestinationsRedux';
 import { ChallengeTypes } from '../reducers/ChallengeRedux';
 import { PrizesTypes } from '../reducers/PrizesRedux';
-/* ---------- Sagas ----------- */
+import { TopTypes } from '../reducers/TopUsersRedux';
+import { StaticsTypes } from '../reducers/StaticsRedux';
+/* --------------- Sagas ----------------- */
 import { profileDriver } from './DriverSagas';
 import {
   verifyPhone,
@@ -39,7 +41,10 @@ import {
   getInfoUser,
 } from './UserSagas';
 import { countriesActive } from './CountrieSagas';
-import { registerDocument, registerDocumentService, getDocsServiceRequest } from './DocumentSagas';
+import {
+  registerDocument, registerDocumentService, getDocsServiceRequest, getDocumentTypes,
+  getDocumentsMe, deleteDocument,
+} from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
 } from './OffersSagas';
@@ -62,6 +67,8 @@ import { getPermission } from './PermissionsSagas';
 import { getDestinations } from './DestinationsSagas';
 import { getActiveChallenge } from './ChallengeSagas';
 import { getActivePrizes } from './PrizesSagas';
+import { getTopUsers } from './TopUsersSagas';
+import { getMeStatics } from './StaticsSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -120,5 +127,10 @@ export default function* root() {
     takeLatest(DestinationsTypes.GET_DESTINATIONS_REQUEST, getDestinations, api),
     takeLatest(ChallengeTypes.GET_ACTIVE_CHALLENGE_REQUEST, getActiveChallenge, api),
     takeLatest(PrizesTypes.GET_ACTIVE_PRIZES_REQUEST, getActivePrizes, api),
+    takeLatest(TopTypes.GET_TOP_USERS_REQUEST, getTopUsers, api),
+    takeLatest(DocumentTypes.GET_DOCS_TYPES_REQUEST, getDocumentTypes, api),
+    takeLatest(DocumentTypes.GET_DOCS_ME_REQUEST, getDocumentsMe, api),
+    takeLatest(DocumentTypes.REMOVE_DOC_REQUEST, deleteDocument, api),
+    takeLatest(StaticsTypes.GET_STATICS_ME_REQUEST, getMeStatics, api),
   ]);
 }

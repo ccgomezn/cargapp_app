@@ -27,7 +27,7 @@ export const WrapperText = styled.View`
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 40px;
+    bottom: 30px;
 `;
 
 export const TextTerms = styled.Text`
@@ -35,4 +35,12 @@ export const TextTerms = styled.Text`
     color: black;
     flex-direction: column;
     text-align: center;
+`;
+
+export const BlueText = styled.Text`
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    align-self: center;
+    color: #0068ff;
 `;

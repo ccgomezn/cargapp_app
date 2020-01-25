@@ -7,11 +7,12 @@ import {
 } from './style';
 
 function Card({
-  mainText, subText, background, colorText, borderColorProp, icon, press, status,
+  mainText, subText, background, colorText, borderColorProp, icon,
+  press, status, edit, pressEdit,
 }) {
   return (
     <MainWrapper
-      onPress={press}
+      onPress={edit ? pressEdit : press}
       style={{ backgroundColor: background, borderColor: borderColorProp }}
     >
       <WrapperLogo>
@@ -69,6 +70,8 @@ Card.propTypes = {
   icon: PropTypes.bool.isRequired,
   press: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
+  edit: PropTypes.bool.isRequired,
+  pressEdit: PropTypes.func.isRequired,
 };
 
 export default Card;

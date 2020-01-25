@@ -26,4 +26,6 @@ export default combineReducers({
   geolocation: require('./GeolocationRedux').reducer,
   challenge: require('./ChallengeRedux').reducer,
   prizes: require('./PrizesRedux').reducer,
+  ranking: require('./TopUsersRedux').reducer,
+  statiscs: require('./StaticsRedux').reducer,
 });

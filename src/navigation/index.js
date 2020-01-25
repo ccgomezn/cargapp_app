@@ -11,7 +11,7 @@ import { measureConnectionSpeed } from 'react-native-network-bandwith-speed';
 import NetInfo from '@react-native-community/netinfo';
 import { ContainerDriver, ContainerGenerator } from './stacks/drawerScreen';
 
-import { SignUpStackNavigator } from './stacks/stackScreen';
+import { SignUpStackNavigator, stackStartTravelNavigator } from './stacks/stackScreen';
 import SplashScreen from '../containers/Splash';
 import GeolocationActions from '../redux/reducers/GeolocationRedux';
 import AppStack from './stacks/bottomNavigator';
@@ -22,6 +22,7 @@ const Navigator = createAppContainer(createSwitchNavigator({
   SignUpStack: SignUpStackNavigator,
   DriverMenu: ContainerDriver,
   GeneratorMenu: ContainerGenerator,
+  InCourseTravel: stackStartTravelNavigator,
 }, {
   headerMode: 'none',
   initialRouteName: 'Splash',

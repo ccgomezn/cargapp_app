@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import InputCode from 'react-native-input-code';
 import Toast from 'react-native-tiny-toast';
+import analytics from '@react-native-firebase/analytics';
 import { ActivityIndicator } from 'react-native';
 
 import Input from '../../../components/GeneralInput';
@@ -93,6 +94,7 @@ class Registration extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('primer_paso_registro');
     const { navigation } = this.props;
     const { countriesActive } = this.props;
     // get countries
@@ -102,6 +104,7 @@ class Registration extends Component {
     if (stepUser !== null) {
       // verify step
       if (stepUser === 1) {
+        analytics().logEvent('confirmar_pin_registro');
         this.setState({ modalPin: true, step: stepUser });
       } else if (stepUser === 2) {
         // login
@@ -302,6 +305,7 @@ class Registration extends Component {
   }
 
   init() {
+    analytics().logEvent('boton_continuar_registro');
     const { datapin } = this.state;
     this.setState({ pinErrorCheck: false });
     if (datapin.length < 4 || datapin === '') {
@@ -313,6 +317,12 @@ class Registration extends Component {
 
   OnHideModal() {
     this.setState({ modalPin: false });
+  }
+
+  goBack() {
+    const { navigation } = this.props;
+    analytics().logEvent('boton_atras_registro');
+    navigation.goBack();
   }
 
   render() {
@@ -327,6 +337,7 @@ class Registration extends Component {
       }
     };
     const handlePressButtonTwo = () => {
+      analytics().logEvent('boton_conductor');
       const { pressState, pressStateTwo } = this.state;
       if (pressState) {
         this.setState({
@@ -338,7 +349,7 @@ class Registration extends Component {
     };
     // eslint-disable-next-line react/prop-types
     const { user, countries } = this.props;
-    const { navigate, goBack } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     const {
       dataphone,
       dataemail,
@@ -486,7 +497,7 @@ class Registration extends Component {
       return (
         <MainWrapper>
           <WrapperButtons style={{ justifyContent: 'center', marginTop: '0%', marginBottom: '2%' }}>
-            <ArrowBack url={() => goBack()} />
+            <ArrowBack url={() => this.goBack()} />
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
           <TextBlack style={{ textAlign: 'center' }}>

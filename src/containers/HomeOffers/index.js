@@ -52,6 +52,10 @@ const itemList = [
     url: 'ScreenProfile',
   },
   {
+    label: 'Documentos',
+    url: 'ScreenProfile',
+  },
+  {
     label: 'Mis Vehículos',
     url: 'ScreenVehicle',
   },
@@ -74,7 +78,7 @@ class HomeOffers extends Component {
       callMine: false,
       modalPermission: false,
       fetch: false,
-      listview: ['profiles', 'vehicles', 'bank_accounts'],
+      listview: ['profiles', 'documents','vehicles', 'bank_accounts'],
       modalFromHome: true,
       share: false,
     };
@@ -242,8 +246,8 @@ class HomeOffers extends Component {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
       vehicle: idVehicle,
-      origin: labelOrigin.split(' '),
-      destination: labelDestination.split(' '),
+      origin: labelOrigin.length > 2 ? labelOrigin : null,
+      destination: labelDestination.length > 2 ? labelDestination : null,
     };
     getFilterOffers(data);
     this.setState({ modalSearch: false });
@@ -285,6 +289,7 @@ class HomeOffers extends Component {
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
       let perm = 0;
+      console.log(permissions);
       permissions.data.map((pem) => {
         if (listview.includes(pem.name)) {
           if (!pem.permission) {
@@ -336,7 +341,6 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
-
       /* estados de viajes() */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
@@ -349,7 +353,6 @@ class HomeOffers extends Component {
           }
         });
       }
-
       return (
         <MainView>
           <MainWrapper>

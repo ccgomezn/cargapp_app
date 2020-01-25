@@ -1,12 +1,15 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable array-callback-return */
+/* eslint-disable react/sort-comp */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { ActivityIndicator, Dimensions } from 'react-native';
+import { ActivityIndicator, Dimensions, View } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 import {
-  MainWrapper, TextTerms, WrapperButton, WrapperCarousel, WrapperText,
+  MainWrapper, TextTerms, WrapperButton, WrapperCarousel, WrapperText, BlueText,
 } from './style';
 import CardCoupons from '../../../components/CardCoupons';
 import ButtonGradient from '../../../components/ButtonGradient';
@@ -19,6 +22,8 @@ class Commerce extends Component {
     super();
     this.state = {
       sliderActive: 0,
+      company: 0,
+      category: null,
     };
   }
 
@@ -36,47 +41,73 @@ class Commerce extends Component {
   }
 
   componentDidMount() {
-    const { getCoupons } = this.props;
+    const { navigation, getCoupons } = this.props;
+    const dtcompany = navigation.getParam('idCompany', '');
+    if (dtcompany !== '') {
+      this.setState({ company: dtcompany });
+    }
+    const dtCat = navigation.getParam('idCategory', null);
+    if (dtCat !== null) {
+      this.setState({ category: dtCat });
+    }
     getCoupons();
   }
 
   render() {
-    const { sliderActive } = this.state;
-    const { navigation, data } = this.props;
-    console.log(this.props);
-    if (data !== null) {
+    const { sliderActive, company, category } = this.state;
+    const { navigation, coupons } = this.props;
+    const newCoupons = new Set();
+
+    if (coupons.data !== null && !coupons.featching) {
+      coupons.data.map((couponsData) => {
+        if (company !== '') {
+          if (couponsData.company_id === company) {
+            newCoupons.add(couponsData);
+          }
+        }
+        if (category !== null) {
+          if (couponsData.category === category) {
+            newCoupons.add(couponsData);
+          }
+        }
+      });
+      const newCouponsArray = Array.from(newCoupons);
       return (
         <MainWrapper>
-          <WrapperCarousel>
-            <Carousel
-              data={data}
-              renderItem={this.renderItem}
-              ref={(c) => { this._carousel = c; }}
-              sliderWidth={Width}
-              itemWidth={Width - 50}
-              onSnapToItem={index => this.setState({ sliderActive: index })}
-            />
-          </WrapperCarousel>
-          <Pagination
-            dotsLength={data.length}
-            activeDotIndex={sliderActive}
-            dotColor="blue"
-            inactiveDotColor="gray"
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-            carouselRef={this._carousel}
-            tappableDots={!!this._carousel}
-          />
-          <WrapperButton>
-            <ButtonGradient
-              press={() => navigation.navigate('DetailsCoupons', { idItem: data[sliderActive] })}
-              content="Obtener cupón"
-              disabled={false}
-            />
-          </WrapperButton>
-          <WrapperText>
+          { newCouponsArray.length > 0 ? (
+            <View>
+              <WrapperCarousel>
+                <Carousel
+                  data={newCouponsArray}
+                  renderItem={this.renderItem}
+                  ref={(c) => { this._carousel = c; }}
+                  sliderWidth={Width}
+                  itemWidth={Width - 50}
+                  onSnapToItem={index => this.setState({ sliderActive: index })}
+                />
+              </WrapperCarousel>
+              <Pagination
+                dotsLength={newCouponsArray.length}
+                activeDotIndex={sliderActive}
+                dotColor="blue"
+                inactiveDotColor="gray"
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+                carouselRef={this._carousel}
+                tappableDots={!!this._carousel}
+              />
+              <WrapperButton>
+                <ButtonGradient
+                  press={() => navigation.navigate('DetailsCoupons', { idItem: newCouponsArray[sliderActive] })}
+                  content="Obtener cupón"
+                  disabled={false}
+                />
+              </WrapperButton>
+            </View>
+          ) : <BlueText>No hay cupones en estos momentos</BlueText> }
+          {/* <WrapperText>
             <TextTerms>© Todos los derechos reservados. Cargapp 2019</TextTerms>
-          </WrapperText>
+          </WrapperText> */}
         </MainWrapper>
       );
     } return (
@@ -91,7 +122,9 @@ class Commerce extends Component {
 
 const mapStateToProps = (state) => {
   const { coupons } = state;
-  return coupons;
+  return {
+    coupons,
+  };
 };
 
 const mapDispatchToProps = dispatch => ({

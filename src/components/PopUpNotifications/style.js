@@ -23,7 +23,7 @@ export const Dialog = styled.TouchableOpacity`
 export const Dialog = styled.TouchableOpacity`
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: 1800;
   padding-horizontal: 4%;
   justify-content: flex-start;
   align-items: flex-start;

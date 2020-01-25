@@ -6,6 +6,7 @@ export const MainWrapper = styled.View`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  padding-top: 4px;
 `;
 
 export const MainText = styled.Text`
@@ -26,8 +27,7 @@ export const WrapperCode = styled.View`
   margin-top: 2%;
   border-radius: 7px;
   border: 2px solid #007cfc;
-  padding-horizontal: 40px;
-  padding-vertical: 10px;
+  padding: 10px 40px 6px 40px;
   justify-content: center;
   align-items: center;
 `;
@@ -37,4 +37,5 @@ export const BoldText = styled.Text`
   color: black;
   font-weight: bold;
   text-transform: uppercase;
+  padding-bottom: 2px;
 `;

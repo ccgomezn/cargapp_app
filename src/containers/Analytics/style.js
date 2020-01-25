@@ -22,7 +22,6 @@ export const ContentForm = styled.View`
   justify-content: center;
   flex-direction: column;
   height: auto;
-  margin-bottom: 15px;
 `;
 
 export const ContentBlock = styled.View`

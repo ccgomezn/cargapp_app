@@ -23,7 +23,6 @@ class General extends Component {
     const { navigation, companies, coupons } = this.props;
     const newCompanies = new Set();
 
-    console.log(newCompanies);
     if (companies.data !== null && coupons.data !== null) {
       console.log('cupones', coupons.data);
       coupons.data.map(couponsData => companies.data.map((companiesData) => {
@@ -40,7 +39,7 @@ class General extends Component {
               <CardCoupons
                 subText={companiesData.description}
                 text={companiesData.name}
-                press={() => navigation.navigate('CommerceCoupons')}
+                press={() => navigation.navigate('CommerceCoupons', { idCompany: companiesData.id })}
                 button
                 fullCard={false}
                 img={companiesData.image}

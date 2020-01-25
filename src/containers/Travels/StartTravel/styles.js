@@ -57,6 +57,7 @@ export const WrapperModal = styled.View`
   align-self: center;
   border-radius: 10px;
   padding: 4%;
+  z-index: 1700;
 `;
 
 export const CustomImage = styled.Image`

@@ -154,6 +154,12 @@ class Profile extends Component {
                 </ContentView>
 
                 <ContentView>
+                  <RowContent style={{ marginRight: '2%' }}>
+                    <ButtonWhite border content="Documentación" press={() => navigate('DocumentsAccount')} />
+                  </RowContent>
+                </ContentView>
+
+                <ContentView>
                   <ContentBlock>
                     <TextBlack>Información de perfil</TextBlack>
                   </ContentBlock>

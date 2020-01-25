@@ -56,3 +56,10 @@ export const TextGray = styled.Text`
   letter-spacing: -0.3px;
   color: #010935;
 `;
+
+export const ContentServices = styled.View`
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+`;
