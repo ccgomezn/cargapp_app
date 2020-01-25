@@ -22,7 +22,6 @@ class FilterOffers extends Component {
     }
 
     render() {
-        console.log(this.props);
         const {filterOffers, navigation, vehicles, offers} = this.props;
         if (filterOffers.data !== null && offers.services) {
             const vehicle_data = {};
@@ -33,8 +32,6 @@ class FilterOffers extends Component {
             offers.services.forEach((offer) => {
                 mine_offers.push(offer.service_id);
             });
-            console.log(mine_offers);
-            console.log(filterOffers.data);
             let filter_real = [];
             filterOffers.data.forEach(offer => {
               if(!mine_offers.includes(offer.id)){
@@ -43,7 +40,7 @@ class FilterOffers extends Component {
             });
             return (
                 <MainWrapper>
-                    {filter_real >= 1 ? (
+                    {filter_real.length >= 1 ? (
                         <MainWrapperScroll>
                             <MainTextCard>Ofertas encontradas</MainTextCard>
                             {filter_real.map(offers => (

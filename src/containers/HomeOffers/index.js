@@ -246,8 +246,8 @@ class HomeOffers extends Component {
       startPrice: multiSliderValue[0],
       endPrice: multiSliderValue[1],
       vehicle: idVehicle,
-      origin: labelOrigin.split(' '),
-      destination: labelDestination.split(' '),
+      origin: labelOrigin.length > 2 ? labelOrigin : null,
+      destination: labelDestination.length > 2 ? labelDestination : null,
     };
     getFilterOffers(data);
     this.setState({ modalSearch: false });
@@ -341,7 +341,6 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
-
       /* estados de viajes() */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
@@ -354,7 +353,6 @@ class HomeOffers extends Component {
           }
         });
       }
-
       return (
         <MainView>
           <MainWrapper>
