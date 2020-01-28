@@ -20,6 +20,7 @@ import RateActions from '../../../redux/reducers/RateServiceRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import EmptyDialog from '../../../components/EmptyDialog';
 import ButtonGradient from '../../../components/ButtonGradient';
+import { formatPrice } from '../../../helpers/Utils';
 
 class ApplyOffer extends Component {
   constructor() {
@@ -250,7 +251,7 @@ class ApplyOffer extends Component {
                 <CardMapBeginTravel
                   extra={offer.note}
                   normalText={company.address}
-                  amount={offer.price}
+                  amount={formatPrice(offer.price)}
                   onPressBG={() => this.vehicleType(offer, selectID)}
                   onPressBW={() => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())}
                   delivery={offer.description}

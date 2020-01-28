@@ -51,7 +51,10 @@ function CardMapBeginTravel({
         <WrapperColumn>
           <WrapperInfoBody>
             <BoldText>Valor del flete</BoldText>
-            <NormalText>{amount}</NormalText>
+            <NormalText>
+              {'$ '}
+              {amount}
+            </NormalText>
           </WrapperInfoBody>
           <WrapperInfoBody>
             <BoldText>Descripción</BoldText>

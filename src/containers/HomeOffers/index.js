@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-const-assign */
@@ -11,6 +13,7 @@ import { ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
 import analytics from '@react-native-firebase/analytics';
+import { formatPrice } from '../../helpers/Utils.js';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -132,6 +135,8 @@ class HomeOffers extends Component {
     getDestinations();
     getMyOffers(profile.data[0].user.id);
     getparameters('STATUS_TRAVEL');
+
+    console.log(formatPrice(123123));
   }
 
   componentWillUnmount() {
@@ -386,7 +391,7 @@ class HomeOffers extends Component {
                       from={services.origin}
                       to={services.destination}
                       vehicle={vehicle_data[services.vehicle_type_id]}
-                      pay={services.price}
+                      pay={formatPrice(services.price)}
                       date="Hoy"
                       actionbtnPrimary={() => this.onPressTravel(services)}
                       btnPrimary="Ver detalles"

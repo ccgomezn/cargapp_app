@@ -9,6 +9,7 @@ import OffersActions from "../../redux/reducers/OffersRedux";
 import VehiclesActions from "../../redux/reducers/VehicleRedux";
 import PermissionsActions from "../../redux/reducers/PermissionsRedux";
 import DestinationsActions from "../../redux/reducers/DestinationsRedux";
+import { formatPrice } from '../../helpers/Utils';
 
 class FilterOffers extends Component {
     constructor() {
@@ -48,10 +49,10 @@ class FilterOffers extends Component {
                                     from={offers.origin}
                                     to={offers.destination}
                                     vehicle={vehicle_data[offers.vehicle_type_id]}
-                                    pay={offers.price}
+                                    pay={formatPrice(offers.price)}
                                     date="hoy"
                                     actionbtnPrimary={() => navigation.navigate('ApplyTravels', {dataOffer: offers})}
-                                    btnPrimary="Aplicar"
+                                    btnPrimary="Ver detalles"
                                     btnSecondary
                                 />
                             ))

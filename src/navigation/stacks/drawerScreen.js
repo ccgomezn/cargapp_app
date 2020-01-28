@@ -41,8 +41,9 @@ function DrawerIcon({ urlicon, tint, v }) {
   if (v === 'chat') {
     return (
       <DrawIconMenu
-        style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
+        // style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
         fillAll
+        fill={tint}
         source={urlicon}
       />
     );
@@ -50,8 +51,9 @@ function DrawerIcon({ urlicon, tint, v }) {
   } else {
     return (
       <DrawIconMenu
-        style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
+        // style={{ opacity: tint === '#fff' ? 1 : 0.4 }}
         fillAll
+        fill={tint}
         source={{ uri: urlicon }}
       />
     );
@@ -152,8 +154,7 @@ const DrawerDriver = createDrawerNavigator(
       screen: CouponsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Cupones',
-        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-cupon.svg'), tint: tintColor, v: 'chat' }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-cupon.svg', tint: tintColor }),
       },
     },
     ScreenVehicle: {
@@ -174,16 +175,14 @@ const DrawerDriver = createDrawerNavigator(
       screen: AnalyticsStackNavigator,
       navigationOptions: {
         drawerLabel: 'Estadísticas',
-        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-analytics.svg', tint: tintColor }),
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-stad.svg'), tint: tintColor, v: 'chat' }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-stad.svg', tint: tintColor }),
       },
     },
     ScreenChat: {
       screen: chatStackNavigator,
       navigationOptions: {
         drawerLabel: 'Chat',
-        // drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
-        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: require('../../icons/icon-chat.svg'), tint: tintColor, v: 'chat' }),
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
       },
     },
     ScreenConfig: {

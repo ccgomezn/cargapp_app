@@ -32,6 +32,7 @@ class General extends Component {
       }));
       const newCompaniesArray = Array.from(newCompanies);
       if (newCompaniesArray) {
+        console.log(newCompaniesArray);
         return (
           <MainWrapper>
             <Title>Cupones</Title>

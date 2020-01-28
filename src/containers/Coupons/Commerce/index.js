@@ -36,6 +36,7 @@ class Commerce extends Component {
         key={index}
         fullCard={false}
         img={item.image}
+        subImg={item.image}
       />
     );
   }
@@ -78,6 +79,7 @@ class Commerce extends Component {
             <View>
               <WrapperCarousel>
                 <Carousel
+                  layout={'stack'}
                   data={newCouponsArray}
                   renderItem={this.renderItem}
                   ref={(c) => { this._carousel = c; }}
