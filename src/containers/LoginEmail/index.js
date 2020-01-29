@@ -135,10 +135,10 @@ class Registration extends Component {
 
   changeView(view) {
     const { navigate } = this.props.navigation;
-    if(view === 'Register') {
+    if (view === 'Register') {
       analytics().logEvent('boton_registrarse');
     } else {
-      analytics().logEvent('boton_recuperar_contraseña');
+      analytics().logEvent('boton_recuperar_contrasena');
     }
     this.setState({ dataemail: '', datapass: '' });
     navigate(view);

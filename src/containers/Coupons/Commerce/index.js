@@ -5,7 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { ActivityIndicator, Dimensions, View } from 'react-native';
+import { ActivityIndicator, Dimensions, View, Platform } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 import {
@@ -16,6 +16,8 @@ import ButtonGradient from '../../../components/ButtonGradient';
 import CouponsActions from '../../../redux/reducers/CouponsRedux';
 
 const Width = Dimensions.get('window').width;
+
+const typeCard = Platform.OS === 'ios' ? 'stack' : 'default';
 
 class Commerce extends Component {
   constructor() {
@@ -79,7 +81,7 @@ class Commerce extends Component {
             <View>
               <WrapperCarousel>
                 <Carousel
-                  layout={'stack'}
+                  layout={typeCard}
                   data={newCouponsArray}
                   renderItem={this.renderItem}
                   ref={(c) => { this._carousel = c; }}

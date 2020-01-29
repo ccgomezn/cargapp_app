@@ -24,7 +24,6 @@ import {
 } from './style';
 import WhiteCardTravels from '../../components/WhiteCardTravels';
 import ButtonLink from '../../components/ButtonLink';
-import IconService from '../../components/IconService';
 import ButtonGradient from '../../components/ButtonGradient';
 import Swipeable from '../../components/Swipeable';
 import Input from '../../components/GeneralInput';
@@ -56,7 +55,7 @@ const itemList = [
   },
   {
     label: 'Documentos',
-    url: 'ScreenProfile',
+    url: 'DocumentsAccount',
   },
   {
     label: 'Mis Vehículos',
@@ -81,7 +80,7 @@ class HomeOffers extends Component {
       callMine: false,
       modalPermission: false,
       fetch: false,
-      listview: ['profiles', 'documents','vehicles', 'bank_accounts'],
+      listview: ['profiles', 'documents', 'vehicles', 'bank_accounts'],
       modalFromHome: true,
       share: false,
     };
@@ -99,12 +98,6 @@ class HomeOffers extends Component {
       profile,
       getparameters,
     } = this.props;
-    const data = {
-      driver: {
-        token: '3560660900101009',
-      },
-    };
-
 
     const that = this;
     if (!this.didFocusListener) {
@@ -135,8 +128,6 @@ class HomeOffers extends Component {
     getDestinations();
     getMyOffers(profile.data[0].user.id);
     getparameters('STATUS_TRAVEL');
-
-    console.log(formatPrice(123123));
   }
 
   componentWillUnmount() {
@@ -346,15 +337,19 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
-      /* estados de viajes() */
+      /* status offers */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
           // eslint-disable-next-line max-len
-          console.log(offer.statu_id);
-          if (status_travel.includes(offer.statu_id)) {
-            navigation.navigate('StartTravel', { Offer: offer });
-          } else {
-            console.log(`${offer.statu_id} no include`);
+          console.log(offer);
+          // validate is active
+          if (offer.active) {
+            if (status_travel.includes(offer.statu_id)) {
+              this.setState({ modalPermission: false });
+              navigation.navigate('StartTravel', { Offer: offer });
+            } else {
+              console.log(`${offer.statu_id} no include`);
+            }
           }
         });
       }

@@ -174,7 +174,7 @@ class Home extends Component {
           <WrapperContent>
             {ranking.topme !== null ? (
               <CardInfoStad
-                press={() => this.onNavigate('ScreenStats')}
+                press={() => this.onNavigate('Points')}
                 title={name !== '' ? `¡Hola ${name}!` : '¡Hola!'}
                 valueKm={ranking.topme.kilometres}
                 textKm="Kms recorridos"

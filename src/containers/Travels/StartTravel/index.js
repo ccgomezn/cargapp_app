@@ -70,6 +70,8 @@ class StartTravel extends Component {
       navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
     } = this.props;
     const offer = navigation.getParam('Offer');
+    console.log(offer);
+    console.log(offers);
     offers.data.map((newOffer) => {
       if (newOffer.id === offer.id) {
         this.setState({ offerSpecific: offer, status: offer.statu_id });

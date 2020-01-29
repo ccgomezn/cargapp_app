@@ -136,7 +136,7 @@ class Profile extends Component {
                   <ContentButton>
                     <ButtonGradient
                       content="Ver retos"
-                      press={() => navigate('ScreenPoints')}
+                      press={() => navigate('Points')}
                     />
                   </ContentButton>
                 </WrapperColumn>

@@ -112,7 +112,7 @@ class Points extends Component {
             textKm="Kms recorridos"
             valuePoint={ranking.topme.my_points}
             textPoint="Puntos Acumulados"
-            press={() => navigation.navigate('ScreenStats')}
+            // press={() => navigation.navigate('ScreenStats')}
           />
         ) : (
           <CardInfoStad

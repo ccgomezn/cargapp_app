@@ -36,4 +36,6 @@ export const TextIcon = styled.Text`
 
 export const DrawIcon = styled.Image`
   resize-mode: contain;
+  width: 45px;
+  height: 45px;
 `;
