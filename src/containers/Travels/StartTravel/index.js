@@ -292,6 +292,7 @@ class StartTravel extends Component {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
       customButtons: [],
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
         path: 'images',

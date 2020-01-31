@@ -31,7 +31,6 @@ export const TouchLeftMenu = styled.TouchableOpacity`
 `;
 
 export const TouchCenterMenu = styled.TouchableOpacity`
-  flex: 1;
   text-align: center;
   align-self: center;
 `;
