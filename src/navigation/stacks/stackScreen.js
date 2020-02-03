@@ -260,7 +260,7 @@ export const myVehicleStackNavigator = createStackNavigator({
 });
 
 export const ProfileStackNavigator = createStackNavigator({
-  Fifth: {
+  ScreenProfile: {
     screen: ScreenProfile,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',

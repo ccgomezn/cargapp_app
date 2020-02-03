@@ -138,7 +138,6 @@ class Home extends Component {
   render() {
     const { profile, ranking } = this.props;
     const { location, name } = this.state;
-    console.log(this.props);
     if (location.latitudeDelta !== 0.5 && profile.data !== null) {
       profile.data.map((data) => {
         if (name === '') {
