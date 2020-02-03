@@ -24,7 +24,7 @@ import {
   WrapperTopCard,
   BlueText,
   WrapperModal,
-  CustomImage,
+  CustomImage, WrapperTextModal,
 } from './styles';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import TopCardTravel from '../../../components/TopCardTravel';
@@ -349,6 +349,7 @@ class StartTravel extends Component {
   }
 
   rating(value) {
+    analytics().logEvent('boton_encuesta');
     const { postRateServices, profile, navigation } = this.props;
     const { offerSpecific } = this.state;
     this.setState({ modalRating: false, finished: true });
@@ -502,8 +503,8 @@ class StartTravel extends Component {
           </MapView>
           {companies.data.map((CompanyInfo) => {
             if (offerSpecific.company_id === CompanyInfo.id) {
-              console.log(status)
-              console.log(status !== 6 || status !== 11)
+              console.log(status);
+              console.log(status !== 6 || status !== 11);
               return (
                 <WrapperTopCard>
                   <TopCardTravel
@@ -547,8 +548,10 @@ class StartTravel extends Component {
           </WrapperAdresses>
           <EmptyDialog visible={modalRating && !finished}>
             <WrapperModal>
-              <BlueText style={{ paddingTop: '5%' }}>Acabas de finalizar el viaje exitosamente</BlueText>
-              <BlueText>¿Que tal estuvo tu viaje?</BlueText>
+              <WrapperTextModal>
+                <BlueText>Acabas de finalizar el viaje exitosamente</BlueText>
+                <BlueText>¿Que tal estuvo tu viaje?</BlueText>
+              </WrapperTextModal>
               <StarRating
                 disabled={false}
                 maxStars={5}

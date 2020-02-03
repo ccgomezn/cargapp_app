@@ -78,9 +78,10 @@ class HomeOffers extends Component {
       callMine: false,
       modalPermission: false,
       fetch: false,
-      listview: ['profiles', 'documents','vehicles', 'bank_accounts'],
+      listview: ['profiles', 'documents', 'vehicles', 'bank_accounts'],
       modalFromHome: true,
       share: false,
+      filterModal: false,
     };
   }
 
@@ -119,7 +120,7 @@ class HomeOffers extends Component {
       this.didBlurListener = this.props.navigation.addListener(
         'didBlur',
         () => {
-          that.setState({ unmount: true });
+          that.setState({ unmount: true, filterModal: false });
           this.componentWillUnmount();
         },
       );
@@ -146,14 +147,14 @@ class HomeOffers extends Component {
     Share.share(
       {
         message:
-          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+          `Este viaje de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
             offers.id}`,
         url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
-        title: 'Oferta Cargapp',
+        title: 'Viaje Cargapp',
       },
       {
         // Android only:
-        dialogTitle: 'Compartir Oferta',
+        dialogTitle: 'Compartir Viaje',
         // iOS only:
         excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
       },
@@ -272,7 +273,7 @@ class HomeOffers extends Component {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,
-      listview, fetch, modalFromHome,
+      listview, fetch, modalFromHome, filterModal,
     } = this.state;
     const {
       driver, offers, vehicles, navigation,
@@ -303,7 +304,6 @@ class HomeOffers extends Component {
       }
       this.setState({ fetch: true });
     }
-    console.log(this.props);
     if (
       offers.data
       && offers.services
@@ -333,7 +333,16 @@ class HomeOffers extends Component {
         mine_offers.push(offer.service_id);
       });
       const filter = navigation.getParam('filter');
-      if (filter && modalFromHome) {
+
+      if (filter && filterModal === false) {
+        this.setState({ filterModal: true });
+      }
+      console.log(filterModal);
+      if (filterModal === undefined && modalSearch === false) {
+        this.setState({ filterModal: true });
+      }
+
+      if (filterModal && modalFromHome && !modalSearch) {
         this.onPressFilter();
       }
       const status_travel = [];
@@ -372,7 +381,7 @@ class HomeOffers extends Component {
                   <ButtonLink
                     text="Filtrar"
                     icon
-                    press={() => this.onPressFilter()}
+                    press={() => this.setState({ modalSearch: true })}
                   />
                 </ContentFilter>
               </ContentBlock>
@@ -419,10 +428,10 @@ class HomeOffers extends Component {
               <ContentForm>
                 <ContentRange>
                   <RowInput>
-                    <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} />
+                    <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} editable={false} />
                   </RowInput>
                   <RowInput>
-                    <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} />
+                    <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} editable={false} />
                   </RowInput>
                 </ContentRange>
                 <WrapperInputs>
@@ -522,7 +531,7 @@ class HomeOffers extends Component {
               <ContentDialog>
                 <TitleBlack>Datos Faltantes</TitleBlack>
                 <TextGray>
-                  Para que puedas aplicar a mejores ofertas, nos falta esta información:
+                  Para que puedas aplicar a mejores viajes, nos falta esta información:
                 </TextGray>
                 <ContentForm>
                   {this.missingViews(permissions.data)}
@@ -546,7 +555,7 @@ class HomeOffers extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations,parameters,
+    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations, parameters,
 
   } = state;
   return {

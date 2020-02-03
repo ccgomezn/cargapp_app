@@ -40,11 +40,11 @@ function CardMapBeginTravel({
             {normalText}
           </NormalText>
         </WrapperInfo>
-        <TouchableQualification onPress={onPressQA}>
+        {/* <TouchableQualification onPress={onPressQA}>
           <BlueText>
             Ver calificación
           </BlueText>
-        </TouchableQualification>
+        </TouchableQualification> */}
       </WrapperHeader>
       <Line />
       <WrapperBody>

@@ -10,7 +10,7 @@ export const AddressesWrapper = styled.View`
   height: auto;
   padding: 20px;
   position: absolute;
-  bottom: 46%;
+  bottom: 35%;
 `;
 
 export const WrapperModal = styled.View`
@@ -18,7 +18,13 @@ export const WrapperModal = styled.View`
   background-color: white;
   align-self: center;
   border-radius: 30px;
-  padding: 7%;
+  padding: 3%;
+`;
+
+export const WrapperTextModal = styled.View`
+  width: 100%;
+  height: auto;
+  padding: 3%;
 `;
 
 export const BlueText = styled.Text`
@@ -26,5 +32,4 @@ export const BlueText = styled.Text`
   font-size: 18px;
   align-self: center;
   text-align: center;
-  padding-bottom: 18%;
 `;

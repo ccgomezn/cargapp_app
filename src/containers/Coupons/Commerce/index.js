@@ -8,8 +8,9 @@ import React, { Component } from 'react';
 import { ActivityIndicator, Dimensions, View } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
+import analytics from '@react-native-firebase/analytics';
 import {
-  MainWrapper, TextTerms, WrapperButton, WrapperCarousel, WrapperText, BlueText,
+  MainWrapper, WrapperButton, WrapperCarousel, BlueText,
 } from './style';
 import CardCoupons from '../../../components/CardCoupons';
 import ButtonGradient from '../../../components/ButtonGradient';
@@ -41,6 +42,7 @@ class Commerce extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('todos_los_cupones');
     const { navigation, getCoupons } = this.props;
     const dtcompany = navigation.getParam('idCompany', '');
     if (dtcompany !== '') {
@@ -53,9 +55,15 @@ class Commerce extends Component {
     getCoupons();
   }
 
+  navigation(event, param) {
+    const { navigation } = this.props;
+    analytics().logEvent('boton_obtener_cupon');
+    navigation.navigate(event, param);
+  }
+
   render() {
     const { sliderActive, company, category } = this.state;
-    const { navigation, coupons } = this.props;
+    const { coupons } = this.props;
     const newCoupons = new Set();
 
     if (coupons.data !== null && !coupons.featching) {
@@ -98,7 +106,7 @@ class Commerce extends Component {
               />
               <WrapperButton>
                 <ButtonGradient
-                  press={() => navigation.navigate('DetailsCoupons', { idItem: newCouponsArray[sliderActive] })}
+                  press={() => this.navigation('DetailsCoupons', { idItem: newCouponsArray[sliderActive] })}
                   content="Obtener cupón"
                   disabled={false}
                 />
