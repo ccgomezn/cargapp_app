@@ -35,7 +35,7 @@ class FilterOffers extends Component {
             });
             let filter_real = [];
             filterOffers.data.forEach(offer => {
-              if(!mine_offers.includes(offer.id)){
+              if(!mine_offers.includes(offer.id) && offer.statu_id.toString() === '10'){
                 filter_real.push(offer);
               }
             });
@@ -43,7 +43,7 @@ class FilterOffers extends Component {
                 <MainWrapper>
                     {filter_real.length >= 1 ? (
                         <MainWrapperScroll>
-                            <MainTextCard>Ofertas encontradas</MainTextCard>
+                            <MainTextCard>Viajes encontrados</MainTextCard>
                             {filter_real.map(offers => (
                                 <WhiteCardTravels
                                     from={offers.origin}
@@ -59,7 +59,7 @@ class FilterOffers extends Component {
                             }
                         </MainWrapperScroll>
                     ) : (
-                        <TextAbsolute>No hay ofertas disponibles con esas caracteristicas</TextAbsolute>
+                        <TextAbsolute>No hay viajes disponibles con esas caracteristicas</TextAbsolute>
                     )}
                 </MainWrapper>
             );

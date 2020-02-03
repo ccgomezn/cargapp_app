@@ -104,7 +104,7 @@ class Registration extends Component {
     if (stepUser !== null) {
       // verify step
       if (stepUser === 1) {
-        analytics().logEvent('confirmar_pin_registro');
+        analytics().setCurrentScreen('confirmar_pin_registro');
         this.setState({ modalPin: true, step: stepUser });
       } else if (stepUser === 2) {
         // login
@@ -305,7 +305,7 @@ class Registration extends Component {
   }
 
   init() {
-    analytics().logEvent('boton_continuar_registro');
+    analytics().logEvent('boton_confirmar_pin');
     const { datapin } = this.state;
     this.setState({ pinErrorCheck: false });
     if (datapin.length < 4 || datapin === '') {
@@ -327,6 +327,7 @@ class Registration extends Component {
 
   render() {
     const handlePressButton = () => {
+      analytics().logEvent('boton_generador');
       const { pressState, pressStateTwo } = this.state;
       if (pressStateTwo) {
         this.setState({
@@ -531,7 +532,7 @@ class Registration extends Component {
               </ButtonSubText>
             </WrapperButton>
             <WrapperButton
-              // onPress={handlePressButton}
+              onPress={handlePressButton}
               style={pressState ? containerPress : null}
             >
               {pressState && <Check source={require('../../../Images/Check.png')} />}

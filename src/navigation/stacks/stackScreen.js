@@ -236,6 +236,16 @@ export const myTravelsStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  ApplyTravels: {
+    screen: ScreenApplyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const myVehicleStackNavigator = createStackNavigator({

@@ -56,8 +56,14 @@ export const WrapperModal = styled.View`
   background-color: white;
   align-self: center;
   border-radius: 10px;
-  padding: 4%;
+  padding: 3%;
   z-index: 1700;
+`;
+
+export const WrapperTextModal = styled.View`
+  width: 100%;
+  height: auto;
+  padding: 3%;
 `;
 
 export const CustomImage = styled.Image`

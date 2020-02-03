@@ -199,6 +199,7 @@ class Registration extends Component {
 
     if (onPressLogin) {
       if (!emailErrorCheck && !passErrorCheck) {
+        analytics().logEvent('login_exitoso');
         this.onLogin();
       }
       this.setState({ onPressLogin: false });
@@ -215,6 +216,7 @@ class Registration extends Component {
     if (loading) {
       if (user.error && !user.fetching) {
         this.setState({ loading: false, errorApi: true });
+        analytics().logEvent('login_fallido');
       }
       if (user.status && !user.fetching) {
         if (user.session) {

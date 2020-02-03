@@ -7,6 +7,7 @@ import {
 } from './style';
 import CardCoupons from '../../../components/CardCoupons';
 import { TextTerms, WrapperText } from '../Commerce/style';
+import analytics from '@react-native-firebase/analytics';
 
 class DetailCoupon extends Component {
   constructor() {
@@ -15,6 +16,7 @@ class DetailCoupon extends Component {
   }
 
   componentDidMount() {
+    analytics().logEvent('boton_codigo_de_mi_cupon');
     const { navigation, postCoupon, profile } = this.props;
     const idCoupon = navigation.getParam('idItem');
     this.setState({ coupon: idCoupon });

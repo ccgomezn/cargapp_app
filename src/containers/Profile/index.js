@@ -46,7 +46,7 @@ class Profile extends Component {
   }
 
   onPressButtonPassword() {
-    analytics().setCurrentScreen('mi_perfil_cambiar_contrasena');
+    analytics().setCurrentScreen('boton_perfil_cambiar_contrasena');
     this.setState({ modalPassword: true });
   }
 
@@ -84,6 +84,20 @@ class Profile extends Component {
       putPassword(data);
     } else {
       Alert.alert('Error', 'Las contraseñas no coinciden');
+    }
+  }
+
+  navigate(screen) {
+    const { navigation } = this.props;
+    if (screen === 'BankAccount') {
+      navigation.navigate(screen);
+      analytics().logEvent('boton_perfil_cuenta_bancaria');
+    } else if (screen === 'DocumentsAccount') {
+      analytics().logEvent('boton_perfil_documentos');
+      navigation.navigate(screen);
+    } else if (screen === 'Points') {
+      analytics().logEvent('boton_ver_retos');
+      navigation.navigate(screen);
     }
   }
 
@@ -136,7 +150,7 @@ class Profile extends Component {
                   <ContentButton>
                     <ButtonGradient
                       content="Ver retos"
-                      press={() => navigate('Points')}
+                      press={() => this.navigate('Points')}
                     />
                   </ContentButton>
                 </WrapperColumn>
@@ -149,13 +163,13 @@ class Profile extends Component {
                     <ButtonWhite border content="Cambiar contraseña" press={() => this.onPressButtonPassword()} />
                   </RowContent>
                   <RowContent>
-                    <ButtonWhite border content="Cuenta Bancaria" press={() => navigate('BankAccount')} />
+                    <ButtonWhite border content="Cuenta Bancaria" press={() => this.navigate('BankAccount')} />
                   </RowContent>
                 </ContentView>
 
                 <ContentView>
                   <RowContent style={{ marginRight: '2%' }}>
-                    <ButtonWhite border content="Documentación" press={() => navigate('DocumentsAccount')} />
+                    <ButtonWhite border content="Documentación" press={() => this.navigate('DocumentsAccount')} />
                   </RowContent>
                 </ContentView>
 

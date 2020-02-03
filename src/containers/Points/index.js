@@ -60,32 +60,43 @@ class Points extends Component {
 
   OnPressChallenge(data) {
     this.setState({ modalChallenge: true, activeChallenge: data });
+    analytics().setCurrentScreen('retos_como_ganar');
   }
 
-  OnHideModal() {
+  OnHideModal(e) {
     this.setState({ modalChallenge: false, modalPrizes: false });
+    if (e === 'reclamar') {
+      analytics().logEvent('boton_reclamar_premio');
+    } else if (e === 'entendido') {
+      analytics().logEvent('boton_entendido')
+    } else if (e === 'cerrar') {
+      analytics().logEvent('boton_cancelar_premio')
+    }
   }
 
   OnPressPrizes(data) {
+    analytics().setCurrentScreen('premio');
     this.setState({ modalPrizes: true, activePrize: data });
   }
 
   handleSingleIndexSelect = (index) => {
-    analytics().logEvent(`boton_retos_${index}`);
     const { getActiveChallenge, getActivePrizes, getTopRanking } = this.props;
     // handle tab selection for single Tab Selection SegmentedControlTab
     this.setState(prevState => ({ ...prevState, selectedIndex: index, reload: true }));
     if (index == 0) {
       // get prozes
       getActivePrizes();
+      analytics().logEvent(`boton_retos_premios`);
     }
     if (index == 1) {
       // get challenge
       getActiveChallenge();
+      analytics().logEvent(`boton_retos_mis_retos`);
     }
     if (index == 2) {
       // get topRanking
       getTopRanking();
+      analytics().logEvent(`boton_retos_ranking`);
     }
   };
 
@@ -212,7 +223,7 @@ class Points extends Component {
                   position={data.position}
                 />
               ))}
-                
+
             </View>
           ))}
 
@@ -277,13 +288,13 @@ class Points extends Component {
                   <ButtonGradient
                     content="Reclamar"
                     disabled
-                    press={() => this.OnHideModal()} />
+                    press={() => this.OnHideModal('reclamar')} />
                 </WrapperButtonsBottom>
                 <WrapperButtonsBottom style={{ marginTop: 0 }}>
                   <ButtonWhite
                     content="Cerrar"
                     border={{ }}
-                    press={() => this.OnHideModal()}
+                    press={() => this.OnHideModal('cerrar')}
                   />
                 </WrapperButtonsBottom>
               </ContentDialog>
@@ -343,7 +354,7 @@ class Points extends Component {
                   {activeChallenge.body}
                 </TextDesc>
                 <WrapperButtonsBottom style={{ marginTop: 10 }}>
-                  <ButtonGradient content="Entendido" press={() => this.OnHideModal()} />
+                  <ButtonGradient content="Entendido" press={() => this.OnHideModal('entendido')} />
                 </WrapperButtonsBottom>
               </ContentDialog>
             ) : null }
