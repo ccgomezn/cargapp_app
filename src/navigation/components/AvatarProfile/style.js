@@ -24,7 +24,7 @@ export const CircleAvatar = styled.TouchableOpacity`
 `;
 
 export const Avatar = styled.Image`
-  border-radius: 50px;
+  border-radius: 50;
   resize-mode: contain;
 `;
 

@@ -25,9 +25,13 @@ class Analytics extends Component {
     const { getMeStatics, profile } = this.props;
     getMeStatics();
     if (profile.data) {
+      const firstName = profile.data ? profile.data[0].profile.firt_name : '';
+      const lastName = profile.data ? profile.data[0].profile.last_name : '';
+      const shortName = firstName.split(' ');
+      const shortlastName = lastName.split(' ');
       this.setState({
-        nameUser: profile.data[0].profile.firt_name,
-        lastNameUser: profile.data[0].profile.last_name,
+        nameUser: shortName[0],
+        lastNameUser: shortlastName[0],
       });
     }
   }
