@@ -556,7 +556,6 @@ class HomeOffers extends Component {
 const mapStateToProps = (state) => {
   const {
     driver, offers, vehicles, user, profile, filterOffers, permissions, destinations, parameters,
-
   } = state;
   return {
     driver,

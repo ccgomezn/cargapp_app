@@ -56,6 +56,7 @@ class ApplyOffer extends Component {
       successNotification: false,
       errorFalse: false,
       fetch: false,
+      fetchList: false,
       fetchError: false,
       fetchSuccess: false,
       fetchID: false,
@@ -213,6 +214,7 @@ class ApplyOffer extends Component {
       modalApply,
       modalPermission,
       listview,
+      fetchList,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -224,7 +226,7 @@ class ApplyOffer extends Component {
     if (selectID !== undefined && selectID !== null && fetchID === false) {
       this.setState({ fetchID: true });
     }
-    if (permissions.data && !permissions.fetching && !fetch) {
+    if (permissions.data && !permissions.fetching && !fetchList) {
       // validate permisson
       let perm = 0;
       permissions.data.map((pem) => {
@@ -239,12 +241,14 @@ class ApplyOffer extends Component {
         analytics().setCurrentScreen('datos_faltantes');
         this.setState({ modalPermission: true });
       }
-      this.setState({ fetch: true });
+      this.setState({ fetchList: true });
     }
     if (
       offer !== null
       && companies.data !== null
       && rateService.rate !== null
+      && permissions.data !== null
+      && !permissions.fetching
     ) {
       const rateCompany = [];
       rateService.rate.map((rate) => {
