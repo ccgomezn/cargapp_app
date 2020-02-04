@@ -1,10 +1,15 @@
 import styled from 'styled-components/native';
 
 export const MainWrapper = styled.View`
-    
-    width: 100%;
-    background-color: white;
-    `;
+  position: absolute;
+  bottom: 0;
+  justify-content: flex-end;
+  width: 100%;
+  height: auto;
+  padding-bottom: 30px;
+  padding-horizontal: 15px;
+  background-color: white;
+`;
 
 export const WrapperHeader = styled.View`
     width: 100%;
