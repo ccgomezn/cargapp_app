@@ -66,6 +66,7 @@ class ApplyOffer extends Component {
       modalRate: false,
       modalApply: false,
       modalPermission: false,
+      permissionApply: false,
       listview: ['profiles', 'documents', 'vehicles', 'bank_accounts'],
     };
   }
@@ -120,33 +121,6 @@ class ApplyOffer extends Component {
     navigation.goBack();
   }
 
-  vehicleType(value, id) {
-    analytics().logEvent('boton_aplicar_a_oferta');
-    const { navigation } = this.props;
-    const { showTravel } = this.state;
-    const dataOffer = navigation.getParam('dataOffer');
-    if (id) {
-      this.applyOffer(id, value);
-    } else if (showTravel) {
-      navigation.navigate('StartTravel', { Offer: value });
-      analytics().logEvent('boton_detalles_iniciar_viaje');
-    } else {
-      navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
-    }
-  }
-
-  applyOffer(value, valueApplyOffer) {
-    const { modalApply } = this.props;
-    const { applyOffer, navigation, profile } = this.props;
-    const data = {
-      service_id: valueApplyOffer.id,
-      user_id: profile.data[0].user.id,
-      active: true,
-    };
-    applyOffer(data);
-    this.setState({ modalApply: true });
-  }
-
   nameButton() {
     const { profile } = this.props;
     const { offer, showTravel } = this.state;
@@ -179,6 +153,41 @@ class ApplyOffer extends Component {
     }, 1000);
   }
 
+  vehicleType(value, id) {
+    analytics().logEvent('boton_aplicar_a_oferta');
+    const { navigation } = this.props;
+    const { showTravel, modalPermission } = this.state;
+    const dataOffer = navigation.getParam('dataOffer');
+    if (!modalPermission) {
+      if (id) {
+        this.applyOffer(id, value);
+      } else if (showTravel) {
+        navigation.navigate('StartTravel', { Offer: value });
+        analytics().logEvent('boton_detalles_iniciar_viaje');
+      } else {
+        navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
+      }
+    } else {
+      analytics().setCurrentScreen('datos_faltantes');
+      this.setState({ permissionApply: true });
+    }
+  }
+
+  applyOffer(value, valueApplyOffer) {
+    const { applyOffer, profile } = this.props;
+    const data = {
+      service_id: valueApplyOffer.id,
+      user_id: profile.data[0].user.id,
+      active: true,
+    };
+    applyOffer(data);
+    this.setState({ modalApply: true });
+  }
+
+  onHideModal() {
+    this.setState({ permissionApply: false });
+  }
+
   missingViews(list) {
     const { listview } = this.state;
     return (
@@ -195,6 +204,9 @@ class ApplyOffer extends Component {
           ) : null
         ))
         }
+        <WrapperButtonsBottom style={{ marginTop: 10 }}>
+          <ButtonGradient content="Hazlo después" press={() => this.onHideModal()} />
+        </WrapperButtonsBottom>
       </View>
     );
   }
@@ -213,6 +225,7 @@ class ApplyOffer extends Component {
       modalRate,
       modalApply,
       modalPermission,
+      permissionApply,
       listview,
       fetchList,
     } = this.state;
@@ -238,7 +251,6 @@ class ApplyOffer extends Component {
         }
       });
       if (perm >= 1) {
-        analytics().setCurrentScreen('datos_faltantes');
         this.setState({ modalPermission: true });
       }
       this.setState({ fetchList: true });
@@ -358,14 +370,15 @@ class ApplyOffer extends Component {
             }
           })}
           <EmptyDialog
-            visible={modalPermission}
+            visible={permissionApply}
             opacity={0.4}
+            onTouchOutside={() => this.onHideModal()}
           >
             <MainWrapperDialog>
               <ContentDialog>
                 <TitleBlack>Datos Faltantes</TitleBlack>
                 <TextGray>
-                  Para que puedas aplicar a mejores viajes, nos falta esta información:
+                  Para que puedas aplicar a este viaje, nos falta esta información:
                 </TextGray>
                 <ContentForm>
                   {this.missingViews(permissions.data)}
