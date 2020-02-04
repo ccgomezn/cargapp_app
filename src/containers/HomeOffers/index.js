@@ -349,9 +349,6 @@ class HomeOffers extends Component {
       /* status offers */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
-          // eslint-disable-next-line max-len
-          console.log(offer);
-          // validate is active
           if (offer.active) {
             if (status_travel.includes(offer.statu_id)) {
               this.setState({ modalPermission: false });
