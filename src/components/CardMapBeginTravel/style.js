@@ -1,13 +1,8 @@
 import styled from 'styled-components/native';
 
 export const MainWrapper = styled.View`
-    position: absolute;
-    bottom: 0;
+    
     width: 100%;
-    height: auto;
-    justify-content: flex-end;
-    padding-bottom: 30px;
-    padding-horizontal: 15px;
     background-color: white;
     `;
 

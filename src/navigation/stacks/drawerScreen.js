@@ -41,7 +41,6 @@ function CustomDrawerContentComponent(props) {
         >
           <AvatarProfile
             avatar={require('../../Images/profile.jpg')}
-            // avatar={{ uri: 'https://avatars3.githubusercontent.com/u/25873769?s=460&v=4' }}
             press={() => navigate('ScreenProfile')}
             text={firstName}
             secondText={shortName[0]}

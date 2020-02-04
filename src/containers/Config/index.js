@@ -12,6 +12,7 @@ import {
 
 import ButtonGradient from '../../components/ButtonGradient';
 import UserActions from '../../redux/reducers/UserRedux';
+import CardMapBeginTravel from '../../components/CardMapBeginTravel';
 
 class Config extends Component {
   constructor() {
@@ -61,6 +62,19 @@ class Config extends Component {
               press={() => this.onLogout()}
             />
           </WrapperButtonGradient>
+
+          {/* <CardMapBeginTravel
+            company="company"
+            amount="00000"
+            extra="extra"
+            vehicle="vehicle"
+            content="content"
+            packing="packing"
+            loadVolume="volumen"
+            loadWeight="weight"
+            mainButton="mainButton"
+            normalText="normalText"
+          /> */}
         </ContentView>
         <Toast
           visible={loadinglogout}
