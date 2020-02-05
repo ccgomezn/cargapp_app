@@ -353,15 +353,18 @@ class ApplyOffer extends Component {
             if (offer.company_id === company.id) {
               return (
                 <CardMapBeginTravel
-                  extra={offer.note}
                   normalText={company.address}
                   amount={formatPrice(offer.price)}
                   onPressBG={() => this.vehicleType(offer, selectID)}
                   onPressBW={
                     () => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())
                   }
-                  delivery={offer.description}
+                  content={offer.description}
+                  extra={offer.note}
                   company={company.name}
+                  packing={offer.packing}
+                  loadVolume={offer.load_volume}
+                  loadWeight={offer.load_weight}
                   mainButton={this.nameButton()}
                   onPressQA={() => this.onPressQualification()}
                   status={offer.statu_id}

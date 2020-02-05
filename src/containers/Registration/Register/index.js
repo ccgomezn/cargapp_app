@@ -532,7 +532,7 @@ class Registration extends Component {
               </ButtonSubText>
             </WrapperButton>
             <WrapperButton
-              onPress={handlePressButton}
+              // onPress={handlePressButton}
               style={pressState ? containerPress : null}
             >
               {pressState && <Check source={require('../../../Images/Check.png')} />}
