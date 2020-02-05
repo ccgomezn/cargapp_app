@@ -309,7 +309,7 @@ class ApplyOffer extends Component {
               latitudeDelta: 9.93,
               longitudeDelta: 9.94,
             }}
-            style={{ height: '70%', width: '100%' }}
+            style={{ height: '55%', width: '100%' }}
           >
             <MapView.Marker
               coordinate={{
