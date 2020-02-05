@@ -14,10 +14,12 @@ function CardCoupons({
   return (
     <MainWrapper style={fullCard && { borderRadius: 0 }} source={{ uri: img }}>
       <SubContainer>
-        <SubImage />
+        {subImg ? (
+          <SubImage />
+        ) : null }
         <WrapperText>
           <WhiteText>{text}</WhiteText>
-          <WhiteOpacityText>{subText.length > 15 ? `${subText.slice(0, 23)}...` : subText}</WhiteOpacityText>
+          <WhiteOpacityText>{subText.length > 15 ? `${subText.slice(0, 28)}...` : subText}</WhiteOpacityText>
         </WrapperText>
         {button ? (
           <Button onPress={press}>

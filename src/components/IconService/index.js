@@ -23,8 +23,7 @@ function IconService(
         <CicleIcon>
           { icon !== null ? (
             <DrawIcon
-              // source={{ uri: icon }}
-              source={icon}
+              source={{ uri: icon }}
             />
           ) : null }
         </CicleIcon>

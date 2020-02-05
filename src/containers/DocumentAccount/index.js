@@ -97,6 +97,8 @@ class DocumentAccount extends Component {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
       customButtons: [],
+      tintColor: '#010935',
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -123,6 +125,7 @@ class DocumentAccount extends Component {
           this.setState({ loadingUpdate: true });
           deleteDocument(idItem);
         }
+        console.log(response);
         this.onRegisterDoc(item, idDoc, response);
       }
 
@@ -290,8 +293,9 @@ class DocumentAccount extends Component {
                   </WrapperTitle>
                   <WrapperImage>
                     <ImageDetail
-                      loadingIndicatorSource
                       resizeMode="contain"
+                      // eslint-disable-next-line global-require
+                      loadingIndicatorSource={require('../../Images/arrow-down.png')}
                       source={{ uri: listStatus[activeEdit].dataEdit.file }}
                     />
                   </WrapperImage>

@@ -125,14 +125,14 @@ class MyTravels extends Component {
     Share.share(
       {
         message:
-          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+          `Este viaje de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
             offers.id}`,
         url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
-        title: 'Oferta Cargapp',
+        title: 'Viaje Cargapp',
       },
       {
         // Android only:
-        dialogTitle: 'Compartir Oferta',
+        dialogTitle: 'Compartir Viaje',
         // iOS only:
         excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
       },
@@ -206,7 +206,7 @@ class MyTravels extends Component {
               visible={alertVisible}
               textBlack="Lo sentimos"
               textButton="Entendido"
-              textGray="no puedes ver la oferta"
+              textGray="no puedes ver el viaje"
               onTouchOutside={() => this.onPressButtonPopup()}
               pressButton={() => this.onPressButtonPopup()}
             />

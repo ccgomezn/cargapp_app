@@ -22,7 +22,8 @@ import ButtonWhite from '../ButtonWhite';
 import ButtonGradient from '../ButtonGradient';
 
 function CardMapBeginTravel({
-  company, normalText, amount, delivery, extra,
+  company, normalText, amount, extra,
+  vehicle, content, packing, loadWeight, loadVolume,
   onPressBW, onPressBG, mainButton, onPressQA,
   status,
 }) {
@@ -40,27 +41,52 @@ function CardMapBeginTravel({
             {normalText}
           </NormalText>
         </WrapperInfo>
-        <TouchableQualification onPress={onPressQA}>
+        {/* <TouchableQualification onPress={onPressQA}>
           <BlueText>
             Ver calificación
           </BlueText>
-        </TouchableQualification>
+        </TouchableQualification> */}
       </WrapperHeader>
       <Line />
       <WrapperBody>
         <WrapperColumn>
           <WrapperInfoBody>
-            <BoldText>Valor del flete</BoldText>
-            <NormalText>{amount}</NormalText>
+            <BoldText>Vehículo</BoldText>
+            <NormalText>
+              {vehicle}
+            </NormalText>
           </WrapperInfoBody>
           <WrapperInfoBody>
-            <BoldText>Descripción</BoldText>
-            <NormalText>{delivery}</NormalText>
+            <BoldText>Valor del flete</BoldText>
+            <NormalText>
+              {'$ '}
+              {amount}
+            </NormalText>
           </WrapperInfoBody>
         </WrapperColumn>
         <WrapperColumn>
           <WrapperInfoBody>
-            <BoldText>Dato extra</BoldText>
+            <BoldText>Contenido</BoldText>
+            <NormalText>{content}</NormalText>
+          </WrapperInfoBody>
+          <WrapperInfoBody>
+            <BoldText>Empaque de la carga</BoldText>
+            <NormalText>{packing}</NormalText>
+          </WrapperInfoBody>
+        </WrapperColumn>
+        <WrapperColumn>
+          <WrapperInfoBody>
+            <BoldText>Peso</BoldText>
+            <NormalText>{loadWeight}</NormalText>
+          </WrapperInfoBody>
+          <WrapperInfoBody>
+            <BoldText>Volumen</BoldText>
+            <NormalText>{loadVolume}</NormalText>
+          </WrapperInfoBody>
+        </WrapperColumn>
+        <WrapperColumn>
+          <WrapperInfoBody>
+            <BoldText>Observaciones</BoldText>
             <NormalText>{extra}</NormalText>
           </WrapperInfoBody>
         </WrapperColumn>
@@ -82,13 +108,17 @@ CardMapBeginTravel.propTypes = {
   company: PropTypes.string.isRequired,
   normalText: PropTypes.string.isRequired,
   amount: PropTypes.string.isRequired,
-  delivery: PropTypes.string.isRequired,
   extra: PropTypes.string.isRequired,
   onPressBW: PropTypes.func.isRequired,
   onPressBG: PropTypes.func.isRequired,
   onPressQA: PropTypes.func.isRequired,
   mainButton: PropTypes.func.isRequired,
   status: PropTypes.number.isRequired,
+  vehicle: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  packing: PropTypes.string.isRequired,
+  loadWeight: PropTypes.string.isRequired,
+  loadVolume: PropTypes.string.isRequired,
 };
 
 export default CardMapBeginTravel;

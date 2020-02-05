@@ -135,10 +135,10 @@ class Registration extends Component {
 
   changeView(view) {
     const { navigate } = this.props.navigation;
-    if(view === 'Register') {
+    if (view === 'Register') {
       analytics().logEvent('boton_registrarse');
     } else {
-      analytics().logEvent('boton_recuperar_contraseña');
+      analytics().logEvent('boton_recuperar_contrasena');
     }
     this.setState({ dataemail: '', datapass: '' });
     navigate(view);
@@ -199,6 +199,7 @@ class Registration extends Component {
 
     if (onPressLogin) {
       if (!emailErrorCheck && !passErrorCheck) {
+        analytics().logEvent('login_exitoso');
         this.onLogin();
       }
       this.setState({ onPressLogin: false });
@@ -215,6 +216,7 @@ class Registration extends Component {
     if (loading) {
       if (user.error && !user.fetching) {
         this.setState({ loading: false, errorApi: true });
+        analytics().logEvent('login_fallido');
       }
       if (user.status && !user.fetching) {
         if (user.session) {

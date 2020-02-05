@@ -57,7 +57,7 @@ function WhiteCardTravels({
         </WrapperDataLeft>
         <WrapperData>
           <TextBold>
-            $
+            {'$ '}
             {pay}
           </TextBold>
           <WrapperTextIcon>

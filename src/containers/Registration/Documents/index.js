@@ -29,6 +29,7 @@ import {
   TextError,
 } from '../style';
 import ButtonGradient from '../../../components/ButtonGradient';
+import analytics from '@react-native-firebase/analytics';
 
 // action - reducers
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
@@ -55,6 +56,7 @@ class Registration extends Component {
   }
 
   componentDidMount() {
+    analytics().setCurrentScreen('documentos_registro');
     const { user, getparameters } = this.props;
     // get documents
     getparameters('DOCUMENTS_LOGIN');
@@ -136,6 +138,7 @@ class Registration extends Component {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
       customButtons: [],
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
         path: 'images',

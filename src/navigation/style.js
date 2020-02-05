@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 export const DrawIconMenu = styled(SvgUriN)`
   width: 23px;
   height: 20px;
+  margin-left: 25%;
 `;
 
 export const IconImg = styled.Image`
@@ -31,7 +32,6 @@ export const TouchLeftMenu = styled.TouchableOpacity`
 `;
 
 export const TouchCenterMenu = styled.TouchableOpacity`
-  flex: 1;
   text-align: center;
   align-self: center;
 `;

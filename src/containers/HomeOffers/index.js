@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-const-assign */
@@ -11,6 +13,7 @@ import { ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
 import PickerModal from 'react-native-picker-modal-view';
 import analytics from '@react-native-firebase/analytics';
+import { formatPrice } from '../../helpers/Utils.js';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -21,7 +24,6 @@ import {
 } from './style';
 import WhiteCardTravels from '../../components/WhiteCardTravels';
 import ButtonLink from '../../components/ButtonLink';
-import IconService from '../../components/IconService';
 import ButtonGradient from '../../components/ButtonGradient';
 import Swipeable from '../../components/Swipeable';
 import Input from '../../components/GeneralInput';
@@ -53,7 +55,7 @@ const itemList = [
   },
   {
     label: 'Documentos',
-    url: 'ScreenProfile',
+    url: 'DocumentsAccount',
   },
   {
     label: 'Mis Vehículos',
@@ -78,9 +80,10 @@ class HomeOffers extends Component {
       callMine: false,
       modalPermission: false,
       fetch: false,
-      listview: ['profiles', 'documents','vehicles', 'bank_accounts'],
+      listview: ['profiles', 'documents', 'vehicles', 'bank_accounts'],
       modalFromHome: true,
       share: false,
+      filterModal: false,
     };
   }
 
@@ -96,12 +99,6 @@ class HomeOffers extends Component {
       profile,
       getparameters,
     } = this.props;
-    const data = {
-      driver: {
-        token: '3560660900101009',
-      },
-    };
-
 
     const that = this;
     if (!this.didFocusListener) {
@@ -119,7 +116,7 @@ class HomeOffers extends Component {
       this.didBlurListener = this.props.navigation.addListener(
         'didBlur',
         () => {
-          that.setState({ unmount: true });
+          that.setState({ unmount: true, filterModal: false });
           this.componentWillUnmount();
         },
       );
@@ -146,14 +143,14 @@ class HomeOffers extends Component {
     Share.share(
       {
         message:
-          `Esta oferta de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
+          `Este viaje de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
             offers.id}`,
         url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
-        title: 'Oferta Cargapp',
+        title: 'Viaje Cargapp',
       },
       {
         // Android only:
-        dialogTitle: 'Compartir Oferta',
+        dialogTitle: 'Compartir Viaje',
         // iOS only:
         excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
       },
@@ -272,7 +269,7 @@ class HomeOffers extends Component {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,
-      listview, fetch, modalFromHome,
+      listview, fetch, modalFromHome, filterModal,
     } = this.state;
     const {
       driver, offers, vehicles, navigation,
@@ -303,7 +300,6 @@ class HomeOffers extends Component {
       }
       this.setState({ fetch: true });
     }
-    console.log(this.props);
     if (
       offers.data
       && offers.services
@@ -333,7 +329,16 @@ class HomeOffers extends Component {
         mine_offers.push(offer.service_id);
       });
       const filter = navigation.getParam('filter');
-      if (filter && modalFromHome) {
+
+      if (filter && filterModal === false) {
+        this.setState({ filterModal: true });
+      }
+      console.log(filterModal);
+      if (filterModal === undefined && modalSearch === false) {
+        this.setState({ filterModal: true });
+      }
+
+      if (filterModal && modalFromHome && !modalSearch) {
         this.onPressFilter();
       }
       const status_travel = [];
@@ -341,15 +346,16 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
-      /* estados de viajes() */
+      /* status offers */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
-          // eslint-disable-next-line max-len
-          console.log(offer.statu_id);
-          if (status_travel.includes(offer.statu_id)) {
-            navigation.navigate('StartTravel', { Offer: offer });
-          } else {
-            console.log(`${offer.statu_id} no include`);
+          if (offer.active) {
+            if (status_travel.includes(offer.statu_id)) {
+              this.setState({ modalPermission: false });
+              navigation.navigate('StartTravel', { Offer: offer });
+            } else {
+              console.log(`${offer.statu_id} no include`);
+            }
           }
         });
       }
@@ -372,7 +378,7 @@ class HomeOffers extends Component {
                   <ButtonLink
                     text="Filtrar"
                     icon
-                    press={() => this.onPressFilter()}
+                    press={() => this.setState({ modalSearch: true })}
                   />
                 </ContentFilter>
               </ContentBlock>
@@ -386,7 +392,7 @@ class HomeOffers extends Component {
                       from={services.origin}
                       to={services.destination}
                       vehicle={vehicle_data[services.vehicle_type_id]}
-                      pay={services.price}
+                      pay={formatPrice(services.price)}
                       date="Hoy"
                       actionbtnPrimary={() => this.onPressTravel(services)}
                       btnPrimary="Ver detalles"
@@ -419,10 +425,10 @@ class HomeOffers extends Component {
               <ContentForm>
                 <ContentRange>
                   <RowInput>
-                    <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} />
+                    <Input title="Valor mínimo" value={'$'.concat('', multiSliderValue[0].toString())} editable={false} />
                   </RowInput>
                   <RowInput>
-                    <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} />
+                    <Input title="Valor máximo" value={'$'.concat('', multiSliderValue[1].toString())} editable={false} />
                   </RowInput>
                 </ContentRange>
                 <WrapperInputs>
@@ -522,7 +528,7 @@ class HomeOffers extends Component {
               <ContentDialog>
                 <TitleBlack>Datos Faltantes</TitleBlack>
                 <TextGray>
-                  Para que puedas aplicar a mejores ofertas, nos falta esta información:
+                  Para que puedas aplicar a mejores viajes, nos falta esta información:
                 </TextGray>
                 <ContentForm>
                   {this.missingViews(permissions.data)}
@@ -546,8 +552,7 @@ class HomeOffers extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations,parameters,
-
+    driver, offers, vehicles, user, profile, filterOffers, permissions, destinations, parameters,
   } = state;
   return {
     driver,

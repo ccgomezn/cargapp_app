@@ -9,8 +9,9 @@ import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import analytics from '@react-native-firebase/analytics';
+import { View } from 'native-base';
 import {
-  MainWrapper, AddressesWrapper, WrapperModal, BlueText,
+  MainWrapper, AddressesWrapper, WrapperModal, BlueText, WrapperTextModal,
 } from './style';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
@@ -20,6 +21,32 @@ import RateActions from '../../../redux/reducers/RateServiceRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import EmptyDialog from '../../../components/EmptyDialog';
 import ButtonGradient from '../../../components/ButtonGradient';
+import { formatPrice } from '../../../helpers/Utils';
+import {
+  ContentDialog, MainWrapperDialog, TextGray, TitleBlack,
+} from '../../Profile/style';
+import { ContentForm, WrapperButtonsBottom } from '../../HomeOffers/style';
+import CardPermissions from '../../../components/CardPermissions';
+import PermissionsActions from '../../../redux/reducers/PermissionsRedux';
+
+const itemList = [
+  {
+    label: 'Perfil',
+    url: 'ScreenProfile',
+  },
+  {
+    label: 'Documentos',
+    url: 'ScreenProfile',
+  },
+  {
+    label: 'Mis Vehículos',
+    url: 'ScreenVehicle',
+  },
+  {
+    label: '¿Dónde te pagamos?',
+    url: 'BankAccount',
+  },
+];
 
 class ApplyOffer extends Component {
   constructor() {
@@ -28,6 +55,8 @@ class ApplyOffer extends Component {
       offer: null,
       successNotification: false,
       errorFalse: false,
+      fetch: false,
+      fetchList: false,
       fetchError: false,
       fetchSuccess: false,
       fetchID: false,
@@ -36,13 +65,16 @@ class ApplyOffer extends Component {
       modalFinish: false,
       modalRate: false,
       modalApply: false,
+      modalPermission: false,
+      permissionApply: false,
+      listview: ['profiles', 'documents', 'vehicles', 'bank_accounts'],
     };
   }
 
   componentDidMount() {
     analytics().setCurrentScreen('mis_viajes_detalle');
     const {
-      navigation, getCompanies, getServices, offers, getRateServices,
+      navigation, getCompanies, getServices, offers, getRateServices, getPermission,
     } = this.props;
     const dataOffer = navigation.getParam('dataOffer');
     const booked = navigation.getParam('booked');
@@ -64,10 +96,15 @@ class ApplyOffer extends Component {
     getRateServices();
     getCompanies();
     getServices();
+    getPermission();
+  }
+
+  componentWillUnmount() {
+    this.setState({ modalPermission: false });
   }
 
   onPressCancel() {
-    analytics().logEvent('boton_cancelar_oferta');
+    analytics().logEvent('boton_detalles_volver');
     const { navigation } = this.props;
     navigation.goBack();
   }
@@ -78,36 +115,10 @@ class ApplyOffer extends Component {
   }
 
   onPressReturn() {
-    analytics().logEvent('boton_regresar_oferta');
+    analytics().logEvent('boton_detalles_volver');
     const { navigation } = this.props;
     // navigation.navigate('MyTravels');
     navigation.goBack();
-  }
-
-  vehicleType(value, id) {
-    analytics().logEvent('boton_aplicar_a_oferta');
-    const { navigation } = this.props;
-    const { showTravel } = this.state;
-    const dataOffer = navigation.getParam('dataOffer');
-    if (id) {
-      this.applyOffer(id, value);
-    } else if (showTravel) {
-      navigation.navigate('StartTravel', { Offer: value });
-    } else {
-      navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
-    }
-  }
-
-  applyOffer(value, valueApplyOffer) {
-    const { modalApply } = this.props;
-    const { applyOffer, navigation, profile } = this.props;
-    const data = {
-      service_id: valueApplyOffer.id,
-      user_id: profile.data[0].user.id,
-      active: true,
-    };
-    applyOffer(data);
-    this.setState({ modalApply: true });
   }
 
   nameButton() {
@@ -122,7 +133,7 @@ class ApplyOffer extends Component {
       }
       return 'Iniciar viaje';
     }
-    return 'Aplicar a oferta';
+    return 'Aplicar a viaje';
   }
 
   modalBack() {
@@ -133,9 +144,76 @@ class ApplyOffer extends Component {
     }, 100);
   }
 
+  onNavigate(nameView) {
+    analytics().logEvent('boton_diligenciar');
+    const { navigate } = this.props.navigation;
+    this.setState({ modalPermission: false });
+    setTimeout(() => {
+      navigate(nameView);
+    }, 1000);
+  }
+
+  vehicleType(value, id) {
+    analytics().logEvent('boton_aplicar_a_oferta');
+    const { navigation } = this.props;
+    const { showTravel, modalPermission } = this.state;
+    const dataOffer = navigation.getParam('dataOffer');
+    if (!modalPermission) {
+      if (id) {
+        this.applyOffer(id, value);
+      } else if (showTravel) {
+        navigation.navigate('StartTravel', { Offer: value });
+        analytics().logEvent('boton_detalles_iniciar_viaje');
+      } else {
+        navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
+      }
+    } else {
+      analytics().setCurrentScreen('datos_faltantes');
+      this.setState({ permissionApply: true });
+    }
+  }
+
+  applyOffer(value, valueApplyOffer) {
+    const { applyOffer, profile } = this.props;
+    const data = {
+      service_id: valueApplyOffer.id,
+      user_id: profile.data[0].user.id,
+      active: true,
+    };
+    applyOffer(data);
+    this.setState({ modalApply: true });
+  }
+
+  onHideModal() {
+    this.setState({ permissionApply: false });
+  }
+
+  missingViews(list) {
+    const { listview } = this.state;
+    return (
+      <View style={{ flexDirection: 'column' }}>
+        {list.map(pem => (
+          (listview.includes(pem.name)) ? (
+            <CardPermissions
+              label={itemList[listview.lastIndexOf(pem.name)].label}
+              permission={pem.permission}
+              textfail="Diligenciar"
+              textCorrect="OK"
+              press={() => this.onNavigate(itemList[listview.lastIndexOf(pem.name)].url)}
+            />
+          ) : null
+        ))
+        }
+        <WrapperButtonsBottom style={{ marginTop: 10 }}>
+          <ButtonGradient content="Hazlo después" press={() => this.onHideModal()} />
+        </WrapperButtonsBottom>
+      </View>
+    );
+  }
+
   render() {
     const {
-      offers, navigation, companies, rateService,
+      offers, navigation, companies, rateService, permissions,
     } = this.props;
     const {
       offer,
@@ -146,6 +224,10 @@ class ApplyOffer extends Component {
       modalFinish,
       modalRate,
       modalApply,
+      modalPermission,
+      permissionApply,
+      listview,
+      fetchList,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -157,7 +239,29 @@ class ApplyOffer extends Component {
     if (selectID !== undefined && selectID !== null && fetchID === false) {
       this.setState({ fetchID: true });
     }
-    if (offer !== null && companies.data !== null && rateService.rate !== null) {
+    if (permissions.data && !permissions.fetching && !fetchList) {
+      // validate permisson
+      let perm = 0;
+      permissions.data.map((pem) => {
+        if (listview.includes(pem.name)) {
+          if (!pem.permission) {
+            // eslint-disable-next-line no-plusplus
+            perm++;
+          }
+        }
+      });
+      if (perm >= 1) {
+        this.setState({ modalPermission: true });
+      }
+      this.setState({ fetchList: true });
+    }
+    if (
+      offer !== null
+      && companies.data !== null
+      && rateService.rate !== null
+      && permissions.data !== null
+      && !permissions.fetching
+    ) {
       const rateCompany = [];
       rateService.rate.map((rate) => {
         if (offer.id === rate.service_id) {
@@ -177,22 +281,24 @@ class ApplyOffer extends Component {
           {modalApply && (
             <PopUpNotification
               subText="Ahora tendrás que esperar a que validen tus datos"
-              mainText="Te postulaste a esta oferta correctamente!"
+              mainText="Te postulaste a este viaje correctamente!"
               onTouchOutside={() => this.setState({ modalApply: null })}
             />
           )}
           <EmptyDialog visible={modalFinish}>
             <WrapperModal>
-              <BlueText>{offer.statu_id === 11 ? 'Esta oferta ya está finalizada' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
+              <BlueText>{offer.statu_id === 11 ? 'Este viaje ya está finalizado' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
               <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
             </WrapperModal>
           </EmptyDialog>
           <EmptyDialog visible={modalRate}>
             <WrapperModal>
-              <BlueText>
-                {totalRate === 0 ? 'Aún no tiene calificación el generador' : `El generador tiene ${totalRate} estrellas`}
-                {' '}
-              </BlueText>
+              <WrapperTextModal>
+                <BlueText>
+                  {totalRate === 0 ? 'Aún no tiene calificación el generador' : `El generador tiene ${totalRate} estrellas`}
+                  {' '}
+                </BlueText>
+              </WrapperTextModal>
               <ButtonGradient press={() => this.setState({ modalRate: false })} content="cerrar" disabled={false} />
             </WrapperModal>
           </EmptyDialog>
@@ -200,8 +306,8 @@ class ApplyOffer extends Component {
             initialRegion={{
               latitude: 4.624335,
               longitude: -74.063644,
-              latitudeDelta: 0.43,
-              longitudeDelta: 0.34,
+              latitudeDelta: 9.93,
+              longitudeDelta: 9.94,
             }}
             style={{ height: '55%', width: '100%' }}
           >
@@ -216,7 +322,7 @@ class ApplyOffer extends Component {
           {successNotification && (
           <PopUpNotification
             subText="Pronto te darémos respuesta..."
-            mainText="Has aplicado correctamente a la oferta"
+            mainText="Has aplicado correctamente al viaje"
             onTouchOutside={() => this.setState({ successNotification: false })}
             visible={successNotification}
           />
@@ -244,15 +350,16 @@ class ApplyOffer extends Component {
             }
           })}
           {companies.data.map((company) => {
-            console.log(offer);
             if (offer.company_id === company.id) {
               return (
                 <CardMapBeginTravel
                   extra={offer.note}
                   normalText={company.address}
-                  amount={offer.price}
+                  amount={formatPrice(offer.price)}
                   onPressBG={() => this.vehicleType(offer, selectID)}
-                  onPressBW={() => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())}
+                  onPressBW={
+                    () => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())
+                  }
                   delivery={offer.description}
                   company={company.name}
                   mainButton={this.nameButton()}
@@ -262,6 +369,23 @@ class ApplyOffer extends Component {
               );
             }
           })}
+          <EmptyDialog
+            visible={permissionApply}
+            opacity={0.4}
+            onTouchOutside={() => this.onHideModal()}
+          >
+            <MainWrapperDialog>
+              <ContentDialog>
+                <TitleBlack>Datos Faltantes</TitleBlack>
+                <TextGray>
+                  Para que puedas aplicar a este viaje, nos falta esta información:
+                </TextGray>
+                <ContentForm>
+                  {this.missingViews(permissions.data)}
+                </ContentForm>
+              </ContentDialog>
+            </MainWrapperDialog>
+          </EmptyDialog>
         </MainWrapper>
       );
     }
@@ -277,7 +401,7 @@ class ApplyOffer extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    vehicles, companies, user, offers, profile, rateService,
+    vehicles, companies, user, offers, profile, rateService, permissions,
   } = state;
   return {
     vehicles,
@@ -286,6 +410,7 @@ const mapStateToProps = (state) => {
     offers,
     profile,
     rateService,
+    permissions,
   };
 };
 
@@ -293,6 +418,7 @@ const mapDispatchToProps = dispatch => ({
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
   getServices: (params = {}) => dispatch(OffersActions.getServicesRequest(params)),
+  getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
   getRateServices: (params = {}) => dispatch(RateActions.getRateServiceRequest(params)),
 });
 

@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
+import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
 // MENU SCREENS
 import ScreenHomeOffers from '../../containers/HomeOffers';
@@ -102,9 +103,11 @@ function rightIconMenu({ navigation }) {
 }
 
 // eslint-disable-next-line react/prop-types
-function centerIconMenu({ navigation }) {
+function centerIconMenu({ navigation, isFull }) {
   return (
     <TouchCenterMenu
+      // eslint-disable-next-line no-nested-ternary
+      style={Platform.OS === 'ios' ? { flex: 1 } : isFull ? { width: '82%' } : { flex: 1 }}
       onPress={() => {
         // eslint-disable-next-line react/prop-types
         navigation.navigate('ScreenHome');
@@ -183,7 +186,7 @@ export const stackStartTravelNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
+      headerTitle: centerIconMenu({ navigation, isFull: true }),
       headerLeft: leftIconMenu({ navigation, goBack: true }),
     }),
   },
@@ -233,6 +236,16 @@ export const myTravelsStackNavigator = createStackNavigator({
       headerRight: rightIconMenu({ navigation }),
     }),
   },
+  ApplyTravels: {
+    screen: ScreenApplyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const myVehicleStackNavigator = createStackNavigator({
@@ -251,13 +264,13 @@ export const myVehicleStackNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
+      headerTitle: centerIconMenu({ navigation, isFull: true }),
     }),
   },
 });
 
 export const ProfileStackNavigator = createStackNavigator({
-  Fifth: {
+  ScreenProfile: {
     screen: ScreenProfile,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',
@@ -272,7 +285,7 @@ export const ProfileStackNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
+      headerTitle: centerIconMenu({ navigation, isFull: true }),
       headerTruncatedBackTitle: 'Atras',
     }),
   },
@@ -281,14 +294,14 @@ export const ProfileStackNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
-      headerTitle: centerIconMenu({ navigation }),
+      headerTitle: centerIconMenu({ navigation, isFull: true }),
       headerTruncatedBackTitle: 'Atras',
     }),
   },
 });
 
 export const PointsStackNavigator = createStackNavigator({
-  Sixth: {
+  Points: {
     screen: ScreenPoints,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#CCC',

@@ -9,6 +9,7 @@ import OffersActions from "../../redux/reducers/OffersRedux";
 import VehiclesActions from "../../redux/reducers/VehicleRedux";
 import PermissionsActions from "../../redux/reducers/PermissionsRedux";
 import DestinationsActions from "../../redux/reducers/DestinationsRedux";
+import { formatPrice } from '../../helpers/Utils';
 
 class FilterOffers extends Component {
     constructor() {
@@ -34,7 +35,7 @@ class FilterOffers extends Component {
             });
             let filter_real = [];
             filterOffers.data.forEach(offer => {
-              if(!mine_offers.includes(offer.id)){
+              if(!mine_offers.includes(offer.id) && offer.statu_id.toString() === '10'){
                 filter_real.push(offer);
               }
             });
@@ -42,23 +43,23 @@ class FilterOffers extends Component {
                 <MainWrapper>
                     {filter_real.length >= 1 ? (
                         <MainWrapperScroll>
-                            <MainTextCard>Ofertas encontradas</MainTextCard>
+                            <MainTextCard>Viajes encontrados</MainTextCard>
                             {filter_real.map(offers => (
                                 <WhiteCardTravels
                                     from={offers.origin}
                                     to={offers.destination}
                                     vehicle={vehicle_data[offers.vehicle_type_id]}
-                                    pay={offers.price}
+                                    pay={formatPrice(offers.price)}
                                     date="hoy"
                                     actionbtnPrimary={() => navigation.navigate('ApplyTravels', {dataOffer: offers})}
-                                    btnPrimary="Aplicar"
+                                    btnPrimary="Ver detalles"
                                     btnSecondary
                                 />
                             ))
                             }
                         </MainWrapperScroll>
                     ) : (
-                        <TextAbsolute>No hay ofertas disponibles con esas caracteristicas</TextAbsolute>
+                        <TextAbsolute>No hay viajes disponibles con esas caracteristicas</TextAbsolute>
                     )}
                 </MainWrapper>
             );
