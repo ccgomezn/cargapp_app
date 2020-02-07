@@ -17,12 +17,30 @@ import {
   Icon,
 } from './style';
 
+import { formatPrice } from '../../helpers/Utils';
+
+function textStatus(status, aprox) {
+  if (status === 6) {
+    return 'Evidencia Inicio de Cargue';
+  }
+  if (status === 7) {
+    return 'Evidencia Finalizar Cargue';
+  }
+  if (status === 8) {
+    return '';
+  }
+  return '';
+}
+
 function TopCardTravel({
-  company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk, actionMan, actionCall
+  company, travelsCount, amount,
+  arrive, isConfirmLoad,
+  actionBtnOk, actionMan, actionCall,
+  status, aprox,
 }) {
   if (arrive) {
     return (
-      <MainWrapper>
+      <MainWrapper style={!aprox ? { paddingTop: 10 } : null}>
         <WrapperColumn>
           <WrapperImage>
             <Image
@@ -37,13 +55,18 @@ function TopCardTravel({
             <BlueText>Contactar</BlueText>
           </TouchableContact>
         </WrapperColumn>
-        <Line />
+        { aprox || isConfirmLoad ? (
+          <Line />
+        ) : null }
         {isConfirmLoad
           ? (
             <WrapperColumn>
               <WrapperSection>
                 <BoldText>Anticipo consignado</BoldText>
-                <NormalText>{amount}</NormalText>
+                <NormalText>
+                  {'$'}
+                  {formatPrice(amount)}
+                </NormalText>
               </WrapperSection>
               <LineVerical />
               <WrapperColumn>
@@ -53,19 +76,17 @@ function TopCardTravel({
                 </TouchableContact>
               </WrapperColumn>
             </WrapperColumn>
-          )
-          : (
+          ) : null }
+        {aprox
+          ? (
             <WrapperColumn>
               <TouchableContact onPress={actionBtnOk}>
                 <BlueText style={{ paddingVertical: 10 }}>
-                  Confirmar
-                  {' '}
-                  {!unLoad ? 'cargue' : 'descargue' }
+                  { textStatus(status, aprox) }
                 </BlueText>
               </TouchableContact>
             </WrapperColumn>
-          )
-        }
+          ) : null }
       </MainWrapper>
     );
   } return (
@@ -81,7 +102,7 @@ function TopCardTravel({
           <NormalText>{travelsCount}</NormalText>
         </WrapperInfo>
         <TouchableContact>
-          <BlueText>Contactar</BlueText>
+          <BlueText>Contactar *</BlueText>
         </TouchableContact>
       </WrapperColumn>
     </MainWrapper>
@@ -94,10 +115,12 @@ TopCardTravel.propTypes = {
   amount: PropTypes.string.isRequired,
   arrive: PropTypes.bool.isRequired,
   isConfirmLoad: PropTypes.bool.isRequired,
-  unLoad: PropTypes.bool.isRequired,
   actionBtnOk: PropTypes.func.isRequired,
   actionMan: PropTypes.func.isRequired,
   actionCall: PropTypes.func.isRequired,
+  //
+  status: PropTypes.number.isRequired,
+  aprox: PropTypes.bool.isRequired,
 };
 
 export default TopCardTravel;

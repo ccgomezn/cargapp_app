@@ -8,11 +8,21 @@ export const MainWrapper = styled.View`
   flex-direction: column;
 `;
 
+export const WrapperInit = styled.View`
+  position: absolute;
+  width: 60%;
+  height: auto;
+  bottom: 22%;
+  left: 5%;
+  flex-direction: row;
+  padding-bottom: 3%;
+`;
+
 export const AbsoluteWrapper = styled.View`
   position: absolute;
   width: auto;
   height: auto;
-  bottom: 25%;
+  bottom: 22%;
   right: 5%; 
   flex-direction: row;
 `;

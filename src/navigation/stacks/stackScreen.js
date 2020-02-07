@@ -61,10 +61,7 @@ function leftIconMenu({ navigation, goBack }) {
       }
     >
       <IconImg
-        source={{
-          uri: !goBack ? 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png'
-            : 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/home.svg',
-        }}
+        source={!goBack ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png' } : require('../../Images/Back.png')}
       />
     </TouchLeftMenu>
   );

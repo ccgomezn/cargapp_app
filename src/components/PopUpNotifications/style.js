@@ -33,7 +33,7 @@ export const Dialog = styled.TouchableOpacity`
 
 export const Wrapper = styled(LinearGradient)`
   width: 100%;
-  height: 18%;
+  height: 16%;
   border-radius: 10px;
   flex-direction: row;
   padding: 10px;
