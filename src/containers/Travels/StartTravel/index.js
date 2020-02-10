@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
@@ -47,7 +49,6 @@ class StartTravel extends Component {
       offerSpecific: null,
       lastLat: null,
       lastLong: null,
-      load: false,
       inTravel: false,
       manifestSet: true,
       geoID: null,
@@ -56,6 +57,7 @@ class StartTravel extends Component {
       feed2: false,
       feed3: false,
       feed4: false,
+      feed5: false,
       spinner: false,
       isOrigin: true,
       aproxOrigin: false,
@@ -82,9 +84,13 @@ class StartTravel extends Component {
     this.callLocation();
     // alert(offer.statu_id);
     if (offer.statu_id === 7) {
-      this.setState({ load: true, inTravel: false, feed: false, feed2: true, aproxOrigin: true });
+      this.setState({ inTravel: false, feed: false, feed2: true, aproxOrigin: true });
     } else if (offer.statu_id === 17) {
-      this.setState({ inTravel: true, isOrigin: false, feed:false, feed2: false, feed3: true, initTravel: true });
+      this.setState({ inTravel: true, isOrigin: false, feed: false, feed2: false, feed3: true, initTravel: true });
+    } else if (offer.statu_id === 8) {
+      this.setState({ inTravel: true, isOrigin: false, feed4: true, feed: false });
+    } else if (offer.statu_id === 18) {
+      this.setState({ inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true });
     }
     getCompanies();
     getMarkers();
@@ -116,7 +122,7 @@ class StartTravel extends Component {
 
     console.log(data);
     setTimeout(() => {
-      // putStateOriginTravel(offerSpecific.id, data);
+      putStateOriginTravel(offerSpecific.id, data);
       this.setState({
         status: 8, inTravel: true, feed4: true, initTravel: false,
       });
@@ -127,7 +133,7 @@ class StartTravel extends Component {
     const { offerSpecific, status } = this.state;
     let lat_des = offerSpecific.origin_latitude;
     let lng_des = offerSpecific.origin_longitude;
-    if (status === 8 || status === 17) {
+    if (status === 8 || status === 17 || status === 18) {
       lat_des = offerSpecific.destination_latitude;
       lng_des = offerSpecific.destination_longitude;
     }
@@ -226,16 +232,15 @@ class StartTravel extends Component {
     if (status === 6) {
       this.setState({ lastLat: e.latitude, lastLong: e.longitude });
       this.callLocation();
-      console.log('ads ok');
       const result = this.destinationService(
         e.latitude,
         e.longitude,
         offerSpecific.origin_latitude,
         offerSpecific.origin_longitude,
       );
-      console.log('resultgeo', result);
+      console.log('resultgeo-6', result);
       if (result < 0.5) {
-        this.setState({ load: true, inTravel: false, aproxOrigin: true, feed: false, feed1: true });
+        this.setState({ inTravel: false, aproxOrigin: true, feed: false, feed1: true });
       } else {
         this.setState({ aproxOrigin: false, feed: true, feed1: false });
       }
@@ -247,20 +252,22 @@ class StartTravel extends Component {
         offerSpecific.destination_longitude,
       );
       this.callLocation();
-
+      console.log('resultgeo-8', result);
       if (result < 0.5) {
         const data = {
           service: {
-            statu_id: 9,
+            statu_id: 18,
           },
         };
         setTimeout(() => {
           putStateOriginTravel(offerSpecific.id, data);
           this.setState({
-            status: 9, load: false, inTravel: false, feed2: true,
+            status: 18, inTravel: false, feed5: true, aproxOrigin: true,
           });
           // this.componentDidMount();
         }, 1000);
+      } else {
+        this.setState({ aproxOrigin: false, feed: false, feed5: false });
       }
     }
   }
@@ -390,8 +397,9 @@ class StartTravel extends Component {
 
   render() {
     const {
-      offerSpecific, lastLat, lastLong, waypoints, status, load, inTravel, manifestSet,
-      nonManifest, feed, feed1, feed2, feed3, feed4, spinner, isOrigin, aproxOrigin, initTravel,
+      offerSpecific, lastLat, lastLong, waypoints, status, inTravel, manifestSet,
+      nonManifest, feed, feed1, feed2, feed3, feed4, feed5,
+      spinner, isOrigin, aproxOrigin, initTravel,
     } = this.state;
     const { companies, markers, document } = this.props;
     if (document.serviceDocuments && !document.fetching && !manifestSet) {
@@ -415,7 +423,7 @@ class StartTravel extends Component {
       return (
         <MainWrapper>
           <Spinner view={spinner} />
-          {feed && !feed1 && !feed2 && !feed3 && !aproxOrigin && (
+          {feed && !feed1 && !feed2 && !feed3 && !feed4 && !feed5 && !aproxOrigin && (
             <PopUpNotification
               onTouchOutside={() => this.setState({ feed: false })}
               mainText="¡Atención!"
@@ -434,7 +442,6 @@ class StartTravel extends Component {
               onTouchOutside={() => this.setState({ feed2: false })}
               mainText="¡Atención!"
               subText="Ahora debes evidenciar la finalización del cargue"
-              // subText="Acabas de confirmar que cargaste ahora debes dirigirte al destino y confirmar el descargue"
             />
           )}
           {feed3 && (
@@ -450,6 +457,13 @@ class StartTravel extends Component {
               onTouchOutside={() => this.setState({ feed4: false })}
               mainText="¡Atención!"
               subText="Acabas de Iniciar viaje en curso, dirigete al destino"
+            />
+          )}
+          {feed5 && (
+            <PopUpNotification
+              onTouchOutside={() => this.setState({ feed5: false })}
+              mainText="¡Atención!"
+              subText="Acabas de llegar al destino del viaje ahora debes descargar y confirmar el inicio del descargue"
             />
           )}
           <EmptyDialog visible={nonManifest}>
@@ -475,7 +489,7 @@ class StartTravel extends Component {
                 longitude: lastLong,
               }}
             >
-              <CustomImage source={images.truck} />
+              <CustomImage source={images.markerLocation} />
             </MapView.Marker>
             {markers.data.map(commerce => (
               <MapView.Marker
@@ -497,9 +511,9 @@ class StartTravel extends Component {
               }}
               tracksViewChanges={false}
               pinColor="#007aff"
-              title="Origen carga"
+              title={isOrigin ? 'Origen carga' : 'Destino carga'}
             >
-              <CustomImage source={images.markersPin} />
+              <CustomImage source={isOrigin ? images.markerOrigin : images.markerDestination} />
             </MapView.Marker>
           </MapView>
           {companies.data.map((CompanyInfo) => {

@@ -26,8 +26,8 @@ function textStatus(status, aprox) {
   if (status === 7) {
     return 'Evidencia Finalizar Cargue';
   }
-  if (status === 8) {
-    return '';
+  if (status === 18) {
+    return 'Evidencia Inicio de Descargue';
   }
   return '';
 }
@@ -40,8 +40,8 @@ function TopCardTravel({
 }) {
   if (arrive) {
     return (
-      <MainWrapper style={!aprox ? { paddingTop: 10 } : null}>
-        <WrapperColumn>
+      <MainWrapper style={!aprox ? { paddingTop: 5 } : null}>
+        {/* <WrapperColumn>
           <WrapperImage>
             <Image
               source={require('../../Images/compani.png')}
@@ -57,7 +57,7 @@ function TopCardTravel({
         </WrapperColumn>
         { aprox || isConfirmLoad ? (
           <Line />
-        ) : null }
+        ) : null } */}
         {isConfirmLoad
           ? (
             <WrapperColumn>
@@ -70,18 +70,20 @@ function TopCardTravel({
               </WrapperSection>
               <LineVerical />
               <WrapperColumn>
-                <Icon />
                 <TouchableContact onPress={actionMan}>
                   <BlueText>Ver manifiesto</BlueText>
                 </TouchableContact>
               </WrapperColumn>
             </WrapperColumn>
           ) : null }
+        { aprox || isConfirmLoad ? (
+          <Line />
+        ) : null }
         {aprox
           ? (
             <WrapperColumn>
               <TouchableContact onPress={actionBtnOk}>
-                <BlueText style={{ paddingVertical: 10 }}>
+                <BlueText style={{ /* paddingVertical: 10 */ }}>
                   { textStatus(status, aprox) }
                 </BlueText>
               </TouchableContact>

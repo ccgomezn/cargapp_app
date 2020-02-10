@@ -10,12 +10,12 @@ export const MainWrapper = styled.View`
 
 export const WrapperInit = styled.View`
   position: absolute;
-  width: 60%;
+  width: 100%;
   height: auto;
-  bottom: 22%;
-  left: 5%;
+  top: 40%;
   flex-direction: row;
-  padding-bottom: 3%;
+  padding: 4%;
+  background-color: rgba(245,246,250, 0.9);
 `;
 
 export const AbsoluteWrapper = styled.View`
@@ -41,16 +41,17 @@ export const WrapperImage = styled.Image`
 export const WrapperAdresses = styled.View`
   position: absolute;
   bottom: 5%;
-  width: 90%;
+  width: 100%;
   height: auto;  
 `;
 
 export const WrapperTopCard = styled.View`
   position: absolute;
-  width: 100%;
+  width: 80%;
   height: auto;
-  padding-horizontal: 5%;
-  top: 10px;
+  right: 5%;
+  top: 5px;
+  opacity: 0.88;
 `;
 
 export const BlueText = styled.Text`
