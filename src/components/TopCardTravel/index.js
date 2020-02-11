@@ -29,6 +29,9 @@ function textStatus(status, aprox) {
   if (status === 18) {
     return 'Evidencia Inicio de Descargue';
   }
+  if (status === 9) {
+    return 'Evidencia Finalizar Descargue';
+  }
   return '';
 }
 
@@ -40,7 +43,7 @@ function TopCardTravel({
 }) {
   if (arrive) {
     return (
-      <MainWrapper style={!aprox ? { paddingTop: 5 } : null}>
+      <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
         {/* <WrapperColumn>
           <WrapperImage>
             <Image
@@ -76,7 +79,7 @@ function TopCardTravel({
               </WrapperColumn>
             </WrapperColumn>
           ) : null }
-        { aprox || isConfirmLoad ? (
+        { aprox && isConfirmLoad ? (
           <Line />
         ) : null }
         {aprox

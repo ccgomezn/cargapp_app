@@ -23,7 +23,7 @@ export const AbsoluteWrapper = styled.View`
   width: auto;
   height: auto;
   bottom: 22%;
-  right: 5%; 
+  right: 3%;
   flex-direction: row;
 `;
 
@@ -49,7 +49,7 @@ export const WrapperTopCard = styled.View`
   position: absolute;
   width: 80%;
   height: auto;
-  right: 5%;
+  right: 3%;
   top: 5px;
   opacity: 0.88;
 `;

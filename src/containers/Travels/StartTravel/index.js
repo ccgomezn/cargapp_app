@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/prop-types */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable import/no-named-as-default */
@@ -58,6 +60,7 @@ class StartTravel extends Component {
       feed3: false,
       feed4: false,
       feed5: false,
+      feed6: false,
       spinner: false,
       isOrigin: true,
       aproxOrigin: false,
@@ -78,7 +81,6 @@ class StartTravel extends Component {
       }
     });
     const geoId = Geolocation.watchPosition(e => this.ads(e.coords));
-    // alert(geoId);
     this.setState({ geoID: geoId });
     getDocsServiceRequest(offer.id);
     this.callLocation();
@@ -91,6 +93,10 @@ class StartTravel extends Component {
       this.setState({ inTravel: true, isOrigin: false, feed4: true, feed: false });
     } else if (offer.statu_id === 18) {
       this.setState({ inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true });
+    } else if (offer.statu_id === 9) {
+      this.setState({ inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true });
+    } else if (offer.statu_id === 19) {
+      alert('fin?¿');
     }
     getCompanies();
     getMarkers();
@@ -130,10 +136,11 @@ class StartTravel extends Component {
   }
 
   async getDirections(startLoc, destinationLoc) {
-    const { offerSpecific, status } = this.state;
+    const { offerSpecific, status, isOrigin } = this.state;
     let lat_des = offerSpecific.origin_latitude;
     let lng_des = offerSpecific.origin_longitude;
-    if (status === 8 || status === 17 || status === 18) {
+    console.log(isOrigin);
+    if (!isOrigin) {
       lat_des = offerSpecific.destination_latitude;
       lng_des = offerSpecific.destination_longitude;
     }
@@ -229,9 +236,9 @@ class StartTravel extends Component {
   ads(e) {
     const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
+    this.setState({ lastLat: e.latitude, lastLong: e.longitude });
+    this.callLocation();
     if (status === 6) {
-      this.setState({ lastLat: e.latitude, lastLong: e.longitude });
-      this.callLocation();
       const result = this.destinationService(
         e.latitude,
         e.longitude,
@@ -251,7 +258,6 @@ class StartTravel extends Component {
         offerSpecific.destination_latitude,
         offerSpecific.destination_longitude,
       );
-      this.callLocation();
       console.log('resultgeo-8', result);
       if (result < 0.5) {
         const data = {
@@ -282,7 +288,8 @@ class StartTravel extends Component {
       photoName = `img_${source.fileSize}.jpg`;
     }
     const data = new FormData();
-    data.append('service_document[document_type]', 'foto');
+    // data.append('service_document[document_type]', 'foto');
+    data.append('service_document[document_type_id]', 15);
     data.append('service_document[document]', {
       name: photoName,
       uri: source.uri,
@@ -301,7 +308,6 @@ class StartTravel extends Component {
   async load(statu_id, name) {
     const { putStateOriginTravel } = this.props;
     const { offerSpecific } = this.state;
-
 
     const options = {
       title: 'Vincular Documento',
@@ -346,9 +352,12 @@ class StartTravel extends Component {
     } else if (status === 7 || offerSpecific.statu_id === 7) {
       analytics().logEvent('boton_finalizar_cargue');
       await this.load(17, 'Confirmacion Finalización de cargue');
+    } else if (status === 18 || offerSpecific.statu_id === 18) {
+      analytics().logEvent('boton_iniciar_descargue');
+      await this.load(9, 'Confirmacion Inicio de descargue');
     } else if (status === 9 || offerSpecific.statu_id === 9) {
-      analytics().logEvent('boton_confirmar_descargue');
-      await this.load(11, 'Confirmacion de descargue');
+      analytics().logEvent('boton_finalizar_descargue');
+      await this.load(19, 'Confirmacion de descargue');
     }
   }
 
@@ -398,7 +407,7 @@ class StartTravel extends Component {
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, inTravel, manifestSet,
-      nonManifest, feed, feed1, feed2, feed3, feed4, feed5,
+      nonManifest, feed, feed1, feed2, feed3, feed4, feed5, feed6,
       spinner, isOrigin, aproxOrigin, initTravel,
     } = this.state;
     const { companies, markers, document } = this.props;
@@ -423,7 +432,7 @@ class StartTravel extends Component {
       return (
         <MainWrapper>
           <Spinner view={spinner} />
-          {feed && !feed1 && !feed2 && !feed3 && !feed4 && !feed5 && !aproxOrigin && (
+          {feed && !feed1 && !feed2 && !feed3 && !feed4 && !feed5 && !feed6 && !aproxOrigin && (
             <PopUpNotification
               onTouchOutside={() => this.setState({ feed: false })}
               mainText="¡Atención!"
@@ -449,7 +458,6 @@ class StartTravel extends Component {
               onTouchOutside={() => this.setState({ feed3: false })}
               mainText="¡Atención!"
               subText="Acabas de confirmar que cargaste ahora debes dirigirte al destino,"
-              // subText="Acabas de confirmar que descargaste ahora debes tomar fotos de evidencia y calificar el generador de carga"
             />
           )}
           {feed4 && (
@@ -466,6 +474,14 @@ class StartTravel extends Component {
               subText="Acabas de llegar al destino del viaje ahora debes descargar y confirmar el inicio del descargue"
             />
           )}
+          {feed6 && (
+            <PopUpNotification
+              onTouchOutside={() => this.setState({ feed6: false })}
+              mainText="¡Atención!"
+              subText="Ahora debes evidenciar la finalización del descargue"
+            />
+          )}
+
           <EmptyDialog visible={nonManifest}>
             <WrapperModal>
               <BlueText>No existe manifiesto</BlueText>
