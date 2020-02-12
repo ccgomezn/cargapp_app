@@ -69,34 +69,43 @@ class StartTravel extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(isReload = false) {
     analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
       navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
     } = this.props;
+    const { status } = this.state;
     const offer = navigation.getParam('Offer');
-    offers.data.map((newOffer) => {
-      if (newOffer.id === offer.id) {
-        this.setState({ offerSpecific: offer, status: offer.statu_id });
-      }
-    });
+
+    if (!isReload) {
+      offers.data.map((newOffer) => {
+        if (newOffer.id === offer.id) {
+          this.setState({ offerSpecific: offer, status: offer.statu_id });
+        }
+      });
+    }
     const geoId = Geolocation.watchPosition(e => this.ads(e.coords));
     this.setState({ geoID: geoId });
     getDocsServiceRequest(offer.id);
     this.callLocation();
+    console.log('componentDidMount:offer', offer.statu_id);
+    console.log('componentDidMount:status', status);
     // alert(offer.statu_id);
-    if (offer.statu_id === 7) {
+    let newState = !isReload ? offer.statu_id : status;
+    console.log('newState', newState);
+    if (newState === 7) {
       this.setState({ inTravel: false, feed: false, feed2: true, aproxOrigin: true });
-    } else if (offer.statu_id === 17) {
+    } else if (newState === 17) {
       this.setState({ inTravel: true, isOrigin: false, feed: false, feed2: false, feed3: true, initTravel: true });
-    } else if (offer.statu_id === 8) {
+    } else if (newState === 8) {
       this.setState({ inTravel: true, isOrigin: false, feed4: true, feed: false });
-    } else if (offer.statu_id === 18) {
+    } else if (newState === 18) {
       this.setState({ inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true });
-    } else if (offer.statu_id === 9) {
+    } else if (newState === 9) {
       this.setState({ inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true });
-    } else if (offer.statu_id === 19) {
-      alert('fin?¿');
+    } else if (newState === 19) {
+      console.log('fin status:19');
+      this.onResetTravel(offer.id);
     }
     getCompanies();
     getMarkers();
@@ -114,6 +123,23 @@ class StartTravel extends Component {
       lastLat: lLat || lastLat,
       lastLong: lLon || lastLong,
     });
+  }
+
+  onResetTravel(idOffer) {
+    const { offerSpecific } = this.state;
+    const { putStateOriginTravel } = this.props;
+
+    const data = {
+      service: {
+        statu_id: 6,
+      },
+    };
+
+    console.log('reserdata', data);
+    setTimeout(() => {
+      putStateOriginTravel(idOffer, data);
+      alert('reset ok');
+    }, 1000);
   }
 
   onInitialTravel() {
@@ -237,6 +263,7 @@ class StartTravel extends Component {
     const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
     this.setState({ lastLat: e.latitude, lastLong: e.longitude });
+    console.log('ADS-setState', status);
     this.callLocation();
     if (status === 6) {
       const result = this.destinationService(
@@ -268,7 +295,7 @@ class StartTravel extends Component {
         setTimeout(() => {
           putStateOriginTravel(offerSpecific.id, data);
           this.setState({
-            status: 18, inTravel: false, feed5: true, aproxOrigin: true,
+            status: 18, inTravel: true, feed5: true, aproxOrigin: true,
           });
           // this.componentDidMount();
         }, 1000);
@@ -278,7 +305,7 @@ class StartTravel extends Component {
     }
   }
 
-  async onRegisterDoc(source, name) {
+  async onRegisterDoc(source, name, type_doc) {
     const { registerDocument, profile } = this.props;
     const { offerSpecific } = this.state;
 
@@ -288,8 +315,7 @@ class StartTravel extends Component {
       photoName = `img_${source.fileSize}.jpg`;
     }
     const data = new FormData();
-    // data.append('service_document[document_type]', 'foto');
-    data.append('service_document[document_type_id]', 15);
+    data.append('service_document[document_type_id]', type_doc);
     data.append('service_document[document]', {
       name: photoName,
       uri: source.uri,
@@ -305,7 +331,7 @@ class StartTravel extends Component {
   }
 
 
-  async load(statu_id, name) {
+  async load(statu_id, name, type_doc) {
     const { putStateOriginTravel } = this.props;
     const { offerSpecific } = this.state;
 
@@ -330,15 +356,15 @@ class StartTravel extends Component {
         // Error imagePicker
         this.setState({ error: 'Tienes 1 o más documentos con formato incorrecto' });
       } else {
-        this.onRegisterDoc(response, name);
+        this.onRegisterDoc(response, name, type_doc);
         const data = {
           service: {
             statu_id,
           },
         };
         putStateOriginTravel(offerSpecific.id, data);
-        this.componentDidMount();
         this.setState({ status: statu_id, inTravel: true });
+        this.componentDidMount(true);
       }
     });
   }
@@ -348,16 +374,16 @@ class StartTravel extends Component {
     console.log(status);
     if (status === 6 && aproxOrigin) {
       analytics().logEvent('boton_iniciar_cargue');
-      await this.load(7, 'Confirmacion Inicio de cargue');
-    } else if (status === 7 || offerSpecific.statu_id === 7) {
+      await this.load(7, 'Confirmacion Inicio de cargue', 13);
+    } else if (status === 7) {
       analytics().logEvent('boton_finalizar_cargue');
-      await this.load(17, 'Confirmacion Finalización de cargue');
-    } else if (status === 18 || offerSpecific.statu_id === 18) {
+      await this.load(17, 'Confirmacion Finalización de cargue', 14);
+    } else if (status === 18) {
       analytics().logEvent('boton_iniciar_descargue');
-      await this.load(9, 'Confirmacion Inicio de descargue');
-    } else if (status === 9 || offerSpecific.statu_id === 9) {
+      await this.load(9, 'Confirmacion Inicio de descargue', 15);
+    } else if (status === 9) {
       analytics().logEvent('boton_finalizar_descargue');
-      await this.load(19, 'Confirmacion de descargue');
+      await this.load(19, 'Confirmacion de descargue', 16);
     }
   }
 
