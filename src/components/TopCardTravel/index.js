@@ -63,7 +63,7 @@ function TopCardTravel({
         ) : null } */}
         {isConfirmLoad
           ? (
-            <WrapperColumn>
+            <WrapperColumn style={!aprox ? { marginTop: 6 } : null}>
               <WrapperSection>
                 <BoldText>Anticipo consignado</BoldText>
                 <NormalText>
@@ -94,24 +94,7 @@ function TopCardTravel({
           ) : null }
       </MainWrapper>
     );
-  } return (
-    <MainWrapper style={{ paddingTop: 10 }}>
-      <WrapperColumn>
-        <WrapperImage>
-          <Image
-            source={require('../../Images/compani.png')}
-          />
-        </WrapperImage>
-        <WrapperInfo>
-          <BoldText>{company}</BoldText>
-          <NormalText>{travelsCount}</NormalText>
-        </WrapperInfo>
-        <TouchableContact>
-          <BlueText>Contactar *</BlueText>
-        </TouchableContact>
-      </WrapperColumn>
-    </MainWrapper>
-  );
+  } return null;
 }
 
 TopCardTravel.propTypes = {

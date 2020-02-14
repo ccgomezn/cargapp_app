@@ -144,15 +144,7 @@ class MyTravels extends Component {
     const {
       offers, vehicles, status, navigation,
     } = this.props;
-    if (offers.myOffers) {
-      offers.myOffers.forEach((offer) => {
-        // eslint-disable-next-line max-len
-        if (offer.statu_id === 6 || offer.statu_id === 7) {
-          console.log(offer);
-          navigation.navigate('StartTravel', { Offer: offer });
-        }
-      });
-    }
+
     if (
       offers.services !== null
       && offers.data !== null
@@ -165,6 +157,17 @@ class MyTravels extends Component {
         services_ids.push(service.service_id);
         service_map[service.service_id] = service.approved;
       });
+
+      /* if (offers.myOffers) {
+        offers.myOffers.forEach((offer) => {
+          // eslint-disable-next-line max-len
+          if (offer.statu_id === 6 || offer.statu_id === 7) {
+            console.log(offer);
+            navigation.navigate('StartTravel', { Offer: offer });
+          }
+        });
+      } */
+
       return (
         <MainView>
           <MainWrapper>

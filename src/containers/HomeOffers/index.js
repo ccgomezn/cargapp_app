@@ -84,6 +84,7 @@ class HomeOffers extends Component {
       modalFromHome: true,
       share: false,
       filterModal: false,
+      fetchinit: false,
     };
   }
 
@@ -269,7 +270,7 @@ class HomeOffers extends Component {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,
-      listview, fetch, modalFromHome, filterModal,
+      listview, fetch, modalFromHome, filterModal, fetchinit,
     } = this.state;
     const {
       driver, offers, vehicles, navigation,
@@ -310,6 +311,7 @@ class HomeOffers extends Component {
       && !permissions.fetching
       && parameters.data !== null
       && !parameters.fetching
+      && !fetchinit
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
@@ -346,12 +348,14 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
+      this.setState({ fetchinit: true });
       /* status offers */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
           if (offer.active) {
             if (status_travel.includes(offer.statu_id)) {
-              this.setState({ modalPermission: false });
+              // this.setState({ modalPermission: false });
+              // navigation.navigate('Points', { Offer: offer });
               navigation.navigate('StartTravel', { Offer: offer });
             } else {
               console.log(`${offer.statu_id} no include`);

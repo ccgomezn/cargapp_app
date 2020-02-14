@@ -75,40 +75,48 @@ class StartTravel extends Component {
       navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
     } = this.props;
     const { status } = this.state;
-    const offer = navigation.getParam('Offer');
+    const offer = navigation.getParam('Offer', null);
 
-    if (!isReload) {
-      offers.data.map((newOffer) => {
-        if (newOffer.id === offer.id) {
-          this.setState({ offerSpecific: offer, status: offer.statu_id });
-        }
-      });
+    if (offer !== null) {
+      if (!isReload) {
+        offers.data.map((newOffer) => {
+          if (newOffer.id === offer.id) {
+            this.setState({ offerSpecific: offer, status: offer.statu_id });
+          }
+        });
+      }
+      const geoId = Geolocation.watchPosition(
+        e => this.ads(e.coords),
+        error => alert(JSON.stringify(error)),
+        {
+          enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 100,
+        },
+      );
+
+      this.setState({ geoID: geoId });
+      getDocsServiceRequest(offer.id);
+      this.callLocation();
+      const newState = !isReload ? offer.statu_id : status;
+      if (newState === 7) {
+        this.setState({ inTravel: false, feed: false, feed2: true, aproxOrigin: true });
+      } else if (newState === 17) {
+        this.setState({ inTravel: true, isOrigin: false, feed: false, feed3: true, initTravel: true, aproxOrigin: false });
+      } else if (newState === 8) {
+        this.setState({ inTravel: true, isOrigin: false, feed4: true, feed: false });
+      } else if (newState === 18) {
+        this.setState({ inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true });
+      } else if (newState === 9) {
+        this.setState({ inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true });
+      } else if (newState === 19) {
+        console.log('fin status:19');
+        navigation.navigate('ScreenHome');
+        // this.onResetTravel(offer.id);
+      }
+      getCompanies();
+      getMarkers();
+    } else {
+      console.log('null data');
     }
-    const geoId = Geolocation.watchPosition(e => this.ads(e.coords));
-    this.setState({ geoID: geoId });
-    getDocsServiceRequest(offer.id);
-    this.callLocation();
-    console.log('componentDidMount:offer', offer.statu_id);
-    console.log('componentDidMount:status', status);
-    // alert(offer.statu_id);
-    let newState = !isReload ? offer.statu_id : status;
-    console.log('newState', newState);
-    if (newState === 7) {
-      this.setState({ inTravel: false, feed: false, feed2: true, aproxOrigin: true });
-    } else if (newState === 17) {
-      this.setState({ inTravel: true, isOrigin: false, feed: false, feed2: false, feed3: true, initTravel: true });
-    } else if (newState === 8) {
-      this.setState({ inTravel: true, isOrigin: false, feed4: true, feed: false });
-    } else if (newState === 18) {
-      this.setState({ inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true });
-    } else if (newState === 9) {
-      this.setState({ inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true });
-    } else if (newState === 19) {
-      console.log('fin status:19');
-      this.onResetTravel(offer.id);
-    }
-    getCompanies();
-    getMarkers();
   }
 
   componentWillUnmount() {
@@ -436,6 +444,7 @@ class StartTravel extends Component {
       nonManifest, feed, feed1, feed2, feed3, feed4, feed5, feed6,
       spinner, isOrigin, aproxOrigin, initTravel,
     } = this.state;
+
     const { companies, markers, document } = this.props;
     if (document.serviceDocuments && !document.fetching && !manifestSet) {
       this.downloadMan();
@@ -561,12 +570,13 @@ class StartTravel extends Component {
           {companies.data.map((CompanyInfo) => {
             if (offerSpecific.company_id === CompanyInfo.id) {
               console.log('status', status);
+              console.log('arrive:', aproxOrigin || inTravel);
               return (
                 <WrapperTopCard>
                   <TopCardTravel
                     company={CompanyInfo.name}
                     travelsCount={CompanyInfo.company_type}
-                    arrive={true}
+                    arrive={aproxOrigin || inTravel}
                     status={status}
                     aprox={aproxOrigin}
                     amount={offerSpecific.price}

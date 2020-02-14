@@ -17,7 +17,7 @@ import {
   homeStackNavigator, travelsStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
   ProfileStackNavigator, CouponsStackNavigator, chatStackNavigator,
-  ConfigStackNavigator,
+  ConfigStackNavigator, stackStartTravelNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');
@@ -193,6 +193,13 @@ const DrawerDriver = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: 'Chat',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+      },
+    },
+    ScreenTravel: {
+      screen: stackStartTravelNavigator,
+      navigationOptions: {
+        drawerLabel: 'Mi viaje',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
       },
     },
     ScreenConfig: {
