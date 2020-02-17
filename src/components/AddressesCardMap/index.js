@@ -11,10 +11,11 @@ import {
   Line,
   WrapperIcon,
 } from './style';
+import images from '../../icons';
 
 function AddressesCardMap(
   {
-    nameCompany, firstAddress, secondAddress, nameAddress,
+    nameCompany, firstAddress, secondAddress, nameAddress, iconOrigin, iconDestination,
   },
 ) {
   return (
@@ -22,7 +23,7 @@ function AddressesCardMap(
       <WrapperCard>
         <WrapperIcon>
           <Icon
-            source={require('../../icons/icon_origin.png')}
+            source={iconOrigin || images.markerOrigin}
           />
         </WrapperIcon>
         <WrapperInfo>
@@ -34,7 +35,7 @@ function AddressesCardMap(
       <WrapperCard>
         <WrapperIcon>
           <Icon
-            source={require('../../icons/icon_destination.png')}
+            source={iconDestination || images.markerDestination}
           />
         </WrapperIcon>
         <WrapperInfo>
@@ -51,6 +52,8 @@ AddressesCardMap.propTypes = {
   firstAddress: PropTypes.string.isRequired,
   secondAddress: PropTypes.string.isRequired,
   nameAddress: PropTypes.string.isRequired,
+  iconOrigin: PropTypes.string.isRequired,
+  iconDestination: PropTypes.string.isRequired,
 };
 
 export default AddressesCardMap;

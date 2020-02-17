@@ -11,11 +11,14 @@ export const MainWrapper = styled.View`
 export const WrapperInit = styled.View`
   position: absolute;
   width: 100%;
-  height: auto;
-  top: 40%;
+  height: 100%;
+  top: 0%;
   flex-direction: row;
   padding: 4%;
-  background-color: rgba(245,246,250, 0.9);
+  z-index: 99;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(245,246,250, 0.44);
 `;
 
 export const AbsoluteWrapper = styled.View`

@@ -31,7 +31,7 @@ function CustomDrawerContentComponent(props) {
   const lastName = profile ? profile[0].profile.last_name : '';
   const shortName = lastName.split(' ');
   // Remover item Profile
-  const filteredItems = items.filter(item => item.key !== 'ScreenProfile');
+  const filteredItems = items.filter(item => item.key !== 'ScreenProfile' && item.key !== 'ScreenTravel');
   return (
     <Container>
       <Content contentContainerStyle={{ height: '100%' }}>

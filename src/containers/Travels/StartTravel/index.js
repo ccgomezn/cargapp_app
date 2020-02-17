@@ -65,6 +65,7 @@ class StartTravel extends Component {
       isOrigin: true,
       aproxOrigin: false,
       initTravel: false,
+      mylocation: null,
       loadingRegister: false,
     };
   }
@@ -183,6 +184,9 @@ class StartTravel extends Component {
     const respJson = await resp.json();
     console.log(respJson);
     const points = respJson.routes[0].legs[0].steps;
+    const locationStart = respJson.routes[0].legs[0].start_address;
+    const n = locationStart.search('Colombia');
+    const locationShort = locationStart.substr(0, n - 2);
 
     const coords = [];
     points.forEach((point) => {
@@ -194,7 +198,7 @@ class StartTravel extends Component {
         });
       });
     });
-    this.setState({ coords });
+    this.setState({ coords, mylocation: locationShort });
 
     return coords;
   }
@@ -442,7 +446,7 @@ class StartTravel extends Component {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, inTravel, manifestSet,
       nonManifest, feed, feed1, feed2, feed3, feed4, feed5, feed6,
-      spinner, isOrigin, aproxOrigin, initTravel,
+      spinner, isOrigin, aproxOrigin, initTravel, mylocation,
     } = this.state;
 
     const { companies, markers, document } = this.props;
@@ -463,7 +467,6 @@ class StartTravel extends Component {
         commerce.latitude = commerce.geolocation.split(',')[1]
       ));
 
-      console.log('aproximate', aproxOrigin);
       return (
         <MainWrapper>
           <Spinner view={spinner} />
@@ -569,8 +572,6 @@ class StartTravel extends Component {
           </MapView>
           {companies.data.map((CompanyInfo) => {
             if (offerSpecific.company_id === CompanyInfo.id) {
-              console.log('status', status);
-              console.log('arrive:', aproxOrigin || inTravel);
               return (
                 <WrapperTopCard>
                   <TopCardTravel
@@ -615,8 +616,10 @@ class StartTravel extends Component {
           </AbsoluteWrapper>
           <WrapperAdresses>
             <AddressesCardMap
-              nameCompany="Tu"
-              firstAddress="Ubicación"
+              nameCompany="Mi ubicación"
+              firstAddress={mylocation !== null ? mylocation : ''}
+              iconOrigin={images.markerLocation}
+              iconDestination={isOrigin ? images.markerOrigin : images.markerDestination}
               nameAddress={isOrigin ? offerSpecific.origin : offerSpecific.destination}
               secondAddress={isOrigin ? offerSpecific.origin_address : offerSpecific.destination_address}
             />

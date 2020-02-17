@@ -60,7 +60,9 @@ class ListChat extends Component {
       chat.activeRooms.forEach((chat) => {
         if (chatsId.includes(chat.id)) {
           chat.service = real_offers[chat.service_id];
-          realChats.push(chat);
+          if (chat.service !== undefined) {
+            realChats.push(chat);
+          }
         }
       });
 
