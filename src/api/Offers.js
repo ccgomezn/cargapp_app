@@ -8,5 +8,6 @@ export default function (api) {
     getMyOffers: id => api.get(`services/find_driver/${id}`, headers),
     getServices: params => api.get('service_users/me', params, headers),
     putStateOriginTravel: (id, data) => api.put(`services/${id}`, data, headers),
+    getOffersById: id => api.get(`services/find_by_service_user/${id}`, headers),
   };
 }

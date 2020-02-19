@@ -28,6 +28,7 @@ export function* applyOffer(api, action) {
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
   const response = yield call(api.offers.applyOffer, service);
+  console.log(response)
   if (response.ok) {
     yield put(OffersActions.postApplyOfferSuccess(response.data));
   } else {

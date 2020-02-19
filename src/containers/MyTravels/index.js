@@ -19,6 +19,7 @@ import InputPicker from '../../components/InputPicker';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import StatusActions from '../../redux/reducers/StatusRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
+import ParametersActions from '../../redux/reducers/ParametersRedux';
 
 const itemsTipo = [
   {
@@ -142,7 +143,7 @@ class MyTravels extends Component {
   render() {
     const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const {
-      offers, vehicles, status, navigation,
+      offers, vehicles, status, navigation, parameters,
     } = this.props;
 
     if (
@@ -150,6 +151,7 @@ class MyTravels extends Component {
       && offers.data !== null
       && status.data !== null
       && vehicles.data !== null
+      && parameters.data !== null
     ) {
       const services_ids = [];
       const service_map = {};
@@ -158,12 +160,27 @@ class MyTravels extends Component {
         service_map[service.service_id] = service.approved;
       });
 
+      const status_travel = [];
+      parameters.data.parameters.map((status_t) => {
+        status_travel.push(parseInt(status_t.code, 10));
+      });
+      /* status offers */
       /* if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
-          // eslint-disable-next-line max-len
-          if (offer.statu_id === 6 || offer.statu_id === 7) {
-            console.log(offer);
-            navigation.navigate('StartTravel', { Offer: offer });
+          if (offer.active) {
+            if (offer.statu_id === 16) {
+              navigation.navigate('ApplyTravels', { dataOffer: offer });
+              console.log('redirection detail');
+            } else if (offer.statu_id === 19){
+              console.log('travel resume');
+            } else if (offer.statu_id === 11){
+              console.log('travel resume');
+              navigation.navigate('Third');
+            } else if (status_travel.includes(offer.statu_id)) {
+                navigation.navigate('StartTravel', { Offer: offer });
+            } else {
+              console.log(`${offer.statu_id} no include`);
+            }
           }
         });
       } */
@@ -270,7 +287,7 @@ class MyTravels extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    offers, user, vehicles, status, profile,
+    offers, user, vehicles, status, profile, parameters,
   } = state;
   return {
     offers,
@@ -278,6 +295,7 @@ const mapStateToProps = (state) => {
     vehicles,
     status,
     profile,
+    parameters,
   };
 };
 
@@ -287,6 +305,7 @@ const mapDispatchToProps = dispatch => ({
   getVehicles: params => dispatch(VehiclesActions.getVehicleRequest(params)),
   getStatus: params => dispatch(StatusActions.getStatusRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
+  getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
 });
 
 export default connect(

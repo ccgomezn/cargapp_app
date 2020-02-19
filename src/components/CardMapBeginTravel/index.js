@@ -24,8 +24,8 @@ import ButtonGradient from '../ButtonGradient';
 function CardMapBeginTravel({
   company, normalText, amount, extra,
   vehicle, content, packing, loadWeight, loadVolume,
-  onPressBW, onPressBG, mainButton, onPressQA,
-  status,
+  onPressBW, onPressBG, mainButton, onPressQA, button,
+  status, disabled,
 }) {
   return (
     <MainWrapper>
@@ -96,9 +96,11 @@ function CardMapBeginTravel({
           <WrapperButton>
             <ButtonWhite press={onPressBW} content="Volver" />
           </WrapperButton>
-          <WrapperButton>
-            <ButtonGradient press={onPressBG} content={mainButton} />
-          </WrapperButton>
+          {button ? (
+            <WrapperButton>
+              <ButtonGradient disabled={disabled} press={onPressBG} content={mainButton} />
+            </WrapperButton>
+          ) : null}
         </WrapperFooter>
       ) : <WrapperFooter><WrapperButton><ButtonWhite press={onPressBW} content="Volver" /></WrapperButton></WrapperFooter>}
     </MainWrapper>
@@ -119,6 +121,8 @@ CardMapBeginTravel.propTypes = {
   packing: PropTypes.string.isRequired,
   loadWeight: PropTypes.string.isRequired,
   loadVolume: PropTypes.string.isRequired,
+  button: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default CardMapBeginTravel;
