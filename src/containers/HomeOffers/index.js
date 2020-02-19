@@ -311,7 +311,7 @@ class HomeOffers extends Component {
       && !permissions.fetching
       && parameters.data !== null
       && !parameters.fetching
-      && !fetchinit
+      // && !fetchinit
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
@@ -348,7 +348,7 @@ class HomeOffers extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       console.log(status_travel);
-      this.setState({ fetchinit: true });
+      // this.setState({ fetchinit: true });
       /* status offers */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {

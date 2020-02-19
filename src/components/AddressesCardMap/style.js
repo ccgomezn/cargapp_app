@@ -1,11 +1,11 @@
 import styled from 'styled-components/native';
 
 export const MainWrapper = styled.View`
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    background-color: white;
-    `;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background-color: white;
+`;
 
 export const WrapperCard = styled.View`
   flex-direction: row;

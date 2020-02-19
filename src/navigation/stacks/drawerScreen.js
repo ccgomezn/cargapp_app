@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
-import { Dimensions, ImageBackground } from 'react-native';
+import { Dimensions, ImageBackground, Image } from 'react-native';
 import { Container, Content, View } from 'native-base';
 import PropTypes from 'prop-types';
 
@@ -37,8 +37,13 @@ function CustomDrawerContentComponent(props) {
       <Content contentContainerStyle={{ height: '100%' }}>
         <ImageBackground
           source={require('../../Images/MenuCargapp.png')}
-          style={{ width: '130%', height: '100%' }}
+          style={{ width: '130%', height: '100%'/* , backgroundColor: 'black' */ }}
         >
+          <Image
+            source={require('../../Images/MenuCargappCircle.png')}
+            style={{ width: 185, height: 210, position: 'absolute', top: 0, left: 0 }}
+            resizeMode="cover"
+          />
           <AvatarProfile
             avatar={require('../../Images/profile.jpg')}
             press={() => navigate('ScreenProfile')}

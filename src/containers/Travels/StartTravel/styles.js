@@ -3,8 +3,8 @@ import styled from 'styled-components/native';
 export const MainWrapper = styled.View`
   width: 100%;
   height: 100%;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   flex-direction: column;
 `;
 
@@ -43,9 +43,10 @@ export const WrapperImage = styled.Image`
 
 export const WrapperAdresses = styled.View`
   position: absolute;
-  bottom: 5%;
+  bottom: 4%;
   width: 100%;
-  height: auto;  
+  height: auto;
+  opacity: 0.88;  
 `;
 
 export const WrapperTopCard = styled.View`

@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import {
   Platform, ActivityIndicator, Linking,
 } from 'react-native';
+import Toast from 'react-native-tiny-toast';
 
 import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -78,6 +79,8 @@ class StartTravel extends Component {
     const { status } = this.state;
     const offer = navigation.getParam('Offer', null);
 
+    console.log('reload', isReload);
+
     if (offer !== null) {
       if (!isReload) {
         offers.data.map((newOffer) => {
@@ -88,7 +91,7 @@ class StartTravel extends Component {
       }
       const geoId = Geolocation.watchPosition(
         e => this.ads(e.coords),
-        error => alert(JSON.stringify(error)),
+        error => console.log(JSON.stringify(error)),
         {
           enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 100,
         },
@@ -144,7 +147,6 @@ class StartTravel extends Component {
       },
     };
 
-    console.log('reserdata', data);
     setTimeout(() => {
       putStateOriginTravel(idOffer, data);
       alert('reset ok');
@@ -161,7 +163,6 @@ class StartTravel extends Component {
       },
     };
 
-    console.log(data);
     setTimeout(() => {
       putStateOriginTravel(offerSpecific.id, data);
       this.setState({
@@ -174,7 +175,6 @@ class StartTravel extends Component {
     const { offerSpecific, status, isOrigin } = this.state;
     let lat_des = offerSpecific.origin_latitude;
     let lng_des = offerSpecific.origin_longitude;
-    console.log(isOrigin);
     if (!isOrigin) {
       lat_des = offerSpecific.destination_latitude;
       lng_des = offerSpecific.destination_longitude;
@@ -275,7 +275,6 @@ class StartTravel extends Component {
     const { offerSpecific, status } = this.state;
     const { putStateOriginTravel } = this.props;
     this.setState({ lastLat: e.latitude, lastLong: e.longitude });
-    console.log('ADS-setState', status);
     this.callLocation();
     if (status === 6) {
       const result = this.destinationService(
@@ -353,7 +352,7 @@ class StartTravel extends Component {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
       customButtons: [],
-      quality: 0.5,
+      quality: 0.4,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -375,7 +374,7 @@ class StartTravel extends Component {
           },
         };
         putStateOriginTravel(offerSpecific.id, data);
-        this.setState({ status: statu_id, inTravel: true });
+        this.setState({ status: statu_id, inTravel: true, loadingRegister: false });
         this.componentDidMount(true);
       }
     });
@@ -446,10 +445,19 @@ class StartTravel extends Component {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, inTravel, manifestSet,
       nonManifest, feed, feed1, feed2, feed3, feed4, feed5, feed6,
-      spinner, isOrigin, aproxOrigin, initTravel, mylocation,
+      spinner, isOrigin, aproxOrigin, initTravel, mylocation, loadingRegister,
     } = this.state;
 
     const { companies, markers, document } = this.props;
+
+    if (loadingRegister) {
+      console.log('document', document);
+      if (!document.fetching && !document.error) {
+        this.setState({ loadingRegister: false });
+      }
+    }
+
+
     if (document.serviceDocuments && !document.fetching && !manifestSet) {
       this.downloadMan();
       this.setState({ manifestSet: true });
@@ -527,6 +535,7 @@ class StartTravel extends Component {
             </WrapperModal>
           </EmptyDialog>
           <MapView
+            // provider={MapView.PROVIDER_GOOGLE}
             initialRegion={{
               latitude: lastLat,
               longitude: lastLong,
@@ -534,6 +543,7 @@ class StartTravel extends Component {
               longitudeDelta: 0.10,
             }}
             followsUserLocation
+            showsUserLocation
             showsIndoorLevelPicker
             style={{ height: '100%', width: '100%' }}
           >
@@ -624,6 +634,15 @@ class StartTravel extends Component {
               secondAddress={isOrigin ? offerSpecific.origin_address : offerSpecific.destination_address}
             />
           </WrapperAdresses>
+          <Toast
+            visible={loadingRegister}
+            position={0}
+            loading
+            shadow
+            animation
+          >
+            Subiendo Foto...
+          </Toast>
         </MainWrapper>
       );
     }
