@@ -28,4 +28,6 @@ export default combineReducers({
   prizes: require('./PrizesRedux').reducer,
   ranking: require('./TopUsersRedux').reducer,
   statiscs: require('./StaticsRedux').reducer,
+  offersById: require('./OffersByIdRedux').reducer,
+  summary: require('./SummaryRedux').reducer,
 });

@@ -49,6 +49,7 @@ import {
 } from '../style';
 // FILTER
 import ScreenFilterOffers from '../../containers/FilterOffers';
+import ScreenSummary from '../../containers/Summary';
 
 // eslint-disable-next-line react/prop-types
 function leftIconMenu({ navigation, goBack }) {
@@ -238,6 +239,16 @@ export const myTravelsStackNavigator = createStackNavigator({
   },
   ApplyTravels: {
     screen: ScreenApplyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  SummaryTravels: {
+    screen: ScreenSummary,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,

@@ -50,16 +50,6 @@ export const BlueText = styled.Text`
   text-align: center;
 `;
 
-export const WrapperModal = styled.View`
-  width: 80%;
-  height: auto;
-  background-color: white;
-  align-self: center;
-  border-radius: 10px;
-  padding: 3%;
-  z-index: 1700;
-`;
-
 export const WrapperTextModal = styled.View`
   width: 100%;
   height: auto;
