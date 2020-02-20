@@ -165,25 +165,22 @@ class MyTravels extends Component {
         status_travel.push(parseInt(status_t.code, 10));
       });
       /* status offers */
-      /* if (offers.myOffers) {
+      if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
           if (offer.active) {
             if (offer.statu_id === 16) {
               navigation.navigate('ApplyTravels', { dataOffer: offer });
               console.log('redirection detail');
-            } else if (offer.statu_id === 19){
-              console.log('travel resume');
-            } else if (offer.statu_id === 11){
-              console.log('travel resume');
-              navigation.navigate('Third');
+            } else if (offer.statu_id === 19) {
+              navigation.navigate('SummaryTravels', { offer });
             } else if (status_travel.includes(offer.statu_id)) {
-                navigation.navigate('StartTravel', { Offer: offer });
+              navigation.navigate('StartTravel', { Offer: offer });
             } else {
               console.log(`${offer.statu_id} no include`);
             }
           }
         });
-      } */
+      }
 
       return (
         <MainView>
