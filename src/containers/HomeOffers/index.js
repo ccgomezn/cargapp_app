@@ -84,6 +84,7 @@ class HomeOffers extends Component {
       modalFromHome: true,
       share: false,
       filterModal: false,
+      validation: true,
     };
   }
 
@@ -269,7 +270,7 @@ class HomeOffers extends Component {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
       labelVehicle, callMine, modalPermission,
-      listview, fetch, modalFromHome, filterModal,
+      listview, fetch, modalFromHome, filterModal, validation,
     } = this.state;
     const {
       driver, offers, vehicles, navigation,
@@ -294,7 +295,7 @@ class HomeOffers extends Component {
           }
         }
       });
-      if (perm >= 1) {
+      if (perm >= 1 && validation) {
         analytics().setCurrentScreen('datos_faltantes');
         this.setState({ modalPermission: true });
       }
@@ -310,6 +311,7 @@ class HomeOffers extends Component {
       && !permissions.fetching
       && parameters.data !== null
       && !parameters.fetching
+      // && !fetchinit
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });
@@ -345,13 +347,20 @@ class HomeOffers extends Component {
       parameters.data.parameters.map((status_t) => {
         status_travel.push(parseInt(status_t.code, 10));
       });
-      console.log(status_travel);
+
       /* status offers */
       if (offers.myOffers) {
         offers.myOffers.forEach((offer) => {
+          if (validation) {
+            this.setState({ validation: false, modalPermission: false });
+          }
           if (offer.active) {
-            if (status_travel.includes(offer.statu_id)) {
-              this.setState({ modalPermission: false });
+            if (offer.statu_id === 16) {
+              navigation.navigate('ApplyTravels', { dataOffer: offer });
+              console.log('redirection detail');
+            } else if (offer.statu_id === 19) {
+              navigation.navigate('SummaryTravels', { offer });
+            } else if (status_travel.includes(offer.statu_id)) {
               navigation.navigate('StartTravel', { Offer: offer });
             } else {
               console.log(`${offer.statu_id} no include`);

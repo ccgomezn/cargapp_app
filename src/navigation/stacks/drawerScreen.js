@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
-import { Dimensions, ImageBackground } from 'react-native';
+import { Dimensions, ImageBackground, Image } from 'react-native';
 import { Container, Content, View } from 'native-base';
 import PropTypes from 'prop-types';
 
@@ -17,7 +17,7 @@ import {
   homeStackNavigator, travelsStackNavigator, myTravelsStackNavigator,
   myVehicleStackNavigator, PointsStackNavigator, AnalyticsStackNavigator,
   ProfileStackNavigator, CouponsStackNavigator, chatStackNavigator,
-  ConfigStackNavigator,
+  ConfigStackNavigator, stackStartTravelNavigator,
 } from './stackScreen';
 
 const { width } = Dimensions.get('screen');
@@ -31,14 +31,19 @@ function CustomDrawerContentComponent(props) {
   const lastName = profile ? profile[0].profile.last_name : '';
   const shortName = lastName.split(' ');
   // Remover item Profile
-  const filteredItems = items.filter(item => item.key !== 'ScreenProfile');
+  const filteredItems = items.filter(item => item.key !== 'ScreenProfile' && item.key !== 'ScreenTravel');
   return (
     <Container>
       <Content contentContainerStyle={{ height: '100%' }}>
         <ImageBackground
           source={require('../../Images/MenuCargapp.png')}
-          style={{ width: '130%', height: '100%' }}
+          style={{ width: '130%', height: '100%'/* , backgroundColor: 'black' */ }}
         >
+          <Image
+            source={require('../../Images/MenuCargappCircle.png')}
+            style={{ width: 185, height: 210, position: 'absolute', top: 0, left: 0 }}
+            resizeMode="cover"
+          />
           <AvatarProfile
             avatar={require('../../Images/profile.jpg')}
             press={() => navigate('ScreenProfile')}
@@ -193,6 +198,13 @@ const DrawerDriver = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: 'Chat',
         drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-chat.svg', tint: tintColor }),
+      },
+    },
+    ScreenTravel: {
+      screen: stackStartTravelNavigator,
+      navigationOptions: {
+        drawerLabel: 'Mi viaje',
+        drawerIcon: ({ tintColor }) => DrawerIcon({ urlicon: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-profile.svg', tint: tintColor }),
       },
     },
     ScreenConfig: {

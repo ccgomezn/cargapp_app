@@ -7,16 +7,17 @@ export const MainWrapper = styled.View`
   background-color: white;
   border: 1px solid #f3f3f3;
   padding-horizontal: 10px;
+  padding-vertical: 0px;
     `;
 
 export const WrapperColumn = styled.View`
-    flex: 0.8;
-    flex-direction: row;
-    height: auto;
-    justify-content: center;
-    align-items: center;
-    padding-vertical: 10px;
-    `;
+  flex: 0.8;
+  flex-direction: row;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  padding-vertical: 5px;
+`;
 
 export const WrapperImage = styled.View`
     flex: 2;
@@ -52,13 +53,14 @@ export const NormalText = styled.Text`
     `;
 
 export const TouchableContact = styled.TouchableOpacity`
-    flex: 3;
-    align-items: center;
-    justify-content: center;
-    `;
+  flex: 3;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+`;
 
 export const BlueText = styled.Text`
-    font-family: Roboto;
+  font-family: Roboto;
   font-size: 14px;
   font-weight: 500;
   color: #0068ff;

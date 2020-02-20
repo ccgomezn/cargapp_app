@@ -71,7 +71,7 @@ class Home extends Component {
       console.log(error);
       Geolocation.requestAuthorization();
     }
-    console.log(user);
+    
     const that = this;
     if (!this.didFocusListener) {
       this.didFocusListener = this.props.navigation.addListener(
@@ -101,7 +101,7 @@ class Home extends Component {
 
   componentWillUnmount() {
     const { geoID } = this.state;
-    Geolocation.clearWatch(geoID);
+    // Geolocation.clearWatch(geoID);
   }
 
   onNavigate(screen) {
@@ -163,7 +163,7 @@ class Home extends Component {
 
   geolocation() {
     console.log('geolocation');
-    const geoId = Geolocation.watchPosition((position) => {
+    Geolocation.getCurrentPosition((position) => {
       const region = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -173,7 +173,7 @@ class Home extends Component {
       this.setState({ location: region });
     },
     error => console.log(error));
-    this.setState({ geoID: geoId });
+    // this.setState({ geoID: geoId });
   }
 
   handleOpenURL = event => {
@@ -237,7 +237,6 @@ class Home extends Component {
       labelOrigin,
       labelVehicle,
     } = this.state;
-    console.log(this.props);
 
     const dataPickOrigin = [{ Name: '* Cualquier Origen' }];
     const dataPickDesti = [{ Name: '* Cualquier Destino' }];

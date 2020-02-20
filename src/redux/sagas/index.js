@@ -28,6 +28,8 @@ import { ChallengeTypes } from '../reducers/ChallengeRedux';
 import { PrizesTypes } from '../reducers/PrizesRedux';
 import { TopTypes } from '../reducers/TopUsersRedux';
 import { StaticsTypes } from '../reducers/StaticsRedux';
+import { OffersByIdTypes } from '../reducers/OffersByIdRedux';
+import { SummaryTypes } from '../reducers/SummaryRedux';
 /* --------------- Sagas ----------------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -69,6 +71,8 @@ import { getActiveChallenge } from './ChallengeSagas';
 import { getActivePrizes } from './PrizesSagas';
 import { getTopUsers } from './TopUsersSagas';
 import { getMeStatics } from './StaticsSagas';
+import getOffersById from './OffersByIdSagas';
+import { getSummary } from './SummarySagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -132,5 +136,7 @@ export default function* root() {
     takeLatest(DocumentTypes.GET_DOCS_ME_REQUEST, getDocumentsMe, api),
     takeLatest(DocumentTypes.REMOVE_DOC_REQUEST, deleteDocument, api),
     takeLatest(StaticsTypes.GET_STATICS_ME_REQUEST, getMeStatics, api),
+    takeLatest(OffersByIdTypes.GET_OFFERS_BY_ID_REQUEST, getOffersById, api),
+    takeLatest(SummaryTypes.GET_SUMMARY_REQUEST, getSummary, api),
   ]);
 }

@@ -94,7 +94,7 @@ WhiteCardTravels.propTypes = {
   from: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
   vehicle: PropTypes.string.isRequired,
-  pay: PropTypes.number.isRequired,
+  pay: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   // add
   actionbtnPrimary: PropTypes.func.isRequired,

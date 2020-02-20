@@ -49,6 +49,7 @@ import {
 } from '../style';
 // FILTER
 import ScreenFilterOffers from '../../containers/FilterOffers';
+import ScreenSummary from '../../containers/Summary';
 
 // eslint-disable-next-line react/prop-types
 function leftIconMenu({ navigation, goBack }) {
@@ -61,10 +62,7 @@ function leftIconMenu({ navigation, goBack }) {
       }
     >
       <IconImg
-        source={{
-          uri: !goBack ? 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png'
-            : 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/home.svg',
-        }}
+        source={!goBack ? { uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/menu3x.png' } : require('../../Images/Back.png')}
       />
     </TouchLeftMenu>
   );
@@ -190,6 +188,16 @@ export const stackStartTravelNavigator = createStackNavigator({
       headerLeft: leftIconMenu({ navigation, goBack: true }),
     }),
   },
+  SummaryTravels: {
+    screen: ScreenSummary,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const travelsStackNavigator = createStackNavigator({
@@ -238,6 +246,16 @@ export const myTravelsStackNavigator = createStackNavigator({
   },
   ApplyTravels: {
     screen: ScreenApplyTravels,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
+  SummaryTravels: {
+    screen: ScreenSummary,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,

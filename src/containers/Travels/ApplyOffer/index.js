@@ -28,6 +28,7 @@ import {
 import { ContentForm, WrapperButtonsBottom } from '../../HomeOffers/style';
 import CardPermissions from '../../../components/CardPermissions';
 import PermissionsActions from '../../../redux/reducers/PermissionsRedux';
+import OffersByIdActions from '../../../redux/reducers/OffersByIdRedux';
 
 const itemList = [
   {
@@ -62,20 +63,22 @@ class ApplyOffer extends Component {
       fetchID: false,
       valueApplyOffer: null,
       showTravel: false,
-      modalFinish: false,
       modalRate: false,
       modalApply: false,
       modalPermission: false,
+      button: true,
       permissionApply: false,
       listview: ['profiles', 'documents', 'vehicles', 'bank_accounts'],
+      disabled: false,
     };
   }
 
   componentDidMount() {
     analytics().setCurrentScreen('mis_viajes_detalle');
     const {
-      navigation, getCompanies, getServices, offers, getRateServices, getPermission,
+      navigation, getCompanies, getServices, offers, getRateServices, getPermission, getOffersById,
     } = this.props;
+    const { offer } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
     const booked = navigation.getParam('booked');
     const share = navigation.getParam('share');
@@ -83,16 +86,18 @@ class ApplyOffer extends Component {
     if (share) {
       offers.data.map((services) => {
         if (services.id === idShare) {
+          getOffersById(services.id);
           this.setState({ offer: services });
         }
       });
     }
     if (dataOffer) {
+      getOffersById(dataOffer.id);
       this.setState({ offer: dataOffer });
     }
-    if (dataOffer.statu_id === 10 && booked) {
+    /* if (dataOffer.statu_id === 10 && booked) {
       this.setState({ modalFinish: true });
-    }
+    } */
     getRateServices();
     getCompanies();
     getServices();
@@ -121,48 +126,60 @@ class ApplyOffer extends Component {
     navigation.goBack();
   }
 
-  nameButton() {
-    const { profile } = this.props;
-    const { offer, showTravel } = this.state;
-    if (profile.data[0].user.id === offer.user_driver_id) {
-      if (offer.statu_id === 10) {
-        return 'Esperando respuesta';
-      }
-      if (!showTravel) {
-        this.setState({ showTravel: true });
-      }
-      return 'Iniciar viaje';
-    }
-    return 'Aplicar a viaje';
-  }
-
-  modalBack() {
+  /* modalBack() {
     const { navigation } = this.props;
     this.setState({ modalFinish: false });
     setTimeout(() => {
       navigation.goBack();
     }, 100);
-  }
+  } */
 
   onNavigate(nameView) {
     analytics().logEvent('boton_diligenciar');
     const { navigate } = this.props.navigation;
-    this.setState({ modalPermission: false });
+    this.setState({ permissionApply: false });
     setTimeout(() => {
       navigate(nameView);
     }, 1000);
   }
 
-  vehicleType(value, id) {
-    analytics().logEvent('boton_aplicar_a_oferta');
-    const { navigation } = this.props;
-    const { showTravel, modalPermission } = this.state;
+  onHideModal() {
+    this.setState({ permissionApply: false });
+  }
+
+  nameButton(data) {
+    const { disabled } = this.state;
+    if (data.message) {
+      return 'Aplicar a viaje';
+    }
+    const { name } = data.statu;
+    if (name !== 'No esta vinculado a este servicio' && name !== 'Camino a cargue' && !disabled) {
+      this.setState({ disabled: true });
+    }
+    if (name === 'Camino a cargue') {
+      return 'Iniciar camino a cargue';
+    }
+    return name;
+  }
+
+  vehicleType(value, id, state) {
+    const { navigation, putStateOriginTravel } = this.props;
+    const { modalPermission } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
     if (!modalPermission) {
       if (id) {
+        analytics().logEvent('boton_aplicar_a_oferta');
         this.applyOffer(id, value);
-      } else if (showTravel) {
-        navigation.navigate('StartTravel', { Offer: value });
+      } else if (this.nameButton(state) === 'Iniciar camino a cargue') {
+        const data = {
+          service: {
+            statu_id: 7,
+          },
+        };
+        putStateOriginTravel(value.id, data);
+        setTimeout(() => {
+          navigation.navigate('StartTravel', { Offer: value });
+        }, 800);
         analytics().logEvent('boton_detalles_iniciar_viaje');
       } else {
         navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
@@ -181,11 +198,7 @@ class ApplyOffer extends Component {
       active: true,
     };
     applyOffer(data);
-    this.setState({ modalApply: true });
-  }
-
-  onHideModal() {
-    this.setState({ permissionApply: false });
+    this.setState({ modalApply: true, button: false });
   }
 
   missingViews(list) {
@@ -213,21 +226,23 @@ class ApplyOffer extends Component {
 
   render() {
     const {
-      offers, navigation, companies, rateService, permissions,
+      offers, navigation, companies, rateService, permissions, vehicles, offersById,
     } = this.props;
+    console.log(this.props);
     const {
       offer,
       successNotification,
       errorFalse,
       fetch,
       fetchID,
-      modalFinish,
+      // modalFinish,
       modalRate,
       modalApply,
-      modalPermission,
       permissionApply,
       listview,
       fetchList,
+      button,
+      disabled,
     } = this.state;
     if (offers.service !== null && fetch) {
       this.setState({ successNotification: true, fetch: false });
@@ -261,7 +276,13 @@ class ApplyOffer extends Component {
       && rateService.rate !== null
       && permissions.data !== null
       && !permissions.fetching
+      && vehicles.data !== null
+      && offersById.data !== null
     ) {
+      const vehicle_data = {};
+      vehicles.data.forEach((vehicle) => {
+        vehicle_data[vehicle.id] = vehicle.name;
+      });
       const rateCompany = [];
       rateService.rate.map((rate) => {
         if (offer.id === rate.service_id) {
@@ -285,12 +306,14 @@ class ApplyOffer extends Component {
               onTouchOutside={() => this.setState({ modalApply: null })}
             />
           )}
+          {/*
           <EmptyDialog visible={modalFinish}>
             <WrapperModal>
               <BlueText>{offer.statu_id === 11 ? 'Este viaje ya está finalizado' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
               <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
             </WrapperModal>
           </EmptyDialog>
+          */}
           <EmptyDialog visible={modalRate}>
             <WrapperModal>
               <WrapperTextModal>
@@ -353,18 +376,24 @@ class ApplyOffer extends Component {
             if (offer.company_id === company.id) {
               return (
                 <CardMapBeginTravel
-                  extra={offer.note}
                   normalText={company.address}
                   amount={formatPrice(offer.price)}
-                  onPressBG={() => this.vehicleType(offer, selectID)}
+                  onPressBG={() => this.vehicleType(offer, selectID, offersById.data)}
                   onPressBW={
                     () => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())
                   }
-                  delivery={offer.description}
+                  content={offer.description}
+                  extra={offer.note}
                   company={company.name}
-                  mainButton={this.nameButton()}
+                  packing={offer.packing}
+                  loadVolume={offer.load_volume}
+                  loadWeight={offer.load_weight}
+                  mainButton={this.nameButton(offersById.data)}
                   onPressQA={() => this.onPressQualification()}
                   status={offer.statu_id}
+                  button={button}
+                  vehicle={vehicle_data[company.vehicle_type_id]}
+                  disabled={disabled}
                 />
               );
             }
@@ -401,7 +430,7 @@ class ApplyOffer extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    vehicles, companies, user, offers, profile, rateService, permissions,
+    vehicles, companies, user, offers, profile, rateService, permissions, offersById,
   } = state;
   return {
     vehicles,
@@ -411,15 +440,18 @@ const mapStateToProps = (state) => {
     profile,
     rateService,
     permissions,
+    offersById,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
+  putStateOriginTravel: (id, data) => dispatch(OffersActions.putStateInTravelOriginRequest(id, data)),
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   applyOffer: service => dispatch(OffersActions.postApplyOfferRequest(service)),
   getServices: (params = {}) => dispatch(OffersActions.getServicesRequest(params)),
   getPermission: params => dispatch(PermissionsActions.getPermissionRequest(params)),
   getRateServices: (params = {}) => dispatch(RateActions.getRateServiceRequest(params)),
+  getOffersById: id => dispatch(OffersByIdActions.getOffersByIdRequest(id)),
 });
 
 export default connect(

@@ -17,13 +17,34 @@ import {
   Icon,
 } from './style';
 
+import { formatPrice } from '../../helpers/Utils';
+
+function textStatus(status, aprox) {
+  if (status === 6) {
+    return 'Evidencia Inicio de Cargue';
+  }
+  if (status === 7) {
+    return 'Evidencia Finalizar Cargue';
+  }
+  if (status === 18) {
+    return 'Evidencia Inicio de Descargue';
+  }
+  if (status === 9) {
+    return 'Evidencia Finalizar Descargue';
+  }
+  return '';
+}
+
 function TopCardTravel({
-  company, travelsCount, amount, arrive, isConfirmLoad, unLoad, actionBtnOk, actionMan, actionCall
+  company, travelsCount, amount,
+  arrive, isConfirmLoad,
+  actionBtnOk, actionMan, actionCall,
+  status, aprox,
 }) {
   if (arrive) {
     return (
-      <MainWrapper>
-        <WrapperColumn>
+      <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
+        {/* <WrapperColumn>
           <WrapperImage>
             <Image
               source={require('../../Images/compani.png')}
@@ -37,55 +58,43 @@ function TopCardTravel({
             <BlueText>Contactar</BlueText>
           </TouchableContact>
         </WrapperColumn>
-        <Line />
+        { aprox || isConfirmLoad ? (
+          <Line />
+        ) : null } */}
         {isConfirmLoad
           ? (
-            <WrapperColumn>
+            <WrapperColumn style={!aprox ? { marginTop: 6 } : null}>
               <WrapperSection>
                 <BoldText>Anticipo consignado</BoldText>
-                <NormalText>{amount}</NormalText>
+                <NormalText>
+                  {'$'}
+                  {formatPrice(amount)}
+                </NormalText>
               </WrapperSection>
               <LineVerical />
               <WrapperColumn>
-                <Icon />
                 <TouchableContact onPress={actionMan}>
                   <BlueText>Ver manifiesto</BlueText>
                 </TouchableContact>
               </WrapperColumn>
             </WrapperColumn>
-          )
-          : (
+          ) : null }
+        { aprox && isConfirmLoad ? (
+          <Line />
+        ) : null }
+        {aprox
+          ? (
             <WrapperColumn>
               <TouchableContact onPress={actionBtnOk}>
-                <BlueText style={{ paddingVertical: 10 }}>
-                  Confirmar
-                  {' '}
-                  {!unLoad ? 'cargue' : 'descargue' }
+                <BlueText style={{ /* paddingVertical: 10 */ }}>
+                  { textStatus(status, aprox) }
                 </BlueText>
               </TouchableContact>
             </WrapperColumn>
-          )
-        }
+          ) : null }
       </MainWrapper>
     );
-  } return (
-    <MainWrapper style={{ paddingTop: 10 }}>
-      <WrapperColumn>
-        <WrapperImage>
-          <Image
-            source={require('../../Images/compani.png')}
-          />
-        </WrapperImage>
-        <WrapperInfo>
-          <BoldText>{company}</BoldText>
-          <NormalText>{travelsCount}</NormalText>
-        </WrapperInfo>
-        <TouchableContact>
-          <BlueText>Contactar</BlueText>
-        </TouchableContact>
-      </WrapperColumn>
-    </MainWrapper>
-  );
+  } return null;
 }
 
 TopCardTravel.propTypes = {
@@ -94,10 +103,12 @@ TopCardTravel.propTypes = {
   amount: PropTypes.string.isRequired,
   arrive: PropTypes.bool.isRequired,
   isConfirmLoad: PropTypes.bool.isRequired,
-  unLoad: PropTypes.bool.isRequired,
   actionBtnOk: PropTypes.func.isRequired,
   actionMan: PropTypes.func.isRequired,
   actionCall: PropTypes.func.isRequired,
+  //
+  status: PropTypes.number.isRequired,
+  aprox: PropTypes.bool.isRequired,
 };
 
 export default TopCardTravel;

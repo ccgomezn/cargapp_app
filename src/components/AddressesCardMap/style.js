@@ -1,27 +1,28 @@
 import styled from 'styled-components/native';
 
 export const MainWrapper = styled.View`
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    background-color: white;
-    `;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background-color: white;
+`;
 
 export const WrapperCard = styled.View`
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    `;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const WrapperIcon = styled.View`
-    flex: 2;
-    justify-content: center;
-    align-items: center;
-    `;
+  flex: 2;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const Icon = styled.Image`
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
+  resize-mode: contain;
 `;
 
 export const WrapperInfo = styled.View`

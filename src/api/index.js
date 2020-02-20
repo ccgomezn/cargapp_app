@@ -26,6 +26,7 @@ import Challenges from './Challenges';
 import Prizes from './Prizes';
 import Top from './TopUser';
 import Statics from './Stadics';
+import Summary from './Summary';
 /* URL
   'https://api.cargapp.co/api/v1/';
   'https://lite.cargapp.co/api/v1/';
@@ -68,6 +69,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
   const prizes = new Prizes(api);
   const top = new Top(api);
   const statics = new Statics(api);
+  const summary = new Summary(api);
   // RETURN API
   return {
     setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`),
@@ -99,6 +101,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
     prizes,
     top,
     statics,
+    summary,
   };
 };
 // LET'S RETURN BACK OUR CREATE METHOD AS THE DEFAULT.
