@@ -29,8 +29,6 @@ import SummaryActions from '../../redux/reducers/SummaryRedux';
 import EmptyDialog from '../../components/EmptyDialog';
 import DocumentActions from '../../redux/reducers/DocumentRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
-
-import 'moment/locale/pt-br';
 import RateTypes from '../../redux/reducers/RateServiceRedux';
 import Spinner from '../../components/Spinner';
 
@@ -50,11 +48,12 @@ class ScreenSummary extends Component {
   componentDidMount() {
     moment.locale('es');
     analytics().setCurrentScreen('resumen_viaje');
-    const { getSummary } = this.props;
-    getSummary(155);
+    const { getSummary, navigation } = this.props;
+    const offer = navigation.getParam('offer');
+    getSummary(offer.id);
   }
 
-  async onRegisterDoc(source, name) {
+  async onRegisterDoc(source, name, id) {
     const { registerDocument, profile } = this.props;
     const userId = profile.data[0].user.id;
     let photoName = source.fileName;
@@ -71,13 +70,13 @@ class ScreenSummary extends Component {
     data.append('service_document[user_id]', userId);
     data.append('service_document[name]', name);
     data.append('service_document[active]', 1);
-    data.append('service_document[service_id]', 155);
+    data.append('service_document[service_id]', id);
     data.append('service_document[document_type_id]', 17);
     await registerDocument(data);
     this.setState({ modalRating: true, load: false });
   }
 
-  rating(value) {
+  rating(value, id) {
     analytics().logEvent('boton_encuesta');
     const { postRateServices, profile } = this.props;
     this.setState({ modalRating: false });
@@ -89,7 +88,7 @@ class ScreenSummary extends Component {
     const data = {
       rate_service: {
         service_point: value,
-        service_id: 155,
+        service_id: id,
         user_id: profile.data[0].user.id,
         driver_id: profile.data[0].user.id,
         active: true,
@@ -100,7 +99,7 @@ class ScreenSummary extends Component {
     }, 1000);
   }
 
-  async imageDocument(name) {
+  async imageDocument(name, id) {
     const options = {
       title: 'Vincular Documento',
       cancelButtonTitle: 'Cancelar',
@@ -115,12 +114,12 @@ class ScreenSummary extends Component {
     };
     ImagePicker.showImagePicker(options, ((response) => {
       if (response.didCancel) {
-        alert(response);
+        console.log(response);
       } else if (response.error) {
-        alert(response);
+        console.log(response);
       } else {
         this.setState({ load: true });
-        this.onRegisterDoc(response, name);
+        this.onRegisterDoc(response, name, id);
       }
     }));
   }
@@ -136,14 +135,18 @@ class ScreenSummary extends Component {
     }
   }
 
-  confirmTest() {
-    const { putStateOriginTravel } = this.props;
+  confirmTest(id) {
+    const { putStateOriginTravel, navigation } = this.props;
     const data = {
       service: {
         statu_id: 11,
       },
     };
-    putStateOriginTravel(150, data);
+    putStateOriginTravel(id, data);
+    this.setState({ modalRating: false, modalCheck: false, load: true });
+    setTimeout(() => {
+      navigation.navigate('Third');
+    }, 1500);
   }
 
   render() {
@@ -159,7 +162,7 @@ class ScreenSummary extends Component {
           <Spinner view={load} />
           <RowContainer>
             <Title>Resumen </Title>
-            <Title>{moment(summary.data.service.updated_at).format('LL')}</Title>
+            <Title>{moment(summary.data.service.updated_at).format('ll')}</Title>
           </RowContainer>
           <Map pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}>
             <Map.Polyline
@@ -185,16 +188,12 @@ class ScreenSummary extends Component {
                 <SubTitle>Inicio</SubTitle>
                 <Title>
                   {summary.data.origin.name}
-                  {': '}
-                  {summary.data.service.origin_address}
                 </Title>
               </ColumnContainer>
               <ColumnContainer>
                 <SubTitle>Detino</SubTitle>
                 <Title>
                   {summary.data.destination.name}
-                  {': '}
-                  {summary.data.service.destination_address}
                 </Title>
               </ColumnContainer>
             </ColumnContainer>
@@ -256,7 +255,7 @@ class ScreenSummary extends Component {
                   <Check checked={check3} />
                   <GrayText>Problemas con el anticipo</GrayText>
                 </Touchable>
-                <ButtonGradient press={() => this.confirmTest()} content="Aceptar" disabled={false} />
+                <ButtonGradient press={() => this.confirmTest(summary.data.service.id)} content="Aceptar" disabled={false} />
               </WrapperTextModal>
             </WrapperModal>
           </EmptyDialog>
@@ -270,13 +269,13 @@ class ScreenSummary extends Component {
                 disabled={false}
                 maxStars={5}
                 rating={starCount}
-                selectedStar={rating => this.rating(rating)}
+                selectedStar={rating => this.rating(rating, summary.data.service.id)}
                 fullStarColor="#0068ff"
               />
             </WrapperModal>
           </EmptyDialog>
           <WrapperButton>
-            <ButtonGradient press={() => this.imageDocument('Confimación cumplido')} content="Subir cumplido" disabled={false} />
+            <ButtonGradient press={() => this.imageDocument('Confimación cumplido', summary.data.service.id)} content="Subir cumplido" disabled={false} />
           </WrapperButton>
         </MainContainer>
       );

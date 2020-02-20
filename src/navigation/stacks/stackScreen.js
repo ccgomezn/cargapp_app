@@ -188,6 +188,16 @@ export const stackStartTravelNavigator = createStackNavigator({
       headerLeft: leftIconMenu({ navigation, goBack: true }),
     }),
   },
+  SummaryTravels: {
+    screen: ScreenSummary,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation }),
+      headerLeft: leftIconMenu({ navigation }),
+      headerRight: rightIconMenu({ navigation }),
+    }),
+  },
 });
 
 export const travelsStackNavigator = createStackNavigator({

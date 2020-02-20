@@ -102,18 +102,33 @@ class StartTravel extends Component {
       this.callLocation();
       const newState = !isReload ? offer.statu_id : status;
       if (newState === 7) {
-        this.setState({ inTravel: false, feed: false, feed2: true, aproxOrigin: true });
+        this.setState({
+          inTravel: false, feed: false, feed2: true, aproxOrigin: true,
+        });
       } else if (newState === 17) {
-        this.setState({ inTravel: true, isOrigin: false, feed: false, feed3: true, initTravel: true, aproxOrigin: false });
+        this.setState({
+          inTravel: true,
+          isOrigin: false,
+          feed: false,
+          feed3: true,
+          initTravel: true,
+          aproxOrigin: false,
+        });
       } else if (newState === 8) {
-        this.setState({ inTravel: true, isOrigin: false, feed4: true, feed: false });
+        this.setState({
+          inTravel: true, isOrigin: false, feed4: true, feed: false,
+        });
       } else if (newState === 18) {
-        this.setState({ inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true });
+        this.setState({
+          inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true,
+        });
       } else if (newState === 9) {
-        this.setState({ inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true });
+        this.setState({
+          inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true,
+        });
       } else if (newState === 19) {
         console.log('fin status:19');
-        navigation.navigate('ScreenHome');
+        navigation.navigate('ScreenSummary', { offer });
         // this.onResetTravel(offer.id);
       }
       getCompanies();
@@ -285,7 +300,9 @@ class StartTravel extends Component {
       );
       console.log('resultgeo-6', result);
       if (result < 0.5) {
-        this.setState({ inTravel: false, aproxOrigin: true, feed: false, feed1: true });
+        this.setState({
+          inTravel: false, aproxOrigin: true, feed: false, feed1: true,
+        });
       } else {
         this.setState({ aproxOrigin: false, feed: true, feed1: false });
       }
