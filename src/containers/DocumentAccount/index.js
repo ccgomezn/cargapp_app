@@ -12,7 +12,7 @@ import { ActivityIndicator } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import {
-  MainWrapper, ContentView, TextBlack, ContentBlock, TextGray,
+  MainWrapper, TextBlack, ContentBlock, TextGray,
   WrapperDocument, RowDocument, WrapperError, TextError,
   MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail,
   WrapperTitle, TitleDesc, WrapperButtonsBottom,
@@ -43,7 +43,8 @@ class DocumentAccount extends Component {
 
   componentDidMount() {
     const { getDocumentsTypes, getDocumentsMe } = this.props;
-    getDocumentsTypes();
+    getDocumentsTypes('Profile');
+    // getDocumentsTypes('Vehicle');
     getDocumentsMe();
   }
 
@@ -198,29 +199,31 @@ class DocumentAccount extends Component {
           }
         )); }
         const titleData = initStatus;
+
         // docs me
-        { document.listDocuments.map(datalist => (
-          initStatus[datalist.document_type_id] = {
-            id: datalist.document_type_id,
-            status: 'correct',
-            edit: true,
-            dataEdit: datalist,
-            title: titleData[datalist.document_type_id].title,
+        { document.listDocuments.map((datalist) => {
+          if (titleData[datalist.document_type_id] !== undefined) {
+            initStatus[datalist.document_type_id] = {
+              id: datalist.document_type_id,
+              status: 'correct',
+              edit: true,
+              dataEdit: datalist,
+              title: titleData[datalist.document_type_id].title,
+            };
           }
-        )); }
+        }); }
+        console.log(listStatus);
         this.setState({ init: true, listStatus: initStatus });
       }
 
       return (
         <MainWrapper>
-          <ContentView>
-            <ContentBlock>
-              <TextBlack>Documentos</TextBlack>
-              <TextGray>
-                Documentos necesarios para validar tu perfil.
-              </TextGray>
-            </ContentBlock>
-          </ContentView>
+          <ContentBlock>
+            <TextBlack>Documentos</TextBlack>
+            <TextGray>
+              Documentos necesarios para validar tu perfil.
+            </TextGray>
+          </ContentBlock>
 
           <WrapperDocument>
             { document.listTypes.map(data => (
@@ -338,7 +341,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   registerDocument: params => dispatch(DocumentActions.postRegisterDocRequest(params)),
-  getDocumentsTypes: params => dispatch(DocumentActions.getDocsTypesRequest(params)),
+  getDocumentsTypes: category => dispatch(DocumentActions.getDocsTypesRequest(category)),
   getDocumentsMe: params => dispatch(DocumentActions.getDocsMeRequest(params)),
   deleteDocument: id => dispatch(DocumentActions.removeDocRequest(id)),
 });

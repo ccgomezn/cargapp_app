@@ -66,10 +66,10 @@ export function* registerDocumentService(api, action) {
 
 
 export function* getDocumentTypes(api, action) {
-  const { params } = action;
+  const { category } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  const response = yield call(api.document.getDocumentsTypes, params);
+  const response = yield call(api.document.getDocumentsTypes, category);
   console.log('types', response);
   if (response.ok) {
     // save response ok

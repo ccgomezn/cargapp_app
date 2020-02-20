@@ -2,8 +2,8 @@ import styled from 'styled-components/native';
 import SvgUri from 'react-native-svg-uri';
 
 export const MainWrapper = styled.TouchableOpacity`
-  width: 100%;
-  height: 62px;
+  flex: 1;
+  height: 65px;
   flex-direction: row;
   border: 1px solid gray;
   border-radius: 5px;

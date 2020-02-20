@@ -16,7 +16,7 @@ export const { Types, Creators } = createActions({
   getDocsServiceSuccess: ['serviceDocuments'],
   getDocsServiceFailure: ['params'],
   getDocsServiceRequest: ['id'],
-  getDocsTypesRequest: ['params'],
+  getDocsTypesRequest: ['category'],
   getDocsTypesSuccess: ['data'],
   getDocsTypesFailure: null,
   getDocsMeRequest: ['params'],

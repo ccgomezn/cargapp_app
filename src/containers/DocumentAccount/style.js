@@ -60,8 +60,10 @@ export const TextGray = styled.Text`
 
 export const WrapperDocument = styled.View`
   width: 100%;
+  height: auto;
   margin-top: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 30px;
 `;
 
 export const RowDocument = styled.View`
@@ -73,6 +75,7 @@ export const WrapperError = styled.View`
   width: 100%;
   font-size: 14px;
   letter-spacing: -0.4px;
+  padding-bottom: 20px;
 `;
 
 export const TextError = styled.Text`

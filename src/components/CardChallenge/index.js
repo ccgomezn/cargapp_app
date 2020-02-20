@@ -8,7 +8,7 @@ import {
 } from './style';
 
 function CardChellenge({
-  press, title, desc, percentage, point, status
+  press, title, desc, percentage, point, status,
 }) {
   return (
     <WrapperCard onPress={press}>
