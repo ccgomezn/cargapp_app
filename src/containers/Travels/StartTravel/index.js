@@ -18,7 +18,6 @@ import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import analytics from '@react-native-firebase/analytics';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
-import RateTypes from '../../../redux/reducers/RateServiceRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
 import {
   MainWrapper,
@@ -42,6 +41,8 @@ import ButtonGradient from '../../../components/ButtonGradient';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
 import PopUpNotification from '../../../components/PopUpNotifications';
 import Spinner from '../../../components/Spinner';
+
+import OfferByIdActions from '../../../redux/reducers/OfferByIdRedux';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -68,13 +69,26 @@ class StartTravel extends Component {
       initTravel: false,
       mylocation: null,
       loadingRegister: false,
+      loadDidMount: false,
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { offerById } = this.props;
+
+    if ((offerById.data !== null) && (offerById.data !== prevProps.offerById.data)) {
+      this.setState({ offerSpecific: offerById.data, loadDidMount: true },
+        () => {
+          this.reviewStatus();
+        });
+    }
   }
 
   componentDidMount(isReload = false) {
     analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
-      navigation, offers, getMarkers, getDocsServiceRequest, getCompanies,
+      navigation, offers, getMarkers, getDocsServiceRequest,
+      getCompanies, document, getOfferById, offerById,
     } = this.props;
     const { status } = this.state;
     const offer = navigation.getParam('Offer', null);
@@ -82,7 +96,10 @@ class StartTravel extends Component {
     console.log('reload', isReload);
 
     if (offer !== null) {
-      if (!isReload) {
+      console.log('idOffer', offer.id);
+      getOfferById(offer.id);
+
+      /* if (!isReload) {
         offers.data.map((newOffer) => {
           if (newOffer.id === offer.id) {
             this.setState({ offerSpecific: offer, status: offer.statu_id });
@@ -98,9 +115,13 @@ class StartTravel extends Component {
       );
 
       this.setState({ geoID: geoId });
+
+      /*
       getDocsServiceRequest(offer.id);
       this.callLocation();
       const newState = !isReload ? offer.statu_id : status;
+      console.log('offer', offer.statu_id);
+      console.log('new', newState);
       if (newState === 7) {
         this.setState({
           inTravel: false, feed: false, feed2: true, aproxOrigin: true,
@@ -128,11 +149,15 @@ class StartTravel extends Component {
         });
       } else if (newState === 19) {
         console.log('fin status:19');
-        navigation.navigate('ScreenSummary', { offer });
-        // this.onResetTravel(offer.id);
+        this.setState({
+          inTravel: true, isOrigin: false, feed: false,
+        });
+      } else if (newState === 11) {
+        this.onResetTravel(offer.id);
       }
       getCompanies();
       getMarkers();
+      */
     } else {
       console.log('null data');
     }
@@ -141,6 +166,63 @@ class StartTravel extends Component {
   componentWillUnmount() {
     const { geoID } = this.state;
     Geolocation.clearWatch(geoID);
+  }
+
+  reviewStatus() {
+    const { offerSpecific } = this.state;
+    const { getDocsServiceRequest } = this.props;
+
+    this.setState({ status: offerSpecific.statu_id },
+      () => {
+        console.log('Specific', offerSpecific);
+
+        const geoId = Geolocation.watchPosition(
+          e => this.ads(e.coords),
+          error => console.log(JSON.stringify(error)),
+          {
+            enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 100,
+          },
+        );
+        this.setState({ geoID: geoId });
+
+        getDocsServiceRequest(offerSpecific.id);
+        this.callLocation();
+        console.log('offer', offerSpecific.statu_id);
+        const newState = offerSpecific.statu_id;
+        if (newState === 7) {
+          this.setState({
+            inTravel: false, feed: false, feed2: true, aproxOrigin: true,
+          });
+        } else if (newState === 17) {
+          this.setState({
+            inTravel: true,
+            isOrigin: false,
+            feed: false,
+            feed3: true,
+            initTravel: true,
+            aproxOrigin: false,
+          });
+        } else if (newState === 8) {
+          this.setState({
+            inTravel: true, isOrigin: false, feed4: true, feed: false,
+          });
+        } else if (newState === 18) {
+          this.setState({
+            inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true,
+          });
+        } else if (newState === 9) {
+          this.setState({
+            inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true,
+          });
+        } else if (newState === 19) {
+          console.log('fin status:19');
+          this.setState({
+            inTravel: true, isOrigin: false, feed: false,
+          });
+        } else if (newState === 11) {
+          this.onResetTravel(offerSpecific.id);
+        }
+      });
   }
 
   onRegionChange(region, lLat, lLon) {
@@ -153,12 +235,11 @@ class StartTravel extends Component {
   }
 
   onResetTravel(idOffer) {
-    const { offerSpecific } = this.state;
     const { putStateOriginTravel } = this.props;
 
     const data = {
       service: {
-        statu_id: 6,
+        statu_id: 16,
       },
     };
 
@@ -232,7 +313,7 @@ class StartTravel extends Component {
     const { document } = this.props;
     let man = '';
     document.serviceDocuments.forEach((document_data) => {
-      if (document_data.document_type === 'manifiesto') {
+      if (document_data.document_type_id === 36) {
         analytics().logEvent('boton_viaje_iniciado_ver_manifiesto');
         man = encodeURI(document_data.document);
       }
@@ -291,7 +372,9 @@ class StartTravel extends Component {
     const { putStateOriginTravel } = this.props;
     this.setState({ lastLat: e.latitude, lastLong: e.longitude });
     this.callLocation();
-    if (status === 6) {
+    console.log('ads', offerSpecific);
+    console.log('e', e);
+    if (status === 6 || status === 16) {
       const result = this.destinationService(
         e.latitude,
         e.longitude,
@@ -299,7 +382,7 @@ class StartTravel extends Component {
         offerSpecific.origin_longitude,
       );
       console.log('resultgeo-6', result);
-      if (result < 0.5) {
+      if (result < 0.3) {
         this.setState({
           inTravel: false, aproxOrigin: true, feed: false, feed1: true,
         });
@@ -314,7 +397,7 @@ class StartTravel extends Component {
         offerSpecific.destination_longitude,
       );
       console.log('resultgeo-8', result);
-      if (result < 0.5) {
+      if (result < 0.3) {
         const data = {
           service: {
             statu_id: 18,
@@ -323,7 +406,7 @@ class StartTravel extends Component {
         setTimeout(() => {
           putStateOriginTravel(offerSpecific.id, data);
           this.setState({
-            status: 18, inTravel: true, feed5: true, aproxOrigin: true,
+            status: 18, inTravel: true, feed: false, feed5: true, aproxOrigin: true,
           });
           // this.componentDidMount();
         }, 1000);
@@ -369,6 +452,7 @@ class StartTravel extends Component {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
       customButtons: [],
+      tintColor: '#010935',
       quality: 0.4,
       storageOptions: {
         skipBackup: true,
@@ -391,8 +475,8 @@ class StartTravel extends Component {
           },
         };
         putStateOriginTravel(offerSpecific.id, data);
-        this.setState({ status: statu_id, inTravel: true, loadingRegister: false });
-        this.componentDidMount(true);
+        this.setState({ status: statu_id, inTravel: true });
+        // this.componentDidMount(true);
       }
     });
   }
@@ -400,7 +484,7 @@ class StartTravel extends Component {
   async confirmTravel() {
     const { offerSpecific, status, aproxOrigin } = this.state;
     console.log(status);
-    if (status === 6 && aproxOrigin) {
+    if ((status === 6 || status === 16) && aproxOrigin) {
       analytics().logEvent('boton_iniciar_cargue');
       await this.load(7, 'Confirmacion Inicio de cargue', 13);
     } else if (status === 7) {
@@ -463,25 +547,37 @@ class StartTravel extends Component {
       offerSpecific, lastLat, lastLong, waypoints, status, inTravel, manifestSet,
       nonManifest, feed, feed1, feed2, feed3, feed4, feed5, feed6,
       spinner, isOrigin, aproxOrigin, initTravel, mylocation, loadingRegister,
+      loadDidMount,
     } = this.state;
 
-    const { companies, markers, document } = this.props;
+    const {
+      companies, markers, document, navigation, offerById,
+    } = this.props;
 
     if (loadingRegister) {
       console.log('document', document);
       if (!document.fetching && !document.error) {
+        console.log('stad', status);
         this.setState({ loadingRegister: false });
+        if (status === 19) {
+          setTimeout(() => {
+            navigation.navigate('SummaryTravels', { offer: offerSpecific });
+          }, 200);
+        } else {
+          this.componentDidMount(true);
+        }
       }
     }
 
-
-    if (document.serviceDocuments && !document.fetching && !manifestSet) {
+    if (document.serviceDocuments && !document.fetchingServiceDoc && !manifestSet) {
       this.downloadMan();
+      console.log('serviceDoc', document.serviceDocuments);
       this.setState({ manifestSet: true });
     }
-    if (document.error && !spinner) {
+    if (document.errorServiceDoc && !spinner) {
       this.setState({ nonManifest: true });
     }
+
     if (offerSpecific !== null
       && waypoints !== undefined
       && markers.data !== null
@@ -520,7 +616,7 @@ class StartTravel extends Component {
             <PopUpNotification
               onTouchOutside={() => this.setState({ feed3: false })}
               mainText="¡Atención!"
-              subText="Acabas de confirmar que cargaste ahora debes dirigirte al destino,"
+              subText="Acabas de confirmar que cargaste ahora debes dirigirte al destino."
             />
           )}
           {feed4 && (
@@ -675,26 +771,26 @@ class StartTravel extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    offers, companies, markers, rateService, profile, document, user,
+    offers, companies, markers, profile, document, user, offerById,
   } = state;
   return {
     offers,
     companies,
     markers,
-    rateService,
     profile,
     document,
     user,
+    offerById,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
   getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
-  postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
   getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
+  getOfferById: id => dispatch(OfferByIdActions.getOfferByIdRequest(id)),
 });
 
 export default connect(

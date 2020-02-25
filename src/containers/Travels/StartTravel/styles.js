@@ -49,6 +49,16 @@ export const WrapperAdresses = styled.View`
   opacity: 0.88;  
 `;
 
+export const WrapperModal = styled.View`
+  width: 80%;
+  height: auto;
+  background-color: white;
+  align-self: center;
+  border-radius: 10px;
+  padding: 3%;
+  z-index: 1700;
+`;
+
 export const WrapperTopCard = styled.View`
   position: absolute;
   width: 80%;

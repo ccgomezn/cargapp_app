@@ -30,4 +30,5 @@ export default combineReducers({
   statiscs: require('./StaticsRedux').reducer,
   offersById: require('./OffersByIdRedux').reducer,
   summary: require('./SummaryRedux').reducer,
+  offerById: require('./OfferByIdRedux').reducer,
 });

@@ -358,12 +358,13 @@ class HomeOffers extends Component {
             if (offer.statu_id === 16) {
               navigation.navigate('ApplyTravels', { dataOffer: offer });
               console.log('redirection detail');
-            } else if (offer.statu_id === 19) {
+            } else if (offer.statu_id === 19 /* 11 */) {
               navigation.navigate('SummaryTravels', { offer });
+              // navigation.navigate('StartTravel', { Offer: offer });
             } else if (status_travel.includes(offer.statu_id)) {
               navigation.navigate('StartTravel', { Offer: offer });
             } else {
-              console.log(`${offer.statu_id} no include`);
+              // console.log(`${offer.statu_id} no include`);
             }
           }
         });
@@ -545,7 +546,6 @@ class HomeOffers extends Component {
               </ContentDialog>
             </MainWrapperDialog>
           </EmptyDialog>
-
         </MainView>
       );
     }

@@ -152,13 +152,20 @@ class ApplyOffer extends Component {
     if (data.message) {
       return 'Aplicar a viaje';
     }
-    const { name } = data.statu;
-    if (name !== 'No esta vinculado a este servicio' && name !== 'Camino a cargue' && !disabled) {
+    const { name, id } = data.statu;
+    console.log('name', data.statu);
+    /* if (name !== 'No esta vinculado a este servicio' && name !== 'Camino a cargue' && !disabled) {
+      this.setState({ disabled: true });
+    } */
+    if (id !== 52 && id !== 16 && !disabled) {
       this.setState({ disabled: true });
     }
-    if (name === 'Camino a cargue') {
+    if (id === 16) {
       return 'Iniciar camino a cargue';
     }
+    /* if (name === 'Camino a cargue') {
+      return 'Iniciar camino a cargue';
+    } */
     return name;
   }
 
@@ -173,7 +180,7 @@ class ApplyOffer extends Component {
       } else if (this.nameButton(state) === 'Iniciar camino a cargue') {
         const data = {
           service: {
-            statu_id: 7,
+            statu_id: 6,
           },
         };
         putStateOriginTravel(value.id, data);

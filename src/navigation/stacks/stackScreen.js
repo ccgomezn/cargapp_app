@@ -260,7 +260,6 @@ export const myTravelsStackNavigator = createStackNavigator({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },

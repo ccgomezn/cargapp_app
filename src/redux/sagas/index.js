@@ -30,6 +30,7 @@ import { TopTypes } from '../reducers/TopUsersRedux';
 import { StaticsTypes } from '../reducers/StaticsRedux';
 import { OffersByIdTypes } from '../reducers/OffersByIdRedux';
 import { SummaryTypes } from '../reducers/SummaryRedux';
+import { OfferByIdTypes } from '../reducers/OfferByIdRedux';
 /* --------------- Sagas ----------------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -73,6 +74,7 @@ import { getTopUsers } from './TopUsersSagas';
 import { getMeStatics } from './StaticsSagas';
 import getOffersById from './OffersByIdSagas';
 import { getSummary } from './SummarySagas';
+import getOfferById from './OfferByIdSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -138,5 +140,6 @@ export default function* root() {
     takeLatest(StaticsTypes.GET_STATICS_ME_REQUEST, getMeStatics, api),
     takeLatest(OffersByIdTypes.GET_OFFERS_BY_ID_REQUEST, getOffersById, api),
     takeLatest(SummaryTypes.GET_SUMMARY_REQUEST, getSummary, api),
+    takeLatest(OfferByIdTypes.GET_OFFER_BY_ID_REQUEST, getOfferById, api),
   ]);
 }

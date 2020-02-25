@@ -34,10 +34,12 @@ export const INITIAL_STATE = Immutable({
   fetching: false,
   status: null, // respuesta success
   unprocess: false,
-  serviceDocuments: null,
   fetchingTypes: false,
   listTypes: null,
   listDocuments: null,
+  fetchingServiceDoc: false,
+  errorServiceDoc: null,
+  serviceDocuments: null, // respuesta serviceDocuments
 });
 
 /* ----------------- Selectors ---------------- */
@@ -79,6 +81,7 @@ export const postRegisterDocRequest = (state) => {
     fetching: true,
     error: false,
     status: null,
+    serviceDocuments: null,
   };
 };
 
@@ -118,12 +121,12 @@ export const postRegisterDocServiceRequest = (state) => {
   };
 };
 
-
+/* --------------------------- getDocument Service --------------------------- */
 export const getDocsServiceSuccess = (state, { serviceDocuments }) => {
   return {
     ...state,
-    fetching: false,
-    error: false,
+    fetchingServiceDoc: false,
+    errorServiceDoc: false,
     serviceDocuments,
   };
 };
@@ -131,17 +134,18 @@ export const getDocsServiceSuccess = (state, { serviceDocuments }) => {
 export const getDocsServiceFailure = (state) => {
   return {
     ...state,
-    fetching: false,
-    error: true,
+    fetchingServiceDoc: false,
+    errorServiceDoc: true,
+    serviceDocuments: null,
   };
 };
 
 export const getDocsServiceRequest = (state) => {
   return {
     ...state,
-    fetching: true,
-    error: false,
-    status: null,
+    fetchingServiceDoc: true,
+    errorServiceDoc: false,
+    serviceDocuments: null,
   };
 };
 

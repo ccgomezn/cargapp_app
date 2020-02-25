@@ -145,7 +145,8 @@ class ScreenSummary extends Component {
     putStateOriginTravel(id, data);
     this.setState({ modalRating: false, modalCheck: false, load: true });
     setTimeout(() => {
-      navigation.navigate('Third');
+      // navigation.navigate('Third');
+      navigation.navigate('First');
     }, 1500);
   }
 
