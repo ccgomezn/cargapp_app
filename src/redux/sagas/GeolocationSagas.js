@@ -11,14 +11,18 @@
  *    you'll need to define a constant in that file.
  ************************************************************ */
 
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import crashlytics from '@react-native-firebase/crashlytics';
 import GeolocationActions from '../reducers/GeolocationRedux';
+import { AuthSelectors } from '../reducers/UserRedux';
 
 // eslint-disable-next-line import/prefer-default-export
 export function* sendLocation(api, action) {
   const { params } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
   const response = yield call(api.geolocation.postLocation, params);
+  console.log('senLocation', response);
   if (response.ok) {
     yield put(GeolocationActions.postLocationSuccess(response.data));
   } else {
@@ -28,9 +32,11 @@ export function* sendLocation(api, action) {
 }
 
 
-export function* getLocationTarget(api, action) {
-  const { params } = action;
-  const response = yield call(api.geolocation.getLocationTarget, params);
+export function* getLocationTarget(api) {
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.geolocation.getLocationTarget);
+  console.log(response);
   if (response.ok) {
     yield put(GeolocationActions.getLocationTargetSuccess(response.data));
   } else {
