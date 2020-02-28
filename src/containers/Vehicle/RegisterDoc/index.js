@@ -18,14 +18,14 @@ import {
   WrapperTitle, TitleDesc, WrapperButtonsBottom,
 } from './style';
 
-import Card from '../../components/ComponentCard';
-import EmptyDialog from '../../components/EmptyDialog';
-import ButtonGradient from '../../components/ButtonGradient';
-import ButtonWhite from '../../components/ButtonWhite';
+import Card from '../../../components/ComponentCard';
+import EmptyDialog from '../../../components/EmptyDialog';
+import ButtonGradient from '../../../components/ButtonGradient';
+import ButtonWhite from '../../../components/ButtonWhite';
 
-import DocumentActions from '../../redux/reducers/DocumentRedux';
+import DocumentActions from '../../../redux/reducers/DocumentRedux';
 
-class DocumentAccount extends Component {
+class DocumentVehicle extends Component {
   constructor() {
     super();
     this.state = {
@@ -38,15 +38,14 @@ class DocumentAccount extends Component {
       init: false,
       modalEdit: false,
       activeEdit: null,
-      didMount: false,
     };
   }
 
   componentDidMount() {
     const { getDocumentsTypes, getDocumentsMe } = this.props;
-    getDocumentsTypes('Profile');
+    console.log('didmountVehicle');
+    getDocumentsTypes('Vehicle');
     getDocumentsMe();
-    this.setState({ didMount: true });
   }
 
   componentWillUnmount() {
@@ -155,10 +154,12 @@ class DocumentAccount extends Component {
     const { document, getDocumentsMe } = this.props;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
-      modalEdit, activeEdit, loadingUpdate, didMount,
+      modalEdit, activeEdit, loadingUpdate,
     } = this.state;
     const initStatus = [];
     const oldList = listStatus;
+
+    console.log('listatus',listStatus);
 
     // hide Toast
     if (visible_error) {
@@ -193,11 +194,7 @@ class DocumentAccount extends Component {
       }
     }
 
-    if (document.listTypes !== null
-      && !document.fetchingTypes
-      && !document.fetching
-      && document.listDocuments !== null
-      && didMount) {
+    if (document.listTypes !== null && !document.fetchingTypes && !document.fetching && document.listDocuments !== null) {
       if (!init) {
         { document.listTypes.map(data => (
           initStatus[data.id] = {
@@ -222,6 +219,7 @@ class DocumentAccount extends Component {
             };
           }
         }); }
+        console.log(listStatus);
         this.setState({ init: true, listStatus: initStatus });
       }
 
@@ -230,30 +228,9 @@ class DocumentAccount extends Component {
           <ContentBlock>
             <TextBlack>Documentos</TextBlack>
             <TextGray>
-              Documentos necesarios para validar tu perfil.
+              Documentos requeridos para validar tu vehículo.
             </TextGray>
           </ContentBlock>
-
-          <WrapperDocument>
-            { document.listTypes.map(data => (
-              <RowDocument>
-                <Card
-                  key={data.id}
-                  logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
-                  background="white"
-                  mainText={data.name}
-                  subText={data.description}
-                  icon
-                  status={listStatus.length === 0 ? '' : listStatus[data.id].status}
-                  colorText="black"
-                  borderColorProp="#ecf0f1"
-                  press={() => this.onPressButtonDoc(data.id)}
-                  edit={listStatus.length === 0 ? false : listStatus[data.id].edit}
-                  pressEdit={() => this.onPressEdit(data.id)}
-                />
-              </RowDocument>
-            ))}
-          </WrapperDocument>
 
           <WrapperError>
             { error ? (
@@ -262,6 +239,30 @@ class DocumentAccount extends Component {
               </TextError>
             ) : null }
           </WrapperError>
+
+          <WrapperDocument>
+            { document.listTypes.map(data => (
+              data.id !== 39 ? (
+                <RowDocument>
+                  <Card
+                    key={data.id}
+                    logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
+                    background="white"
+                    mainText={data.name}
+                    subText={data.description}
+                    icon
+                    status={listStatus.length === 0 ? '' : listStatus[data.id].status}
+                    colorText="black"
+                    borderColorProp="#ecf0f1"
+                    press={() => this.onPressButtonDoc(data.id)}
+                    edit={listStatus.length === 0 ? false : listStatus[data.id].edit}
+                    pressEdit={() => this.onPressEdit(data.id)}
+                  />
+                </RowDocument>
+              ) : null
+            ))}
+          </WrapperDocument>
+
           <Toast
             visible={visible_error}
             position={-50}
@@ -307,7 +308,7 @@ class DocumentAccount extends Component {
                     <ImageDetail
                       resizeMode="contain"
                       // eslint-disable-next-line global-require
-                      loadingIndicatorSource={require('../../Images/arrow-down.png')}
+                      loadingIndicatorSource={require('../../../Images/arrow-down.png')}
                       source={{ uri: listStatus[activeEdit].dataEdit.file }}
                     />
                   </WrapperImage>
@@ -359,4 +360,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DocumentAccount);
+)(DocumentVehicle);

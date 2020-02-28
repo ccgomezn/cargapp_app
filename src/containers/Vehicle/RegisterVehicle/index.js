@@ -14,13 +14,13 @@ import {
   WrapperInputs, WrapperButtonsBottom, WrapperButtonGradient, WrapperError, TextError,
 } from './style';
 
-import Input from '../../components/GeneralInput';
-import InputPicker from '../../components/InputPicker';
-import ButtonGradient from '../../components/ButtonGradient';
-import VehicleActions from '../../redux/reducers/VehicleRedux';
-import PopUpDialog from '../../components/PopUpDialog';
-import ButtonWhite from '../../components/ButtonWhite';
-import ParametersActions from '../../redux/reducers/ParametersRedux';
+import Input from '../../../components/GeneralInput';
+import InputPicker from '../../../components/InputPicker';
+import ButtonGradient from '../../../components/ButtonGradient';
+import VehicleActions from '../../../redux/reducers/VehicleRedux';
+import PopUpDialog from '../../../components/PopUpDialog';
+import ButtonWhite from '../../../components/ButtonWhite';
+import ParametersActions from '../../../redux/reducers/ParametersRedux';
 
 class Vehicle extends Component {
   constructor() {

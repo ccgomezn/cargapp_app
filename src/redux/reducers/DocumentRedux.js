@@ -23,6 +23,7 @@ export const { Types, Creators } = createActions({
   getDocsMeSuccess: ['data'],
   getDocsMeFailure: null,
   removeDocRequest: ['id'],
+  dropInitialState: ['params'],
 });
 
 export const DocumentTypes = Types;
@@ -46,6 +47,17 @@ export const INITIAL_STATE = Immutable({
 export const AuthSelectors = {
   getToken: state => state.user.session.access_token,
 };
+
+export const dropInitialState = (state) => {
+  return {
+    ...state,
+    error: null,
+    fetching: false,
+    fetchingTypes: false,
+    listTypes: null,
+    listDocuments: null,
+  }
+}
 
 /* ---------------- Register document -------------- */
 export const postRegisterDocSuccess = (state, { data }) => {
@@ -236,4 +248,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_DOCS_ME_REQUEST]: getDocsMeRequest,
   [Types.GET_DOCS_ME_FAILURE]: getDocsMeFailure,
   [Types.REMOVE_DOC_REQUEST]: removeDocRequest,
+  [Types.DROP_INITIAL_STATE]: dropInitialState,
 });

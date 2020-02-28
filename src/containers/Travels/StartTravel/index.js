@@ -170,7 +170,7 @@ class StartTravel extends Component {
 
   reviewStatus() {
     const { offerSpecific } = this.state;
-    const { getDocsServiceRequest } = this.props;
+    const { getDocsServiceRequest, getCompanies, getMarkers } = this.props;
 
     this.setState({ status: offerSpecific.statu_id },
       () => {
@@ -222,6 +222,8 @@ class StartTravel extends Component {
         } else if (newState === 11) {
           this.onResetTravel(offerSpecific.id);
         }
+        getCompanies();
+        getMarkers();
       });
   }
 
