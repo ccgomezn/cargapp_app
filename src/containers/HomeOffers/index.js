@@ -335,7 +335,7 @@ class HomeOffers extends Component {
       if (filter && filterModal === false) {
         this.setState({ filterModal: true });
       }
-      console.log(filterModal);
+
       if (filterModal === undefined && modalSearch === false) {
         this.setState({ filterModal: true });
       }

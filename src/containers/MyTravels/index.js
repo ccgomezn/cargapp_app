@@ -55,6 +55,7 @@ class MyTravels extends Component {
       modalSearch: false,
       multiSliderValue: [150000, 2300000],
       unmount: false,
+      refresh: false,
     };
   }
 
@@ -93,7 +94,11 @@ class MyTravels extends Component {
 
   onPressButton(value) {
     const { navigation } = this.props;
-    navigation.navigate('ApplyTravels', { dataOffer: value, booked: true });
+    if (value.statu_id === 11 || value.statu_id === 50) {
+      navigation.navigate('SummaryTravels', { offer: value });
+    } else {
+      navigation.navigate('ApplyTravels', { dataOffer: value, booked: true });
+    }
   }
 
   onPressButtonPopup() {
@@ -141,10 +146,23 @@ class MyTravels extends Component {
   }
 
   render() {
-    const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const {
-      offers, vehicles, status, navigation, parameters,
+      alertVisible, modalSearch, multiSliderValue, refresh,
+    } = this.state;
+    const {
+      offers, vehicles, status, navigation, parameters, profile,
+      getsOffers, getStatus, getVehicles, getMyOffersRequest, getMyOffers,
     } = this.props;
+
+    const isSummary = navigation.getParam('isSummary');
+    if (isSummary && !refresh) {
+      getsOffers();
+      getStatus();
+      getVehicles();
+      getMyOffersRequest(profile.data[0].user.id);
+      getMyOffers(profile.data[0].user.id);
+      this.setState({ refresh: true });
+    }
 
     if (
       offers.services !== null

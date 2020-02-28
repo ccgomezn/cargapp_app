@@ -159,6 +159,17 @@ class ApplyOffer extends Component {
     if (name === 'Camino a cargue') {
       return 'Iniciar camino a cargue';
     }
+    // TODO Add Id in endPoint
+    /* const { id, name } = data.statu;
+
+    if (data.message) {
+      return 'Aplicar a viaje';
+    }
+    if (id !== 52 && id !== 16 && !disabled) {
+      this.setState({ disabled: true });
+    }
+
+    return name; */
     return name;
   }
 
@@ -272,6 +283,7 @@ class ApplyOffer extends Component {
     }
     if (
       offer !== null
+      && offers.data
       && companies.data !== null
       && rateService.rate !== null
       && permissions.data !== null
@@ -372,32 +384,34 @@ class ApplyOffer extends Component {
               );
             }
           })}
-          {companies.data.map((company) => {
-            if (offer.company_id === company.id) {
-              return (
-                <CardMapBeginTravel
-                  normalText={company.address}
-                  amount={formatPrice(offer.price)}
-                  onPressBG={() => this.vehicleType(offer, selectID, offersById.data)}
-                  onPressBW={
-                    () => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())
-                  }
-                  content={offer.description}
-                  extra={offer.note}
-                  company={company.name}
-                  packing={offer.packing}
-                  loadVolume={offer.load_volume}
-                  loadWeight={offer.load_weight}
-                  mainButton={this.nameButton(offersById.data)}
-                  onPressQA={() => this.onPressQualification()}
-                  status={offer.statu_id}
-                  button={button}
-                  vehicle={vehicle_data[company.vehicle_type_id]}
-                  disabled={disabled}
-                />
-              );
+          {companies.data.map(company => offers.data.map((services) => {
+            if (services.id === offer.id) {
+              if (offer.company_id === company.id) {
+                return (
+                  <CardMapBeginTravel
+                    normalText={company.address ? company.address : 'N/A'}
+                    amount={formatPrice(offer.price) ? formatPrice(offer.price) : 'N/A'}
+                    onPressBG={() => this.vehicleType(offer, selectID, offersById.data)}
+                    onPressBW={
+                        () => (offer.statu_id === 11 ? this.onPressReturn() : this.onPressCancel())
+                      }
+                    content={offer.description ? offer.description : 'N/A'}
+                    extra={offer.note ? offer.note : 'N/A'}
+                    company={company.name ? company.name : 'N/A'}
+                    packing={offer.packing ? offer.packing : 'N/A'}
+                    loadVolume={offer.load_volume ? offer.load_volume : 'N/A'}
+                    loadWeight={offer.load_weight ? offer.load_weight : 'N/A'}
+                    mainButton={this.nameButton(offersById.data)}
+                    onPressQA={() => this.onPressQualification()}
+                    status={offer.statu_id}
+                    button={button}
+                    vehicle={vehicle_data[services.vehicle_type_id]}
+                    disabled={disabled}
+                  />
+                );
+              }
             }
-          })}
+          }))}
           <EmptyDialog
             visible={permissionApply}
             opacity={0.4}

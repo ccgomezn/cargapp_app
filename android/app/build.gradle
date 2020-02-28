@@ -208,6 +208,7 @@ android {
 
 dependencies {
     implementation project(':rn-fetch-blob')
+    implementation project(':react-native-view-pdf')
     implementation project(':@react-native-firebase_firestore')
     implementation project(':@react-native-firebase_auth')
     implementation project(':@react-native-firebase_messaging')
