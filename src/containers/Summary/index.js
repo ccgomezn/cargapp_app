@@ -1,11 +1,13 @@
+/* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import analytics from '@react-native-firebase/analytics';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Modal } from 'react-native';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-picker';
+import PDFView from 'react-native-view-pdf';
 import {
   MainContainer,
   Map,
@@ -20,9 +22,9 @@ import {
   WrapperModal,
   BlueText,
   WrapperTextModal,
-  GrayText,
+  GrayText, Indicator,
   Check, WrapperButton,
-  Touchable,
+  Touchable, WrapperButtonImage,
 } from './style';
 import ButtonGradient from '../../components/ButtonGradient';
 import SummaryActions from '../../redux/reducers/SummaryRedux';
@@ -31,6 +33,9 @@ import DocumentActions from '../../redux/reducers/DocumentRedux';
 import OffersActions from '../../redux/reducers/OffersRedux';
 import RateTypes from '../../redux/reducers/RateServiceRedux';
 import Spinner from '../../components/Spinner';
+import PopUpNotification from '../../components/PopUpNotifications';
+
+import { formatPrice } from '../../helpers/Utils';
 
 class ScreenSummary extends Component {
   constructor(props) {
@@ -42,15 +47,22 @@ class ScreenSummary extends Component {
       check2: false,
       check3: false,
       load: false,
+      documentConfirm: false,
+      proofOfPayment: '',
+      modalPDF: false,
+      errorProofOfPayment: false,
     };
   }
 
   componentDidMount() {
     moment.locale('es');
     analytics().setCurrentScreen('resumen_viaje');
-    const { getSummary, navigation } = this.props;
+    const { getSummary, navigation, getDocsServiceRequest } = this.props;
     const offer = navigation.getParam('offer');
-    getSummary(offer.id);
+    if (offer.id) {
+      getSummary(offer.id);
+      getDocsServiceRequest(offer.id);
+    }
   }
 
   async onRegisterDoc(source, name, id) {
@@ -61,7 +73,6 @@ class ScreenSummary extends Component {
       photoName = `img_${source.fileSize}.jpg`;
     }
     const data = new FormData();
-    data.append('service_document[document_type]', 'foto');
     data.append('service_document[document]', {
       name: photoName,
       uri: source.uri,
@@ -99,29 +110,34 @@ class ScreenSummary extends Component {
     }, 1000);
   }
 
-  async imageDocument(name, id) {
-    const options = {
-      title: 'Vincular Documento',
-      cancelButtonTitle: 'Cancelar',
-      takePhotoButtonTitle: 'Tomar Foto',
-      chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
-      customButtons: [],
-      quality: 0.5,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.showImagePicker(options, ((response) => {
-      if (response.didCancel) {
-        console.log(response);
-      } else if (response.error) {
-        console.log(response);
-      } else {
-        this.setState({ load: true });
-        this.onRegisterDoc(response, name, id);
-      }
-    }));
+  async imageDocument(name, id, bool) {
+    const { modalRating } = this.state;
+    if (!bool) {
+      const options = {
+        title: 'Vincular Documento',
+        cancelButtonTitle: 'Cancelar',
+        takePhotoButtonTitle: 'Tomar Foto',
+        chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
+        customButtons: [],
+        quality: 0.5,
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+      ImagePicker.showImagePicker(options, ((response) => {
+        if (response.didCancel) {
+          console.log(response);
+        } else if (response.error) {
+          console.log(response);
+        } else {
+          this.setState({ load: true });
+          this.onRegisterDoc(response, name, id);
+        }
+      }));
+    } else if (!modalRating) {
+      this.setState({ modalRating: true });
+    }
   }
 
   checked(value) {
@@ -145,21 +161,65 @@ class ScreenSummary extends Component {
     putStateOriginTravel(id, data);
     this.setState({ modalRating: false, modalCheck: false, load: true });
     setTimeout(() => {
-      // navigation.navigate('Third');
-      navigation.navigate('First');
+      navigation.navigate('Third', { isSummary: true });
     }, 1500);
   }
 
+  openImage() {
+    const { document } = this.props;
+    const { serviceDocuments } = document;
+    serviceDocuments.map((data) => {
+      // Id document to read
+      if (data.document_type_id === 38) {
+        this.setState({ proofOfPayment: data.document, modalPDF: true });
+      }
+      return null;
+    });
+  }
+
   render() {
-    const { summary } = this.props;
+    const { summary, navigation } = this.props;
     const {
-      modalRating, modalCheck, check1, check2, check3, load,
+      modalRating, modalCheck,
+      check1, check2, check3,
+      load, documentConfirm, modalPDF,
+      proofOfPayment, errorProofOfPayment,
     } = this.state;
     const starCount = 4;
-    if (summary.data !== null) {
-      console.log(summary.data);
+    if (summary.data !== null && !summary.fetching) {
+      const { document_services } = summary.data;
+      document_services.map((doc) => {
+        if (doc.name === 'Confimacion de cumplido' && !documentConfirm) {
+          this.setState({ documentConfirm: true });
+        }
+        return null;
+      });
       return (
         <MainContainer>
+          {errorProofOfPayment && (
+          <PopUpNotification
+            onTouchOutside={() => this.setState({ errorProofOfPayment: false })}
+            mainText="Algo falló"
+            subText="Intentalo de nuevo más tarde"
+          />
+          )}
+          <Modal visible={modalPDF}>
+            <Indicator
+              size="large"
+              color="#0000ff"
+            />
+            <PDFView
+              fadeInDuration={0}
+              style={{ flex: 1, marginTop: 80, zIndex: 100 }}
+              resource={proofOfPayment}
+              resourceType="url"
+              onLoad={resourceType => console.log(`PDF rendered from ${resourceType}`)}
+              onError={() => this.setState({ errorProofOfPayment: true })}
+            />
+            <WrapperButtonImage>
+              <ButtonGradient press={() => this.setState({ modalPDF: false })} content="Volver" disabled={false} />
+            </WrapperButtonImage>
+          </Modal>
           <Spinner view={load} />
           <RowContainer>
             <Title>Resumen </Title>
@@ -186,15 +246,25 @@ class ScreenSummary extends Component {
             <Icon source={require('../../Images/Summary.png')} />
             <ColumnContainer>
               <ColumnContainer>
-                <SubTitle>Inicio</SubTitle>
+                <SubTitle>
+                  Inicio:
+                  {moment(summary.data.service.created_at).format('ll')}
+                </SubTitle>
                 <Title>
                   {summary.data.origin.name}
+                  {': '}
+                  {summary.data.service.origin_address.length > 20 ? `${summary.data.service.origin_address.substring(0, 17)}...` : summary.data.service.origin_address }
                 </Title>
               </ColumnContainer>
               <ColumnContainer>
-                <SubTitle>Detino</SubTitle>
+                <SubTitle>
+                  Detino:
+                  {moment(summary.data.service.updated_at).format('ll')}
+                </SubTitle>
                 <Title>
                   {summary.data.destination.name}
+                  {': '}
+                  {summary.data.service.destination_address.length > 20 ? `${summary.data.service.destination_address.substring(0, 17)}...` : summary.data.service.destination_address }
                 </Title>
               </ColumnContainer>
             </ColumnContainer>
@@ -205,16 +275,22 @@ class ScreenSummary extends Component {
               <SubTitle>Flete</SubTitle>
               <NormalTitle>
                 $
-                {summary.data.service.price}
+                { formatPrice(summary.data.service.price)}
               </NormalTitle>
             </RowContainer>
             <RowContainer>
               <SubTitle>Anticipo</SubTitle>
-              <NormalTitle>$ 20'000.000</NormalTitle>
+              <NormalTitle>
+                $
+                { formatPrice(summary.data.service.price * 0.70)}
+              </NormalTitle>
             </RowContainer>
             <RowContainer>
               <SubTitle>Saldo por pagar</SubTitle>
-              <NormalTitle>$ 280'000.000</NormalTitle>
+              <NormalTitle>
+                $
+                {summary.data.service.statu_id !== 50 ? formatPrice(summary.data.service.price * 0.30) : 0}
+              </NormalTitle>
             </RowContainer>
           </>
           <Line />
@@ -230,16 +306,26 @@ class ScreenSummary extends Component {
             <SubTitle>Tipo de carga</SubTitle>
             <NormalTitle>{summary.data.service.description}</NormalTitle>
           </ColumnContainer>
-          <RowContainer>
-            <ColumnContainer>
+          <RowContainer style={{ justifyContent: 'flex-start' }}>
+            <ColumnContainer style={{ marginRight: 10 }}>
               <SubTitle>Peso</SubTitle>
               <NormalTitle>{summary.data.service.load_weight}</NormalTitle>
             </ColumnContainer>
             <ColumnContainer>
               <SubTitle>Volumen</SubTitle>
-              <NormalTitle>{summary.data.service.load_volume ? summary.data.service.load_volume : '000'}</NormalTitle>
+              <NormalTitle>{summary.data.service.load_volume ? summary.data.service.load_volume : 'N/A'}</NormalTitle>
             </ColumnContainer>
           </RowContainer>
+          <ColumnContainer>
+            <SubTitle>Vehículo</SubTitle>
+            <NormalTitle>
+              {summary.data.vehicle.brand}
+              {' '}
+              {summary.data.vehicle.model}
+              {'\n'}
+              {summary.data.vehicle.plate}
+            </NormalTitle>
+          </ColumnContainer>
           <EmptyDialog visible={modalCheck}>
             <WrapperModal>
               <WrapperTextModal>
@@ -276,7 +362,15 @@ class ScreenSummary extends Component {
             </WrapperModal>
           </EmptyDialog>
           <WrapperButton>
-            <ButtonGradient press={() => this.imageDocument('Confimación cumplido', summary.data.service.id)} content="Subir cumplido" disabled={false} />
+            {summary.data.service.statu_id === 19 && (
+              <ButtonGradient press={() => this.imageDocument('Confimacion de cumplido', summary.data.service.id, documentConfirm)} content="Cargar cumplido" disabled={false} />
+            ) }
+            {summary.data.service.statu_id === 11 && (
+              <ButtonGradient press={() => navigation.goBack()} content="Volver" disabled={false} />
+            ) }
+            {summary.data.service.statu_id === 50 && (
+              <ButtonGradient press={() => this.openImage()} content="Ver comprobante de pago" disabled={false} />
+            ) }
           </WrapperButton>
         </MainContainer>
       );
@@ -299,6 +393,9 @@ ScreenSummary.propTypes = {
   summary: PropTypes.string.isRequired,
   registerDocument: PropTypes.string.isRequired,
   putStateOriginTravel: PropTypes.string.isRequired,
+  serviceDocuments: PropTypes.string.isRequired,
+  document: PropTypes.string.isRequired,
+  getDocsServiceRequest: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -319,6 +416,7 @@ const mapDispatchToProps = dispatch => ({
   getSummary: id => dispatch(SummaryActions.getSummaryRequest(id)),
   postRateServices: data => dispatch(RateTypes.postRateServiceRequest(data)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
+  getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
   putStateOriginTravel:
     (id, data) => dispatch(
       OffersActions.putStateInTravelOriginRequest(id, data),
