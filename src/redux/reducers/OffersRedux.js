@@ -16,6 +16,7 @@ export const { Types, Creators } = createActions({
   postApplyOfferSuccess: ['service'],
   getOffersSuccess: ['data'],
   getOffersFailure: null,
+  dropInitialState: ['params'],
 });
 
 export const OffersTypes = Types;
@@ -33,6 +34,16 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* ----------- Reducers ------------- */
+export const dropInitialState = (state) => {
+  return {
+    ...state,
+    error: false,
+    fetching: false,
+    data: null,
+    myOffers: null,
+    services: null,
+  };
+};
 
 export const getOffersRequest = (state) => {
   return {
@@ -137,4 +148,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_SERVICES_SUCCESS]: getServicesSuccess,
   [Types.PUT_STATE_IN_TRAVEL_ORIGIN_REQUEST]: putStateInTravelOriginRequest,
   [Types.PUT_STATE_IN_TRAVEL_ORIGIN_SUCCESS]: putStateInTravelOriginSuccess,
+  [Types.DROP_INITIAL_STATE]: dropInitialState,
 });

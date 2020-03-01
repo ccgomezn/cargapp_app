@@ -56,8 +56,11 @@ export const dropInitialState = (state) => {
     fetchingTypes: false,
     listTypes: null,
     listDocuments: null,
-  }
-}
+    fetchingServiceDoc: false,
+    errorServiceDoc: null,
+    serviceDocuments: null,
+  };
+};
 
 /* ---------------- Register document -------------- */
 export const postRegisterDocSuccess = (state, { data }) => {

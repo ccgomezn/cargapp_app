@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
@@ -91,6 +93,11 @@ class MyTravels extends Component {
     getVehicles();
     getMyOffersRequest(profile.data[0].user.id);
     getMyOffers(profile.data[0].user.id);
+  }
+
+  componentWillUnmount() {
+    const { dropOffersState } = this.props;
+    dropOffersState();
   }
 
   onPressButton(value) {
@@ -322,6 +329,7 @@ const mapDispatchToProps = dispatch => ({
   getStatus: params => dispatch(StatusActions.getStatusRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
   getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
+  dropOffersState: params => dispatch(OffersActions.dropInitialState(params)),
 });
 
 export default connect(

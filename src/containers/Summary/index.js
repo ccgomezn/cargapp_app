@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -63,6 +64,13 @@ class ScreenSummary extends Component {
       getSummary(offer.id);
       getDocsServiceRequest(offer.id);
     }
+  }
+
+  componentWillUnmount() {
+    // clear redux summary
+    const { dropSummary, dropDocumentsState } = this.props;
+    dropSummary();
+    dropDocumentsState();
   }
 
   async onRegisterDoc(source, name, id) {
@@ -421,6 +429,8 @@ const mapDispatchToProps = dispatch => ({
     (id, data) => dispatch(
       OffersActions.putStateInTravelOriginRequest(id, data),
     ),
+  dropSummary: params => dispatch(SummaryActions.dropInitialState(params)),
+  dropDocumentsState: params => dispatch(DocumentActions.dropInitialState(params)),
 });
 
 export default connect(

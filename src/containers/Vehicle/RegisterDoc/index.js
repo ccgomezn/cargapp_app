@@ -49,8 +49,8 @@ class DocumentVehicle extends Component {
   }
 
   componentWillUnmount() {
-    const { dropInitialState } = this.props;
-    dropInitialState();
+    const { dropDocumentsState } = this.props;
+    dropDocumentsState();
   }
 
   async onRegisterDoc(id_type, id_doc, source) {
@@ -354,7 +354,7 @@ const mapDispatchToProps = dispatch => ({
   getDocumentsTypes: category => dispatch(DocumentActions.getDocsTypesRequest(category)),
   getDocumentsMe: params => dispatch(DocumentActions.getDocsMeRequest(params)),
   deleteDocument: id => dispatch(DocumentActions.removeDocRequest(id)),
-  dropInitialState: params => dispatch(DocumentActions.dropInitialState(params)),
+  dropDocumentsState: params => dispatch(DocumentActions.dropInitialState(params)),
 });
 
 export default connect(

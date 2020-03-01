@@ -133,6 +133,8 @@ class HomeOffers extends Component {
   }
 
   componentWillUnmount() {
+    const { dropOffersState } = this.props;
+    // dropOffersState();
     this.setState({ modalPermission: false });
   }
 
@@ -586,6 +588,7 @@ const mapDispatchToProps = dispatch => ({
   getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
   getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
   getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
+  dropOffersState: params => dispatch(OffersActions.dropInitialState(params)),
 });
 
 export default connect(
