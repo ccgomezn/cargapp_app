@@ -9,5 +9,6 @@ export default function (api) {
     getServices: params => api.get('service_users/me', params, headers),
     putStateOriginTravel: (id, data) => api.put(`services/${id}`, data, headers),
     getOffersById: id => api.get(`services/find_by_service_user/${id}`, headers),
+    getOfferById: id => api.get(`services/${id}`, headers),
   };
 }

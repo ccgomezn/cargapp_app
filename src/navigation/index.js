@@ -35,7 +35,7 @@ class Navigation extends React.Component {
       netSpeed: 0,
       modalVisible: false,
     };
-    this.onHeartBeat = this.onHeartBeat.bind(this);
+
     const unsubscribe = NetInfo.addEventListener(state => {
       this.getNetworkBandwidth();
       if (!state.isConnected && this.state.netSpeed > 0.5) {
@@ -47,40 +47,51 @@ class Navigation extends React.Component {
   }
 
   componentDidMount() {
+    const { user , getLocationTargetRequest } = this.props;
     this.getNetworkBandwidth();
-  }
 
-  componentWillMount() {
-    const { getLocationTargetRequest } = this.props;
-    BackgroundGeolocation.onHeartbeat(this.onHeartBeat);
-    getLocationTargetRequest();
+    if (user.isLogged) {
+      getLocationTargetRequest();
 
-    BackgroundGeolocation.ready({
-      desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-      distanceFilter: 10,
-      heartbeatInterval: 60,
-      preventSuspend: true,
-      debug: true,
-      logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
-      stopOnTerminate: false,
-      startOnBoot: true,
-      batchSync: false,
-      autoSync: true,
-      headers: {
-        'X-FOO': 'bar',
-      },
-      params: {
-        auth_token: 'maybe_your_server_authenticates_via_token_YES?',
-      },
-    }, (state) => {
-      console.log('- BackgroundGeolocation is configured and ready: ', state.enabled);
+      // This handler fires whenever bgGeo receives a location update.
+      BackgroundGeolocation.onLocation(this.onLocation.bind(this), this.onError);
+    
+      // This handler fires when movement states changes (stationary->moving; moving->stationary)
+      BackgroundGeolocation.onMotionChange(this.onMotionChange);
 
-      if (!state.enabled) {
-        BackgroundGeolocation.start(() => {
-          console.log('- Start success');
-        });
-      }
-    });
+      // This event fires when a change in motion activity is detected
+      BackgroundGeolocation.onActivityChange(this.onActivityChange);
+
+      // This event fires when the user toggles location-services authorization
+      BackgroundGeolocation.onProviderChange(this.onProviderChange);
+      
+      BackgroundGeolocation.ready({
+        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+        distanceFilter: 1200,
+        stopTimeout: 1,
+        debug: true,
+        logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
+        stopOnTerminate: false,
+        startOnBoot: true,
+        batchSync: false,
+        autoSync: true,
+        headers: {
+          'X-FOO': 'bar',
+        },
+        params: {
+          auth_token: 'maybe_your_server_authenticates_via_token_YES?',
+        },
+      }, (state) => {
+        // console.log('- BackgroundGeolocation is configured and ready: ', state.enabled);
+
+        if (!state.enabled) {
+          BackgroundGeolocation.start(() => {
+            // console.log('- Start success');
+          });
+        }
+      });
+
+    }
   }
 
   componentWillUnmount() {
@@ -101,61 +112,56 @@ class Navigation extends React.Component {
     return <StatusBar backgroundColor="red" barStyle="dark-content" />;
   }
 
-  onError(error) {
-    console.warn('[location] ERROR -', error);
+  onLocation(location) {
+    console.log('[location] -', location);
+    this.saveLocation(location);
   }
 
-  onHeartBeat(event) {
-    // eslint-disable-next-line react/prop-types
+  saveLocation(location){
     const {
       user, sendLocation, profile, geolocation,
     } = this.props;
-    BackgroundGeolocation.getCurrentPosition({
-      samples: 1,
-      persist: true,
-    }).then((location) => {
-      if (user.isLogged && profile.data) {
-        if (geolocation.target) {
-          if (geolocation.target.parameters[0].name === 'local') {
-            console.log('local');
 
-            sendLocation({
-              user_location: {
-                longitude: location.coords.longitude,
-                latitude: location.coords.latitude,
-                city_id: 5,
-                // eslint-disable-next-line react/prop-types
-                user_id: profile.data[0].user.id,
-                active: true,
-              },
-            });
-          } else if (geolocation.target.parameters[0].name === 'firebase') {
-            console.log('firebase');
-            firebase.firestore().collection('geolocation').add({
-              user_id: profile.data[0].user.id,
+    if (user.isLogged && profile.data) {
+      if (geolocation.target) {
+        if (geolocation.target.parameters[0].name === 'local') {
+          sendLocation({
+            user_location: {
               longitude: location.coords.longitude,
               latitude: location.coords.latitude,
-            });
-          }
+              city_id: 5,
+              user_id: profile.data[0].user.id,
+              active: true,
+            },
+          });
+        } else if (geolocation.target.parameters[0].name === 'firebase') {
+          firebase.firestore().collection('geolocation').add({
+            user_id: profile.data[0].user.id,
+            longitude: location.coords.longitude,
+            latitude: location.coords.latitude,
+          });
         }
       }
-    }).catch((error) => {
-      console.log('- BackgroundGeolocation error: ', error);
+    }
+    
+  }
 
-      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-        interval: 10000,
-        fastInterval: 5000,
-      })
-        .then((data) => {
-        }).catch((err) => {
-        });
-    });
-
-    // eslint-disable-next-line react/prop-types
+  onError(error) {
+    console.warn('[location] ERROR -', error);
+  }
+  onActivityChange(event) {
+    console.log('[activitychange] -', event);
+  }
+  onProviderChange(provider) {
+    console.log('[providerchange] -', provider.enabled, provider.status);
+  }
+  onMotionChange(event) {
+    console.log('[motionchange] -', event.isMoving, event.location);
   }
 
   render() {
     const { modalVisible } = this.state;
+
     return (
       <SafeAreaView forceInset={{ top: 'never', bottom: 'never' }} style={{ flex: 1 }}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -184,7 +190,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   sendLocation: params => dispatch(GeolocationActions.postLocationRequest(params)),
-  getLocationTargetRequest: params => dispatch(GeolocationActions.getLocationTargetRequest(params)),
+  getLocationTargetRequest: () => dispatch(GeolocationActions.getLocationTargetRequest()),
 });
 
 export default connect(

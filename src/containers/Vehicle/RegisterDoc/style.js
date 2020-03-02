@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { colors } from '../../themes/theme.style';
+import { colors } from '../../../themes/theme.style';
 
 export const MainWrapper = styled.ScrollView`
   width: 100%;
@@ -75,7 +75,8 @@ export const WrapperError = styled.View`
   width: 100%;
   font-size: 14px;
   letter-spacing: -0.4px;
-  padding-bottom: 20px;
+  padding-bottom: 5px;
+  padding-top: 12px;
 `;
 
 export const TextError = styled.Text`

@@ -1,3 +1,6 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable react/prop-types */
 /* eslint-disable global-require */
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
@@ -10,7 +13,6 @@ import ScreenHome from '../../containers/Home';
 import ScreenApplyTravels from '../../containers/Travels/ApplyOffer';
 import ScreenMyTravels from '../../containers/MyTravels';
 import ScreenStartTravel from '../../containers/Travels/StartTravel';
-import ScreenMyVehicle from '../../containers/Vehicle';
 import ScreenProfile from '../../containers/Profile';
 import ScreenPoints from '../../containers/Points';
 import ScreenAnalytics from '../../containers/Analytics';
@@ -23,6 +25,8 @@ import ScreenBankAccount from '../../containers/BankAccount';
 import ScreenDocumentsAccount from '../../containers/DocumentAccount';
 // VEHICLES
 import ScreenListVehicle from '../../containers/ListVehicles';
+import ScreenRegisterVehicle from '../../containers/Vehicle/RegisterVehicle';
+import ScreenVehicleDoc from '../../containers/Vehicle/RegisterDoc';
 
 // SIGN UP SCREENS
 // import ScreenSignUp from '../../containers/Registration';
@@ -260,7 +264,6 @@ export const myTravelsStackNavigator = createStackNavigator({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,
       headerTitle: centerIconMenu({ navigation }),
-      headerLeft: leftIconMenu({ navigation }),
       headerRight: rightIconMenu({ navigation }),
     }),
   },
@@ -278,7 +281,15 @@ export const myVehicleStackNavigator = createStackNavigator({
     }),
   },
   DetailVehicle: {
-    screen: ScreenMyVehicle,
+    screen: ScreenRegisterVehicle,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation, isFull: true }),
+    }),
+  },
+  DetailVehicleDoc: {
+    screen: ScreenVehicleDoc,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,

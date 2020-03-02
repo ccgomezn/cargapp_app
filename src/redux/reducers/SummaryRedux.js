@@ -6,6 +6,7 @@ export const { Types, Creators } = createActions({
   getSummaryRequest: ['id'],
   getSummarySuccess: ['data'],
   summaryFailure: null,
+  dropInitialState: ['params'],
 });
 
 export const SummaryTypes = Types;
@@ -20,6 +21,12 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* REDUCERS */
+export const dropInitialState = state => ({
+  ...state,
+  data: null,
+  fetching: false,
+  error: false,
+});
 
 export const getSummaryRequest = state => ({
   ...state,
@@ -44,4 +51,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_SUMMARY_REQUEST]: getSummaryRequest,
   [Types.GET_SUMMARY_SUCCESS]: getSummarySuccess,
   [Types.SUMMARY_FAILURE]: summaryFailure,
+  [Types.DROP_INITIAL_STATE]: dropInitialState,
 });

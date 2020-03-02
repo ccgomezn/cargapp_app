@@ -3,7 +3,7 @@ import SvgUri from 'react-native-svg-uri';
 
 export const MainWrapper = styled.TouchableOpacity`
   width: 100%;
-  height: 62px;
+  height: 65px;
   flex-direction: row;
   border: 1px solid gray;
   border-radius: 5px;
@@ -14,13 +14,18 @@ export const WrapperLogo = styled.View`
   height: 100%;
   justify-content: center;
   align-items: center;
+  background-color: #CCC;
 `;
 
 export const Logo = styled(SvgUri)`
-  width: 90%;
-  height: 100%;
-  padding-vertical: 15%;
-  padding-horizontal: 10%;
+  width: 45%;
+  height: 45%;  
+`;
+
+export const LogoIni = styled.Image`
+  width: 35px;
+  height: 35px;
+  resize-mode: contain;
 `;
 
 export const LogoCheck = styled.Image`
@@ -56,5 +61,7 @@ export const SubText = styled.Text`
   opacity: 0.65;
   font-family: Roboto;
   font-size: 12px;
+  padding-top: 2px;
+  padding-bottom: 8px;
   color: #010935;
 `;

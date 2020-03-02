@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import MapView from 'react-native-maps';
 import { CheckBox } from 'native-base';
+import { ActivityIndicator } from 'react-native';
 
 export const MainContainer = styled.ScrollView`
   padding: 20px;
@@ -15,13 +16,13 @@ export const RowContainer = styled.View`
 
 export const Title = styled.Text`
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 500;
   color: black;
 `;
 
 export const NormalTitle = styled.Text`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
   color: black;
 `;
 
@@ -106,7 +107,22 @@ export const Check = styled(CheckBox)`
 `;
 
 export const WrapperButton = styled.View`
-  width: 40%;
+  width: 50%;
   margin-bottom: 40px;
   align-self: flex-end;
+`;
+
+export const WrapperButtonImage = styled.View`
+  width: 40%;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1900;
+`;
+
+export const Indicator = styled(ActivityIndicator)`
+  align-self: center;
+  height: 100%;
+  z-index: 90;
+  position: absolute;
 `;

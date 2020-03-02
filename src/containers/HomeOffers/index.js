@@ -133,6 +133,8 @@ class HomeOffers extends Component {
   }
 
   componentWillUnmount() {
+    const { dropOffersState } = this.props;
+    // dropOffersState();
     this.setState({ modalPermission: false });
   }
 
@@ -335,7 +337,7 @@ class HomeOffers extends Component {
       if (filter && filterModal === false) {
         this.setState({ filterModal: true });
       }
-      console.log(filterModal);
+
       if (filterModal === undefined && modalSearch === false) {
         this.setState({ filterModal: true });
       }
@@ -358,12 +360,13 @@ class HomeOffers extends Component {
             if (offer.statu_id === 16) {
               navigation.navigate('ApplyTravels', { dataOffer: offer });
               console.log('redirection detail');
-            } else if (offer.statu_id === 19) {
+            } else if (offer.statu_id === 19 /* 11 */) {
               navigation.navigate('SummaryTravels', { offer });
+              // navigation.navigate('StartTravel', { Offer: offer });
             } else if (status_travel.includes(offer.statu_id)) {
               navigation.navigate('StartTravel', { Offer: offer });
             } else {
-              console.log(`${offer.statu_id} no include`);
+              // console.log(`${offer.statu_id} no include`);
             }
           }
         });
@@ -545,7 +548,6 @@ class HomeOffers extends Component {
               </ContentDialog>
             </MainWrapperDialog>
           </EmptyDialog>
-
         </MainView>
       );
     }
@@ -586,6 +588,7 @@ const mapDispatchToProps = dispatch => ({
   getDestinations: data => dispatch(DestinationsActions.getDestinationsRequest(data)),
   getMyOffers: id => dispatch(OffersActions.getMyOffersRequest(id)),
   getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
+  dropOffersState: params => dispatch(OffersActions.dropInitialState(params)),
 });
 
 export default connect(

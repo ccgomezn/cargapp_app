@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { colors } from '../../themes/theme.style';
+import { colors } from '../../../themes/theme.style';
 
 export const MainWrapper = styled.ScrollView`
   width: 100%;

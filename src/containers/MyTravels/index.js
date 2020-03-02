@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
@@ -20,6 +22,7 @@ import OffersActions from '../../redux/reducers/OffersRedux';
 import StatusActions from '../../redux/reducers/StatusRedux';
 import VehiclesActions from '../../redux/reducers/VehicleRedux';
 import ParametersActions from '../../redux/reducers/ParametersRedux';
+import { formatPrice } from '../../helpers/Utils';
 
 const itemsTipo = [
   {
@@ -55,6 +58,7 @@ class MyTravels extends Component {
       modalSearch: false,
       multiSliderValue: [150000, 2300000],
       unmount: false,
+      refresh: false,
     };
   }
 
@@ -91,9 +95,18 @@ class MyTravels extends Component {
     getMyOffers(profile.data[0].user.id);
   }
 
+  componentWillUnmount() {
+    const { dropOffersState } = this.props;
+    dropOffersState();
+  }
+
   onPressButton(value) {
     const { navigation } = this.props;
-    navigation.navigate('ApplyTravels', { dataOffer: value, booked: true });
+    if (value.statu_id === 11 || value.statu_id === 50) {
+      navigation.navigate('SummaryTravels', { offer: value });
+    } else {
+      navigation.navigate('ApplyTravels', { dataOffer: value, booked: true });
+    }
   }
 
   onPressButtonPopup() {
@@ -141,10 +154,23 @@ class MyTravels extends Component {
   }
 
   render() {
-    const { alertVisible, modalSearch, multiSliderValue } = this.state;
     const {
-      offers, vehicles, status, navigation, parameters,
+      alertVisible, modalSearch, multiSliderValue, refresh,
+    } = this.state;
+    const {
+      offers, vehicles, status, navigation, parameters, profile,
+      getsOffers, getStatus, getVehicles, getMyOffersRequest, getMyOffers,
     } = this.props;
+
+    const isSummary = navigation.getParam('isSummary');
+    if (isSummary && !refresh) {
+      getsOffers();
+      getStatus();
+      getVehicles();
+      getMyOffersRequest(profile.data[0].user.id);
+      getMyOffers(profile.data[0].user.id);
+      this.setState({ refresh: true });
+    }
 
     if (
       offers.services !== null
@@ -203,7 +229,7 @@ class MyTravels extends Component {
                               from={allOffers.destination}
                               to={allOffers.origin}
                               vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
-                              pay={allOffers.price}
+                              pay={formatPrice(allOffers.price)}
                               date="Hoy"
                               status={service_map[allOffers.id] === false ? 'Rechazado' : allOffers.statu_id === statusOffer.id && statusOffer.name}
                               actionbtnPrimary={() => this.onPressButton(allOffers)}
@@ -303,6 +329,7 @@ const mapDispatchToProps = dispatch => ({
   getStatus: params => dispatch(StatusActions.getStatusRequest(params)),
   getMyOffersRequest: data => dispatch(OffersActions.getMyOffersRequest(data)),
   getparameters: params => dispatch(ParametersActions.parametersRequest(params)),
+  dropOffersState: params => dispatch(OffersActions.dropInitialState(params)),
 });
 
 export default connect(

@@ -7,6 +7,23 @@ export const DrawIconMenu = styled(SvgUriN)`
   width: 23px;
   height: 20px;
   margin-left: 25%;
+  
+`;
+
+export const DrawContentIcon = styled.View`
+  height: 50px;
+  width: 300%;
+  display: flex;
+  justifyContent: center;
+  borderLeftWidth: 3.5;
+`;
+
+export const DrawImageCircle = styled.Image`
+  width: 185px;
+  height: 210px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 `;
 
 export const IconImg = styled.Image`

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-else-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
@@ -136,6 +137,12 @@ class ListVehicles extends Component {
               <ButtonGradient
                 content="Añadir Vehículo"
                 press={() => this.onValidate()}
+              />
+            </WrapperButtonGradient>
+            <WrapperButtonGradient>
+              <ButtonGradient
+                content="Doc Vehículo"
+                press={() => navigation.navigate('DetailVehicleDoc')}
               />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
