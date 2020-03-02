@@ -3,7 +3,7 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import {
-  MainWrapper, WrapperLogo, Logo, WrapperText, MainText, SubText, LogoCheck, LogoError,LogoIni,
+  MainWrapper, WrapperLogo, WrapperText, MainText, SubText, LogoCheck, LogoError,LogoIni,
 } from './style';
 
 function Card({
@@ -16,13 +16,9 @@ function Card({
       style={{ backgroundColor: background, borderColor: borderColorProp }}
     >
       <WrapperLogo style={{ flex: 1 }}>
-        {/* <Logo source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg' }} /> */}
         <LogoIni
           source={require('../../icons/icon_origin.png')}
         />
-        {/* <LogoCheck
-          source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/icon-check.png' }}
-        /> */}
       </WrapperLogo>
       <WrapperText>
         {mainText

@@ -32,7 +32,7 @@ function WhiteCardTravels({
         <WrapperDataLeft>
           <WrapperTextIcon>
             <Icon source={images.locationOffer} />
-            <TextBold>{to}</TextBold>
+            <TextBold>{from}</TextBold>
           </WrapperTextIcon>
           <NormalText>Origen</NormalText>
         </WrapperDataLeft>
@@ -40,7 +40,7 @@ function WhiteCardTravels({
           <WrapperData>
             <WrapperTextIcon>
               <Icon source={images.originPin} />
-              <TextBold>{from}</TextBold>
+              <TextBold>{to}</TextBold>
             </WrapperTextIcon>
             <NormalText>Destino</NormalText>
           </WrapperData>

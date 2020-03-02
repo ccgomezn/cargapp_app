@@ -24,6 +24,7 @@ import ButtonGradient from '../../../components/ButtonGradient';
 import ButtonWhite from '../../../components/ButtonWhite';
 
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
+import DocumentVehActions from '../../../redux/reducers/DocumentVehicleRedux';
 
 class DocumentVehicle extends Component {
   constructor() {
@@ -44,7 +45,7 @@ class DocumentVehicle extends Component {
   componentDidMount() {
     const { getDocumentsTypes, getDocumentsMe } = this.props;
     console.log('didmountVehicle');
-    getDocumentsTypes('Vehicle');
+    getDocumentsTypes('VehicleDocuments');
     getDocumentsMe();
   }
 
@@ -55,7 +56,7 @@ class DocumentVehicle extends Component {
 
   async onRegisterDoc(id_type, id_doc, source) {
     const { listStatus } = this.state;
-    const { user, registerDocument } = this.props;
+    const { user, registerDocumentVeh } = this.props;
     const oldList = listStatus;
     const userId = user.info.user.id;
 
@@ -65,19 +66,21 @@ class DocumentVehicle extends Component {
         photoName = `img_${source.fileSize}.jpg`;
       }
       const data = new FormData();
-      data.append('document[document_type_id]', id_doc);
-      data.append('document[file]', {
+      data.append('vehicle_document[document_type_id]', id_doc);
+      data.append('vehicle_document[file]', {
         name: photoName,
         uri: source.uri,
         type: source.type,
       });
-      data.append('document[statu_id]', 13);
-      data.append('document[user_id]', userId);
-      data.append('document[expire_date]', 1705507702);
-      data.append('document[approved]', false);
-      data.append('document[active]', 1);
+      data.append('vehicle_document[statu_id]', 13);
+      data.append('vehicle_document[user_id]', userId);
+      data.append('vehicle_document[expire_date]', 1705507702);
+      data.append('vehicle_document[approved]', false);
+      data.append('vehicle_document[active]', 1);
+      data.append('vehicle_document[vehicle_id]', 72);
 
-      await registerDocument(data);
+      console.log(data);
+      await registerDocumentVeh(data);
       this.setState({ loadingUpdate: false, loadingRegister: true });
       oldList[id_type].status = 'loading';
     } else {
@@ -151,7 +154,7 @@ class DocumentVehicle extends Component {
   }
 
   render() {
-    const { document, getDocumentsMe } = this.props;
+    const { document, getDocumentsMe, documentVehicle } = this.props;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
       modalEdit, activeEdit, loadingUpdate,
@@ -159,7 +162,7 @@ class DocumentVehicle extends Component {
     const initStatus = [];
     const oldList = listStatus;
 
-    console.log('listatus',listStatus);
+    console.log('documentVehicleRender', documentVehicle);
 
     // hide Toast
     if (visible_error) {
@@ -170,7 +173,7 @@ class DocumentVehicle extends Component {
 
     // validate register User
     if (loadingRegister) {
-      if (document.error && !document.fetching) {
+      if (documentVehicle.error && !documentVehicle.fetching) {
         // error api
         oldList[document_load].status = 'error';
         this.setState({
@@ -180,13 +183,13 @@ class DocumentVehicle extends Component {
           error: 'Tienes 1 o más documentos erroneos.',
         });
       }
-      if (document.status && !document.fetching) {
-        if (document.status && !document.unprocess) {
+      if (documentVehicle.status && !documentVehicle.fetching) {
+        if (documentVehicle.status && !documentVehicle.unprocess) {
           // register ok
           oldList[document_load].status = 'correct';
           this.setState({ listStatus: oldList, loadingRegister: false, init: false });
           getDocumentsMe();
-        } else if (loadingRegister && document.unprocess) {
+        } else if (loadingRegister && documentVehicle.unprocess) {
           oldList[document_load].status = 'fail';
           this.setState({ listStatus: oldList, loadingRegister: false, error: 'Tienes 1 o más documentos no validos.' });
           this.setState({ loadingRegister: false });
@@ -246,7 +249,6 @@ class DocumentVehicle extends Component {
                 <RowDocument>
                   <Card
                     key={data.id}
-                    logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
                     background="white"
                     mainText={data.name}
                     subText={data.description}
@@ -342,10 +344,11 @@ class DocumentVehicle extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, document } = state;
+  const { user, document, documentVehicle } = state;
   return {
     user,
     document,
+    documentVehicle,
   };
 };
 
@@ -355,6 +358,9 @@ const mapDispatchToProps = dispatch => ({
   getDocumentsMe: params => dispatch(DocumentActions.getDocsMeRequest(params)),
   deleteDocument: id => dispatch(DocumentActions.removeDocRequest(id)),
   dropDocumentsState: params => dispatch(DocumentActions.dropInitialState(params)),
+  // ----
+  registerDocumentVeh: params => dispatch(DocumentVehActions.postRegisterDocVehicleRequest(params)),
+
 });
 
 export default connect(

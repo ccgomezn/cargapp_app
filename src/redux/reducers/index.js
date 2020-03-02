@@ -31,4 +31,5 @@ export default combineReducers({
   offersById: require('./OffersByIdRedux').reducer,
   summary: require('./SummaryRedux').reducer,
   offerById: require('./OfferByIdRedux').reducer,
+  documentVehicle: require('./DocumentVehicleRedux').reducer,
 });

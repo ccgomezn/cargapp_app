@@ -31,6 +31,7 @@ import { StaticsTypes } from '../reducers/StaticsRedux';
 import { OffersByIdTypes } from '../reducers/OffersByIdRedux';
 import { SummaryTypes } from '../reducers/SummaryRedux';
 import { OfferByIdTypes } from '../reducers/OfferByIdRedux';
+import { DocumentVehicleTypes } from '../reducers/DocumentVehicleRedux';
 /* --------------- Sagas ----------------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -75,6 +76,7 @@ import { getMeStatics } from './StaticsSagas';
 import getOffersById from './OffersByIdSagas';
 import { getSummary } from './SummarySagas';
 import getOfferById from './OfferByIdSagas';
+import { registerDocumentVeh } from './DocumentVehicleSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -141,5 +143,6 @@ export default function* root() {
     takeLatest(OffersByIdTypes.GET_OFFERS_BY_ID_REQUEST, getOffersById, api),
     takeLatest(SummaryTypes.GET_SUMMARY_REQUEST, getSummary, api),
     takeLatest(OfferByIdTypes.GET_OFFER_BY_ID_REQUEST, getOfferById, api),
+    takeLatest(DocumentVehicleTypes.POST_REGISTER_DOC_VEHICLE_REQUEST, registerDocumentVeh, api),
   ]);
 }

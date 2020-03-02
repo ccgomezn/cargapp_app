@@ -226,8 +226,8 @@ class MyTravels extends Component {
                         if (allOffers.statu_id === statusOffer.id) {
                           return (
                             <WhiteCardTravels
-                              from={allOffers.destination}
-                              to={allOffers.origin}
+                              to={allOffers.destination}
+                              from={allOffers.origin}
                               vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
                               pay={formatPrice(allOffers.price)}
                               date="Hoy"
