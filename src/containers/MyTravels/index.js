@@ -59,6 +59,7 @@ class MyTravels extends Component {
       multiSliderValue: [150000, 2300000],
       unmount: false,
       refresh: false,
+      summary: false,
     };
   }
 
@@ -155,7 +156,7 @@ class MyTravels extends Component {
 
   render() {
     const {
-      alertVisible, modalSearch, multiSliderValue, refresh,
+      alertVisible, modalSearch, multiSliderValue, refresh, summary,
     } = this.state;
     const {
       offers, vehicles, status, navigation, parameters, profile,
@@ -179,8 +180,12 @@ class MyTravels extends Component {
       && vehicles.data !== null
       && parameters.data !== null
     ) {
+      const isSummary = navigation.getParam('isSummary');
       const services_ids = [];
       const service_map = {};
+      if (!summary && isSummary) {
+        this.setState({ summary: true });
+      }
       offers.services.forEach((service) => {
         services_ids.push(service.service_id);
         service_map[service.service_id] = service.approved;
@@ -197,7 +202,7 @@ class MyTravels extends Component {
             if (offer.statu_id === 16) {
               navigation.navigate('ApplyTravels', { dataOffer: offer });
               console.log('redirection detail');
-            } else if (offer.statu_id === 19) {
+            } else if (offer.statu_id === 19 && !summary) {
               navigation.navigate('SummaryTravels', { offer });
             } else if (status_travel.includes(offer.statu_id)) {
               navigation.navigate('StartTravel', { Offer: offer });
