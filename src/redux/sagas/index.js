@@ -46,7 +46,7 @@ import {
 import { countriesActive } from './CountrieSagas';
 import {
   registerDocument, registerDocumentService, getDocsServiceRequest, getDocumentTypes,
-  getDocumentsMe, deleteDocument,
+  getDocumentsMe, deleteDocument, getDocumentsInTravel,
 } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
@@ -137,6 +137,7 @@ export default function* root() {
     takeLatest(DocumentTypes.GET_DOCS_TYPES_REQUEST, getDocumentTypes, api),
     takeLatest(DocumentTypes.GET_DOCS_ME_REQUEST, getDocumentsMe, api),
     takeLatest(DocumentTypes.REMOVE_DOC_REQUEST, deleteDocument, api),
+    takeLatest(DocumentTypes.GET_DOCS_IN_TRAVEL_REQUEST, getDocumentsInTravel, api),
     takeLatest(StaticsTypes.GET_STATICS_ME_REQUEST, getMeStatics, api),
     takeLatest(OffersByIdTypes.GET_OFFERS_BY_ID_REQUEST, getOffersById, api),
     takeLatest(SummaryTypes.GET_SUMMARY_REQUEST, getSummary, api),
