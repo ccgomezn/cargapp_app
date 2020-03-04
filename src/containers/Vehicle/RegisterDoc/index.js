@@ -15,7 +15,7 @@ import {
   MainWrapper, TextBlack, ContentBlock, TextGray,
   WrapperDocument, RowDocument, WrapperError, TextError,
   MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail,
-  WrapperTitle, TitleDesc, WrapperButtonsBottom,
+  WrapperTitle, TitleDesc, WrapperButtonsBottom, WrapperButtonGradient,
 } from './style';
 
 import Card from '../../../components/ComponentCard';
@@ -39,14 +39,23 @@ class DocumentVehicle extends Component {
       init: false,
       modalEdit: false,
       activeEdit: null,
+      idVehicle: null,
+      didMount: false,
     };
   }
 
   componentDidMount() {
-    const { getDocumentsTypes, getDocumentsMe } = this.props;
+    const { getDocumentsTypes, getDocumentsVehicleMe } = this.props;
+    const { navigation } = this.props;
+    // get vehicle id
+    const vehicleId = navigation.getParam('vehicleId', null);
+    if (vehicleId !== null) {
+      this.setState({ idVehicle: vehicleId });
+    }
     console.log('didmountVehicle');
     getDocumentsTypes('VehicleDocuments');
-    getDocumentsMe();
+    getDocumentsVehicleMe(vehicleId);
+    this.setState({ didMount: true });
   }
 
   componentWillUnmount() {
@@ -55,7 +64,7 @@ class DocumentVehicle extends Component {
   }
 
   async onRegisterDoc(id_type, id_doc, source) {
-    const { listStatus } = this.state;
+    const { listStatus, idVehicle } = this.state;
     const { user, registerDocumentVeh } = this.props;
     const oldList = listStatus;
     const userId = user.info.user.id;
@@ -77,7 +86,7 @@ class DocumentVehicle extends Component {
       data.append('vehicle_document[expire_date]', 1705507702);
       data.append('vehicle_document[approved]', false);
       data.append('vehicle_document[active]', 1);
-      data.append('vehicle_document[vehicle_id]', 72);
+      data.append('vehicle_document[vehicle_id]', idVehicle);
 
       console.log(data);
       await registerDocumentVeh(data);
@@ -95,7 +104,7 @@ class DocumentVehicle extends Component {
   }
 
   onPressButtonDoc(item) {
-    const { deleteDocument } = this.props;
+    const { deleteDocVehicle } = this.props;
     const { listStatus, activeEdit } = this.state;
     const oldList = listStatus;
     this.setState({ error: null, modalEdit: false });
@@ -132,7 +141,7 @@ class DocumentVehicle extends Component {
         if (activeEdit !== null) {
           const idItem = listStatus[activeEdit].dataEdit.id;
           this.setState({ loadingUpdate: true });
-          deleteDocument(idItem);
+          deleteDocVehicle(idItem);
         }
         console.log(response);
         this.onRegisterDoc(item, idDoc, response);
@@ -154,15 +163,16 @@ class DocumentVehicle extends Component {
   }
 
   render() {
-    const { document, getDocumentsMe, documentVehicle } = this.props;
+    const { document, getDocumentsVehicleMe, documentVehicle } = this.props;
+    const { navigate, goBack } = this.props.navigation;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
-      modalEdit, activeEdit, loadingUpdate,
+      modalEdit, activeEdit, loadingUpdate, idVehicle, didMount,
     } = this.state;
     const initStatus = [];
     const oldList = listStatus;
 
-    console.log('documentVehicleRender', documentVehicle);
+    // console.log('documentVehicleRender', documentVehicle);
 
     // hide Toast
     if (visible_error) {
@@ -187,8 +197,13 @@ class DocumentVehicle extends Component {
         if (documentVehicle.status && !documentVehicle.unprocess) {
           // register ok
           oldList[document_load].status = 'correct';
-          this.setState({ listStatus: oldList, loadingRegister: false, init: false });
-          getDocumentsMe();
+          this.setState({
+            listStatus: oldList,
+            loadingRegister: false,
+            init: false,
+            didMount: true,
+          });
+          getDocumentsVehicleMe(idVehicle);
         } else if (loadingRegister && documentVehicle.unprocess) {
           oldList[document_load].status = 'fail';
           this.setState({ listStatus: oldList, loadingRegister: false, error: 'Tienes 1 o más documentos no validos.' });
@@ -197,7 +212,11 @@ class DocumentVehicle extends Component {
       }
     }
 
-    if (document.listTypes !== null && !document.fetchingTypes && !document.fetching && document.listDocuments !== null) {
+    if (document.listTypes !== null
+      && !document.fetchingTypes
+      && !documentVehicle.fetchingList
+      && documentVehicle.listDocuments !== null
+      && (didMount || !init)) {
       if (!init) {
         { document.listTypes.map(data => (
           initStatus[data.id] = {
@@ -211,7 +230,7 @@ class DocumentVehicle extends Component {
         const titleData = initStatus;
 
         // docs me
-        { document.listDocuments.map((datalist) => {
+        { documentVehicle.listDocuments.map((datalist) => {
           if (titleData[datalist.document_type_id] !== undefined) {
             initStatus[datalist.document_type_id] = {
               id: datalist.document_type_id,
@@ -222,7 +241,6 @@ class DocumentVehicle extends Component {
             };
           }
         }); }
-        console.log(listStatus);
         this.setState({ init: true, listStatus: initStatus });
       }
 
@@ -264,6 +282,15 @@ class DocumentVehicle extends Component {
               ) : null
             ))}
           </WrapperDocument>
+
+          <WrapperButtonsBottom style={{ marginBottom: 35 }}>
+            <WrapperButtonGradient>
+              <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'outset' }} press={() => goBack()} />
+            </WrapperButtonGradient>
+            <WrapperButtonGradient>
+              <ButtonGradient content="Siguiente" press={() => navigate('DetailVehicleDoc', { vehicleId: idVehicle })} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
 
           <Toast
             visible={visible_error}
@@ -309,8 +336,6 @@ class DocumentVehicle extends Component {
                   <WrapperImage>
                     <ImageDetail
                       resizeMode="contain"
-                      // eslint-disable-next-line global-require
-                      loadingIndicatorSource={require('../../../Images/arrow-down.png')}
                       source={{ uri: listStatus[activeEdit].dataEdit.file }}
                     />
                   </WrapperImage>
@@ -353,14 +378,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  registerDocument: params => dispatch(DocumentActions.postRegisterDocRequest(params)),
   getDocumentsTypes: category => dispatch(DocumentActions.getDocsTypesRequest(category)),
-  getDocumentsMe: params => dispatch(DocumentActions.getDocsMeRequest(params)),
-  deleteDocument: id => dispatch(DocumentActions.removeDocRequest(id)),
   dropDocumentsState: params => dispatch(DocumentActions.dropInitialState(params)),
-  // ----
   registerDocumentVeh: params => dispatch(DocumentVehActions.postRegisterDocVehicleRequest(params)),
-
+  getDocumentsVehicleMe: idVehicle => dispatch(DocumentVehActions.getDocsVehicleMeRequest(idVehicle)),
+  deleteDocVehicle: id => dispatch(DocumentVehActions.removeDocVehicleRequest(id)),
 });
 
 export default connect(

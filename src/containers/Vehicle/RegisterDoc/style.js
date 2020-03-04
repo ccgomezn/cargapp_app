@@ -43,8 +43,10 @@ export const TextBlack = styled.Text`
 `; */
 
 export const WrapperButtonGradient = styled.TouchableOpacity`
-  width: 100%;
-  height: 100%;
+width: 48%;
+height: 100%;
+margin-left: 3%;
+margin-bottom: 6px;
 `;
 
 export const TextGray = styled.Text`
@@ -63,7 +65,7 @@ export const WrapperDocument = styled.View`
   height: auto;
   margin-top: 5px;
   margin-bottom: 10px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 `;
 
 export const RowDocument = styled.View`
@@ -142,9 +144,9 @@ export const TitleDesc = styled.Text`
 `;
 
 export const WrapperButtonsBottom = styled.View`
-  width: 100%;
-  flex-direction: row;
-  height: auto;
-  justify-content: flex-end;
-  padding-bottom: 10px;
+width: 100%;
+flex-direction: row;
+height: auto;
+justify-content: flex-end;
+padding-bottom: 10px;
 `;

@@ -56,7 +56,7 @@ export const WrapperButtonsBottom = styled.View`
 `;
 
 export const WrapperButtonGradient = styled.TouchableOpacity`
-  width: 45%;
+  width: 48%;
   height: 100%;
   margin-left: 3%;
   margin-bottom: 6px;

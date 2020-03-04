@@ -29,8 +29,8 @@ export const LogoCheck = styled.Image`
 `;
 
 export const LogoError = styled.Image`
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   resize-mode: contain;
 `;
 

@@ -139,12 +139,6 @@ class ListVehicles extends Component {
                 press={() => this.onValidate()}
               />
             </WrapperButtonGradient>
-            <WrapperButtonGradient>
-              <ButtonGradient
-                content="Doc Vehículo"
-                press={() => navigation.navigate('DetailVehicleDoc')}
-              />
-            </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <PopUpDialog
             textBlack="Advertencia"

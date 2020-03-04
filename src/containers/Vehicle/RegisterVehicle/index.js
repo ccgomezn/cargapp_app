@@ -5,7 +5,7 @@
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
 import analytics from '@react-native-firebase/analytics';
@@ -55,6 +55,7 @@ class Vehicle extends Component {
       edit: true,
       selectID: null,
       dataOffer: null,
+      vehicleId: null,
     };
   }
 
@@ -81,6 +82,7 @@ class Vehicle extends Component {
       this.setState({
         edit: false,
         userid: user.info.user.id,
+        vehicleId: dtveh.id,
         dataplate: dtveh.plate,
         databrand: dtveh.brand,
         datavehicletype: dtveh.vehicle_type_id,
@@ -261,6 +263,7 @@ class Vehicle extends Component {
       edit,
       selectID,
       dataOffer,
+      vehicleId,
     } = this.state;
 
     const itemsMethod = [];
@@ -283,6 +286,8 @@ class Vehicle extends Component {
       }
     }
 
+    console.log('VehicleID', vehicleId);
+
     // register vehicle
     if (loading) {
       if (vehicles.error && !vehicles.fetching) {
@@ -291,7 +296,7 @@ class Vehicle extends Component {
       if (vehicles.reg && !vehicles.fetching) {
         if (vehicles.reg.id && !vehicles.unprocess) {
           setTimeout(() => {
-            this.setState({ loading: false, modalreg: true });
+            this.setState({ vehicleId: vehicles.reg.id, loading: false, modalreg: true });
           }, 1200);
         } else if (loading && vehicles.unprocess) {
           // unProccess
@@ -446,17 +451,26 @@ class Vehicle extends Component {
             ) : null }
           </TextLoad>
 
-          <WrapperButtonsBottom>
-            <WrapperButtonGradient>
-              { edit ? (
+          { edit ? (
+            <WrapperButtonsBottom>
+              <WrapperButtonGradient>
                 <ButtonGradient
                   press={() => this.validateForm()}
                   content="Añadir"
                   disabled={!inputValueCheck}
                 />
-              ) : <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'inset' }} press={() => navigate('ListVehicle', { selectID, dataOffer })} /> }
-            </WrapperButtonGradient>
-          </WrapperButtonsBottom>
+              </WrapperButtonGradient>
+            </WrapperButtonsBottom>
+          ) : (
+            <WrapperButtonsBottom>
+              <WrapperButtonGradient>
+                <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'outset' }} press={() => navigate('ListVehicle', { selectID, dataOffer })} />
+              </WrapperButtonGradient>
+              <WrapperButtonGradient>
+                <ButtonGradient content="Siguiente" press={() => navigate('DetailVehicleDoc', { vehicleId })} />
+              </WrapperButtonGradient>
+            </WrapperButtonsBottom>
+          )}
 
           <Toast
             visible={errorApi}

@@ -76,7 +76,7 @@ import { getMeStatics } from './StaticsSagas';
 import getOffersById from './OffersByIdSagas';
 import { getSummary } from './SummarySagas';
 import getOfferById from './OfferByIdSagas';
-import { registerDocumentVeh } from './DocumentVehicleSagas';
+import { registerDocumentVeh, getDocsVehicleMe, deleteDocVehicle } from './DocumentVehicleSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -144,5 +144,7 @@ export default function* root() {
     takeLatest(SummaryTypes.GET_SUMMARY_REQUEST, getSummary, api),
     takeLatest(OfferByIdTypes.GET_OFFER_BY_ID_REQUEST, getOfferById, api),
     takeLatest(DocumentVehicleTypes.POST_REGISTER_DOC_VEHICLE_REQUEST, registerDocumentVeh, api),
+    takeLatest(DocumentVehicleTypes.GET_DOCS_VEHICLE_ME_REQUEST, getDocsVehicleMe, api),
+    takeLatest(DocumentVehicleTypes.REMOVE_DOC_VEHICLE_REQUEST, deleteDocVehicle, api),
   ]);
 }
