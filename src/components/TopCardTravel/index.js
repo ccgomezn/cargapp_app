@@ -15,6 +15,8 @@ import {
   WrapperSection,
   LineVerical,
   Icon,
+  TouchableDoc,
+  Principal,
 } from './style';
 
 import { formatPrice } from '../../helpers/Utils';
@@ -39,12 +41,16 @@ function TopCardTravel({
   company, travelsCount, amount,
   arrive, isConfirmLoad,
   actionBtnOk, actionMan, actionCall,
-  status, aprox,
+  status, aprox, touchableAction,
 }) {
   if (arrive) {
     return (
-      <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
-        {/* <WrapperColumn>
+      <Principal>
+        <TouchableDoc onPress={touchableAction}>
+          <Image source={require('../../Images/Docs.png')} />
+        </TouchableDoc>
+        <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
+          {/* <WrapperColumn>
           <WrapperImage>
             <Image
               source={require('../../Images/compani.png')}
@@ -61,38 +67,42 @@ function TopCardTravel({
         { aprox || isConfirmLoad ? (
           <Line />
         ) : null } */}
-        {isConfirmLoad
-          ? (
-            <WrapperColumn style={!aprox ? { marginTop: 6 } : null}>
-              <WrapperSection>
-                <BoldText>Anticipo consignado</BoldText>
-                <NormalText>
-                  {'$'}
-                  {formatPrice(amount)}
-                </NormalText>
-              </WrapperSection>
-              <LineVerical />
+          {isConfirmLoad
+            ? (
+
+              <WrapperColumn style={!aprox ? { marginTop: 6 } : null}>
+                <WrapperSection>
+                  <BoldText>Anticipo consignado</BoldText>
+                  <NormalText>
+                    {'$'}
+                    {formatPrice(amount)}
+                  </NormalText>
+                </WrapperSection>
+                <LineVerical />
+                <WrapperColumn>
+                  <TouchableContact onPress={actionMan}>
+                    <BlueText>Ver manifiesto</BlueText>
+                  </TouchableContact>
+                </WrapperColumn>
+              </WrapperColumn>
+            ) : null }
+          { aprox && isConfirmLoad ? (
+            <Line />
+          ) : null }
+          {aprox
+            ? (
+
               <WrapperColumn>
-                <TouchableContact onPress={actionMan}>
-                  <BlueText>Ver manifiesto</BlueText>
+                <TouchableContact onPress={actionBtnOk}>
+                  <BlueText style={{ /* paddingVertical: 10 */ }}>
+                    { textStatus(status, aprox) }
+                  </BlueText>
                 </TouchableContact>
               </WrapperColumn>
-            </WrapperColumn>
-          ) : null }
-        { aprox && isConfirmLoad ? (
-          <Line />
-        ) : null }
-        {aprox
-          ? (
-            <WrapperColumn>
-              <TouchableContact onPress={actionBtnOk}>
-                <BlueText style={{ /* paddingVertical: 10 */ }}>
-                  { textStatus(status, aprox) }
-                </BlueText>
-              </TouchableContact>
-            </WrapperColumn>
-          ) : null }
-      </MainWrapper>
+
+            ) : null }
+        </MainWrapper>
+      </Principal>
     );
   } return null;
 }
@@ -109,6 +119,7 @@ TopCardTravel.propTypes = {
   //
   status: PropTypes.number.isRequired,
   aprox: PropTypes.bool.isRequired,
+  touchableAction: PropTypes.func.isRequired,
 };
 
 export default TopCardTravel;

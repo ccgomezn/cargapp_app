@@ -21,7 +21,7 @@ export const TextWrapper = styled.View`
 `;
 
 export const MainText = styled.Text`
-  color: black;
+  color: #0068ff;
   font-size: 15px;
   font-weight: bold;
 `;
