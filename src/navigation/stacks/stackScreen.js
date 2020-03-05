@@ -27,7 +27,7 @@ import ScreenDocumentsAccount from '../../containers/DocumentAccount';
 import ScreenListVehicle from '../../containers/ListVehicles';
 import ScreenRegisterVehicle from '../../containers/Vehicle/RegisterVehicle';
 import ScreenVehicleDoc from '../../containers/Vehicle/RegisterDoc';
-
+import ScreenVehiclePhoto from '../../containers/Vehicle/RegisterPhoto';
 // SIGN UP SCREENS
 // import ScreenSignUp from '../../containers/Registration';
 import ScreenRegister from '../../containers/Registration/Register';
@@ -290,6 +290,14 @@ export const myVehicleStackNavigator = createStackNavigator({
   },
   DetailVehicleDoc: {
     screen: ScreenVehicleDoc,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: '#116cff',
+      headerStyle: HeaderStyle,
+      headerTitle: centerIconMenu({ navigation, isFull: true }),
+    }),
+  },
+  DetailPhotoDoc: {
+    screen: ScreenVehiclePhoto,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: '#116cff',
       headerStyle: HeaderStyle,

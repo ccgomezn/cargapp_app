@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-lone-blocks */
@@ -10,12 +11,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { StackActions } from 'react-navigation';
 import Toast from 'react-native-tiny-toast';
 import {
   MainWrapper, TextBlack, ContentBlock, TextGray,
   WrapperDocument, RowDocument, WrapperError, TextError,
-  MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail,
-  WrapperTitle, TitleDesc, WrapperButtonsBottom, WrapperButtonGradient,
+  MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail, TextModalGray,
+  WrapperTitle, TitleDesc, WrapperButtonsBottom, WrapperButtonGradient, NextWrapperDialog,
 } from './style';
 
 import Card from '../../../components/ComponentCard';
@@ -41,6 +43,7 @@ class DocumentVehicle extends Component {
       activeEdit: null,
       idVehicle: null,
       didMount: false,
+      modalNext: false,
     };
   }
 
@@ -60,6 +63,7 @@ class DocumentVehicle extends Component {
 
   componentWillUnmount() {
     const { dropDocumentsState } = this.props;
+    console.log('willUnom');
     dropDocumentsState();
   }
 
@@ -143,7 +147,6 @@ class DocumentVehicle extends Component {
           this.setState({ loadingUpdate: true });
           deleteDocVehicle(idItem);
         }
-        console.log(response);
         this.onRegisterDoc(item, idDoc, response);
       }
 
@@ -158,21 +161,38 @@ class DocumentVehicle extends Component {
     this.onPressButtonDoc(activeEdit);
   }
 
+  onPressNext() {
+    this.setState({ modalNext: true });
+  }
+
+  nextStep() {
+    const { idVehicle } = this.state;
+    const { navigation } = this.props;
+    this.setState({ modalNext: 'remover' });
+    setTimeout(() => {
+      navigation.replace('DetailPhotoDoc', { vehicleId: idVehicle });
+    }, 1000);
+  }
+
   OnHideModal() {
-    this.setState({ modalEdit: false, activeEdit: null, error: null });
+    this.setState({
+      modalEdit: false,
+      activeEdit: null,
+      error: null,
+      modalNext: false,
+    });
   }
 
   render() {
     const { document, getDocumentsVehicleMe, documentVehicle } = this.props;
-    const { navigate, goBack } = this.props.navigation;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
-      modalEdit, activeEdit, loadingUpdate, idVehicle, didMount,
+      modalEdit, activeEdit, loadingUpdate, idVehicle, didMount, modalNext,
     } = this.state;
     const initStatus = [];
     const oldList = listStatus;
 
-    // console.log('documentVehicleRender', documentVehicle);
+    console.log('documentVehicleRender', documentVehicle);
 
     // hide Toast
     if (visible_error) {
@@ -216,7 +236,7 @@ class DocumentVehicle extends Component {
       && !document.fetchingTypes
       && !documentVehicle.fetchingList
       && documentVehicle.listDocuments !== null
-      && (didMount || !init)) {
+      && (didMount)) {
       if (!init) {
         { document.listTypes.map(data => (
           initStatus[data.id] = {
@@ -271,11 +291,11 @@ class DocumentVehicle extends Component {
                     mainText={data.name}
                     subText={data.description}
                     icon
-                    status={listStatus.length === 0 ? '' : listStatus[data.id].status}
+                    status={listStatus.length === 0 ? '' : listStatus[data.id] === undefined ? '' : listStatus[data.id].status}
                     colorText="black"
                     borderColorProp="#ecf0f1"
                     press={() => this.onPressButtonDoc(data.id)}
-                    edit={listStatus.length === 0 ? false : listStatus[data.id].edit}
+                    edit={listStatus.length === 0 ? false : listStatus[data.id] === undefined ? false : listStatus[data.id].edit}
                     pressEdit={() => this.onPressEdit(data.id)}
                   />
                 </RowDocument>
@@ -285,10 +305,7 @@ class DocumentVehicle extends Component {
 
           <WrapperButtonsBottom style={{ marginBottom: 35 }}>
             <WrapperButtonGradient>
-              <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'outset' }} press={() => goBack()} />
-            </WrapperButtonGradient>
-            <WrapperButtonGradient>
-              <ButtonGradient content="Siguiente" press={() => navigate('DetailVehicleDoc', { vehicleId: idVehicle })} />
+              <ButtonGradient content="Siguiente" press={() => this.onPressNext()} />
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
 
@@ -355,6 +372,44 @@ class DocumentVehicle extends Component {
                 </ContentDialog>
               ) : null }
             </MainWrapperDialog>
+          </EmptyDialog>
+
+          <EmptyDialog
+            visible={modalNext === 'remover' ? false : modalNext}
+            opacity={0.5}
+            onTouchOutside={() => this.OnHideModal()}
+          >
+            <NextWrapperDialog>
+              <ContentDialog>
+                <WrapperTitle>
+                  <TitleDesc>
+                    Recuerda!
+                  </TitleDesc>
+                  <TextModalGray>
+                    Todos los Documentos son requeridos
+                    {'\n'}
+                    para verificar el vehículo.
+                    {'\n'}
+                    En cualquier momento puedes actualizar
+                    {'\n'}
+                    todos tus documentos.
+                    {'\n'}
+                  </TextModalGray>
+                </WrapperTitle>
+                <WrapperButtonsBottom style={{ marginTop: 10 }}>
+                  <ButtonGradient
+                    content="Continuar"
+                    press={() => this.nextStep()}
+                  />
+                </WrapperButtonsBottom>
+                <WrapperButtonsBottom style={{ marginTop: 0 }}>
+                  <ButtonWhite
+                    content="Cerrar"
+                    press={() => this.OnHideModal()}
+                  />
+                </WrapperButtonsBottom>
+              </ContentDialog>
+            </NextWrapperDialog>
           </EmptyDialog>
         </MainWrapper>
       );

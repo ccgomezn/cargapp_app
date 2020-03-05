@@ -120,7 +120,7 @@ export const MainWrapperDialog = styled.View`
 
 export const NextWrapperDialog = styled.View`
   width: 90%;
-  padding: 6%;
+  padding: 8%;
   padding-bottom: 0px;
   border-radius: 10px;
   align-self: center;
