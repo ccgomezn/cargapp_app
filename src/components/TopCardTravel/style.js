@@ -34,8 +34,8 @@ export const WrapperImage = styled.View`
     `;
 
 export const Image = styled.Image`
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     resize-mode: contain;
     `;
 
@@ -102,5 +102,5 @@ export const TouchableDoc = styled.TouchableOpacity`
     align-items: center;
     padding: 5px;
     background-color: #0068ff;
-    border-radius: 10px;
+    border-radius: 20px;
 `;

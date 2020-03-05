@@ -156,6 +156,7 @@ class BankAccount extends Component {
                     subTitle={`Banco ${dataAccount.bank}`}
                     title={`Tarjeta ${dataAccount.account_type} terminada en ${dataAccount.account_number.toString().slice(0, 4)}`}
                     press={() => this.setState({ modalAccount: true, modalData: dataAccount })}
+                    disable={false}
                   />
                 ))}
               </WrapperCardAccount>

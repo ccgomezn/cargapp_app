@@ -32,6 +32,7 @@ import {
   CustomImage,
   WrapperInit,
   WrapperSwipeable,
+  BlueTextPDF,
 } from './styles';
 
 import AddressesCardMap from '../../../components/AddressesCardMap';
@@ -99,6 +100,7 @@ class StartTravel extends Component {
     const {
       navigation, offers, getMarkers, getDocsServiceRequest,
       getCompanies, document, getOfferById, offerById, getDocumentsInTravel,
+      getDocumentsTypes,
     } = this.props;
     const { status } = this.state;
     const offer = navigation.getParam('Offer', null);
@@ -108,6 +110,7 @@ class StartTravel extends Component {
       console.log('idOffer', offer.id);
       getOfferById(offer.id);
       getDocumentsInTravel(offer.id, 'ServiceDownload');
+      getDocumentsTypes('ServiceDownload');
 
       /* if (!isReload) {
         offers.data.map((newOffer) => {
@@ -603,6 +606,7 @@ class StartTravel extends Component {
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
       ));
+      console.log(this.props);
       return (
         <MainWrapper>
           <Modal visible={modalPDF}>
@@ -610,9 +614,10 @@ class StartTravel extends Component {
               size="large"
               color="#0000ff"
             />
+            <BlueTextPDF>Documento</BlueTextPDF>
             <PDFView
               fadeInDuration={0}
-              style={{ flex: 1, marginTop: 80, zIndex: 100 }}
+              style={{ flex: 1, marginTop: 10, zIndex: 100 }}
               resource={proofOfPayment}
               resourceType="url"
               onLoad={resourceType => console.log(`PDF rendered from ${resourceType}`)}
@@ -803,9 +808,16 @@ class StartTravel extends Component {
             title="Documentos"
           >
             <WrapperSwipeable>
-              {document.serviceDocuments.length >= 0 ? document.serviceDocuments.map(documents => (
-                <CardBank subTitle={documents.name} press={() => this.openDocument(documents.document)} title="Documento:" />
-              )) : (<BlueText>No hay documentos disponibles</BlueText>)}
+              {document.listTypes.map((documents) => {
+                return document.serviceDocuments.map(disable => (
+                  <CardBank
+                    subTitle={documents.name}
+                    press={() => this.openDocument(documents.document)}
+                    title="Documento:"
+                    disable={documents.code !== disable.document_type.code}
+                  />
+                ));
+              })}
             </WrapperSwipeable>
           </Swipeable>
         </MainWrapper>
@@ -840,6 +852,7 @@ const mapDispatchToProps = dispatch => ({
   putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
   getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
+  getDocumentsTypes: category => dispatch(DocumentActions.getDocsTypesRequest(category)),
   getDocumentsInTravel:
       (id, category) => dispatch(DocumentActions.getDocsInTravelRequest(id, category)),
   getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),

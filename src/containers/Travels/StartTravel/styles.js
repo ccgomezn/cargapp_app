@@ -91,4 +91,14 @@ export const CustomImage = styled.Image`
 
 export const WrapperSwipeable = styled.View`
   padding: 20px;
+  margin-bottom: 100px;
+`;
+
+export const BlueTextPDF = styled.Text`
+  color: #0068ff;
+  font-size: 24px;
+  align-self: center;
+  text-align: center;
+  padding-vertical: 20px;
+  margin-top: 15px;
 `;
