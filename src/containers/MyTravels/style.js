@@ -42,7 +42,7 @@ export const TextBlack = styled.Text`
   font-weight: bold;
   font-style: normal;
   letter-spacing: -0.3px;
-  color: #0068ff;
+  color: black;
 `;
 
 export const ContentFilter = styled.View`

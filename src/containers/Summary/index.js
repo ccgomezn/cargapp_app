@@ -320,7 +320,7 @@ class ScreenSummary extends Component {
               <NormalTitle>
                 {summary.data.service.load_weight}
                 {' '}
-                TON
+                 TON
               </NormalTitle>
             </ColumnContainer>
             <ColumnContainer>

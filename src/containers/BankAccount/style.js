@@ -28,7 +28,7 @@ export const MainText = styled.Text`
 
 export const MainTextCard = styled.Text`
   font-size: 18px;
-  color: #0068ff;
+  color: black;
   padding-left: 20px;
   padding-top: 20px;
   text-align: left;
