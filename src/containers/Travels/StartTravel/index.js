@@ -517,6 +517,7 @@ class StartTravel extends Component {
 
     let listDocuments = [];
     let realDocuments = new Map();
+    let documentCards = [];
 
     if (document && document.listTypes && document.serviceDocuments) {
       document.listTypes.map((type) => {
@@ -533,6 +534,21 @@ class StartTravel extends Component {
         if (realDocuments.get(doc.document_type_id)) {
           realDocuments.set(doc.document_type_id, doc);
         }
+      });
+      
+      realDocuments.forEach((doc, key) => {
+        documentCards.push(
+          <CardBank
+            subTitle={doc.name || doc.document_type.name}
+            press={() => {
+              if (doc.document) {
+                this.openDocument(doc.document);
+              }
+            }}
+            title="Documento:"
+            disable={doc.document === undefined}
+          />
+        );
       });
     }
     console.log('liiiiiii',listDocuments);
@@ -773,23 +789,7 @@ class StartTravel extends Component {
             title="Documentos"
           >
             <WrapperSwipeable>
-              {realDocuments && realDocuments.forEach((doc, key) => {
-                const disabled = doc.document !== undefined ? true : false;
-
-                return (
-                  <CardBank
-                    subTitle={doc.name || doc.document_type.name}
-                    press={() => {
-                      if (disabled) {
-                        this.openDocument(doc.document);
-                      }
-                    }}
-                    title="Documento:"
-                    disable={disabled}
-                  />
-                );
-              })
-            }
+              { documentCards && documentCards }
             </WrapperSwipeable>
           </Swipeable>
         </MainWrapper>
