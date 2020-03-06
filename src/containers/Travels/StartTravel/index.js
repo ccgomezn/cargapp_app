@@ -100,7 +100,7 @@ class StartTravel extends Component {
     const {
       navigation, offers, getMarkers, getDocsServiceRequest,
       getCompanies, document, getOfferById, offerById, getDocumentsInTravel,
-      getDocumentsTypes,
+      getDocumentsTypes, dropDocument,
     } = this.props;
     const { status } = this.state;
     const offer = navigation.getParam('Offer', null);
@@ -108,69 +108,11 @@ class StartTravel extends Component {
     console.log('reload', isReload);
     if (offer !== null) {
       console.log('idOffer', offer.id);
+      dropDocument();
       getOfferById(offer.id);
       getDocumentsInTravel(offer.id, 'ServiceDownload');
       getDocumentsTypes('ServiceDownload');
 
-      /* if (!isReload) {
-        offers.data.map((newOffer) => {
-          if (newOffer.id === offer.id) {
-            this.setState({ offerSpecific: offer, status: offer.statu_id });
-          }
-        });
-      }
-      const geoId = Geolocation.watchPosition(
-        e => this.ads(e.coords),
-        error => console.log(JSON.stringify(error)),
-        {
-          enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 100,
-        },
-      );
-
-      this.setState({ geoID: geoId });
-
-      /*
-      getDocsServiceRequest(offer.id);
-      this.callLocation();
-      const newState = !isReload ? offer.statu_id : status;
-      console.log('offer', offer.statu_id);
-      console.log('new', newState);
-      if (newState === 7) {
-        this.setState({
-          inTravel: false, feed: false, feed2: true, aproxOrigin: true,
-        });
-      } else if (newState === 17) {
-        this.setState({
-          inTravel: true,
-          isOrigin: false,
-          feed: false,
-          feed3: true,
-          initTravel: true,
-          aproxOrigin: false,
-        });
-      } else if (newState === 8) {
-        this.setState({
-          inTravel: true, isOrigin: false, feed4: true, feed: false,
-        });
-      } else if (newState === 18) {
-        this.setState({
-          inTravel: true, isOrigin: false, feed5: true, feed: false, aproxOrigin: true,
-        });
-      } else if (newState === 9) {
-        this.setState({
-          inTravel: true, isOrigin: false, feed6: true, feed: false, aproxOrigin: true,
-        });
-      } else if (newState === 19) {
-        console.log('fin status:19');
-        this.setState({
-          inTravel: true, isOrigin: false, feed: false,
-        });
-      } else if (newState === 11) {
-        this.onResetTravel(offer.id);
-      }
-      getCompanies();
-      getMarkers();
-      */
     } else {
       console.log('null data');
     }
@@ -573,6 +515,29 @@ class StartTravel extends Component {
       companies, markers, document, navigation, offerById,
     } = this.props;
 
+    let listDocuments = [];
+    let realDocuments = new Map();
+
+    if (document && document.listTypes && document.serviceDocuments) {
+      document.listTypes.map((type) => {
+        document.serviceDocuments.map((doc) => {
+          if (doc.document_type_id === type.id) {
+            listDocuments.push(doc);
+          } else {
+            realDocuments.set(type.id, type);
+          }
+        });
+      });
+
+      listDocuments.map((doc) => {
+        if (realDocuments.get(doc.document_type_id)) {
+          realDocuments.set(doc.document_type_id, doc);
+        }
+      });
+    }
+    console.log('liiiiiii',listDocuments);
+    console.log('disssss',realDocuments);
+
     if (loadingRegister) {
       console.log('document', document);
       if (!document.fetching && !document.error) {
@@ -808,16 +773,23 @@ class StartTravel extends Component {
             title="Documentos"
           >
             <WrapperSwipeable>
-              {document.listTypes.map((documents) => {
-                return document.serviceDocuments.map(disable => (
+              {realDocuments && realDocuments.forEach((doc, key) => {
+                const disabled = doc.document !== undefined ? true : false;
+
+                return (
                   <CardBank
-                    subTitle={documents.name}
-                    press={() => this.openDocument(documents.document)}
+                    subTitle={doc.name || doc.document_type.name}
+                    press={() => {
+                      if (disabled) {
+                        this.openDocument(doc.document);
+                      }
+                    }}
                     title="Documento:"
-                    disable={documents.code !== disable.document_type.code}
+                    disable={disabled}
                   />
-                ));
-              })}
+                );
+              })
+            }
             </WrapperSwipeable>
           </Swipeable>
         </MainWrapper>
@@ -858,6 +830,7 @@ const mapDispatchToProps = dispatch => ({
   getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   getOfferById: id => dispatch(OfferByIdActions.getOfferByIdRequest(id)),
+  dropDocument: params => dispatch(DocumentActions.dropInitialState(params)),
 });
 
 export default connect(

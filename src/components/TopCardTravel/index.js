@@ -50,44 +50,8 @@ function TopCardTravel({
           <Image source={require('../../Images/Docs.png')} />
         </TouchableDoc>
         <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
-          {/* <WrapperColumn>
-          <WrapperImage>
-            <Image
-              source={require('../../Images/compani.png')}
-            />
-          </WrapperImage>
-          <WrapperInfo>
-            <BoldText>{company}</BoldText>
-            <NormalText>{travelsCount}</NormalText>
-          </WrapperInfo>
-          <TouchableContact onPress={actionCall}>
-            <BlueText>Contactar</BlueText>
-          </TouchableContact>
-        </WrapperColumn>
-        { aprox || isConfirmLoad ? (
-          <Line />
-        ) : null } */}
-          {isConfirmLoad
-            ? (
-
-              <WrapperColumn style={!aprox ? { marginTop: 6 } : null}>
-                <WrapperSection>
-                  <BoldText>Anticipo consignado</BoldText>
-                  <NormalText>
-                    {'$'}
-                    {formatPrice(amount)}
-                  </NormalText>
-                </WrapperSection>
-                <LineVerical />
-                <WrapperColumn>
-                  <TouchableContact onPress={actionMan}>
-                    <BlueText>Ver manifiesto</BlueText>
-                  </TouchableContact>
-                </WrapperColumn>
-              </WrapperColumn>
-            ) : null }
           { aprox && isConfirmLoad ? (
-            <Line />
+            {/* <Line /> */}
           ) : null }
           {aprox
             ? (

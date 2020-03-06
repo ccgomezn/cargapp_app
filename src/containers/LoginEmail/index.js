@@ -249,12 +249,8 @@ class Registration extends Component {
       return (
         <MainWrapper>
           <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
-          <TextBlack>
-          Bienvenido al
-            <TextBlue>
-              {' '}
-              Futuro
-            </TextBlue>
+          <TextBlack style={{ textAlign: 'center' }}>
+            Bienvenido
           </TextBlack>
           <TextGray>El mejor aliado para su operación</TextGray>
           <WrapperSection style={{ marginTop: 10 }}>
