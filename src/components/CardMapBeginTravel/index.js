@@ -77,11 +77,19 @@ function CardMapBeginTravel({
         <WrapperColumn>
           <WrapperInfoBody>
             <BoldText>Peso</BoldText>
-            <NormalText>{loadWeight}</NormalText>
+            <NormalText>
+              {loadWeight}
+              {' '}
+              TON
+            </NormalText>
           </WrapperInfoBody>
           <WrapperInfoBody>
             <BoldText>Volumen</BoldText>
-            <NormalText>{loadVolume}</NormalText>
+            <NormalText>
+              {loadVolume}
+              {' '}
+              M3
+            </NormalText>
           </WrapperInfoBody>
         </WrapperColumn>
         <WrapperColumn>

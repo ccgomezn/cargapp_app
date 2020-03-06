@@ -22,6 +22,8 @@ export const { Types, Creators } = createActions({
   getDocsMeRequest: ['params'],
   getDocsMeSuccess: ['data'],
   getDocsMeFailure: null,
+  getDocsInTravelRequest: ['id', 'category'],
+  getDocsInTravelSuccess: ['data'],
   removeDocRequest: ['id'],
   dropInitialState: ['params'],
 });
@@ -39,6 +41,7 @@ export const INITIAL_STATE = Immutable({
   listTypes: null,
   listDocuments: null,
   fetchingServiceDoc: false,
+  documentsTravel: null,
   errorServiceDoc: null,
   serviceDocuments: null, // respuesta serviceDocuments
 });
@@ -230,6 +233,23 @@ export const getDocsTypesRequest = (state) => {
   };
 };
 
+export const getDocsInTravelRequest = (state) => {
+  return {
+    ...state,
+    fetching: true,
+    error: false,
+  };
+};
+
+export const getDocsInTravelSuccess = (state, { data }) => {
+  return {
+    ...state,
+    fetching: false,
+    error: false,
+    documentsTravel: data,
+  };
+};
+
 /* --------------- Reducers ----------- */
 export const reducer = createReducer(INITIAL_STATE, {
   // register document
@@ -250,6 +270,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_DOCS_ME_SUCCESS]: getDocsMeSuccess,
   [Types.GET_DOCS_ME_REQUEST]: getDocsMeRequest,
   [Types.GET_DOCS_ME_FAILURE]: getDocsMeFailure,
+  [Types.GET_DOCS_IN_TRAVEL_REQUEST]: getDocsInTravelRequest,
+  [Types.GET_DOCS_IN_TRAVEL_SUCCESS]: getDocsInTravelSuccess,
   [Types.REMOVE_DOC_REQUEST]: removeDocRequest,
   [Types.DROP_INITIAL_STATE]: dropInitialState,
 });

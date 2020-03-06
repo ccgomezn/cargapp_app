@@ -7,8 +7,8 @@
 import { call, put, select } from 'redux-saga/effects';
 import crashlytics from '@react-native-firebase/crashlytics';
 import ProfileActions from '../reducers/ProfileRedux';
-import { AuthSelectors } from '../reducers/UserRedux';
-import UserActions from '../reducers/UserRedux';
+import UserActions, { AuthSelectors } from '../reducers/UserRedux';
+
 
 export function* getProfile(api, action) {
   const { params } = action;
@@ -28,9 +28,18 @@ export function* editProfile(api, action) {
   const { id, data } = action;
   const token = yield select(AuthSelectors.getToken);
   api.setAuthToken(token);
-  api.setContent('application/json');
-  const response = yield call(api.profile.editProfile, id, data);
-  console.log(response);
+  let response;
+  if (data.profile) {
+    console.log('pro')
+    api.setContent('application/json');
+    response = yield call(api.profile.editProfile, id, data);
+  } else {
+    console.log('form')
+    api.setContent('multipart/form-data');
+    response = yield call(api.profile.updatePhoto, id, data);
+    console.log(response)
+  }
+  console.log(response)
   if (response.ok) {
     yield put(ProfileActions.editProfileSuccess(response.data));
     // update step

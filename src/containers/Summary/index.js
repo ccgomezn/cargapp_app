@@ -317,11 +317,15 @@ class ScreenSummary extends Component {
           <RowContainer style={{ justifyContent: 'flex-start' }}>
             <ColumnContainer style={{ marginRight: 10 }}>
               <SubTitle>Peso</SubTitle>
-              <NormalTitle>{summary.data.service.load_weight}</NormalTitle>
+              <NormalTitle>
+                {summary.data.service.load_weight}
+                {' '}
+                 TON
+              </NormalTitle>
             </ColumnContainer>
             <ColumnContainer>
               <SubTitle>Volumen</SubTitle>
-              <NormalTitle>{summary.data.service.load_volume ? summary.data.service.load_volume : 'N/A'}</NormalTitle>
+              <NormalTitle>{summary.data.service.load_volume ? `${summary.data.service.load_volume} M3` : 'N/A'}</NormalTitle>
             </ColumnContainer>
           </RowContainer>
           <ColumnContainer>

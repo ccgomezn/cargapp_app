@@ -197,6 +197,7 @@ class ApplyOffer extends Component {
     const data = {
       service_id: valueApplyOffer.id,
       user_id: profile.data[0].user.id,
+      vehicle_id: value,
       active: true,
     };
     applyOffer(data);

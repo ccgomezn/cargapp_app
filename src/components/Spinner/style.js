@@ -6,7 +6,7 @@ export const MainWrapper = styled.View`
   position: absolute;
   background-color: white;
   opacity: 0.7;
-  z-index: 1200;
+  z-index: 2000;
   justify-content: center;
   align-items: center;
 `;

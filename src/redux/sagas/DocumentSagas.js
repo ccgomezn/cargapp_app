@@ -93,6 +93,19 @@ export function* getDocumentsMe(api, action) {
   }
 }
 
+export function* getDocumentsInTravel(api, action) {
+  const { id, category } = action;
+  const token = yield select(AuthSelectors.getToken);
+  api.setAuthToken(token);
+  const response = yield call(api.document.getDocumentsInTravel, id, category);
+  console.log(response)
+  if (response.ok) {
+    yield put(DocumentActions.getDocsInTravelSuccess(response.data));
+  } else {
+    yield put(DocumentActions.getDocsMeFailure(null));
+  }
+}
+
 export function* deleteDocument(api, action) {
   const { id } = action;
   const token = yield select(AuthSelectors.getToken);
