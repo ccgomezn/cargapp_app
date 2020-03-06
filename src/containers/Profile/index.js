@@ -5,8 +5,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ActivityIndicator, Alert } from 'react-native';
+import { ActivityIndicator, Alert, Modal } from 'react-native';
 import analytics from '@react-native-firebase/analytics';
+import PDFView from 'react-native-view-pdf';
+import ImagePicker from 'react-native-image-picker';
 import EmptyDialog from '../../components/EmptyDialog';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
@@ -14,7 +16,7 @@ import {
   ContentInitial, WrapperColumn, SecondWrapper, WrapperImage, Image,
   WrapperInfo, BoldText, NormalText, ContentButton,
   MainWrapperDialog, TouchModal, TitleBlack, TextGray,
-  WrapperMap,
+  WrapperMap, ImageUser,
 } from './style';
 
 import Input from '../../components/GeneralInput';
@@ -23,6 +25,9 @@ import ButtonWhite from '../../components/ButtonWhite';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import PasswordActions from '../../redux/reducers/PasswordRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
+import { Indicator, WrapperButtonImage } from '../Summary/style';
+import { BlueTextPDF } from '../Travels/StartTravel/styles';
+import Spinner from '../../components/Spinner';
 
 class Profile extends Component {
   constructor() {
@@ -36,6 +41,10 @@ class Profile extends Component {
       previousPassword: null,
       newPassword: null,
       repeatPassword: null,
+      avatar: false,
+      load: false,
+      id: '',
+      avatarUser: '',
     };
   }
 
@@ -101,6 +110,49 @@ class Profile extends Component {
     }
   }
 
+  changeImage() {
+    const { editProfile } = this.props;
+    const { id } = this.state;
+    const options = {
+      title: 'Vincular Documento',
+      cancelButtonTitle: 'Cancelar',
+      takePhotoButtonTitle: 'Tomar Foto',
+      chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
+      customButtons: [],
+      quality: 0.5,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, ((response) => {
+      if (response.didCancel) {
+        console.log(response);
+      } else if (response.error) {
+        console.log(response);
+      } else {
+        this.setState({ load: true });
+
+        const data = new FormData();
+        let photoName = response.fileName;
+        if (response.fileName === '' || response.fileName === null) {
+          photoName = `img_${response.fileSize}.jpg`;
+        }
+        data.append('profile[avatar]', {
+          name: photoName,
+          uri: response.uri,
+          type: response.type,
+        });
+
+        editProfile(id, data);
+
+        setTimeout(() => {
+          this.setState({ load: false });
+        }, 5000);
+      }
+    }));
+  }
+
   render() {
     const {
       modalPassword,
@@ -111,10 +163,11 @@ class Profile extends Component {
       previousPassword,
       newPassword,
       repeatPassword,
+      avatar,
+      load,
+      avatarUser,
     } = this.state;
     const { profile } = this.props;
-    // eslint-disable-next-line react/destructuring-assignment
-    const { navigate } = this.props.navigation;
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
@@ -128,20 +181,41 @@ class Profile extends Component {
     }
     if (profile.data !== null && !fetch) {
       profile.data.map((data) => {
+        if (avatarUser === '') {
+          this.setState({ avatarUser: data.avatar });
+        }
         if (name === '' && lastName === '') {
           this.setState({ name: data.profile.firt_name, lastName: data.profile.last_name });
         }
       });
       return (
         <MainWrapper>
+          <Modal visible={avatar} style={{ zIndex: 1800 }}>
+            <BlueTextPDF>Foto de perfil</BlueTextPDF>
+            <ImageUser source={require('../../Images/profile.jpg')} />
+            <PDFView
+              fadeInDuration={0}
+              style={{ flex: 1, marginTop: 10, zIndex: 100 }}
+              resource={avatarUser}
+              resourceType="url"
+              onLoad={resourceType => console.log(`PDF rendered from ${resourceType}`)}
+            />
+            <Spinner view={load} />
+            <WrapperButtonImage>
+              <ButtonGradient press={() => this.changeImage()} content="Cambiar foto" disabled={false} />
+              <ButtonWhite press={() => this.setState({ avatar: false })} content="Volver" border={false} />
+            </WrapperButtonImage>
+          </Modal>
           {profile.data.map(data => (
             <WrapperMap>
               <ContentInitial>
                 <WrapperColumn>
+                  {/* <WrapperImage onPress={() => this.setState({ avatar: true, id: data.profile.id })} style={{ alignItems: 'center' }}> */}
                   <WrapperImage>
                     <Image
                       source={require('../../Images/profile.jpg')}
                     />
+                    {/* <TextBlack style={{ fontSize: 14, color: '#0068ff', marginLeft: 25 }}>Editar</TextBlack> */}
                   </WrapperImage>
                   <WrapperInfo>
                     <BoldText>{data.profile.firt_name}</BoldText>

@@ -5,7 +5,7 @@
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
 import analytics from '@react-native-firebase/analytics';
@@ -55,6 +55,7 @@ class Vehicle extends Component {
       edit: true,
       selectID: null,
       dataOffer: null,
+      vehicleId: null,
     };
   }
 
@@ -81,6 +82,7 @@ class Vehicle extends Component {
       this.setState({
         edit: false,
         userid: user.info.user.id,
+        vehicleId: dtveh.id,
         dataplate: dtveh.plate,
         databrand: dtveh.brand,
         datavehicletype: dtveh.vehicle_type_id,
@@ -150,11 +152,10 @@ class Vehicle extends Component {
 
   closeModal() {
     const { navigate } = this.props.navigation;
-    const { getListVehicles } = this.props;
+    const { vehicleId } = this.state;
     this.setState({ modalreg: false });
     setTimeout(() => {
-      getListVehicles();
-      navigate('ListVehicle');
+      navigate('DetailVehicleDoc', { vehicleId });
     }, 100);
   }
 
@@ -261,6 +262,7 @@ class Vehicle extends Component {
       edit,
       selectID,
       dataOffer,
+      vehicleId,
     } = this.state;
 
     const itemsMethod = [];
@@ -283,6 +285,8 @@ class Vehicle extends Component {
       }
     }
 
+    console.log('VehicleID', vehicleId);
+
     // register vehicle
     if (loading) {
       if (vehicles.error && !vehicles.fetching) {
@@ -291,7 +295,7 @@ class Vehicle extends Component {
       if (vehicles.reg && !vehicles.fetching) {
         if (vehicles.reg.id && !vehicles.unprocess) {
           setTimeout(() => {
-            this.setState({ loading: false, modalreg: true });
+            this.setState({ vehicleId: vehicles.reg.id, loading: false, modalreg: true });
           }, 1200);
         } else if (loading && vehicles.unprocess) {
           // unProccess
@@ -313,7 +317,7 @@ class Vehicle extends Component {
         <MainWrapper>
           <ContentView>
             <ContentBlock>
-              <TextBlack>Datos de vehículo</TextBlack>
+              <TextBlack>Datos del vehículo</TextBlack>
             </ContentBlock>
           </ContentView>
 
@@ -347,7 +351,7 @@ class Vehicle extends Component {
                 onChangeText={value => this.setState({ databrand: value })}
               />
               <Input
-                title="Módelo"
+                title="Modelo"
                 holder="Ingrese el módelo"
                 maxLength={20}
                 errorText={invalidmodel}
@@ -372,7 +376,7 @@ class Vehicle extends Component {
                 errorText={invalidcolor}
               />
               <Input
-                title="Chasis"
+                title="No. Chasis"
                 holder="Ingrese el chasis"
                 maxLength={20}
                 errorText={invalidchassis}
@@ -436,27 +440,36 @@ class Vehicle extends Component {
             ) : null }
           </WrapperError>
 
-          <TextLoad>
-            { loading ? (
-              <ActivityIndicator
-                style={{ alignSelf: 'center', height: 'auto' }}
-                size="large"
-                color="#0068ff"
-              />
-            ) : null }
-          </TextLoad>
+          <Toast
+            visible={loading}
+            position={0}
+            loading
+            shadow
+            animation
+          >
+            Registrando Vehículo...
+          </Toast>
 
-          <WrapperButtonsBottom>
-            <WrapperButtonGradient>
-              { edit ? (
+          { edit ? (
+            <WrapperButtonsBottom>
+              <WrapperButtonGradient>
                 <ButtonGradient
                   press={() => this.validateForm()}
                   content="Añadir"
                   disabled={!inputValueCheck}
                 />
-              ) : <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'inset' }} press={() => navigate('ListVehicle', { selectID, dataOffer })} /> }
-            </WrapperButtonGradient>
-          </WrapperButtonsBottom>
+              </WrapperButtonGradient>
+            </WrapperButtonsBottom>
+          ) : (
+            <WrapperButtonsBottom>
+              <WrapperButtonGradient>
+                <ButtonWhite content="Volver" border={{ borderWidth: 1, borderStyle: 'outset' }} press={() => navigate('ListVehicle', { selectID, dataOffer })} />
+              </WrapperButtonGradient>
+              <WrapperButtonGradient>
+                <ButtonGradient content="Siguiente" press={() => navigate('DetailVehicleDoc', { vehicleId })} />
+              </WrapperButtonGradient>
+            </WrapperButtonsBottom>
+          )}
 
           <Toast
             visible={errorApi}
@@ -469,9 +482,9 @@ class Vehicle extends Component {
           </Toast>
           <PopUpDialog
             textBlack="¡Perfecto!"
-            textGray="Ahora tu vehículo está listo para viajar."
+            textGray="Ahora debes ingresar la documentación de tu vehículo"
             visible={modalreg}
-            textButton="Volver a mis Vehículos"
+            textButton="Continuar"
             pressButton={() => this.closeModal()}
           />
         </MainWrapper>

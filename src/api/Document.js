@@ -9,5 +9,6 @@ export default function (api) {
     getDocumentsTypes: category => api.get(`/document_types/by_category/${category}`),
     getDocumentsMe: params => api.get('/documents/me/', params),
     deleteDocument: id => api.delete(`/documents/${id}`),
+    getDocumentsInTravel: (id, category) => api.get(`service_documents/find_service/${id}/${category}`),
   };
 }

@@ -6,7 +6,7 @@
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
 import {
-  Platform, ActivityIndicator, Linking,
+  Platform, ActivityIndicator, Linking, Modal,
 } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
@@ -17,6 +17,7 @@ import Polyline from '@mapbox/polyline';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import analytics from '@react-native-firebase/analytics';
+import PDFView from 'react-native-view-pdf';
 import OffersTypes from '../../../redux/reducers/OffersRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
 import {
@@ -30,6 +31,8 @@ import {
   WrapperModal,
   CustomImage,
   WrapperInit,
+  WrapperSwipeable,
+  BlueTextPDF,
 } from './styles';
 
 import AddressesCardMap from '../../../components/AddressesCardMap';
@@ -43,6 +46,9 @@ import PopUpNotification from '../../../components/PopUpNotifications';
 import Spinner from '../../../components/Spinner';
 
 import OfferByIdActions from '../../../redux/reducers/OfferByIdRedux';
+import Swipeable from '../../../components/Swipeable';
+import CardBank from '../../../components/ComponentCardBank';
+import { Indicator, WrapperButtonImage } from '../../Summary/style';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
@@ -70,6 +76,11 @@ class StartTravel extends Component {
       mylocation: null,
       loadingRegister: false,
       loadDidMount: false,
+      modalDocuments: false,
+      modalPDF: false,
+      proofOfPayment: '',
+      errorProofOfPayment: false,
+
     };
   }
 
@@ -88,16 +99,18 @@ class StartTravel extends Component {
     analytics().setCurrentScreen('mis_viajes_viaje_iniciado');
     const {
       navigation, offers, getMarkers, getDocsServiceRequest,
-      getCompanies, document, getOfferById, offerById,
+      getCompanies, document, getOfferById, offerById, getDocumentsInTravel,
+      getDocumentsTypes,
     } = this.props;
     const { status } = this.state;
     const offer = navigation.getParam('Offer', null);
 
     console.log('reload', isReload);
-
     if (offer !== null) {
       console.log('idOffer', offer.id);
       getOfferById(offer.id);
+      getDocumentsInTravel(offer.id, 'ServiceDownload');
+      getDocumentsTypes('ServiceDownload');
 
       /* if (!isReload) {
         offers.data.map((newOffer) => {
@@ -544,12 +557,16 @@ class StartTravel extends Component {
     Linking.openURL(event);
   }
 
+  openDocument(value) {
+    this.setState({ proofOfPayment: value, modalPDF: true });
+  }
+
   render() {
     const {
       offerSpecific, lastLat, lastLong, waypoints, status, inTravel, manifestSet,
       nonManifest, feed, feed1, feed2, feed3, feed4, feed5, feed6,
       spinner, isOrigin, aproxOrigin, initTravel, mylocation, loadingRegister,
-      loadDidMount,
+      loadDidMount, modalDocuments, modalPDF, proofOfPayment, errorProofOfPayment,
     } = this.state;
 
     const {
@@ -589,9 +606,34 @@ class StartTravel extends Component {
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
       ));
-
+      console.log(this.props);
       return (
         <MainWrapper>
+          <Modal visible={modalPDF}>
+            <Indicator
+              size="large"
+              color="#0000ff"
+            />
+            <BlueTextPDF>Documento</BlueTextPDF>
+            <PDFView
+              fadeInDuration={0}
+              style={{ flex: 1, marginTop: 10, zIndex: 100 }}
+              resource={proofOfPayment}
+              resourceType="url"
+              onLoad={resourceType => console.log(`PDF rendered from ${resourceType}`)}
+              onError={() => this.setState({ errorProofOfPayment: true })}
+            />
+            <WrapperButtonImage>
+              <ButtonGradient press={() => this.setState({ modalPDF: false })} content="Volver" disabled={false} />
+            </WrapperButtonImage>
+          </Modal>
+          {errorProofOfPayment && (
+          <PopUpNotification
+            onTouchOutside={() => this.setState({ errorProofOfPayment: false })}
+            mainText="Algo falló"
+            subText="Intentalo de nuevo más tarde"
+          />
+          )}
           <Spinner view={spinner} />
           {feed && !feed1 && !feed2 && !feed3 && !feed4 && !feed5 && !feed6 && !aproxOrigin && (
             <PopUpNotification
@@ -710,6 +752,7 @@ class StartTravel extends Component {
                     actionBtnOk={() => this.confirmTravel()}
                     actionMan={() => this.actionMan()}
                     actionCall={() => this.actionCall()}
+                    touchableAction={() => this.setState({ modalDocuments: true })}
                   />
                 </WrapperTopCard>
               );
@@ -758,6 +801,25 @@ class StartTravel extends Component {
           >
             Subiendo Foto...
           </Toast>
+          <Swipeable
+            visible={modalDocuments}
+            onClose={() => this.setState({ modalDocuments: false })}
+            onPressClose={() => this.setState({ modalDocuments: false })}
+            title="Documentos"
+          >
+            <WrapperSwipeable>
+              {document.listTypes.map((documents) => {
+                return document.serviceDocuments.map(disable => (
+                  <CardBank
+                    subTitle={documents.name}
+                    press={() => this.openDocument(documents.document)}
+                    title="Documento:"
+                    disable={documents.code !== disable.document_type.code}
+                  />
+                ));
+              })}
+            </WrapperSwipeable>
+          </Swipeable>
         </MainWrapper>
       );
     }
@@ -790,6 +852,9 @@ const mapDispatchToProps = dispatch => ({
   putStateOriginTravel: (id, data) => dispatch(OffersTypes.putStateInTravelOriginRequest(id, data)),
   getMarkers: (params = {}) => dispatch(MarkersTypes.getMarkersRequest(params)),
   registerDocument: params => dispatch(DocumentActions.postRegisterDocServiceRequest(params)),
+  getDocumentsTypes: category => dispatch(DocumentActions.getDocsTypesRequest(category)),
+  getDocumentsInTravel:
+      (id, category) => dispatch(DocumentActions.getDocsInTravelRequest(id, category)),
   getDocsServiceRequest: id => dispatch(DocumentActions.getDocsServiceRequest(id)),
   getCompanies: params => dispatch(CompanyActions.getCompaniesRequest(params)),
   getOfferById: id => dispatch(OfferByIdActions.getOfferByIdRequest(id)),

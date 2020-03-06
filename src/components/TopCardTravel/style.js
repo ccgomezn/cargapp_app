@@ -1,17 +1,25 @@
 import styled from 'styled-components/native';
 
-export const MainWrapper = styled.View`
+export const Principal = styled.View`
     width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const MainWrapper = styled.View`
+  width: 75%;
   height: auto;
   border-radius: 8px;
   background-color: white;
   border: 1px solid #f3f3f3;
   padding-horizontal: 10px;
   padding-vertical: 0px;
+  flex-direction: row;
     `;
 
 export const WrapperColumn = styled.View`
-  flex: 0.8;
+  flex: 1;
   flex-direction: row;
   height: auto;
   justify-content: center;
@@ -26,8 +34,8 @@ export const WrapperImage = styled.View`
     `;
 
 export const Image = styled.Image`
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     resize-mode: contain;
     `;
 
@@ -86,3 +94,13 @@ export const Icon = styled.Image`
     height: 20px;
     width; 20px;
     `;
+
+export const TouchableDoc = styled.TouchableOpacity`
+    width: 15%;
+    margin-right: 5px;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background-color: #0068ff;
+    border-radius: 20px;
+`;

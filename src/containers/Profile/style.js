@@ -202,3 +202,13 @@ export const WrapperMap = styled.View`
   width: 100%;
   height: auto;
 `;
+
+export const ImageUser = styled.Image`
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+  resize-mode: contain;
+  align-self: center;
+  position: absolute;
+  top: 35%;
+`;

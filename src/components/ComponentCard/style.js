@@ -3,7 +3,7 @@ import SvgUri from 'react-native-svg-uri';
 
 export const MainWrapper = styled.TouchableOpacity`
   width: 100%;
-  height: 65px;
+  height: auto;
   flex-direction: row;
   border: 1px solid gray;
   border-radius: 5px;
@@ -11,32 +11,26 @@ export const MainWrapper = styled.TouchableOpacity`
 
 export const WrapperLogo = styled.View`
   flex: 2;
-  height: 100%;
+  height: auto;
   justify-content: center;
   align-items: center;
-  background-color: #CCC;
-`;
-
-export const Logo = styled(SvgUri)`
-  width: 45%;
-  height: 45%;  
 `;
 
 export const LogoIni = styled.Image`
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
   resize-mode: contain;
 `;
 
 export const LogoCheck = styled.Image`
-  width: 45%;
-  height: 45%;
+  width: 28px;
+  height: 28px;
   resize-mode: contain;
 `;
 
 export const LogoError = styled.Image`
-  width: 35%;
-  height: 35%;
+  width: 25px;
+  height: 25px;
   resize-mode: contain;
 `;
 
@@ -44,12 +38,12 @@ export const WrapperText = styled.View`
   flex: 8;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-left: 8px;
+  padding-left: 4px;
 `;
 
 export const MainText = styled.Text`
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 15px;
   padding-top: 10px;
   padding-bottom: 2px;
   font-weight: bold;
@@ -59,7 +53,7 @@ export const MainText = styled.Text`
 
 export const SubText = styled.Text`
   opacity: 0.65;
-  font-family: Roboto;
+  font-family: Roboto-regular;
   font-size: 12px;
   padding-top: 2px;
   padding-bottom: 8px;

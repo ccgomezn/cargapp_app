@@ -31,6 +31,7 @@ import { StaticsTypes } from '../reducers/StaticsRedux';
 import { OffersByIdTypes } from '../reducers/OffersByIdRedux';
 import { SummaryTypes } from '../reducers/SummaryRedux';
 import { OfferByIdTypes } from '../reducers/OfferByIdRedux';
+import { DocumentVehicleTypes } from '../reducers/DocumentVehicleRedux';
 /* --------------- Sagas ----------------- */
 import { profileDriver } from './DriverSagas';
 import {
@@ -46,7 +47,7 @@ import {
 import { countriesActive } from './CountrieSagas';
 import {
   registerDocument, registerDocumentService, getDocsServiceRequest, getDocumentTypes,
-  getDocumentsMe, deleteDocument,
+  getDocumentsMe, deleteDocument, getDocumentsInTravel,
 } from './DocumentSagas';
 import {
   getOffers, applyOffer, getMyOffers, getServices, putStateOriginTravel,
@@ -75,6 +76,7 @@ import { getMeStatics } from './StaticsSagas';
 import getOffersById from './OffersByIdSagas';
 import { getSummary } from './SummarySagas';
 import getOfferById from './OfferByIdSagas';
+import { registerDocumentVeh, getDocsVehicleMe, deleteDocVehicle } from './DocumentVehicleSagas';
 /* ----------  API ------------ */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -137,9 +139,13 @@ export default function* root() {
     takeLatest(DocumentTypes.GET_DOCS_TYPES_REQUEST, getDocumentTypes, api),
     takeLatest(DocumentTypes.GET_DOCS_ME_REQUEST, getDocumentsMe, api),
     takeLatest(DocumentTypes.REMOVE_DOC_REQUEST, deleteDocument, api),
+    takeLatest(DocumentTypes.GET_DOCS_IN_TRAVEL_REQUEST, getDocumentsInTravel, api),
     takeLatest(StaticsTypes.GET_STATICS_ME_REQUEST, getMeStatics, api),
     takeLatest(OffersByIdTypes.GET_OFFERS_BY_ID_REQUEST, getOffersById, api),
     takeLatest(SummaryTypes.GET_SUMMARY_REQUEST, getSummary, api),
     takeLatest(OfferByIdTypes.GET_OFFER_BY_ID_REQUEST, getOfferById, api),
+    takeLatest(DocumentVehicleTypes.POST_REGISTER_DOC_VEHICLE_REQUEST, registerDocumentVeh, api),
+    takeLatest(DocumentVehicleTypes.GET_DOCS_VEHICLE_ME_REQUEST, getDocsVehicleMe, api),
+    takeLatest(DocumentVehicleTypes.REMOVE_DOC_VEHICLE_REQUEST, deleteDocVehicle, api),
   ]);
 }

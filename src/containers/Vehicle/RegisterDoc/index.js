@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-lone-blocks */
@@ -10,12 +11,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { StackActions } from 'react-navigation';
 import Toast from 'react-native-tiny-toast';
 import {
   MainWrapper, TextBlack, ContentBlock, TextGray,
   WrapperDocument, RowDocument, WrapperError, TextError,
-  MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail,
-  WrapperTitle, TitleDesc, WrapperButtonsBottom,
+  MainWrapperDialog, ContentDialog, WrapperImage, ImageDetail, TextModalGray,
+  WrapperTitle, TitleDesc, WrapperButtonsBottom, WrapperButtonGradient, NextWrapperDialog,
 } from './style';
 
 import Card from '../../../components/ComponentCard';
@@ -24,6 +26,7 @@ import ButtonGradient from '../../../components/ButtonGradient';
 import ButtonWhite from '../../../components/ButtonWhite';
 
 import DocumentActions from '../../../redux/reducers/DocumentRedux';
+import DocumentVehActions from '../../../redux/reducers/DocumentVehicleRedux';
 
 class DocumentVehicle extends Component {
   constructor() {
@@ -38,24 +41,35 @@ class DocumentVehicle extends Component {
       init: false,
       modalEdit: false,
       activeEdit: null,
+      idVehicle: null,
+      didMount: false,
+      modalNext: false,
     };
   }
 
   componentDidMount() {
-    const { getDocumentsTypes, getDocumentsMe } = this.props;
+    const { getDocumentsTypes, getDocumentsVehicleMe } = this.props;
+    const { navigation } = this.props;
+    // get vehicle id
+    const vehicleId = navigation.getParam('vehicleId', null);
+    if (vehicleId !== null) {
+      this.setState({ idVehicle: vehicleId });
+    }
     console.log('didmountVehicle');
-    getDocumentsTypes('Vehicle');
-    getDocumentsMe();
+    getDocumentsTypes('VehicleDocuments');
+    getDocumentsVehicleMe(vehicleId);
+    this.setState({ didMount: true });
   }
 
   componentWillUnmount() {
     const { dropDocumentsState } = this.props;
+    console.log('willUnom');
     dropDocumentsState();
   }
 
   async onRegisterDoc(id_type, id_doc, source) {
-    const { listStatus } = this.state;
-    const { user, registerDocument } = this.props;
+    const { listStatus, idVehicle } = this.state;
+    const { user, registerDocumentVeh } = this.props;
     const oldList = listStatus;
     const userId = user.info.user.id;
 
@@ -65,19 +79,21 @@ class DocumentVehicle extends Component {
         photoName = `img_${source.fileSize}.jpg`;
       }
       const data = new FormData();
-      data.append('document[document_type_id]', id_doc);
-      data.append('document[file]', {
+      data.append('vehicle_document[document_type_id]', id_doc);
+      data.append('vehicle_document[file]', {
         name: photoName,
         uri: source.uri,
         type: source.type,
       });
-      data.append('document[statu_id]', 13);
-      data.append('document[user_id]', userId);
-      data.append('document[expire_date]', 1705507702);
-      data.append('document[approved]', false);
-      data.append('document[active]', 1);
+      data.append('vehicle_document[statu_id]', 13);
+      data.append('vehicle_document[user_id]', userId);
+      data.append('vehicle_document[expire_date]', 1705507702);
+      data.append('vehicle_document[approved]', false);
+      data.append('vehicle_document[active]', 1);
+      data.append('vehicle_document[vehicle_id]', idVehicle);
 
-      await registerDocument(data);
+      console.log(data);
+      await registerDocumentVeh(data);
       this.setState({ loadingUpdate: false, loadingRegister: true });
       oldList[id_type].status = 'loading';
     } else {
@@ -92,7 +108,7 @@ class DocumentVehicle extends Component {
   }
 
   onPressButtonDoc(item) {
-    const { deleteDocument } = this.props;
+    const { deleteDocVehicle } = this.props;
     const { listStatus, activeEdit } = this.state;
     const oldList = listStatus;
     this.setState({ error: null, modalEdit: false });
@@ -129,9 +145,8 @@ class DocumentVehicle extends Component {
         if (activeEdit !== null) {
           const idItem = listStatus[activeEdit].dataEdit.id;
           this.setState({ loadingUpdate: true });
-          deleteDocument(idItem);
+          deleteDocVehicle(idItem);
         }
-        console.log(response);
         this.onRegisterDoc(item, idDoc, response);
       }
 
@@ -146,20 +161,38 @@ class DocumentVehicle extends Component {
     this.onPressButtonDoc(activeEdit);
   }
 
+  onPressNext() {
+    this.setState({ modalNext: true });
+  }
+
+  nextStep() {
+    const { idVehicle } = this.state;
+    const { navigation } = this.props;
+    this.setState({ modalNext: 'remover' });
+    setTimeout(() => {
+      navigation.replace('DetailPhotoDoc', { vehicleId: idVehicle });
+    }, 400);
+  }
+
   OnHideModal() {
-    this.setState({ modalEdit: false, activeEdit: null, error: null });
+    this.setState({
+      modalEdit: false,
+      activeEdit: null,
+      error: null,
+      modalNext: false,
+    });
   }
 
   render() {
-    const { document, getDocumentsMe } = this.props;
+    const { document, getDocumentsVehicleMe, documentVehicle } = this.props;
     const {
       init, listStatus, error, visible_error, loadingRegister, document_load,
-      modalEdit, activeEdit, loadingUpdate,
+      modalEdit, activeEdit, loadingUpdate, idVehicle, didMount, modalNext,
     } = this.state;
     const initStatus = [];
     const oldList = listStatus;
 
-    console.log('listatus',listStatus);
+    console.log('documentVehicleRender', documentVehicle);
 
     // hide Toast
     if (visible_error) {
@@ -170,7 +203,7 @@ class DocumentVehicle extends Component {
 
     // validate register User
     if (loadingRegister) {
-      if (document.error && !document.fetching) {
+      if (documentVehicle.error && !documentVehicle.fetching) {
         // error api
         oldList[document_load].status = 'error';
         this.setState({
@@ -180,13 +213,18 @@ class DocumentVehicle extends Component {
           error: 'Tienes 1 o más documentos erroneos.',
         });
       }
-      if (document.status && !document.fetching) {
-        if (document.status && !document.unprocess) {
+      if (documentVehicle.status && !documentVehicle.fetching) {
+        if (documentVehicle.status && !documentVehicle.unprocess) {
           // register ok
           oldList[document_load].status = 'correct';
-          this.setState({ listStatus: oldList, loadingRegister: false, init: false });
-          getDocumentsMe();
-        } else if (loadingRegister && document.unprocess) {
+          this.setState({
+            listStatus: oldList,
+            loadingRegister: false,
+            init: false,
+            didMount: true,
+          });
+          getDocumentsVehicleMe(idVehicle);
+        } else if (loadingRegister && documentVehicle.unprocess) {
           oldList[document_load].status = 'fail';
           this.setState({ listStatus: oldList, loadingRegister: false, error: 'Tienes 1 o más documentos no validos.' });
           this.setState({ loadingRegister: false });
@@ -194,7 +232,11 @@ class DocumentVehicle extends Component {
       }
     }
 
-    if (document.listTypes !== null && !document.fetchingTypes && !document.fetching && document.listDocuments !== null) {
+    if (document.listTypes !== null
+      && !document.fetchingTypes
+      && !documentVehicle.fetchingList
+      && documentVehicle.listDocuments !== null
+      && (didMount)) {
       if (!init) {
         { document.listTypes.map(data => (
           initStatus[data.id] = {
@@ -208,7 +250,7 @@ class DocumentVehicle extends Component {
         const titleData = initStatus;
 
         // docs me
-        { document.listDocuments.map((datalist) => {
+        { documentVehicle.listDocuments.map((datalist) => {
           if (titleData[datalist.document_type_id] !== undefined) {
             initStatus[datalist.document_type_id] = {
               id: datalist.document_type_id,
@@ -219,7 +261,6 @@ class DocumentVehicle extends Component {
             };
           }
         }); }
-        console.log(listStatus);
         this.setState({ init: true, listStatus: initStatus });
       }
 
@@ -246,22 +287,27 @@ class DocumentVehicle extends Component {
                 <RowDocument>
                   <Card
                     key={data.id}
-                    logo="https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/document.svg"
                     background="white"
                     mainText={data.name}
                     subText={data.description}
                     icon
-                    status={listStatus.length === 0 ? '' : listStatus[data.id].status}
+                    status={listStatus.length === 0 ? '' : listStatus[data.id] === undefined ? '' : listStatus[data.id].status}
                     colorText="black"
                     borderColorProp="#ecf0f1"
                     press={() => this.onPressButtonDoc(data.id)}
-                    edit={listStatus.length === 0 ? false : listStatus[data.id].edit}
+                    edit={listStatus.length === 0 ? false : listStatus[data.id] === undefined ? false : listStatus[data.id].edit}
                     pressEdit={() => this.onPressEdit(data.id)}
                   />
                 </RowDocument>
               ) : null
             ))}
           </WrapperDocument>
+
+          <WrapperButtonsBottom style={{ marginBottom: 35 }}>
+            <WrapperButtonGradient>
+              <ButtonGradient content="Siguiente" press={() => this.onPressNext()} />
+            </WrapperButtonGradient>
+          </WrapperButtonsBottom>
 
           <Toast
             visible={visible_error}
@@ -307,8 +353,6 @@ class DocumentVehicle extends Component {
                   <WrapperImage>
                     <ImageDetail
                       resizeMode="contain"
-                      // eslint-disable-next-line global-require
-                      loadingIndicatorSource={require('../../../Images/arrow-down.png')}
                       source={{ uri: listStatus[activeEdit].dataEdit.file }}
                     />
                   </WrapperImage>
@@ -329,6 +373,44 @@ class DocumentVehicle extends Component {
               ) : null }
             </MainWrapperDialog>
           </EmptyDialog>
+
+          <EmptyDialog
+            visible={modalNext === 'remover' ? false : modalNext}
+            opacity={0.5}
+            onTouchOutside={() => this.OnHideModal()}
+          >
+            <NextWrapperDialog>
+              <ContentDialog>
+                <WrapperTitle>
+                  <TitleDesc>
+                    Recuerda!
+                  </TitleDesc>
+                  <TextModalGray>
+                    Todos los Documentos son requeridos
+                    {'\n'}
+                    para verificar el vehículo.
+                    {'\n'}
+                    En cualquier momento puedes actualizar
+                    {'\n'}
+                    todos tus documentos.
+                    {'\n'}
+                  </TextModalGray>
+                </WrapperTitle>
+                <WrapperButtonsBottom style={{ marginTop: 10 }}>
+                  <ButtonGradient
+                    content="Continuar"
+                    press={() => this.nextStep()}
+                  />
+                </WrapperButtonsBottom>
+                <WrapperButtonsBottom style={{ marginTop: 0 }}>
+                  <ButtonWhite
+                    content="Cerrar"
+                    press={() => this.OnHideModal()}
+                  />
+                </WrapperButtonsBottom>
+              </ContentDialog>
+            </NextWrapperDialog>
+          </EmptyDialog>
         </MainWrapper>
       );
     } return (
@@ -342,19 +424,20 @@ class DocumentVehicle extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, document } = state;
+  const { user, document, documentVehicle } = state;
   return {
     user,
     document,
+    documentVehicle,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  registerDocument: params => dispatch(DocumentActions.postRegisterDocRequest(params)),
   getDocumentsTypes: category => dispatch(DocumentActions.getDocsTypesRequest(category)),
-  getDocumentsMe: params => dispatch(DocumentActions.getDocsMeRequest(params)),
-  deleteDocument: id => dispatch(DocumentActions.removeDocRequest(id)),
   dropDocumentsState: params => dispatch(DocumentActions.dropInitialState(params)),
+  registerDocumentVeh: params => dispatch(DocumentVehActions.postRegisterDocVehicleRequest(params)),
+  getDocumentsVehicleMe: idVehicle => dispatch(DocumentVehActions.getDocsVehicleMeRequest(idVehicle)),
+  deleteDocVehicle: id => dispatch(DocumentVehActions.removeDocVehicleRequest(id)),
 });
 
 export default connect(

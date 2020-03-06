@@ -61,11 +61,12 @@ export const WrapperModal = styled.View`
 
 export const WrapperTopCard = styled.View`
   position: absolute;
-  width: 80%;
+  width: 100%;
   height: auto;
-  right: 3%;
   top: 5px;
   opacity: 0.88;
+  right: 5px;
+  left: 5px;
 `;
 
 export const BlueText = styled.Text`
@@ -86,4 +87,18 @@ export const CustomImage = styled.Image`
   height: 50px;
   resize-mode: contain;
   z-index: 1000;
+`;
+
+export const WrapperSwipeable = styled.View`
+  padding: 20px;
+  margin-bottom: 100px;
+`;
+
+export const BlueTextPDF = styled.Text`
+  color: #0068ff;
+  font-size: 24px;
+  align-self: center;
+  text-align: center;
+  padding-vertical: 20px;
+  margin-top: 15px;
 `;
