@@ -210,12 +210,12 @@ class Profile extends Component {
             <WrapperMap>
               <ContentInitial>
                 <WrapperColumn>
-                  /* <WrapperImage onPress={() => this.setState({ avatar: true, id: data.profile.id })} style={{ alignItems: 'center' }}> */
+                  {/* <WrapperImage onPress={() => this.setState({ avatar: true, id: data.profile.id })} style={{ alignItems: 'center' }}> */}
                   <WrapperImage>
                     <Image
                       source={require('../../Images/profile.jpg')}
                     />
-                    /* <TextBlack style={{ fontSize: 14, color: '#0068ff', marginLeft: 25 }}>Editar</TextBlack> */
+                    {/* <TextBlack style={{ fontSize: 14, color: '#0068ff', marginLeft: 25 }}>Editar</TextBlack> */}
                   </WrapperImage>
                   <WrapperInfo>
                     <BoldText>{data.profile.firt_name}</BoldText>
