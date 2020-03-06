@@ -176,7 +176,7 @@ class PhotoVehicle extends Component {
     const { navigation } = this.props;
     this.setState({ modalNext: false });
     setTimeout(() => {
-      navigation.navigate('ListVehicle');
+      navigation.replace('ListVehicle');
     });
   }
 

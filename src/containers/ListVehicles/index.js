@@ -58,7 +58,7 @@ class ListVehicles extends Component {
     const { selectID, offer } = this.state;
     const { vehicles } = this.props;
     const items = vehicles.list.length;
-    if (items > 3) {
+    if (items >= 3) {
       // Alert not add
       this.setState({ modalVeh: true });
       // navigate('DetailVehicle');

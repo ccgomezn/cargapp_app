@@ -171,7 +171,7 @@ class DocumentVehicle extends Component {
     this.setState({ modalNext: 'remover' });
     setTimeout(() => {
       navigation.replace('DetailPhotoDoc', { vehicleId: idVehicle });
-    }, 1000);
+    }, 400);
   }
 
   OnHideModal() {
