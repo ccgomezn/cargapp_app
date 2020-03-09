@@ -51,11 +51,10 @@ function TopCardTravel({
         </TouchableDoc>
         <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
           { aprox && isConfirmLoad ? (
-            {/* <Line /> */}
+            null
           ) : null }
           {aprox
             ? (
-
               <WrapperColumn>
                 <TouchableContact onPress={actionBtnOk}>
                   <BlueText style={{ /* paddingVertical: 10 */ }}>

@@ -519,15 +519,19 @@ class StartTravel extends Component {
     let realDocuments = new Map();
     let documentCards = [];
 
-    if (document && document.listTypes && document.serviceDocuments) {
+    if (document && document.listTypes) {
       document.listTypes.map((type) => {
-        document.serviceDocuments.map((doc) => {
-          if (doc.document_type_id === type.id) {
-            listDocuments.push(doc);
-          } else {
-            realDocuments.set(type.id, type);
-          }
-        });
+        if (document.serviceDocuments && (document.serviceDocuments.length > 0)) {
+          document.serviceDocuments.map((doc) => {
+            if (doc.document_type_id === type.id) {
+              listDocuments.push(doc);
+            } else {
+              realDocuments.set(type.id, type);
+            }
+          });
+        } else {
+          realDocuments.set(type.id, type);
+        }
       });
 
       listDocuments.map((doc) => {
@@ -535,6 +539,7 @@ class StartTravel extends Component {
           realDocuments.set(doc.document_type_id, doc);
         }
       });
+
       
       realDocuments.forEach((doc, key) => {
         documentCards.push(
@@ -551,13 +556,9 @@ class StartTravel extends Component {
         );
       });
     }
-    console.log('liiiiiii',listDocuments);
-    console.log('disssss',realDocuments);
 
     if (loadingRegister) {
-      console.log('document', document);
       if (!document.fetching && !document.error) {
-        console.log('stad', status);
         this.setState({ loadingRegister: false });
         if (status === 19) {
           setTimeout(() => {
@@ -569,14 +570,13 @@ class StartTravel extends Component {
       }
     }
 
-    if (document.serviceDocuments && !document.fetchingServiceDoc && !manifestSet) {
+    /* if (document.serviceDocuments && !document.fetchingServiceDoc && !manifestSet) {
       this.downloadMan();
-      console.log('serviceDoc', document.serviceDocuments);
       this.setState({ manifestSet: true });
     }
     if (document.errorServiceDoc && !spinner) {
       this.setState({ nonManifest: true });
-    }
+    } */
 
     if (offerSpecific !== null
       && waypoints !== undefined
@@ -789,7 +789,7 @@ class StartTravel extends Component {
             title="Documentos"
           >
             <WrapperSwipeable>
-              { documentCards && documentCards }
+              { documentCards }
             </WrapperSwipeable>
           </Swipeable>
         </MainWrapper>

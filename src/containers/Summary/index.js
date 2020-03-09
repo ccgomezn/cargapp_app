@@ -99,11 +99,6 @@ class ScreenSummary extends Component {
     analytics().logEvent('boton_encuesta');
     const { postRateServices, profile } = this.props;
     this.setState({ modalRating: false });
-    if (value <= 3) {
-      this.setState({ modalCheck: true });
-    } else {
-      this.confirmTest();
-    }
     const data = {
       rate_service: {
         service_point: value,
@@ -113,9 +108,15 @@ class ScreenSummary extends Component {
         active: true,
       },
     };
-    setTimeout(() => {
+
+    if (value <= 3) {
+      this.setState({ modalCheck: true }, () => {
+        postRateServices(data);
+      });
+    } else {
+      this.confirmTest();
       postRateServices(data);
-    }, 1000);
+    }
   }
 
   async imageDocument(name, id, bool) {
@@ -193,11 +194,11 @@ class ScreenSummary extends Component {
       load, documentConfirm, modalPDF,
       proofOfPayment, errorProofOfPayment,
     } = this.state;
-    const starCount = 4;
+    const starCount = 0;
     if (summary.data !== null && !summary.fetching) {
       const { document_services } = summary.data;
       document_services.map((doc) => {
-        if (doc.name === 'Confimacion de cumplido' && !documentConfirm) {
+        if (doc.document_type_id === 17 && !documentConfirm) {
           this.setState({ documentConfirm: true });
         }
         return null;
@@ -375,7 +376,7 @@ class ScreenSummary extends Component {
           </EmptyDialog>
           <WrapperButton>
             {summary.data.service.statu_id === 19 && (
-              <ButtonGradient press={() => this.imageDocument('Confimacion de cumplido', summary.data.service.id, documentConfirm)} content="Cargar cumplido" disabled={false} />
+              <ButtonGradient press={() => this.imageDocument('Confimacion de cumplido', summary.data.service.id, documentConfirm)} content={documentConfirm ? 'Calificar' : 'Cargar cumplido'} disabled={false} />
             ) }
             {summary.data.service.statu_id === 11 && (
               <ButtonGradient press={() => navigation.goBack()} content="Volver" disabled={false} />

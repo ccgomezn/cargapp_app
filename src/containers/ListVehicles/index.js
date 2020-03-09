@@ -37,7 +37,7 @@ class ListVehicles extends Component {
     // get getTypes
     getVehiclesType();
     const selectID = navigation.getParam('selectID');
-    const offer = navigation.getParam('offer');
+    const offer = navigation.getParam('offer', null);
     this.setState({ selectID, offer });
   }
 
@@ -110,8 +110,9 @@ class ListVehicles extends Component {
             })}
             {offer && isVehicle === null ? (
               <BlueText>
-                No tienes vehículos agregados con las
-                caracteristicas que necesita el generador
+                No tienes vehículos agregados
+                {'\n'}
+                con las características requeridas.
               </BlueText>
             ) : null}
             {vehicles.list.map((data) => {
@@ -130,14 +131,16 @@ class ListVehicles extends Component {
           <WrapperButtonsBottom>
             <WrapperButtonGradient>
               {offer && (isVehicle === null || isVehicle === 'now') && (
-              <ButtonWhite press={() => navigation.navigate('HomeOffers')} content="Cancelar" border />
+              <ButtonWhite press={() => navigation.navigate('HomeOffers')} content="Volver" border />
               )}
             </WrapperButtonGradient>
             <WrapperButtonGradient>
-              <ButtonGradient
-                content="Añadir Vehículo"
-                press={() => this.onValidate()}
-              />
+              {offer === null && (
+                <ButtonGradient
+                  content="Añadir Vehículo"
+                  press={() => this.onValidate()}
+                />
+              )}
             </WrapperButtonGradient>
           </WrapperButtonsBottom>
           <PopUpDialog
