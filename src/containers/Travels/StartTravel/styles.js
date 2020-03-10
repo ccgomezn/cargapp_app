@@ -66,7 +66,7 @@ export const WrapperTopCard = styled.View`
   top: 5px;
   opacity: 0.88;
   right: 5px;
-  left: 5px;
+  left: 2px;
 `;
 
 export const BlueText = styled.Text`

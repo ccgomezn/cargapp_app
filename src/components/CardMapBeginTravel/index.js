@@ -80,7 +80,7 @@ function CardMapBeginTravel({
             <NormalText>
               {loadWeight}
               {' '}
-              TON
+              {loadWeight !== 'N/A' ? 'Ton.' : ''}
             </NormalText>
           </WrapperInfoBody>
           <WrapperInfoBody>
@@ -88,7 +88,7 @@ function CardMapBeginTravel({
             <NormalText>
               {loadVolume}
               {' '}
-              M3
+              {loadVolume !== 'N/A' ? 'm³' : ''}
             </NormalText>
           </WrapperInfoBody>
         </WrapperColumn>

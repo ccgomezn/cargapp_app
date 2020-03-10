@@ -87,7 +87,12 @@ class ListVehicles extends Component {
           <ContentView>
             <ContentBlock>
               <TextBlack>Mis Vehículos</TextBlack>
-              <TextGray>Añade y edita los datos de tus vehículos.</TextGray>
+              {offer === null && (
+                <TextGray>Añade y edita los datos de tus vehículos.</TextGray>
+              )}
+              {offer && (isVehicle === null || isVehicle === 'now') && (
+                <TextGray>Selecciona el vehículo para postularte a la oferta.</TextGray>
+              )}
             </ContentBlock>
           </ContentView>
 

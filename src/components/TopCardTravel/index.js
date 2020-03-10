@@ -34,7 +34,7 @@ function textStatus(status, aprox) {
   if (status === 9) {
     return 'Evidencia Finalizar Descargue';
   }
-  return '';
+  return null;
 }
 
 function TopCardTravel({
@@ -49,15 +49,12 @@ function TopCardTravel({
         <TouchableDoc onPress={touchableAction}>
           <Image source={require('../../Images/Docs.png')} />
         </TouchableDoc>
-        <MainWrapper style={!isConfirmLoad ? { paddingTop: 5 } : null}>
-          { aprox && isConfirmLoad ? (
-            null
-          ) : null }
-          {aprox
+        <MainWrapper>
+          {aprox && status !== 8
             ? (
               <WrapperColumn>
                 <TouchableContact onPress={actionBtnOk}>
-                  <BlueText style={{ /* paddingVertical: 10 */ }}>
+                  <BlueText>
                     { textStatus(status, aprox) }
                   </BlueText>
                 </TouchableContact>

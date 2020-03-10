@@ -540,7 +540,6 @@ class StartTravel extends Component {
         }
       });
 
-      
       realDocuments.forEach((doc, key) => {
         documentCards.push(
           <CardBank
@@ -570,14 +569,6 @@ class StartTravel extends Component {
       }
     }
 
-    /* if (document.serviceDocuments && !document.fetchingServiceDoc && !manifestSet) {
-      this.downloadMan();
-      this.setState({ manifestSet: true });
-    }
-    if (document.errorServiceDoc && !spinner) {
-      this.setState({ nonManifest: true });
-    } */
-
     if (offerSpecific !== null
       && waypoints !== undefined
       && markers.data !== null
@@ -587,7 +578,6 @@ class StartTravel extends Component {
         commerce.longitude = commerce.geolocation.split(',')[0],
         commerce.latitude = commerce.geolocation.split(',')[1]
       ));
-      console.log(this.props);
       return (
         <MainWrapper>
           <Modal visible={modalPDF}>

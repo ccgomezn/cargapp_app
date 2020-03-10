@@ -15,9 +15,19 @@ export const RowContainer = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: 22px;
+  font-size: 16.5px;
   font-weight: 500;
   color: black;
+`;
+
+export const TextSecond = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+  width: 100%;
+  height: auto;
+  padding-bottom: 2px;
+  background-color: blue;
 `;
 
 export const NormalTitle = styled.Text`
@@ -53,6 +63,8 @@ export const Icon = styled.Image`
 export const ColumnContainer = styled.View`
   justify-content: flex-start;
   padding-vertical: 7px;
+  background-color: red;
+  flex: 1;
 `;
 
 export const Line = styled.View`

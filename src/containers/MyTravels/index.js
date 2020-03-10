@@ -201,13 +201,12 @@ class MyTravels extends Component {
           if (offer.active) {
             if (offer.statu_id === 16) {
               navigation.navigate('ApplyTravels', { dataOffer: offer });
-              console.log('redirection detail');
             } else if (offer.statu_id === 19 && !summary) {
               navigation.navigate('SummaryTravels', { offer });
             } else if (status_travel.includes(offer.statu_id)) {
               navigation.navigate('StartTravel', { Offer: offer });
             } else {
-              console.log(`${offer.statu_id} no include`);
+              // console.log(`${offer.statu_id} no include`);
             }
           }
         });
@@ -235,11 +234,11 @@ class MyTravels extends Component {
                               from={allOffers.origin}
                               vehicle={vehicle.id === allOffers.vehicle_type_id && vehicle.name}
                               pay={formatPrice(allOffers.price)}
-                              date="Hoy"
+                              date={allOffers.created_at}
                               status={service_map[allOffers.id] === false ? 'Rechazado' : allOffers.statu_id === statusOffer.id && statusOffer.name}
                               actionbtnPrimary={() => this.onPressButton(allOffers)}
                               btnPrimary={service_map[allOffers.id] === null || service_map[allOffers.id] ? 'Ver detalle' : null}
-                              actionbtnSecondary={() => this.onClickShare(allOffers)}
+                              actionbtnSecondary={null}
                             />
                           );
                         }

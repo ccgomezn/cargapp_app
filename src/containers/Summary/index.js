@@ -17,7 +17,7 @@ import {
   ColumnContainer,
   RowContainerAddresses,
   RowContainer,
-  Title,
+  Title, TextSecond,
   SubTitle,
   NormalTitle,
   WrapperModal,
@@ -256,25 +256,27 @@ class ScreenSummary extends Component {
             <ColumnContainer>
               <ColumnContainer>
                 <SubTitle>
-                  Inicio:
+                  Inicio
+                  {': '}
                   {moment(summary.data.service.created_at).format('ll')}
                 </SubTitle>
-                <Title>
+                <TextSecond>
                   {summary.data.origin.name}
                   {': '}
-                  {summary.data.service.origin_address.length > 20 ? `${summary.data.service.origin_address.substring(0, 17)}...` : summary.data.service.origin_address }
-                </Title>
+                  {summary.data.service.origin_address.length > 20 ? `${'\n'}${summary.data.service.origin_address}` : summary.data.service.origin_address }
+                </TextSecond>
               </ColumnContainer>
               <ColumnContainer>
                 <SubTitle>
-                  Detino:
+                  Destino
+                  {': '}
                   {moment(summary.data.service.updated_at).format('ll')}
                 </SubTitle>
-                <Title>
+                <TextSecond>
                   {summary.data.destination.name}
                   {': '}
-                  {summary.data.service.destination_address.length > 20 ? `${summary.data.service.destination_address.substring(0, 17)}...` : summary.data.service.destination_address }
-                </Title>
+                  {summary.data.service.destination_address.length > 20 ? `${'\n'}${summary.data.service.destination_address}` : summary.data.service.destination_address }
+                </TextSecond>
               </ColumnContainer>
             </ColumnContainer>
           </RowContainerAddresses>

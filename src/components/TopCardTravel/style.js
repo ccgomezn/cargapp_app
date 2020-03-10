@@ -96,11 +96,11 @@ export const Icon = styled.Image`
     `;
 
 export const TouchableDoc = styled.TouchableOpacity`
-    width: 15%;
-    margin-right: 5px;
+    width: 12%;
+    margin-right: 8px;
     justify-content: center;
     align-items: center;
     padding: 5px;
     background-color: #0068ff;
-    border-radius: 20px;
+    border-radius: 10px;
 `;
