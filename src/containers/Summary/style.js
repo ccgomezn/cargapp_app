@@ -27,7 +27,6 @@ export const TextSecond = styled.Text`
   width: 100%;
   height: auto;
   padding-bottom: 2px;
-  background-color: blue;
 `;
 
 export const NormalTitle = styled.Text`
@@ -44,7 +43,7 @@ export const SubTitle = styled.Text`
 export const Map = styled(MapView)`
   width: 100%;
   height: 200px;
-  margin-vertical: 4%;
+  margin-vertical: 0%;
 `;
 
 export const RowContainerAddresses = styled.View`
@@ -63,7 +62,6 @@ export const Icon = styled.Image`
 export const ColumnContainer = styled.View`
   justify-content: flex-start;
   padding-vertical: 7px;
-  background-color: red;
   flex: 1;
 `;
 
@@ -138,3 +136,13 @@ export const Indicator = styled(ActivityIndicator)`
   z-index: 90;
   position: absolute;
 `;
+
+export const ContentLoad = styled.View`
+  background-color: rgba(245,246,250, 0.7);
+  position: absolute;
+  z-index: 10;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+`;
+

@@ -66,7 +66,7 @@ class MyTravels extends Component {
   componentDidMount() {
     analytics().setCurrentScreen('mis_viajes');
     const {
-      getMyOffers, getStatus, profile, getsOffers, getVehicles, getMyOffersRequest,
+      getMyOffers, getStatus, profile, getsOffers, getVehicles, getMyOffersRequest, getparameters,
     } = this.props;
 
     const that = this;
@@ -92,6 +92,7 @@ class MyTravels extends Component {
     getsOffers();
     getStatus();
     getVehicles();
+    getparameters('STATUS_TRAVEL');
     getMyOffersRequest(profile.data[0].user.id);
     getMyOffers(profile.data[0].user.id);
   }
@@ -136,31 +137,13 @@ class MyTravels extends Component {
     getMyOffersRequest(profile.data[0].user.id);
   }
 
-  onClickShare(offers) {
-    Share.share(
-      {
-        message:
-          `Este viaje de carga te puede interesar:\n\nhttps://cargapp.app.link/psicLa1y7Y?offer=${
-            offers.id}`,
-        url: `https://cargapp.app.link/psicLa1y7Y?offer=${offers.id}`,
-        title: 'Viaje Cargapp',
-      },
-      {
-        // Android only:
-        dialogTitle: 'Compartir Viaje',
-        // iOS only:
-        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
-      },
-    );
-  }
-
   render() {
     const {
       alertVisible, modalSearch, multiSliderValue, refresh, summary,
     } = this.state;
     const {
       offers, vehicles, status, navigation, parameters, profile,
-      getsOffers, getStatus, getVehicles, getMyOffersRequest, getMyOffers,
+      getsOffers, getStatus, getVehicles, getMyOffersRequest, getMyOffers, getparameters,
     } = this.props;
 
     const isSummary = navigation.getParam('isSummary');
@@ -168,6 +151,7 @@ class MyTravels extends Component {
       getsOffers();
       getStatus();
       getVehicles();
+      getparameters('STATUS_TRAVEL');
       getMyOffersRequest(profile.data[0].user.id);
       getMyOffers(profile.data[0].user.id);
       this.setState({ refresh: true });

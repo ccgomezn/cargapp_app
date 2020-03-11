@@ -11,10 +11,11 @@ import React, { Component } from 'react';
 import { View } from 'native-base';
 import { ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
+import 'moment/locale/es';
 import moment from 'moment';
 import PickerModal from 'react-native-picker-modal-view';
 import analytics from '@react-native-firebase/analytics';
-import { formatPrice } from '../../helpers/Utils.js';
+import { formatPrice } from '../../helpers/Utils';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
@@ -5,8 +7,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import analytics from '@react-native-firebase/analytics';
-import { ActivityIndicator, Modal } from 'react-native';
+import { ActivityIndicator, Modal, View } from 'react-native';
 import moment from 'moment';
+import Polyline from '@mapbox/polyline';
 import ImagePicker from 'react-native-image-picker';
 import PDFView from 'react-native-view-pdf';
 import {
@@ -26,6 +29,7 @@ import {
   GrayText, Indicator,
   Check, WrapperButton,
   Touchable, WrapperButtonImage,
+  ContentLoad,
 } from './style';
 import ButtonGradient from '../../components/ButtonGradient';
 import SummaryActions from '../../redux/reducers/SummaryRedux';
@@ -37,6 +41,8 @@ import Spinner from '../../components/Spinner';
 import PopUpNotification from '../../components/PopUpNotifications';
 
 import { formatPrice } from '../../helpers/Utils';
+
+const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
 class ScreenSummary extends Component {
   constructor(props) {
@@ -52,6 +58,9 @@ class ScreenSummary extends Component {
       proofOfPayment: '',
       modalPDF: false,
       errorProofOfPayment: false,
+      waypoints: null,
+      mapReady: false,
+      pointCenter: null,
     };
   }
 
@@ -63,6 +72,15 @@ class ScreenSummary extends Component {
     if (offer.id) {
       getSummary(offer.id);
       getDocsServiceRequest(offer.id);
+      this.getDirections(offer)
+        .then((route) => {
+          const split = Math.round(route.length / 2);
+          const newsplit = Math.round(split / 4);
+          this.setState({ waypoints: route, pointCenter: route[newsplit + split] });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -71,6 +89,31 @@ class ScreenSummary extends Component {
     const { dropSummary, dropDocumentsState } = this.props;
     dropSummary();
     dropDocumentsState();
+  }
+
+  async getDirections(offerDetail) {
+    const lat_origin = offerDetail.origin_latitude;
+    const lng_origin = offerDetail.origin_longitude;
+    const lat_des = offerDetail.destination_latitude;
+    const lng_des = offerDetail.destination_longitude;
+
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${lat_origin},${lng_origin}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const respJson = await resp.json();
+    const points = respJson.routes[0].legs[0].steps;
+
+    const coords = [];
+    points.forEach((point) => {
+      const decodedPoints = Polyline.decode(point.polyline.points);
+      decodedPoints.forEach((dec) => {
+        coords.push({
+          latitude: dec[0],
+          longitude: dec[1],
+        });
+      });
+    });
+    this.setState({ coords });
+
+    return coords;
   }
 
   async onRegisterDoc(source, name, id) {
@@ -192,10 +235,14 @@ class ScreenSummary extends Component {
       modalRating, modalCheck,
       check1, check2, check3,
       load, documentConfirm, modalPDF,
-      proofOfPayment, errorProofOfPayment,
+      proofOfPayment, errorProofOfPayment, 
+      waypoints, mapReady, pointCenter,
     } = this.state;
     const starCount = 0;
-    if (summary.data !== null && !summary.fetching) {
+
+    if (summary.data !== null
+      && !summary.fetching
+      && waypoints !== null) {
       const { document_services } = summary.data;
       document_services.map((doc) => {
         if (doc.document_type_id === 17 && !documentConfirm) {
@@ -234,22 +281,35 @@ class ScreenSummary extends Component {
             <Title>Resumen </Title>
             <Title>{moment(summary.data.service.updated_at).format('ll')}</Title>
           </RowContainer>
-          <Map pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}>
-            <Map.Polyline
-              coordinates={[
-                {
-                  latitude: summary.data.service.origin_latitude,
-                  longitude: summary.data.service.origin_longitude,
-                },
-                {
-                  latitude: summary.data.service.destination_latitude,
-                  longitude: summary.data.service.destination_longitude,
-                },
-              ]}
-              strokeWidth={4}
-              strokeColor="#007aff"
-            />
-          </Map>
+          <View>
+            {!mapReady && (
+              <ContentLoad>
+                <ActivityIndicator
+                  style={{ alignSelf: 'center', height: 200 }}
+                  size="large"
+                  color="#0000ff"
+                />
+              </ContentLoad>
+            )}
+            <Map
+              pitchEnabled={false}
+              rotateEnabled={false}
+              onMapReady={() => this.setState({ mapReady: true })}
+              region={{
+                latitude: pointCenter.latitude,
+                longitude: pointCenter.longitude,
+                latitudeDelta: 10,
+                longitudeDelta: 10,
+              }}
+            >
+              <Map.Polyline
+                coordinates={waypoints}
+                strokeWidth={4}
+                strokeColor="#007aff"
+              />
+            </Map>
+          </View>
+
           <RowContainerAddresses>
             {/* eslint-disable-next-line global-require */}
             <Icon source={require('../../Images/Summary.png')} />

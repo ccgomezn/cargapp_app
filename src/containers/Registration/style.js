@@ -74,7 +74,7 @@ export const WrapperButtons = styled.View`
   flex-direction: row;
   display: flex;
   height: auto;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 10%;
   margin-bottom: 0%;

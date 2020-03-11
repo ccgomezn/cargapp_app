@@ -510,10 +510,9 @@ class Registration extends Component {
           </TextBlack>
           <TextGray>
             Esto solo debes hacerlo una vez y tomará un par de minutos.
-            {/* {'\n'}
-            Datos personales */}
+            {'\n'}
           </TextGray>
-          <WrapperButtons>
+          {/* <WrapperButtons>
             <WrapperButton
               onPress={handlePressButtonTwo}
               style={pressStateTwo ? containerPress : null}
@@ -548,7 +547,7 @@ class Registration extends Component {
                 Maneje y administre su carga.
               </ButtonSubText>
             </WrapperButton>
-          </WrapperButtons>
+          </WrapperButtons> */}
           <WrapperInputs>
             <WrapperSection>
               <SectionRow style={{ width: '22%' }}>
