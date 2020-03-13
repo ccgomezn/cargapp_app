@@ -26,12 +26,12 @@ export const Icon = styled.Image`
 `;
 
 export const WrapperInfo = styled.View`
-    flex: 8;
-    flex-direction: column;
-    justify-content: space-between;
-    align-self: center;
-    padding-vertical: 10px;
-    `;
+  flex: 8;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: center;
+  padding-vertical: 8px;
+`;
 
 export const BoldText = styled.Text`
     font-family: Roboto;

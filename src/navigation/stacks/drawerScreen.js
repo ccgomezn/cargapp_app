@@ -29,7 +29,7 @@ function CustomDrawerContentComponent(props) {
   const profile = store.getState().profile.data;
   const firstName = profile ? profile[0].profile.firt_name : '';
   const lastName = profile ? profile[0].profile.last_name : '';
-  const shortName = lastName.split(' ');
+  const shortName = lastName !== null ? lastName.split(' ') : '';
   // Remover item Profile
   const filteredItems = items.filter(item => item.key !== 'ScreenProfile' && item.key !== 'ScreenTravel');
   return (

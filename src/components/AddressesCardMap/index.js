@@ -15,11 +15,13 @@ import images from '../../icons';
 
 function AddressesCardMap(
   {
-    nameCompany, firstAddress, secondAddress, nameAddress, iconOrigin, iconDestination,
+    nameCompany, firstAddress, secondAddress, nameAddress, iconOrigin, iconDestination, colorBack,
   },
 ) {
   return (
-    <MainWrapper>
+    <MainWrapper
+      style={{ backgroundColor: colorBack === null ? 'white' : 'rgba(255, 255, 255, 0.9)' }}
+    >
       <WrapperCard>
         <WrapperIcon>
           <Icon
@@ -54,6 +56,7 @@ AddressesCardMap.propTypes = {
   nameAddress: PropTypes.string.isRequired,
   iconOrigin: PropTypes.string.isRequired,
   iconDestination: PropTypes.string.isRequired,
+  colorBack: PropTypes.string.isRequired,
 };
 
 export default AddressesCardMap;

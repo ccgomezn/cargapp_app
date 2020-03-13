@@ -44,7 +44,7 @@ export function* validatePin(api, action) {
 export function* registerUser(api, action) {
   const { params } = action;
   const response = yield call(api.user.registerUser, params);
-  console.log(response);
+  console.log('register', response);
   if (response.status === 201) {
     // save OK create
     yield put(UserActions.postRegisterSuccess(response.data));

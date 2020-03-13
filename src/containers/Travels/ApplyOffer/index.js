@@ -12,7 +12,9 @@ import analytics from '@react-native-firebase/analytics';
 import { View } from 'native-base';
 import {
   MainWrapper, AddressesWrapper, WrapperModal, BlueText, WrapperTextModal,
+  CustomImage,
 } from './style';
+import images from '../../../icons';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
@@ -310,14 +312,6 @@ class ApplyOffer extends Component {
               onTouchOutside={() => this.setState({ modalApply: null })}
             />
           )}
-          {/*
-          <EmptyDialog visible={modalFinish}>
-            <WrapperModal>
-              <BlueText>{offer.statu_id === 11 ? 'Este viaje ya está finalizado' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
-              <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
-            </WrapperModal>
-          </EmptyDialog>
-          */}
           <EmptyDialog visible={modalRate}>
             <WrapperModal>
               <WrapperTextModal>
@@ -336,15 +330,27 @@ class ApplyOffer extends Component {
               latitudeDelta: 9.93,
               longitudeDelta: 9.94,
             }}
-            style={{ height: '55%', width: '100%' }}
+            style={{ height: 250, width: '100%' }}
           >
             <MapView.Marker
               coordinate={{
                 latitude: parseInt(offer.origin_latitude),
                 longitude: parseInt(offer.origin_longitude),
               }}
-              title="Origen del viaje"
-            />
+              title="Punto de cargue"
+            >
+              <CustomImage source={images.markerOrigin} />
+            </MapView.Marker>
+
+            <MapView.Marker
+              coordinate={{
+                latitude: parseInt(offer.destination_latitude),
+                longitude: parseInt(offer.destination_longitude),
+              }}
+              title="Punto de entrega"
+            >
+              <CustomImage source={images.markerDestination} />
+            </MapView.Marker>
           </MapView>
           {successNotification && (
           <PopUpNotification

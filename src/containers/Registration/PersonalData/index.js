@@ -60,6 +60,11 @@ class Registration extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { getProfile } = this.props;
+    getProfile();
+  }
+
   async onUpdatePress() {
     const {
       dataname, datalastname, iduser,
@@ -115,6 +120,7 @@ class Registration extends Component {
     const { user } = this.props;
     const { navigate } = this.props.navigation;
     if (datarol === 11 || datarol === '') {
+      console.log('navigateOK-user', user);
       navigate('DriverMenu');
     } else {
       navigate('RegCompany', { userdata: user.info });
@@ -174,7 +180,7 @@ class Registration extends Component {
             {/* <ArrowBack url={() => goBack()} /> */}
             <SvgUri source={{ uri: 'https://cargapplite2.nyc3.digitaloceanspaces.com/cargapp/logo3x.png' }} />
           </WrapperButtons>
-          <TextBlack style={{ textAlign: 'center'}}>
+          <TextBlack style={{ textAlign: 'center' }}>
             Datos
             <TextBlue>
               {' '}

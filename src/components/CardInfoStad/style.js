@@ -6,8 +6,8 @@ export const WrapperCard = styled.TouchableOpacity`
   border-radius: 8;
   background-color: white;
   flex-direction: column;
-  padding-vertical: 14;
-  padding-horizontal: 20;
+  padding-vertical: 2%;
+  padding-horizontal: 4%;
   align-content: center;
   shadow-color: #589b9b9b;
   shadow-offset: { width: 0, height: 1 };
