@@ -17,7 +17,7 @@ export const ContaintIcon = styled.View`
 export const CircleIcon = styled.View`
   border-radius: 50px;
   text-align: center;
-  background-color: red;
+  background-color: #CDEFFD;
 `;
 
 export const DrawIcon = styled.Image`

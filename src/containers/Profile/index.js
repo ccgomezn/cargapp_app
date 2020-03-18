@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable global-require */
 /* eslint-disable array-callback-return */
 /* eslint-disable import/no-named-as-default-member */
@@ -43,6 +44,7 @@ class Profile extends Component {
       loadingAvatar: false,
       id: '',
       avatarUser: '',
+      visible_error: false,
     };
   }
 
@@ -160,14 +162,19 @@ class Profile extends Component {
       repeatPassword,
       loadingAvatar,
       avatarUser,
+      visible_error,
     } = this.state;
     const { profile } = this.props;
 
-    console.log('avatar', avatarUser);
+    // hide Toast
+    if (visible_error) {
+      setTimeout(() => this.setState({
+        visible_error: false,
+      }), 5000); // hide toast after 5s
+    }
 
     if (loadingAvatar) {
       if (!profile.fetching) {
-        console.log('profile-load', profile);
         if (profile.edit && !profile.error) {
           // register ok
           this.setState({
@@ -175,7 +182,7 @@ class Profile extends Component {
             loadingAvatar: false,
           });
         } else if (profile.error) {
-          this.setState({ loadingAvatar: false, error: 'Tienes 1 o más documentos no validos.' });
+          this.setState({ loadingAvatar: false, visible_error: true });
         }
       }
     }
@@ -336,6 +343,15 @@ class Profile extends Component {
               </TouchModal>
             </MainWrapperDialog>
           </EmptyDialog>
+          <Toast
+            visible={visible_error}
+            position={-50}
+            duration={Toast.duration.LONG}
+            shadow
+            animation
+          >
+            Error, no se pudo procesar la solicitud
+          </Toast>
           <Toast
             visible={loadingAvatar}
             position={0}
