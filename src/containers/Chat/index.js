@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import { firebase } from '@react-native-firebase/firestore';
@@ -5,20 +6,11 @@ import { firebase } from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import {
-  WrapperFooter,
-  Input,
-  WrapperInput,
-  WrapperTouch,
   MainWrapper,
   WrapperInfoUser,
-  WrapperIcon,
-  Icon,
   TextSend,
   WrapperInfo,
   BoldText,
-  NormalText,
-  TouchableCall,
-  TextTouch,
 } from './style';
 
 class Chat extends Component {

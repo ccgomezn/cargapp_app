@@ -54,6 +54,24 @@ export const TouchCenterMenu = styled.TouchableOpacity`
 `;
 
 export const TouchRightMenu = styled.TouchableOpacity`
+  width: 50px;
+  height: 42px;
+  border-left-width: 2px;
+  border-left-color: #f5f6fa;
+  text-align: center;
+  align-self: center;
+  justify-content: center;
+`;
+
+export const IconRightImg = styled.Image`
+  width: 22px;
+  height: 22px;
+  align-self: center;
+  justify-content: center;
+  resize-mode: contain;
+`;
+
+export const TouchRightMenu2 = styled.TouchableOpacity`
   flex: 1; 
   flex-direction: row;
   width: 62px;

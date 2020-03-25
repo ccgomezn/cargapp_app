@@ -48,8 +48,8 @@ import ScreenConfig from '../../containers/Config';
 import ScreenService from '../../containers/Services';
 
 import {
-  IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu,
-  BoxPerfil, ImagenPerfil, CircleBorder, ImagenArrow, HeaderStyle,
+  IconImg, IconLogo, TouchLeftMenu, TouchCenterMenu, TouchRightMenu, IconRightImg,
+  BoxPerfil, ImagenPerfil, CircleBorder, ImagenArrow, HeaderStyle, TouchRightMenu2,
 } from '../style';
 // FILTER
 import ScreenFilterOffers from '../../containers/FilterOffers';
@@ -72,11 +72,24 @@ function leftIconMenu({ navigation, goBack }) {
   );
 }
 
-
-// eslint-disable-next-line react/prop-types
 function rightIconMenu({ navigation }) {
   return (
     <TouchRightMenu
+      onPress={() => {
+        navigation.navigate('ScreenPoints');
+      }}
+    >
+      <IconRightImg
+        source={require('../../icons/prem_1.png')}
+      />
+    </TouchRightMenu>
+  );
+}
+
+// eslint-disable-next-line react/prop-types
+function rightIconMenu2({ navigation }) {
+  return (
+    <TouchRightMenu2
       onPress={() => {
         // eslint-disable-next-line react/prop-types
         navigation.navigate('ScreenProfile');
@@ -100,7 +113,7 @@ function rightIconMenu({ navigation }) {
           source={require('../../Images/arrow-down.png')}
         />
       </BoxPerfil>
-    </TouchRightMenu>
+    </TouchRightMenu2>
   );
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /**
  * APP.js React Native CargAPp
  * https://github.com/cargappco/cargapp_app
@@ -41,7 +42,18 @@ class App extends React.Component {
 
   async checkPermission() {
     const enabled = await firebase.messaging().hasPermission();
+    console.log('enableMS', enabled);
     if (enabled) {
+      console.log('getToken', await firebase.messaging().getToken());
+      /* firebase.messaging().ios.registerForRemoteNotifications().then(() => {
+        firebase.messaging().ios.getAPNSToken().then((token) => {
+          console.log('tokenRmote', token);
+        });
+      });
+      // console.log('token do usuário:', token);
+      console.log('getAPN', await firebase.messaging().ios.getAPNSToken());
+      await firebase.messaging().registerForRemoteNotifications();
+      console.log('getToken', await firebase.messaging().getToken()); */
     } else {
       this.requestPermission();
     }
