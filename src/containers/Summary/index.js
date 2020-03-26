@@ -157,7 +157,7 @@ class ScreenSummary extends Component {
         postRateServices(data);
       });
     } else {
-      this.confirmTest();
+      this.confirmTest(id);
       postRateServices(data);
     }
   }
@@ -171,7 +171,8 @@ class ScreenSummary extends Component {
         takePhotoButtonTitle: 'Tomar Foto',
         chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
         customButtons: [],
-        quality: 0.5,
+        tintColor: '#010935',
+        quality: 0.4,
         storageOptions: {
           skipBackup: true,
           path: 'images',

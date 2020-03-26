@@ -22,7 +22,7 @@ import OffersTypes from '../../../redux/reducers/OffersRedux';
 import MarkersTypes from '../../../redux/reducers/MarkersRedux';
 import {
   MainWrapper,
-  AbsoluteWrapper,
+  WrapperButtons,
   WrapperImage,
   TouchableNavigationButtons,
   WrapperAdresses,
@@ -210,7 +210,7 @@ class StartTravel extends Component {
   }
 
   onInitialTravel() {
-    const { offerSpecific, status } = this.state;
+    const { offerSpecific } = this.state;
     const { putStateOriginTravel } = this.props;
 
     const data = {
@@ -341,7 +341,7 @@ class StartTravel extends Component {
         offerSpecific.origin_longitude,
       );
       console.log('resultgeo-6', result);
-      if (result < 0.15) {
+      if (result < 0.1) {
         this.setState({
           inTravel: false, aproxOrigin: true, feed: false, feed1: true,
         });
@@ -356,7 +356,7 @@ class StartTravel extends Component {
         offerSpecific.destination_longitude,
       );
       console.log('resultgeo-8', result);
-      if (result < 0.15) {
+      if (result < 0.1) {
         const data = {
           service: {
             statu_id: 18,
@@ -545,14 +545,23 @@ class StartTravel extends Component {
     }
 
     if (loadingRegister) {
-      if (!document.fetching && !document.error) {
-        this.setState({ loadingRegister: false });
-        if (status === 19) {
-          setTimeout(() => {
-            navigation.navigate('SummaryTravels', { offer: offerSpecific });
-          }, 200);
-        } else {
-          this.componentDidMount(true);
+      if (document.error && !document.fetching) {
+        // error api
+        console.log('error API');
+      }
+      if (document.status && !document.fetching) {
+        if (document.status && !document.unprocess) {
+          // register ok
+          this.setState({ loadingRegister: false });
+          if (status === 19) {
+            setTimeout(() => {
+              navigation.navigate('SummaryTravels', { offer: offerSpecific });
+            }, 200);
+          } else {
+            this.componentDidMount(true);
+          }
+        } else if (loadingRegister && document.unprocess) {
+          console.log('fail upload');
         }
       }
     }
@@ -593,7 +602,7 @@ class StartTravel extends Component {
             <PopUpNotification
               onTouchOutside={() => this.setState({ feed: false })}
               mainText="¡Atención!"
-              subText="Acabas de iniciar camino de cargue, ahora debes llegar al origen del viaje y cargar"
+              subText="Acabas de iniciar camino a cargue, ahora debes llegar al origen del viaje y cargar"
             />
           )}
           {feed1 && (
@@ -665,17 +674,6 @@ class StartTravel extends Component {
             >
               <CustomImage source={images.markerLocation} />
             </MapView.Marker> */}
-            {/* {markers.data.map(commerce => (
-              <MapView.Marker
-                coordinate={{
-                  latitude: Number(commerce.latitude),
-                  longitude: Number(commerce.longitude),
-                }}
-                title="Aliado Cargapp"
-              >
-                <CustomImage source={images.originPin} />
-              </MapView.Marker>
-            ))} */}
             <MapView.Marker
               coordinate={{
                 latitude: isOrigin ? Number(offerSpecific.origin_latitude) : Number(offerSpecific.destination_latitude),
@@ -692,16 +690,10 @@ class StartTravel extends Component {
               return (
                 <WrapperTopCard>
                   <TopCardTravel
-                    company={CompanyInfo.name}
-                    travelsCount={CompanyInfo.company_type}
                     arrive={aproxOrigin || inTravel}
                     status={status}
                     aprox={aproxOrigin}
-                    amount={offerSpecific.price}
-                    isConfirmLoad={inTravel}
                     actionBtnOk={() => this.confirmTravel()}
-                    actionMan={() => this.actionMan()}
-                    actionCall={() => null}
                     touchableAction={() => this.setState({ modalDocuments: true })}
                   />
                 </WrapperTopCard>
@@ -716,23 +708,23 @@ class StartTravel extends Component {
               />
             </WrapperInit>
           ) : null }
-          <AbsoluteWrapper>
-            <TouchableNavigationButtons
-              onPress={() => this.onLinking(`https://www.waze.com/ul?ll=${isOrigin ? offerSpecific.origin_latitude : offerSpecific.destination_latitude}%2C${isOrigin ? offerSpecific.origin_longitude : offerSpecific.destination_longitude}&navigate=yes`, 'waze')}
-            >
-              <WrapperImage
-                source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }}
-              />
-            </TouchableNavigationButtons>
-            <TouchableNavigationButtons
-              onPress={() => this.onLinking(`https://www.google.com/maps/place/${isOrigin ? offerSpecific.origin_latitude : offerSpecific.destination_latitude},${isOrigin ? offerSpecific.origin_longitude : offerSpecific.destination_longitude}`, 'google_maps')}
-            >
-              <WrapperImage
-                source={{ uri: 'https://lh3.googleusercontent.com/xmZuOCh0e0NeVpgsKn99K5Amo4PA2r5y078RIrvXY24zLAEwSLSwYvVcwT7zWSv512n4=w300' }}
-              />
-            </TouchableNavigationButtons>
-          </AbsoluteWrapper>
           <WrapperAdresses>
+            <WrapperButtons>
+              <TouchableNavigationButtons
+                onPress={() => this.onLinking(`https://www.waze.com/ul?ll=${isOrigin ? offerSpecific.origin_latitude : offerSpecific.destination_latitude}%2C${isOrigin ? offerSpecific.origin_longitude : offerSpecific.destination_longitude}&navigate=yes`, 'waze')}
+              >
+                <WrapperImage
+                  source={{ uri: 'https://web-assets.waze.com/website/assets/packs/media/images/quick_win/icons/icon-waze-e091b33eb21e909bdafd2bcbed317719.png' }}
+                />
+              </TouchableNavigationButtons>
+              <TouchableNavigationButtons
+                onPress={() => this.onLinking(`https://www.google.com/maps/place/${isOrigin ? offerSpecific.origin_latitude : offerSpecific.destination_latitude},${isOrigin ? offerSpecific.origin_longitude : offerSpecific.destination_longitude}`, 'google_maps')}
+              >
+                <WrapperImage
+                  source={{ uri: 'https://lh3.googleusercontent.com/xmZuOCh0e0NeVpgsKn99K5Amo4PA2r5y078RIrvXY24zLAEwSLSwYvVcwT7zWSv512n4=w300' }}
+                />
+              </TouchableNavigationButtons>
+            </WrapperButtons>
             <AddressesCardMap
               nameCompany="Mi ubicación"
               firstAddress={mylocation !== null ? mylocation : ''}

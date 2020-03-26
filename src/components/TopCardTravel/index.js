@@ -4,22 +4,13 @@ import PropTypes from 'prop-types';
 import {
   MainWrapper,
   WrapperColumn,
-  WrapperImage,
   Image,
-  WrapperInfo,
-  BoldText,
-  NormalText,
   TouchableContact,
   BlueText,
-  Line,
-  WrapperSection,
-  LineVerical,
-  Icon,
   TouchableDoc,
   Principal,
+  EmptyWrapper,
 } from './style';
-
-import { formatPrice } from '../../helpers/Utils';
 
 function textStatus(status, aprox) {
   if (status === 6) {
@@ -38,9 +29,7 @@ function textStatus(status, aprox) {
 }
 
 function TopCardTravel({
-  company, travelsCount, amount,
-  arrive, isConfirmLoad,
-  actionBtnOk, actionMan, actionCall,
+  arrive, actionBtnOk,
   status, aprox, touchableAction,
 }) {
   if (arrive) {
@@ -49,9 +38,9 @@ function TopCardTravel({
         <TouchableDoc onPress={touchableAction}>
           <Image source={require('../../Images/Docs.png')} />
         </TouchableDoc>
-        <MainWrapper>
-          {aprox && status !== 8
-            ? (
+        {aprox && status !== 8
+          ? (
+            <MainWrapper>
               <WrapperColumn>
                 <TouchableContact onPress={actionBtnOk}>
                   <BlueText>
@@ -59,23 +48,16 @@ function TopCardTravel({
                   </BlueText>
                 </TouchableContact>
               </WrapperColumn>
-
-            ) : null }
-        </MainWrapper>
+            </MainWrapper>
+          ) : <EmptyWrapper />}
       </Principal>
     );
   } return null;
 }
 
 TopCardTravel.propTypes = {
-  company: PropTypes.string.isRequired,
-  travelsCount: PropTypes.string.isRequired,
-  amount: PropTypes.string.isRequired,
   arrive: PropTypes.bool.isRequired,
-  isConfirmLoad: PropTypes.bool.isRequired,
   actionBtnOk: PropTypes.func.isRequired,
-  actionMan: PropTypes.func.isRequired,
-  actionCall: PropTypes.func.isRequired,
   //
   status: PropTypes.number.isRequired,
   aprox: PropTypes.bool.isRequired,
