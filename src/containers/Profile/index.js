@@ -217,7 +217,6 @@ class Profile extends Component {
                 <WrapperColumn>
                   <WrapperImage>
                     <IconProfile
-                      // icon="https://avatars1.githubusercontent.com/u/25873769?s=460&u=4852b9c1d777bc1dbca820c1dca5bf1e86aa2b15&v=4"
                       icon={avatarUser}
                       edit
                       press={() => this.changeImage()}

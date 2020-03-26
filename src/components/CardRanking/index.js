@@ -21,7 +21,8 @@ function CardRanking({
             colors={['#fff', '#320d8e']}
           >
             <ImageUser
-              source={require('../../Images/profile.jpg')}
+              // source={ icon === '' require('../../Images/profile.jpg') ? icon}
+              source={icon !== null ? { uri: icon } : require('../../Images/profile.jpg')}
             />
           </CircleBorder>
         </ImageContent>

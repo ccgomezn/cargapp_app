@@ -56,8 +56,8 @@ class Chat extends Component {
     const chat = navigation.getParam('data', '');
     this.setState({
       chat_data: chat,
-
     });
+    console.log('chat_data', chat);
     this.enableFirestoreSubscription(chat.id);
   }
 
