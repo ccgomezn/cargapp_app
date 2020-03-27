@@ -385,6 +385,7 @@ class ApplyOffer extends Component {
           {companies.data.map(company => offers.data.map((services) => {
             if (services.id === offer.id) {
               if (offer.company_id === company.id) {
+                console.log('nameButton', this.nameButton(offersById.data));
                 return (
                   <CardMapBeginTravel
                     normalText={company.address ? company.address : 'N/A'}

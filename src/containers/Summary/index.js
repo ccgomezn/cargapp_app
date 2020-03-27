@@ -236,7 +236,7 @@ class ScreenSummary extends Component {
       modalRating, modalCheck,
       check1, check2, check3,
       load, documentConfirm, modalPDF,
-      proofOfPayment, errorProofOfPayment, 
+      proofOfPayment, errorProofOfPayment,
       waypoints, mapReady, pointCenter,
     } = this.state;
     const starCount = 0;

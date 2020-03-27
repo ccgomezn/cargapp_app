@@ -122,7 +122,7 @@ CardMapBeginTravel.propTypes = {
   onPressBW: PropTypes.func.isRequired,
   onPressBG: PropTypes.func.isRequired,
   onPressQA: PropTypes.func.isRequired,
-  mainButton: PropTypes.func.isRequired,
+  mainButton: PropTypes.string.isRequired,
   status: PropTypes.number.isRequired,
   vehicle: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,

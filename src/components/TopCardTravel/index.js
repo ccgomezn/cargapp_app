@@ -38,7 +38,7 @@ function TopCardTravel({
         <TouchableDoc onPress={touchableAction}>
           <Image source={require('../../Images/Docs.png')} />
         </TouchableDoc>
-        {aprox && status !== 8
+        {aprox && status !== 8 && status !== 19
           ? (
             <MainWrapper>
               <WrapperColumn>

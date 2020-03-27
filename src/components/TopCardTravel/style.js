@@ -60,3 +60,9 @@ export const TouchableDoc = styled.TouchableOpacity`
   background-color: #0068ff;
   border-radius: 10px;
 `;
+
+export const Line = styled.View`
+    width: 100%;
+    height: 1px;
+    border: 1px solid #f3f3f3;
+`;
