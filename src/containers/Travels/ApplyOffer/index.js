@@ -9,6 +9,7 @@ import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import analytics from '@react-native-firebase/analytics';
+import { firebase } from '@react-native-firebase/firestore';
 import { View } from 'native-base';
 import {
   MainWrapper, AddressesWrapper, WrapperModal, BlueText, WrapperTextModal,
@@ -31,6 +32,7 @@ import { ContentForm, WrapperButtonsBottom } from '../../HomeOffers/style';
 import CardPermissions from '../../../components/CardPermissions';
 import PermissionsActions from '../../../redux/reducers/PermissionsRedux';
 import OffersByIdActions from '../../../redux/reducers/OffersByIdRedux';
+
 
 const itemList = [
   {
@@ -150,9 +152,14 @@ class ApplyOffer extends Component {
   }
 
   nameButton(data) {
+    const { navigation } = this.props;
     const { disabled } = this.state;
-    if (data.message) {
+    const selectID = navigation.getParam('selectID');
+    if (selectID !== undefined && selectID !== null) {
       return 'Aplicar a viaje';
+    }
+    if (data.message) {
+      return 'Seleccionar vehículo';
     }
     console.log(data);
     // TODO Add Id in endPoint
@@ -170,6 +177,7 @@ class ApplyOffer extends Component {
     const { navigation, putStateOriginTravel } = this.props;
     const { modalPermission } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
+    console.log('vehicleType', id);
     if (!modalPermission) {
       if (id) {
         analytics().logEvent('boton_aplicar_a_oferta');
@@ -202,8 +210,27 @@ class ApplyOffer extends Component {
       vehicle_id: value,
       active: true,
     };
-    applyOffer(data);
-    this.setState({ modalApply: true, button: false });
+    // applyOffer(data);
+    this.sendNotification(valueApplyOffer);
+
+    // this.setState({ modalApply: true, button: false });
+  }
+
+  sendNotification(service) {
+    const { profile } = this.props;
+    console.log('service', service);
+    const data = {
+      service_id: service.id,
+      user_id: service.user_id,
+      driver_id: profile.data[0].user.id,
+    };
+    console.log(`firebase data notifications_user_${service.user_id.toString()}`, data);
+
+    firebase.firestore().collection(`notifications_user_${service.user_id.toString()}`).add({
+      message: `Se ha postulado el camionero: ${profile.data[0].user.name} al servicio ${service.name}`,
+      title: 'Nuevo Postulado',
+      created_at: new Date(),
+    });
   }
 
   missingViews(list) {
@@ -233,7 +260,6 @@ class ApplyOffer extends Component {
     const {
       offers, navigation, companies, rateService, permissions, vehicles, offersById,
     } = this.props;
-    console.log(this.props);
     const {
       offer,
       successNotification,
@@ -257,6 +283,7 @@ class ApplyOffer extends Component {
     }
     const selectID = navigation.getParam('selectID');
     if (selectID !== undefined && selectID !== null && fetchID === false) {
+      console.log('select ID', selectID);
       this.setState({ fetchID: true });
     }
     if (permissions.data && !permissions.fetching && !fetchList) {
@@ -385,7 +412,6 @@ class ApplyOffer extends Component {
           {companies.data.map(company => offers.data.map((services) => {
             if (services.id === offer.id) {
               if (offer.company_id === company.id) {
-                console.log('nameButton', this.nameButton(offersById.data));
                 return (
                   <CardMapBeginTravel
                     normalText={company.address ? company.address : 'N/A'}
