@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable camelcase */
 /* eslint-disable react/sort-comp */
 /* eslint-disable react/prop-types */
@@ -7,6 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import analytics from '@react-native-firebase/analytics';
+import { firebase } from '@react-native-firebase/firestore';
 import { ActivityIndicator, Modal, View } from 'react-native';
 import moment from 'moment';
 import Polyline from '@mapbox/polyline';
@@ -117,7 +119,8 @@ class ScreenSummary extends Component {
   }
 
   async onRegisterDoc(source, name, id) {
-    const { registerDocument, profile } = this.props;
+    const { registerDocument, profile, navigation } = this.props;
+    const offer = navigation.getParam('offer');
     const userId = profile.data[0].user.id;
     let photoName = source.fileName;
     if (source.fileName === '' || source.fileName === null) {
@@ -134,8 +137,25 @@ class ScreenSummary extends Component {
     data.append('service_document[active]', 1);
     data.append('service_document[service_id]', id);
     data.append('service_document[document_type_id]', 17);
+
     await registerDocument(data);
+    this.sendNotification(offer, 'Nueva Evidencia registrada', `Se registro la evidencia(${name}) en el viaje: ${offer.name} `);
+
     this.setState({ modalRating: true, load: false });
+  }
+
+  sendNotification(service, subject, msg) {
+    console.log(`firebase add notifications_user_${service.user_id.toString()}`, msg);
+
+    firebase.firestore().collection(`notifications_user_${service.user_id.toString()}`).add({
+      message: msg,
+      title: subject,
+      created_at: new Date(),
+      additional_data: {
+        service_id: service.id,
+        notification_type: 'trip_detail',
+      },
+    });
   }
 
   rating(value, id) {

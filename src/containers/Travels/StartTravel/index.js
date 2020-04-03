@@ -9,6 +9,7 @@ import {
   Platform, ActivityIndicator, Linking, Modal,
 } from 'react-native';
 import Toast from 'react-native-tiny-toast';
+import { firebase } from '@react-native-firebase/firestore';
 
 import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -101,7 +102,6 @@ class StartTravel extends Component {
       navigation, getOfferById, offerById, getDocumentsInTravel,
       getDocumentsTypes, dropDocument,
     } = this.props;
-    const { status } = this.state;
     const offer = navigation.getParam('Offer', null);
 
     console.log('reload', isReload);
@@ -111,7 +111,6 @@ class StartTravel extends Component {
       getOfferById(offer.id);
       getDocumentsInTravel(offer.id, 'ServiceDownload');
       getDocumentsTypes('ServiceDownload');
-
     } else {
       console.log('null data');
     }
@@ -218,9 +217,11 @@ class StartTravel extends Component {
         statu_id: 8,
       },
     };
+    putStateOriginTravel(offerSpecific.id, data);
+    const sms = `El camionero ha iniciado Viaje en curso hacia el punto de descargue (${offerSpecific.destination})`;
+    this.sendNotification(offerSpecific, 'Viaje en curso', sms);
 
     setTimeout(() => {
-      putStateOriginTravel(offerSpecific.id, data);
       this.setState({
         status: 8, inTravel: true, feed4: true, initTravel: false,
       });
@@ -375,6 +376,20 @@ class StartTravel extends Component {
     }
   }
 
+  sendNotification(service, subject, msg) {
+    console.log(`firebase add notifications_user_${service.user_id.toString()}`, msg);
+
+    firebase.firestore().collection(`notifications_user_${service.user_id.toString()}`).add({
+      message: msg,
+      title: subject,
+      created_at: new Date(),
+      additional_data: {
+        service_id: service.id,
+        notification_type: 'trip_detail',
+      },
+    });
+  }
+
   async onRegisterDoc(source, name, type_doc) {
     const { registerDocument, profile } = this.props;
     const { offerSpecific } = this.state;
@@ -397,6 +412,7 @@ class StartTravel extends Component {
     data.append('service_document[service_id]', offerSpecific.id);
 
     await registerDocument(data);
+    this.sendNotification(offerSpecific, 'Nueva Evidencia registrada', `Se registro la evidencia(${name}) en el viaje: ${offerSpecific.name} `);
     this.setState({ loadingRegister: true });
   }
 
@@ -554,6 +570,7 @@ class StartTravel extends Component {
           // register ok
           this.setState({ loadingRegister: false });
           if (status === 19) {
+            this.sendNotification(offerSpecific, 'Viaje terminado', `El viaje '${offerSpecific.name}' fue finalizado. `);
             setTimeout(() => {
               navigation.navigate('SummaryTravels', { offer: offerSpecific });
             }, 200);

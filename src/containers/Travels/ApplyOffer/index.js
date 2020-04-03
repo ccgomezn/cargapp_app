@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable array-callback-return */
@@ -161,7 +162,6 @@ class ApplyOffer extends Component {
     if (data.message) {
       return 'Seleccionar vehículo';
     }
-    console.log(data);
     // TODO Add Id in endPoint
     const { id, name } = data.statu;
     if (id !== 52 && id !== 16 && !disabled) {
@@ -174,7 +174,7 @@ class ApplyOffer extends Component {
   }
 
   vehicleType(value, id, state) {
-    const { navigation, putStateOriginTravel } = this.props;
+    const { navigation } = this.props;
     const { modalPermission } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
     console.log('vehicleType', id);
@@ -183,16 +183,8 @@ class ApplyOffer extends Component {
         analytics().logEvent('boton_aplicar_a_oferta');
         this.applyOffer(id, value);
       } else if (this.nameButton(state) === 'Iniciar camino a cargue') {
-        const data = {
-          service: {
-            statu_id: 6,
-          },
-        };
-        putStateOriginTravel(value.id, data);
-        setTimeout(() => {
-          navigation.navigate('StartTravel', { Offer: value });
-        }, 800);
         analytics().logEvent('boton_detalles_iniciar_viaje');
+        this.startTravel(value);
       } else {
         navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
       }
@@ -210,26 +202,39 @@ class ApplyOffer extends Component {
       vehicle_id: value,
       active: true,
     };
-    // applyOffer(data);
-    this.sendNotification(valueApplyOffer);
+    applyOffer(data);
+    const sms = `Se ha postulado el camionero: ${profile.data[0].profile.firt_name} al servicio ${valueApplyOffer.name}`;
+    this.sendNotification(valueApplyOffer, 'Nuevo Postulado', sms);
 
-    // this.setState({ modalApply: true, button: false });
+    this.setState({ modalApply: true, button: false });
   }
 
-  sendNotification(service) {
-    const { profile } = this.props;
-    console.log('service', service);
+  startTravel(valueApplyOffer) {
+    const { navigation, putStateOriginTravel } = this.props;
     const data = {
-      service_id: service.id,
-      user_id: service.user_id,
-      driver_id: profile.data[0].user.id,
+      service: {
+        statu_id: 6,
+      },
     };
-    console.log(`firebase data notifications_user_${service.user_id.toString()}`, data);
+    putStateOriginTravel(valueApplyOffer.id, data);
+    const sms = `El camionero ha iniciado el curso hacia el punto de cargue (${valueApplyOffer.origin})`;
+    this.sendNotification(valueApplyOffer, 'Viaje Iniciado', sms);
+    setTimeout(() => {
+      navigation.navigate('StartTravel', { Offer: valueApplyOffer });
+    }, 800);
+  }
+
+  sendNotification(service, subject, msg) {
+    console.log(`firebase add notifications_user_${service.user_id.toString()}`, msg);
 
     firebase.firestore().collection(`notifications_user_${service.user_id.toString()}`).add({
-      message: `Se ha postulado el camionero: ${profile.data[0].user.name} al servicio ${service.name}`,
-      title: 'Nuevo Postulado',
+      message: msg,
+      title: subject,
       created_at: new Date(),
+      additional_data: {
+        service_id: service.id,
+        notification_type: 'trip_detail',
+      },
     });
   }
 
