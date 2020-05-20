@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable global-require */
 /* eslint-disable array-callback-return */
 /* eslint-disable import/no-named-as-default-member */
@@ -5,29 +6,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ActivityIndicator, Alert, Modal } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import analytics from '@react-native-firebase/analytics';
-import PDFView from 'react-native-view-pdf';
 import ImagePicker from 'react-native-image-picker';
+import Toast from 'react-native-tiny-toast';
 import EmptyDialog from '../../components/EmptyDialog';
 import {
   MainWrapper, ContentView, TextBlack, ContentBlock, ContentForm,
   WrapperInputs, RowContent, WrapperButtonsBottom, WrapperButtonGradient,
-  ContentInitial, WrapperColumn, SecondWrapper, WrapperImage, Image,
-  WrapperInfo, BoldText, NormalText, ContentButton,
+  ContentInitial, WrapperColumn, SecondWrapper, WrapperImage,
+  WrapperInfo, BoldText, NormalText,
   MainWrapperDialog, TouchModal, TitleBlack, TextGray,
-  WrapperMap, ImageUser,
+  WrapperMap,
 } from './style';
 
 import Input from '../../components/GeneralInput';
+
 import ButtonGradient from '../../components/ButtonGradient';
 import ButtonWhite from '../../components/ButtonWhite';
+import IconProfile from '../../components/IconProfile';
 import ProfileActions from '../../redux/reducers/ProfileRedux';
 import PasswordActions from '../../redux/reducers/PasswordRedux';
 import PopUpNotification from '../../components/PopUpNotifications';
-import { Indicator, WrapperButtonImage } from '../Summary/style';
-import { BlueTextPDF } from '../Travels/StartTravel/styles';
-import Spinner from '../../components/Spinner';
 
 class Profile extends Component {
   constructor() {
@@ -41,10 +41,10 @@ class Profile extends Component {
       previousPassword: null,
       newPassword: null,
       repeatPassword: null,
-      avatar: false,
-      load: false,
+      loadingAvatar: false,
       id: '',
       avatarUser: '',
+      visible_error: false,
     };
   }
 
@@ -114,11 +114,12 @@ class Profile extends Component {
     const { editProfile } = this.props;
     const { id } = this.state;
     const options = {
-      title: 'Vincular Documento',
+      title: 'Actualizar avatar',
       cancelButtonTitle: 'Cancelar',
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
       customButtons: [],
+      tintColor: '#010935',
       quality: 0.5,
       storageOptions: {
         skipBackup: true,
@@ -131,7 +132,7 @@ class Profile extends Component {
       } else if (response.error) {
         console.log(response);
       } else {
-        this.setState({ load: true });
+        this.setState({ loadingAvatar: true });
 
         const data = new FormData();
         let photoName = response.fileName;
@@ -145,10 +146,6 @@ class Profile extends Component {
         });
 
         editProfile(id, data);
-
-        setTimeout(() => {
-          this.setState({ load: false });
-        }, 5000);
       }
     }));
   }
@@ -163,11 +160,33 @@ class Profile extends Component {
       previousPassword,
       newPassword,
       repeatPassword,
-      avatar,
-      load,
+      loadingAvatar,
       avatarUser,
+      visible_error,
     } = this.state;
     const { profile } = this.props;
+
+    // hide Toast
+    if (visible_error) {
+      setTimeout(() => this.setState({
+        visible_error: false,
+      }), 5000); // hide toast after 5s
+    }
+
+    if (loadingAvatar) {
+      if (!profile.fetching) {
+        if (profile.edit && !profile.error) {
+          // register ok
+          this.setState({
+            avatarUser: profile.edit.avatar,
+            loadingAvatar: false,
+          });
+        } else if (profile.error) {
+          this.setState({ loadingAvatar: false, visible_error: true });
+        }
+      }
+    }
+
     if (profile.data !== null) {
       profile.data.map((data) => {
         if (name === '' && lastName === '') {
@@ -175,6 +194,8 @@ class Profile extends Component {
             name: data.profile.firt_name,
             lastName: data.profile.last_name,
             fetch: false,
+            id: data.profile.id,
+            avatarUser: data.profile.avatar,
           });
         }
       });
@@ -182,7 +203,7 @@ class Profile extends Component {
     if (profile.data !== null && !fetch) {
       profile.data.map((data) => {
         if (avatarUser === '') {
-          this.setState({ avatarUser: data.avatar });
+          this.setState({ avatarUser: data.profile.avatar });
         }
         if (name === '' && lastName === '') {
           this.setState({ name: data.profile.firt_name, lastName: data.profile.last_name });
@@ -190,43 +211,21 @@ class Profile extends Component {
       });
       return (
         <MainWrapper>
-          <Modal visible={avatar} style={{ zIndex: 1800 }}>
-            <BlueTextPDF>Foto de perfil</BlueTextPDF>
-            <ImageUser source={require('../../Images/profile.jpg')} />
-            <PDFView
-              fadeInDuration={0}
-              style={{ flex: 1, marginTop: 10, zIndex: 100 }}
-              resource={avatarUser}
-              resourceType="url"
-              onLoad={resourceType => console.log(`PDF rendered from ${resourceType}`)}
-            />
-            <Spinner view={load} />
-            <WrapperButtonImage>
-              <ButtonGradient press={() => this.changeImage()} content="Cambiar foto" disabled={false} />
-              <ButtonWhite press={() => this.setState({ avatar: false })} content="Volver" border={false} />
-            </WrapperButtonImage>
-          </Modal>
           {profile.data.map(data => (
             <WrapperMap>
               <ContentInitial>
                 <WrapperColumn>
-                  {/* <WrapperImage onPress={() => this.setState({ avatar: true, id: data.profile.id })} style={{ alignItems: 'center' }}> */}
                   <WrapperImage>
-                    <Image
-                      source={require('../../Images/profile.jpg')}
+                    <IconProfile
+                      icon={avatarUser}
+                      edit
+                      press={() => this.changeImage()}
                     />
-                    {/* <TextBlack style={{ fontSize: 14, color: '#0068ff', marginLeft: 25 }}>Editar</TextBlack> */}
                   </WrapperImage>
                   <WrapperInfo>
                     <BoldText>{data.profile.firt_name}</BoldText>
                     <NormalText>Conductor</NormalText>
                   </WrapperInfo>
-                  <ContentButton>
-                    <ButtonGradient
-                      content="Ver retos"
-                      press={() => this.navigate('Points')}
-                    />
-                  </ContentButton>
                 </WrapperColumn>
               </ContentInitial>
 
@@ -343,6 +342,24 @@ class Profile extends Component {
               </TouchModal>
             </MainWrapperDialog>
           </EmptyDialog>
+          <Toast
+            visible={visible_error}
+            position={-50}
+            duration={Toast.duration.LONG}
+            shadow
+            animation
+          >
+            Error, no se pudo procesar la solicitud
+          </Toast>
+          <Toast
+            visible={loadingAvatar}
+            position={0}
+            loading
+            shadow
+            animation
+          >
+            Actualizando Perfil...
+          </Toast>
         </MainWrapper>
       );
     }

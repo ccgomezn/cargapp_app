@@ -30,6 +30,13 @@ export const AbsoluteWrapper = styled.View`
   flex-direction: row;
 `;
 
+export const WrapperButtons = styled.View`
+  width: auto;
+  margin-left: 3%;
+  margin-bottom: 2%;
+  flex-direction: row;
+`;
+
 export const TouchableNavigationButtons = styled.TouchableOpacity`
   height: auto;
   width: auto;
@@ -38,7 +45,7 @@ export const TouchableNavigationButtons = styled.TouchableOpacity`
 export const WrapperImage = styled.Image`
   width: 50px;
   height: 50px;
-  resize-mode: stretch;
+  resize-mode: contain;
 `;
 
 export const WrapperAdresses = styled.View`
@@ -63,10 +70,11 @@ export const WrapperTopCard = styled.View`
   position: absolute;
   width: 100%;
   height: auto;
-  top: 5px;
+  top: 2%;
   opacity: 0.88;
-  right: 5px;
-  left: 5px;
+  padding-horizontal: 3%;
+  /* right: 3%;
+  left: 3%; */
 `;
 
 export const BlueText = styled.Text`

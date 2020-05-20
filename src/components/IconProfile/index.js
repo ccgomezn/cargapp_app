@@ -23,11 +23,9 @@ function IconProfile(
       <TouchSection onPress={press}>
         <ContaintIcon>
           <CircleIcon>
-            { icon != null || icon !== '' ? (
-              <DrawIcon
-                source={{ uri: icon }}
-              />
-            ) : null }
+            <DrawIcon
+              source={icon !== null ? { uri: icon } : require('../../Images/profile.jpg')}
+            />
           </CircleIcon>
         </ContaintIcon>
         { edit != null ? (

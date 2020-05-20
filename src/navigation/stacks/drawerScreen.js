@@ -29,7 +29,8 @@ function CustomDrawerContentComponent(props) {
   const profile = store.getState().profile.data;
   const firstName = profile ? profile[0].profile.firt_name : '';
   const lastName = profile ? profile[0].profile.last_name : '';
-  const shortName = lastName.split(' ');
+  const shortName = lastName !== null ? lastName.split(' ') : '';
+  const iconProfile = profile ? profile[0].profile.avatar : '';
   // Remover item Profile
   const filteredItems = items.filter(item => item.key !== 'ScreenProfile' && item.key !== 'ScreenTravel');
   return (
@@ -44,7 +45,8 @@ function CustomDrawerContentComponent(props) {
             resizeMode="cover"
           />
           <AvatarProfile
-            avatar={require('../../Images/profile.jpg')}
+            avatar={iconProfile !== '' ? { uri: iconProfile } : require('../../Images/profile.jpg')}
+            // avatar={require('../../Images/profile.jpg')}
             press={() => navigate('ScreenProfile')}
             text={firstName}
             secondText={shortName[0]}

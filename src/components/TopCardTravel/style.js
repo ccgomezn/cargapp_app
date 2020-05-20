@@ -1,14 +1,13 @@
 import styled from 'styled-components/native';
 
 export const Principal = styled.View`
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const MainWrapper = styled.View`
-  width: 75%;
+  flex: 6;
   height: auto;
   border-radius: 8px;
   background-color: white;
@@ -16,7 +15,12 @@ export const MainWrapper = styled.View`
   padding-horizontal: 10px;
   padding-vertical: 0px;
   flex-direction: row;
-    `;
+`;
+
+export const EmptyWrapper = styled.View`
+  flex: 6;
+  height: auto;
+`;
 
 export const WrapperColumn = styled.View`
   flex: 1;
@@ -27,37 +31,10 @@ export const WrapperColumn = styled.View`
   padding-vertical: 5px;
 `;
 
-export const WrapperImage = styled.View`
-    flex: 2;
-    justify-content: center;
-    align-items: center;
-    `;
-
 export const Image = styled.Image`
     height: 25px;
     width: 25px;
     resize-mode: contain;
-    `;
-
-export const WrapperInfo = styled.View`
-    flex: 5;
-    justify-content: space-between;
-    align-items: flex-start;
-    `;
-
-export const BoldText = styled.Text`
-    font-family: Roboto;
-  font-size: 14px;
-  font-weight: bold;
-  color: #010935;
-    `;
-
-export const NormalText = styled.Text`
-    opacity: 0.5;
-    font-family: Roboto;
-  font-size: 12px;
-  font-weight: bold;
-  color: #010935;
     `;
 
 export const TouchableContact = styled.TouchableOpacity`
@@ -72,35 +49,20 @@ export const BlueText = styled.Text`
   font-size: 14px;
   font-weight: 500;
   color: #0068ff;
-    `;
+`;
+
+export const TouchableDoc = styled.TouchableOpacity`
+  flex: 1;
+  margin-right: 3%;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background-color: #0068ff;
+  border-radius: 10px;
+`;
 
 export const Line = styled.View`
     width: 100%;
     height: 1px;
     border: 1px solid #f3f3f3;
-    `;
-
-export const WrapperSection = styled.View`
-    flex: 1;
-    `;
-
-export const LineVerical = styled.View`
-    height: 90%;
-    width: 1px;
-    border: 1px solid #f3f3f3;
-    `;
-
-export const Icon = styled.Image`
-    height: 20px;
-    width; 20px;
-    `;
-
-export const TouchableDoc = styled.TouchableOpacity`
-    width: 15%;
-    margin-right: 5px;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    background-color: #0068ff;
-    border-radius: 20px;
 `;

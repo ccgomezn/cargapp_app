@@ -77,9 +77,11 @@ function WhiteCardTravels({
       <WrapperButtons>
         { btnPrimary != null ? (
           <>
-            <TouchableDetails onPress={actionbtnSecondary}>
-              <TextBlue>Compartir</TextBlue>
-            </TouchableDetails>
+            {actionbtnSecondary != null ? (
+              <TouchableDetails onPress={actionbtnSecondary}>
+                <TextBlue>Compartir</TextBlue>
+              </TouchableDetails>
+            ) : null }
             <WrapperButton>
               <ButtonGradient press={actionbtnPrimary} content={btnPrimary} />
             </WrapperButton>

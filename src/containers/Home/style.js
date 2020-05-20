@@ -5,7 +5,7 @@ export const WrapperContent = styled.View`
   background-color: rgba(245,246,250, 0.7);
   width: 100%;
   position: absolute;
-  padding: 20px;
+  padding: 4%;
   top: 0;
 `;
 

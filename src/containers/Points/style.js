@@ -3,8 +3,8 @@ import { colors } from '../../themes/theme.style';
 
 export const MainWrapper = styled.ScrollView`
   width: 100%;
-  height: 100%;
-  padding: 5%;
+  height: auto;
+  padding: 4%;
   background-color: ${colors.MainWrapperColor};
 `;
 

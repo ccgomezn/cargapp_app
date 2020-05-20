@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
 export const MainWrapper = styled.View`
-  position: absolute;
-  bottom: 0;
+  /* position: absolute;
+  bottom: 0; */
   justify-content: flex-end;
   width: 100%;
   height: auto;

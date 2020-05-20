@@ -64,6 +64,7 @@ class Navigation extends React.Component {
 
       // This event fires when the user toggles location-services authorization
       BackgroundGeolocation.onProviderChange(this.onProviderChange);
+    }
       
       BackgroundGeolocation.ready({
         desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
@@ -91,7 +92,7 @@ class Navigation extends React.Component {
         }
       });
 
-    }
+    // }
   }
 
   componentWillUnmount() {

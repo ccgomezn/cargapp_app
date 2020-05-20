@@ -1,3 +1,6 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable camelcase */
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-named-as-default-member */
 import React, { Component } from 'react';
@@ -5,8 +8,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import analytics from '@react-native-firebase/analytics';
-import { ActivityIndicator, Modal } from 'react-native';
+import { firebase } from '@react-native-firebase/firestore';
+import { ActivityIndicator, Modal, View } from 'react-native';
 import moment from 'moment';
+import Polyline from '@mapbox/polyline';
 import ImagePicker from 'react-native-image-picker';
 import PDFView from 'react-native-view-pdf';
 import {
@@ -17,7 +22,7 @@ import {
   ColumnContainer,
   RowContainerAddresses,
   RowContainer,
-  Title,
+  Title, TextSecond,
   SubTitle,
   NormalTitle,
   WrapperModal,
@@ -26,6 +31,7 @@ import {
   GrayText, Indicator,
   Check, WrapperButton,
   Touchable, WrapperButtonImage,
+  ContentLoad,
 } from './style';
 import ButtonGradient from '../../components/ButtonGradient';
 import SummaryActions from '../../redux/reducers/SummaryRedux';
@@ -37,6 +43,8 @@ import Spinner from '../../components/Spinner';
 import PopUpNotification from '../../components/PopUpNotifications';
 
 import { formatPrice } from '../../helpers/Utils';
+
+const GOOGLE_MAPS_APIKEY = 'AIzaSyD9hrOmzRSUpe9XPMvw78KdHEU5le-CqyE';
 
 class ScreenSummary extends Component {
   constructor(props) {
@@ -52,6 +60,9 @@ class ScreenSummary extends Component {
       proofOfPayment: '',
       modalPDF: false,
       errorProofOfPayment: false,
+      waypoints: null,
+      mapReady: false,
+      pointCenter: null,
     };
   }
 
@@ -63,6 +74,15 @@ class ScreenSummary extends Component {
     if (offer.id) {
       getSummary(offer.id);
       getDocsServiceRequest(offer.id);
+      this.getDirections(offer)
+        .then((route) => {
+          const split = Math.round(route.length / 2);
+          const newsplit = Math.round(split / 4);
+          this.setState({ waypoints: route, pointCenter: route[newsplit + split] });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -73,8 +93,34 @@ class ScreenSummary extends Component {
     dropDocumentsState();
   }
 
+  async getDirections(offerDetail) {
+    const lat_origin = offerDetail.origin_latitude;
+    const lng_origin = offerDetail.origin_longitude;
+    const lat_des = offerDetail.destination_latitude;
+    const lng_des = offerDetail.destination_longitude;
+
+    const resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${lat_origin},${lng_origin}&destination=${lat_des},${lng_des}&mode=DRIVING&key=${GOOGLE_MAPS_APIKEY}`);
+    const respJson = await resp.json();
+    const points = respJson.routes[0].legs[0].steps;
+
+    const coords = [];
+    points.forEach((point) => {
+      const decodedPoints = Polyline.decode(point.polyline.points);
+      decodedPoints.forEach((dec) => {
+        coords.push({
+          latitude: dec[0],
+          longitude: dec[1],
+        });
+      });
+    });
+    this.setState({ coords });
+
+    return coords;
+  }
+
   async onRegisterDoc(source, name, id) {
-    const { registerDocument, profile } = this.props;
+    const { registerDocument, profile, navigation } = this.props;
+    const offer = navigation.getParam('offer');
     const userId = profile.data[0].user.id;
     let photoName = source.fileName;
     if (source.fileName === '' || source.fileName === null) {
@@ -91,19 +137,31 @@ class ScreenSummary extends Component {
     data.append('service_document[active]', 1);
     data.append('service_document[service_id]', id);
     data.append('service_document[document_type_id]', 17);
+
     await registerDocument(data);
+    this.sendNotification(offer, 'Nueva Evidencia registrada', `Se registro la evidencia(${name}) en el viaje: ${offer.name} `);
+
     this.setState({ modalRating: true, load: false });
+  }
+
+  sendNotification(service, subject, msg) {
+    console.log(`firebase add notifications_user_${service.user_id.toString()}`, msg);
+
+    firebase.firestore().collection(`notifications_user_${service.user_id.toString()}`).add({
+      message: msg,
+      title: subject,
+      created_at: new Date(),
+      additional_data: {
+        service_id: service.id,
+        notification_type: 'trip_detail',
+      },
+    });
   }
 
   rating(value, id) {
     analytics().logEvent('boton_encuesta');
     const { postRateServices, profile } = this.props;
     this.setState({ modalRating: false });
-    if (value <= 3) {
-      this.setState({ modalCheck: true });
-    } else {
-      this.confirmTest();
-    }
     const data = {
       rate_service: {
         service_point: value,
@@ -113,9 +171,15 @@ class ScreenSummary extends Component {
         active: true,
       },
     };
-    setTimeout(() => {
+
+    if (value <= 3) {
+      this.setState({ modalCheck: true }, () => {
+        postRateServices(data);
+      });
+    } else {
+      this.confirmTest(id);
       postRateServices(data);
-    }, 1000);
+    }
   }
 
   async imageDocument(name, id, bool) {
@@ -127,7 +191,8 @@ class ScreenSummary extends Component {
         takePhotoButtonTitle: 'Tomar Foto',
         chooseFromLibraryButtonTitle: 'Elige de la biblioteca',
         customButtons: [],
-        quality: 0.5,
+        tintColor: '#010935',
+        quality: 0.4,
         storageOptions: {
           skipBackup: true,
           path: 'images',
@@ -192,12 +257,16 @@ class ScreenSummary extends Component {
       check1, check2, check3,
       load, documentConfirm, modalPDF,
       proofOfPayment, errorProofOfPayment,
+      waypoints, mapReady, pointCenter,
     } = this.state;
-    const starCount = 4;
-    if (summary.data !== null && !summary.fetching) {
+    const starCount = 0;
+
+    if (summary.data !== null
+      && !summary.fetching
+      && waypoints !== null) {
       const { document_services } = summary.data;
       document_services.map((doc) => {
-        if (doc.name === 'Confimacion de cumplido' && !documentConfirm) {
+        if (doc.document_type_id === 17 && !documentConfirm) {
           this.setState({ documentConfirm: true });
         }
         return null;
@@ -233,47 +302,62 @@ class ScreenSummary extends Component {
             <Title>Resumen </Title>
             <Title>{moment(summary.data.service.updated_at).format('ll')}</Title>
           </RowContainer>
-          <Map pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}>
-            <Map.Polyline
-              coordinates={[
-                {
-                  latitude: summary.data.service.origin_latitude,
-                  longitude: summary.data.service.origin_longitude,
-                },
-                {
-                  latitude: summary.data.service.destination_latitude,
-                  longitude: summary.data.service.destination_longitude,
-                },
-              ]}
-              strokeWidth={4}
-              strokeColor="#007aff"
-            />
-          </Map>
+          <View>
+            {!mapReady && (
+              <ContentLoad>
+                <ActivityIndicator
+                  style={{ alignSelf: 'center', height: 200 }}
+                  size="large"
+                  color="#0000ff"
+                />
+              </ContentLoad>
+            )}
+            <Map
+              pitchEnabled={false}
+              rotateEnabled={false}
+              onMapReady={() => this.setState({ mapReady: true })}
+              region={{
+                latitude: pointCenter.latitude,
+                longitude: pointCenter.longitude,
+                latitudeDelta: 10,
+                longitudeDelta: 10,
+              }}
+            >
+              <Map.Polyline
+                coordinates={waypoints}
+                strokeWidth={4}
+                strokeColor="#007aff"
+              />
+            </Map>
+          </View>
+
           <RowContainerAddresses>
             {/* eslint-disable-next-line global-require */}
             <Icon source={require('../../Images/Summary.png')} />
             <ColumnContainer>
               <ColumnContainer>
                 <SubTitle>
-                  Inicio:
+                  Inicio
+                  {': '}
                   {moment(summary.data.service.created_at).format('ll')}
                 </SubTitle>
-                <Title>
+                <TextSecond>
                   {summary.data.origin.name}
                   {': '}
-                  {summary.data.service.origin_address.length > 20 ? `${summary.data.service.origin_address.substring(0, 17)}...` : summary.data.service.origin_address }
-                </Title>
+                  {summary.data.service.origin_address.length > 20 ? `${'\n'}${summary.data.service.origin_address}` : summary.data.service.origin_address }
+                </TextSecond>
               </ColumnContainer>
               <ColumnContainer>
                 <SubTitle>
-                  Detino:
+                  Destino
+                  {': '}
                   {moment(summary.data.service.updated_at).format('ll')}
                 </SubTitle>
-                <Title>
+                <TextSecond>
                   {summary.data.destination.name}
                   {': '}
-                  {summary.data.service.destination_address.length > 20 ? `${summary.data.service.destination_address.substring(0, 17)}...` : summary.data.service.destination_address }
-                </Title>
+                  {summary.data.service.destination_address.length > 20 ? `${'\n'}${summary.data.service.destination_address}` : summary.data.service.destination_address }
+                </TextSecond>
               </ColumnContainer>
             </ColumnContainer>
           </RowContainerAddresses>
@@ -375,7 +459,7 @@ class ScreenSummary extends Component {
           </EmptyDialog>
           <WrapperButton>
             {summary.data.service.statu_id === 19 && (
-              <ButtonGradient press={() => this.imageDocument('Confimacion de cumplido', summary.data.service.id, documentConfirm)} content="Cargar cumplido" disabled={false} />
+              <ButtonGradient press={() => this.imageDocument('Confimacion de cumplido', summary.data.service.id, documentConfirm)} content={documentConfirm ? 'Calificar' : 'Cargar cumplido'} disabled={false} />
             ) }
             {summary.data.service.statu_id === 11 && (
               <ButtonGradient press={() => navigation.goBack()} content="Volver" disabled={false} />

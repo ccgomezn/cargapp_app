@@ -88,7 +88,7 @@ export const WrapperColumn = styled.View`
 `;
 
 export const WrapperImage = styled.View`
-  flex: 1.5;
+  flex: 2;
   justify-content: center;
   align-items: flex-start;
   border-radius: 50px;

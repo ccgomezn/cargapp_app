@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable array-callback-return */
@@ -9,10 +10,13 @@ import MapView from 'react-native-maps';
 import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import analytics from '@react-native-firebase/analytics';
+import { firebase } from '@react-native-firebase/firestore';
 import { View } from 'native-base';
 import {
   MainWrapper, AddressesWrapper, WrapperModal, BlueText, WrapperTextModal,
+  CustomImage,
 } from './style';
+import images from '../../../icons';
 import CardMapBeginTravel from '../../../components/CardMapBeginTravel';
 import AddressesCardMap from '../../../components/AddressesCardMap';
 import CompanyActions from '../../../redux/reducers/CompanyRedux';
@@ -29,6 +33,7 @@ import { ContentForm, WrapperButtonsBottom } from '../../HomeOffers/style';
 import CardPermissions from '../../../components/CardPermissions';
 import PermissionsActions from '../../../redux/reducers/PermissionsRedux';
 import OffersByIdActions from '../../../redux/reducers/OffersByIdRedux';
+
 
 const itemList = [
   {
@@ -148,11 +153,15 @@ class ApplyOffer extends Component {
   }
 
   nameButton(data) {
+    const { navigation } = this.props;
     const { disabled } = this.state;
-    if (data.message) {
+    const selectID = navigation.getParam('selectID');
+    if (selectID !== undefined && selectID !== null) {
       return 'Aplicar a viaje';
     }
-    console.log(data);
+    if (data.message) {
+      return 'Seleccionar vehículo';
+    }
     // TODO Add Id in endPoint
     const { id, name } = data.statu;
     if (id !== 52 && id !== 16 && !disabled) {
@@ -165,24 +174,17 @@ class ApplyOffer extends Component {
   }
 
   vehicleType(value, id, state) {
-    const { navigation, putStateOriginTravel } = this.props;
+    const { navigation } = this.props;
     const { modalPermission } = this.state;
     const dataOffer = navigation.getParam('dataOffer');
+    console.log('vehicleType', id);
     if (!modalPermission) {
       if (id) {
         analytics().logEvent('boton_aplicar_a_oferta');
         this.applyOffer(id, value);
       } else if (this.nameButton(state) === 'Iniciar camino a cargue') {
-        const data = {
-          service: {
-            statu_id: 6,
-          },
-        };
-        putStateOriginTravel(value.id, data);
-        setTimeout(() => {
-          navigation.navigate('StartTravel', { Offer: value });
-        }, 800);
         analytics().logEvent('boton_detalles_iniciar_viaje');
+        this.startTravel(value);
       } else {
         navigation.navigate('ListVehicle', { selectID: true, offer: dataOffer });
       }
@@ -201,7 +203,39 @@ class ApplyOffer extends Component {
       active: true,
     };
     applyOffer(data);
+    const sms = `Se ha postulado el camionero: ${profile.data[0].profile.firt_name} al servicio ${valueApplyOffer.name}`;
+    this.sendNotification(valueApplyOffer, 'Nuevo Postulado', sms);
+
     this.setState({ modalApply: true, button: false });
+  }
+
+  startTravel(valueApplyOffer) {
+    const { navigation, putStateOriginTravel } = this.props;
+    const data = {
+      service: {
+        statu_id: 6,
+      },
+    };
+    putStateOriginTravel(valueApplyOffer.id, data);
+    const sms = `El camionero ha iniciado el curso hacia el punto de cargue (${valueApplyOffer.origin})`;
+    this.sendNotification(valueApplyOffer, 'Viaje Iniciado', sms);
+    setTimeout(() => {
+      navigation.navigate('StartTravel', { Offer: valueApplyOffer });
+    }, 800);
+  }
+
+  sendNotification(service, subject, msg) {
+    console.log(`firebase add notifications_user_${service.user_id.toString()}`, msg);
+
+    firebase.firestore().collection(`notifications_user_${service.user_id.toString()}`).add({
+      message: msg,
+      title: subject,
+      created_at: new Date(),
+      additional_data: {
+        service_id: service.id,
+        notification_type: 'trip_detail',
+      },
+    });
   }
 
   missingViews(list) {
@@ -231,7 +265,6 @@ class ApplyOffer extends Component {
     const {
       offers, navigation, companies, rateService, permissions, vehicles, offersById,
     } = this.props;
-    console.log(this.props);
     const {
       offer,
       successNotification,
@@ -255,6 +288,7 @@ class ApplyOffer extends Component {
     }
     const selectID = navigation.getParam('selectID');
     if (selectID !== undefined && selectID !== null && fetchID === false) {
+      console.log('select ID', selectID);
       this.setState({ fetchID: true });
     }
     if (permissions.data && !permissions.fetching && !fetchList) {
@@ -310,14 +344,6 @@ class ApplyOffer extends Component {
               onTouchOutside={() => this.setState({ modalApply: null })}
             />
           )}
-          {/*
-          <EmptyDialog visible={modalFinish}>
-            <WrapperModal>
-              <BlueText>{offer.statu_id === 11 ? 'Este viaje ya está finalizado' : offer.statu_id === 10 && 'Estamos esperando que acepten el viaje'}</BlueText>
-              <ButtonGradient press={() => this.modalBack()} content="Volver" disabled={false} />
-            </WrapperModal>
-          </EmptyDialog>
-          */}
           <EmptyDialog visible={modalRate}>
             <WrapperModal>
               <WrapperTextModal>
@@ -336,15 +362,27 @@ class ApplyOffer extends Component {
               latitudeDelta: 9.93,
               longitudeDelta: 9.94,
             }}
-            style={{ height: '55%', width: '100%' }}
+            style={{ height: 250, width: '100%' }}
           >
             <MapView.Marker
               coordinate={{
                 latitude: parseInt(offer.origin_latitude),
                 longitude: parseInt(offer.origin_longitude),
               }}
-              title="Origen del viaje"
-            />
+              title="Punto de cargue"
+            >
+              <CustomImage source={images.markerOrigin} />
+            </MapView.Marker>
+
+            <MapView.Marker
+              coordinate={{
+                latitude: parseInt(offer.destination_latitude),
+                longitude: parseInt(offer.destination_longitude),
+              }}
+              title="Punto de entrega"
+            >
+              <CustomImage source={images.markerDestination} />
+            </MapView.Marker>
           </MapView>
           {successNotification && (
           <PopUpNotification

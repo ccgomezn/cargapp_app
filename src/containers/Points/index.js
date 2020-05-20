@@ -43,6 +43,7 @@ class Points extends Component {
       modalPrizes: false,
       activePrize: null,
       nameUser: '',
+      avatarUser: null,
     };
   }
 
@@ -54,7 +55,10 @@ class Points extends Component {
     // get data
     getActivePrizes();
     if (profile.data) {
-      this.setState({ nameUser: profile.data[0].profile.firt_name });
+      this.setState({
+        nameUser: profile.data[0].profile.firt_name,
+        avatarUser: profile.data[0].profile.avatar, 
+      });
     }
   }
 
@@ -103,7 +107,7 @@ class Points extends Component {
   render() {
     const {
       selectedIndex, reload, modalChallenge, activeChallenge,
-      modalPrizes, activePrize, nameUser,
+      modalPrizes, activePrize, nameUser, avatarUser,
     } = this.state;
     const { navigation } = this.props;
     const { challenge, prizes, ranking } = this.props;
@@ -209,6 +213,7 @@ class Points extends Component {
                 <CardRanking
                   isMe
                   title={'Mi Posición'}
+                  icon={avatarUser}
                   textKM={ranking.topme.kilometres}
                   textPoint={ranking.topme.my_points}
                   position={ranking.topme.position}
@@ -217,6 +222,7 @@ class Points extends Component {
               <TextTop>--- Top ---</TextTop>
               { ranking.toplist.map(data => (
                 <CardRanking
+                  icon={null}
                   title={data.name}
                   textKM={data.kilometres}
                   textPoint={data.points}

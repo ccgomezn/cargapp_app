@@ -246,7 +246,7 @@ class Home extends Component {
       location.latitudeDelta !== 0.5
       && profile.data !== null
       && vehicles.data
-      && destinations.data.origins !== null
+      && destinations.data !== null
     ) {
       destinations.data.origins.map((originData) => {
         dataPickOrigin.push({ Name: originData.name });

@@ -30,16 +30,15 @@ export function* editProfile(api, action) {
   api.setAuthToken(token);
   let response;
   if (data.profile) {
-    console.log('pro')
+    console.log('pro');
     api.setContent('application/json');
     response = yield call(api.profile.editProfile, id, data);
   } else {
-    console.log('form')
+    console.log('form');
     api.setContent('multipart/form-data');
     response = yield call(api.profile.updatePhoto, id, data);
-    console.log(response)
   }
-  console.log(response)
+  console.log('resp full', response);
   if (response.ok) {
     yield put(ProfileActions.editProfileSuccess(response.data));
     // update step

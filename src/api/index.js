@@ -42,7 +42,7 @@ const create = (baseURL = 'https://api.cargapp.co/api/v1/') => {
       'Cache-Control': 'no-cache',
     },
     // 2000 SECOND TIMEOUT...
-    timeout: 20000,
+    timeout: 40000,
   });
   const geolocation = new Geolocation(api);
   const driver = new Driver(api);

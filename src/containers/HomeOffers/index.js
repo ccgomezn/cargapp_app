@@ -11,9 +11,11 @@ import React, { Component } from 'react';
 import { View } from 'native-base';
 import { ActivityIndicator, Share } from 'react-native';
 import { connect } from 'react-redux';
+import 'moment/locale/es';
+import moment from 'moment';
 import PickerModal from 'react-native-picker-modal-view';
 import analytics from '@react-native-firebase/analytics';
-import { formatPrice } from '../../helpers/Utils.js';
+import { formatPrice } from '../../helpers/Utils';
 import {
   MainView, MainWrapper, ContentView, TextBlack, ContentBlock,
   ContentFilter, ContentOffer,
@@ -90,6 +92,7 @@ class HomeOffers extends Component {
 
   componentDidMount() {
     analytics().setCurrentScreen('viajes');
+    moment.locale('es');
     const {
       getsOffers,
       getVehicles,
@@ -268,6 +271,13 @@ class HomeOffers extends Component {
     });
   }
 
+  timeCompared(time) {
+    const today = moment().format('YYYY-MM-DD');
+    let lastTime = time.substr(0, 10);
+    lastTime = (lastTime === today ? 'Hoy' : moment(lastTime).format('DD/MMM/YYYY'));
+    return lastTime;
+  }
+
   render() {
     const {
       modalSearch, multiSliderValue, labelDestination, labelOrigin,
@@ -289,7 +299,6 @@ class HomeOffers extends Component {
     if (permissions.data && !permissions.fetching && !fetch) {
       // validate permisson
       let perm = 0;
-      console.log(permissions);
       permissions.data.map((pem) => {
         if (listview.includes(pem.name)) {
           if (!pem.permission) {
@@ -359,7 +368,6 @@ class HomeOffers extends Component {
           if (offer.active) {
             if (offer.statu_id === 16) {
               navigation.navigate('ApplyTravels', { dataOffer: offer });
-              console.log('redirection detail');
             } else if (offer.statu_id === 19 /* 11 */) {
               navigation.navigate('SummaryTravels', { offer });
               // navigation.navigate('StartTravel', { Offer: offer });
@@ -405,7 +413,7 @@ class HomeOffers extends Component {
                       to={services.destination}
                       vehicle={vehicle_data[services.vehicle_type_id]}
                       pay={formatPrice(services.price)}
-                      date="Hoy"
+                      date={this.timeCompared(services.created_at)}
                       actionbtnPrimary={() => this.onPressTravel(services)}
                       btnPrimary="Ver detalles"
                       actionbtnSecondary={() => this.onClickShare(services)}
